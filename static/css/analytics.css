@@ -1,0 +1,70 @@
+#anal_select{
+	padding: 7px 10px;
+	vertical-align: middle;
+	margin-right: 15px;
+}
+
+#anal_tools{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: white;
+	padding: 10px;
+}
+
+.tabs{ display: flex; }
+.tabs a{ flex-grow: 1; }
+.tabs a.act{
+	background-color: var(--blue);
+	color: white;
+}
+
+.analbox{
+	background-color: white;
+	margin: 5px;
+	border: 1px solid gainsboro;
+}
+.analbox .top{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 5px;
+	border-bottom: 1px solid grey;
+}
+
+.analbox .top .settings input{
+	border: 0;
+	color: var(--blue);
+	border-bottom: 1px solid;
+	width: 50px;
+	text-align: center;
+	margin: 0 20px 0 10px;
+}
+
+.analbox .analSum{ font-size: 25px; padding: 20px 10px; }
+
+.analbox .changeYear .calendarYear,
+.analbox .changeYear b{
+    transition: 0.2s;
+    display: inline-block;
+    vertical-align: middle;
+    padding: 5px 10px;
+}
+.analbox .changeYear b:hover{
+    cursor: pointer;
+    background-color: var(--light-blue);
+    color: white;
+}
+.analbox .changeYear .calendarYear{font-size: 22px; padding: 2px 10px;}
+.analbox .calendarMonth{
+	transition: 0.2s;
+	font-size: 20px;
+	border: 0;
+	text-align: center;
+	border: 1px solid white;
+}
+.analbox .calendarMonth:hover{ border: 1px solid var(--light-blue) }
+
+@media (max-width: 1199px){
+	
+}

@@ -1,0 +1,74 @@
+#datepickerDM .datepickerDMinner, #timepickerDM{
+	display: flex;
+	justify-content: space-around;
+	padding: 5px;
+}
+
+#datepickerDM .datepickerDMinner div,
+#datepickerDM .datepickerDMinner select,
+#timepickerDM div, #timepickerDM button{align-self: center;}
+
+#datepickerDM .datepickerDMinner b{
+	cursor: pointer;
+	transition: 0.2s;
+	padding: 3px 6px;
+	margin: 0 5px;
+}
+#datepickerDM .calendarYear{
+	color: var(--blue);
+	font-weight: 600;
+}
+
+#datepickerDM .datepickerDMinner select,
+#timepickerDM select,
+#timepickerDM input[type="time"]{
+	transition: 0.2s;
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+	background-color: white;
+	border-bottom: 2px solid grey;
+	padding: 3px;
+}
+#datepickerDM .datepickerDMinner select:hover,
+#timepickerDM select:hover,
+#datepickerDM .datepickerDMinner select:focus,
+#timepickerDM select:focus,
+#timepickerDM input[type="time"]:focus{ border-bottom: 2px solid var(--light-blue); }
+#timepickerDM input[type="time"]{ margin: 0 5px; }
+
+#datepickerDM table{
+	table-layout: fixed;
+	width: 350px;
+}
+
+#datepickerDM th{
+	padding: 5px;
+	border-bottom: 1px solid gainsboro;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+	overflow: hidden;
+}
+
+#datepickerDM td{
+	cursor: pointer;
+	transition: 0.2s;
+	text-align: center;
+}
+#datepickerDM td.notActiveDay{ color: gainsboro; }
+#datepickerDM td:hover,
+#datepickerDM .datepickerDMinner b:hover{ color: white; background-color: var(--light-blue); }
+#datepickerDM td.act{ color: white; background-color: orange; }
+
+#timepickerDM svg{ vertical-align: middle; }
+#timepickerDM select{
+	margin: 0 5px;
+}
+
+#DateStartEndPicker{
+	position: absolute;
+	background-color: white;
+	padding: 5px;
+	border: 1px solid gainsboro;
+}
+#DateStartEndPicker .inputPlaceholder{ margin: 2px; }

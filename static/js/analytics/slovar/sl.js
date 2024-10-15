@@ -1,0 +1,16 @@
+add_to_slovar({
+	Print: "Printaj",
+	Analyse: "Analizirajte",
+	Type: "Tip",
+	Group_by: "Združi",
+	Categorize: "Kategoriziraj",
+	Category: "Kategorija",
+	Copy: "Kopiraj",
+	Width: "Širina",
+	Results: "Rezultati",
+	Not_enough_columns: "Ni dovolj stolpcev",
+	Max_rows_show: 'Maks. vrstic',
+	precent_filter_info: 'Predstavlja nič ali več znakov',
+	line_filter_info: 'Predstavlja en znak',
+	Dataset: 'Nabor podatkov',
+})

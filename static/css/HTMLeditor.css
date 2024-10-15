@@ -1,0 +1,48 @@
+.HTMLeditorAct:hover{
+	outline: 1px solid red;
+}
+.HTMLeditorAct:hover:has(> .HTMLeditorAct){
+	outline: 1px dotted green;
+}
+
+/* COPY  */
+
+.copythisEL{
+	outline: 1px solid;
+	animation: outline 2s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+}
+@keyframes outline {
+  0%{ outline-color: red; }
+  30% { outline-color: gren; }
+  65%{ outline-color: blue; }
+  100%{ outline-color: yellow; }
+}
+
+/* TOOLS  */
+
+#CSStools{
+	padding: 10px;
+	align-self: center;
+	text-align: left;
+	max-height: 50vh;
+	max-width: 300px;
+	overflow-y: auto;
+	overflow-x: hidden;
+}
+#CSStools h3{
+	color: var(--blue);
+	border-bottom: 1px solid var(--blue);
+	margin: 0 0 10px 0;
+	padding: 5px 0;
+}
+#CSStools .cssbox{
+	display: flex;
+	align-items: center;
+	justify-content: end;
+}
+#CSStools .cssbox input{ width: 100px; }
+#CSStools .cssbox select{ width: 150px; }
+#CSStools .cssbox label{ padding-right: 10px; }
+#CSStools .unitselect{ width: 50px; }

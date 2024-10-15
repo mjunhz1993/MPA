@@ -1,0 +1,129 @@
+/* MAIN */
+#Main{
+    text-align: center;
+    margin-top: var(--top-nav-height);
+    margin-left: var(--left-nav-width);
+}
+
+/* WIDGETS  */
+#Main .widget{position: relative; display: inline-block;}
+#Main .deleteWidget svg:hover{
+    cursor: pointer;
+    transition: 0.2s;
+    color: var(--blue);
+}
+
+/* BOX */
+#Main .box{
+    display: inline-block;
+    text-align: left;
+    vertical-align: top;
+    background-color: white;
+    box-shadow: 0 0 2px grey;
+    /* margin: 15px; */
+    overflow: hidden;
+    box-sizing: border-box;
+}
+@media (max-width: 1199px){ #Main .box{display: block;} }
+
+#Main .box .boxInner{
+    padding: 10px;
+    text-align: left;
+}
+
+
+/* COLUMN */
+#Main .col{
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+@media (min-width: 1200px){
+    #Main .col10{width: 10%;}
+    #Main .col20{width: 20%;}
+    #Main .col25{width: 25%;}
+    #Main .col30{width: 30%;}
+    #Main .col40{width: 40%;}
+    #Main .col50{width: 50%;}
+    #Main .col60{width: 60%;}
+    #Main .col70{width: 70%;}
+    #Main .col75{width: 75%;}
+    #Main .col80{width: 80%;}
+    #Main .col90{width: 90%;}
+    #Main .col100{display: block;}
+}
+@media (max-width: 1199px){ #Main .col{display: block;} }
+
+
+/* ELEMENTI */
+#Main .h1_table{
+    width: 100%;
+    background-color: var(--black);
+    color: white;
+}
+#Main .h1_table td:last-child{ text-align: right; }
+#Main .h1_table .svg{ margin-right: 15px; }
+#Main .h1_table svg{ stroke: white; }
+#Main h1{
+    padding: 15px;
+    margin: 0;
+    font-size: 20px;
+    font-weight: 500;
+    text-align: left;
+}
+#Main h1 a{color: var(--light-blue);}
+#Main h2{
+    padding: 8px;
+    margin: 0;
+    font-size: 17px;
+    font-weight: 500;
+    color: grey;
+    text-align: left;
+}
+#Main h3{
+    color: var(--blue);
+    margin: 10px 0;
+    font-size: 15px;
+    text-align: left;
+    font-weight: 500;
+    border-bottom: 2px solid;
+}
+#Main h3 svg{
+    vertical-align: -10px;
+    margin: 3px;
+}
+#Main hr{
+    border: 0;
+    border-top: 1px solid #dee6ed;
+}
+
+
+/* STATUS */
+#Main .statusGreen{
+    background-color: rgba(75,191,115,.175);
+    color: #4bbf73;
+    padding: 0 5px;
+}
+#Main .statusRed{
+    background-color: rgba(217,83,79,.175);
+    color: #d9534f;
+    padding: 0 5px;
+}
+
+
+/* ALERTS */
+.alert{
+    display: block;
+    color: black;
+    padding: 18px;
+    margin: 10px;
+    border-radius: 5px;
+}
+.alert svg{
+    width: 19px;
+    height: 19px;
+    vertical-align: -4px;
+    margin-right: 19px;
+}
+.alertRed{background-color: #f7dddc;}
+.alertGreen{background-color: #dbf2e3;}

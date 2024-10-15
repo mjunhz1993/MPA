@@ -1,0 +1,129 @@
+/* ----------- BUTTONS ----------- */
+/* CLASSIC BUTTONS */
+.button{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 8px 15px;
+    margin: 2px 0;
+    border: 1px solid white;
+    border-radius: 5px;
+    box-shadow: 0 0 2px black;
+    box-sizing: border-box;
+}
+.buttonSquare{
+    display: inline-block;
+    vertical-align: middle;
+    text-align: center;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 8px 15px;
+    margin: 2px 0;
+    border: 1px solid white;
+    box-shadow: 0 0 2px black;
+    box-sizing: border-box;
+}
+.button:hover, .buttonSquare:hover{
+    background-color: white;
+    box-shadow: 0 0 0;
+}
+
+.button svg, .buttonSquare svg{
+    height: 19px;
+    width: 19px;
+    vertical-align: -5px;
+}
+.button span, .buttonSquare span{ vertical-align: middle; }
+.button .SVGdesc, .buttonSquare .SVGdesc{ margin-left: 7px; }
+
+.button100{
+    width: 100%;
+    text-align: center;
+}
+
+.buttonGreen{
+    background-color: #69b73e;
+    color: white;
+}.buttonGreen:hover{ color: #69b73e; border-color: #69b73e; }
+.buttonRed{
+    background-color: #d9534f;
+    color: white;
+}.buttonRed:hover{ color: #d9534f; border-color: #d9534f; }
+.buttonBlue{
+    background-color: var(--blue);
+    color: white;
+}.buttonBlue:hover{ color: var(--blue); border-color: var(--blue); }
+.buttonGrey{
+    background-color: #e6e6e6;
+    color: black;
+}.buttonGrey:hover{ border-color: black; }
+.buttonBlack{
+    background-color: #495057;
+    color: white;
+}.buttonBlack:hover{ color: #495057; border-color: #495057; }
+
+
+/* SMALL ICON BUTTONS */
+.hoverTool{ position: absolute; }
+.linksvg{
+    transition: 0.2s;
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid;
+    padding: 4px 6px;
+    box-shadow: 0 0 3px;
+    background-color: white;
+}
+.linksvg svg{
+    width: 18px;
+    height: 18px;
+    vertical-align: middle;
+}
+.linksvg:hover{ background: var(--blue); }
+.linksvg:hover svg{ stroke: white; }
+
+
+/* VERTICAL TOGGLE BUTTONS */
+.verticalToggleButtonsBox{
+    position: sticky;
+    z-index: 3;
+    top: var(--top-nav-height);
+    background-color: white;
+    box-shadow: 0 0 2px grey;
+    /* margin: 0 0 15px 0; */
+    overflow: hidden;
+    box-sizing: border-box;
+}
+.verticalToggleButtons{
+    display: flex;
+    overflow: auto;
+}
+.verticalToggleButtons a,
+.tableTop td.center a{
+    position: relative;
+    flex-grow: 1;
+    align-self: stretch;
+    display: block;
+    cursor: pointer;
+    transition: 0.2s;
+    padding: 10px;
+    text-align: center;
+    white-space: nowrap;
+}
+.verticalToggleButtons a.act,
+.verticalToggleButtons a:hover,
+.verticalToggleButtons .ui-sortable-helper,
+.tableTop td.center a.act,
+.tableTop td.center a:hover{
+    background-color: var(--light-blue);
+    color: white;
+}
+.verticalToggleButtons .ui-sortable-placeholder{ background-color: grey; }
+.verticalToggleButtons .buttonGreen:hover{ opacity: 0.6; }
+.verticalToggleButtons svg,
+.verticalToggleButtons span,
+.tableTop td.center svg{ vertical-align: middle; }
+.verticalToggleButtons svg{ width: 18px; height: 18px; }
+.verticalToggleButtons span{ margin-left: 5px; }

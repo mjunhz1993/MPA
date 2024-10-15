@@ -1,0 +1,70 @@
+.readBoxMini{
+	display: inline-block;
+	position: fixed;
+	min-width: 300px;
+	max-width: 350px;
+	overflow-y: auto;
+	background-color: white;
+	border: 1px solid gainsboro;
+	box-shadow: 0 0 5px black;
+	z-index: 998;
+}
+.readBoxMini .dragTop{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	cursor: grab;
+	padding: 10px;
+	text-align: left;
+	border-bottom: 1px solid gainsboro;
+}
+.readBoxMini .dragTop.grabbing{ cursor: grabbing; }
+.readBoxMini .dragTop .title{
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+	max-width: 190px;
+}
+.readBoxMini .dragTop svg{ cursor: pointer; }
+.readBoxMini .dragTop svg:first-child{
+	stroke: var(--blue);
+	transform: rotate(180deg);
+}
+.readBoxMini .dragTop svg.act{ stroke: gainsboro; }
+.readBoxMini .readBoxMiniTableBox{
+	max-height: 210px;
+	overflow: auto;
+	padding-bottom: 5px;
+}
+.readBoxMini .readBoxMiniTable{
+	width: 100%;
+	border-spacing: 0;
+}
+.readBoxMini .readBoxMiniTable td,
+.readBoxMini .readBoxMiniTable th{
+	text-align: left;
+	padding: 3px 5px;
+	border-bottom: 1px solid gainsboro;
+}
+.readBoxMini .readBoxMiniTable th[colspan="2"]{
+	text-align: center;
+	padding: 5px 0;
+	font-size: 15px;
+	font-weight: 500;
+	color: white;
+	background-color: var(--light-blue);
+	border-top: 2px solid;
+}
+.readBoxMini .readBoxTools{
+	display: flex;
+	flex-wrap: wrap;
+}
+.readBoxMini .readBoxTools .buttonSquare{ flex-grow:1; }
+.readBoxMini .link{
+	display: inline-block;
+	cursor: pointer;
+	color: var(--blue);
+	border-bottom: 2px dotted;
+	padding: 1px 3px;
+	font-weight: 600;
+}

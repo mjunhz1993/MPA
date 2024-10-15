@@ -1,0 +1,55 @@
+.statsdate{
+	display:flex;
+	flex-wrap: wrap;
+	justify-content:space-around;
+	padding: 10px 0;
+}
+.statsdate div{ align-self: center; }
+.statsdate b, .statsdate span, .statsdate select{ font-size: 20px; }
+.statsdate b{
+	cursor: pointer;
+	transition: 0.2s;
+	padding: 5px 15px;
+	margin: 0 10px;
+}
+.statsdate b:hover{ background-color: var(--blue); color: white; }
+.statsdate span{ font-weight: 600; color: #a3a3a3; }
+.statsdate select{
+	transition: 0.2s;
+	cursor: pointer;
+	padding: 5px 10px;
+	border: 0;
+	border-bottom: 2px solid grey;
+}
+.statsdate select:hover,
+.statsdate select:focus{ background-color: var(--blue); color: white; }
+
+#statstypes{ display: flex; }
+
+#chartBoxMain{ min-width: 1400px; }
+
+#chartBoxInner{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-around;
+}
+#chartBoxInner h2{ text-align: center; }
+#chartBox1,#chartBox2{
+	display: inline-block;
+	min-width: 300px;
+}
+
+.chartBox{
+	display: inline-block;
+	padding: 20px;
+	text-align: center;
+	border: 1px solid gainsboro;
+	box-shadow: 0 0 5px gainsboro;
+	margin-top: 10px;
+}
+.chartBox b{
+	display: block;
+	border-bottom: 1px solid gainsboro;
+	padding-bottom: 10px;
+}
+.chartBox span{ font-size: 30px; }

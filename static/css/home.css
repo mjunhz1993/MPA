@@ -1,0 +1,115 @@
+#homeTop{
+	background-color: white;
+	padding: 10px;
+	font-weight: 600;
+}
+
+.homeUserBox{
+	display: flex;
+	justify-content: space-around;
+}
+
+.homeUserImgBox,
+.homeUserLeft{ align-self: flex-start; }
+.homeUserRight{ align-self: center; }
+
+.homeUserImgBox{ padding: 10px; }
+.homeUserImg{
+	display: flex;
+	justify-content: center;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	border: 1px solid gainsboro;
+	background-repeat: no-repeat;
+	background-position: center;
+	background-size: cover;
+	background-color: #d7d6d6;
+	color: white;
+}
+.homeUserImg svg{
+	align-self: center;
+	width: 50%;
+	height: 50%;
+}
+.homeUserInfo{ flex-grow: 1; }
+.homeNotePad{ width: 300px; }
+.homeNotePad textarea{
+	box-sizing: border-box;
+	margin-top: 10px;
+	border: 1px solid gainsboro;
+	min-width: 300px;
+	max-width: 300px;
+	min-height: 70px;
+}
+
+.homeUserRight{ flex-grow: 1; }
+.homeUserBubbleBox{
+	display: flex;
+	flex-wrap: wrap;
+	padding-left: 20px;
+	justify-content: space-evenly;
+}
+.homeUserBubble{
+	text-align: left;
+	display: inline-block;
+	width: 200px;
+	margin: 0 20px 20px 20px;
+	vertical-align: top;
+}
+.homeUserBubble .nDesc b{
+	color: var(--blue);
+	cursor: pointer;
+}
+.homeUserBubble .eventColorStatus{
+	display: inline-block;
+	border-radius: 50%;
+	padding: 5px;
+	margin-right: 5px;
+}
+
+
+
+.homeBox{
+	margin-top: 15px;
+	border-top: 1px solid grey;
+}
+
+.homeBoxInner{
+	display: inline-block;
+	border: 1px solid gainsboro;
+	box-shadow: 0 0 5px black;
+	border-radius: 5px;
+	margin: 15px;
+	vertical-align: top;
+	background-color: white;
+}
+.homeBoxInner .h2{
+	color: var(--blue);
+	font-size: 17px;
+	font-weight: 600;
+	text-align: center;
+	padding: 10px;
+	margin: 0;
+	background-color: #f2f5f3;
+}
+.homeBoxInner .h2 span{ color: #515254; }
+.homeBoxInner .p{
+	border-top: 1px solid grey;
+	padding: 10px;
+}
+
+#addBox{ text-align: center; }
+#addBox h1{ margin-bottom: 15px; }
+.addBox{ width: 300px; }
+
+.addBox .h2 svg,
+.addBox .h2 span{ vertical-align: middle; }
+.addBox .h2 svg{ margin-right: 10px; }
+
+.widget{ width: 100%; }
+
+@media (max-width: 800px){
+	.homeUserBox{ flex-wrap: wrap; }
+	.homeUserBubbleBox{ justify-content: center; }
+}

@@ -1,0 +1,1 @@
+<?php include($_SERVER['DOCUMENT_ROOT']. '/crm/templates/modules/admin/config/html/info/info.php'); ?>

@@ -1,0 +1,24 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.pyc
+
+# Environments
+venv/
+
+# Directory
+/static/uploads/**
+/php/downloads/**
+/php/user_data/**
+/vendor/
+/build/
+
+# Files
+conf.ini
+.htaccess
+PHP_errors.log
+
+# Other
+.idea
+
+# Local test
+local_test.php

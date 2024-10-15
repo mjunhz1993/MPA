@@ -1,0 +1,250 @@
+.calendarBox{position: relative;}
+
+/* MENU */
+.calendarBoxMenu{
+    background-color: white;
+    margin: 0 0 15px 0;
+    position: sticky;
+    top: 1px;
+    z-index: 2;
+    box-shadow: 0 0 2px grey;
+}
+.calendarBoxMenuInner{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    align-items: center;
+}
+.calendarBoxMenuTab .calendarYear,
+.calendarBoxMenuTab b{
+    transition: 0.2s;
+    display: inline-block;
+    vertical-align: middle;
+}
+.calendarBoxMenuTab b:hover{
+    cursor: pointer;
+    background-color: var(--light-blue);
+    color: white;
+}
+.calendarBoxMenuTab b{padding: 5px 10px;}
+.calendarBoxMenuTab b span,
+.calendarBoxMenuTab b svg{vertical-align: middle;}
+.calendarBoxMenuTab .calendarYear{font-size: 22px; padding: 2px 10px;}
+.calendarBoxMenuTab .act{
+    background-color: var(--blue);
+    color: white;
+}
+.calendarBoxMenuTab .addEvent{
+    color: white;
+    background: #69b73e;
+    padding: 7px 12px 7px 11px;
+}
+.calendarBoxMenuTab .addEvent svg{
+    vertical-align: middle;
+    width: 17px;
+    height: 17px;
+    margin-right: 3px;
+}
+.calendarBoxMenuTab .addEvent span{vertical-align: middle;}
+
+/* YEAR */
+.calendarBoxMain[data-mode=YEAR] .calendarBoxMainMonths{text-align: center; overflow-x: auto;}
+.calendarBoxMain[data-mode=YEAR] .calendarBoxMainMonth{
+    display: inline-block;
+    margin: 2px;
+}
+.calendarBoxMain[data-mode=YEAR] .monthName{
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: var(--blue);
+    color: white;
+    padding: 5px 0;
+    font-size: 20px;
+}
+.calendarBoxMain[data-mode=YEAR] .monthName:hover{opacity: 0.7;}
+.calendarBoxMain[data-mode=YEAR] table{border-spacing: 0;}
+.calendarBoxMain[data-mode=YEAR] th{
+    background-color: gainsboro;
+    padding: 3px 5px;
+}
+.calendarBoxMain[data-mode=YEAR] .goToWeekTr:hover{cursor: pointer;}
+.calendarBoxMain[data-mode=YEAR] .goToWeekTr:hover td:not(.notActiveDay){
+    background-color: var(--light-blue);
+    color: white;
+}
+.calendarBoxMain[data-mode=YEAR] td{
+    background-color: #f5f1f1;
+    padding: 3px 5px;
+}
+.calendarBoxMain[data-mode=YEAR] td.notActiveDay{
+    background-color: #faf8f8;
+    color: #cdcfd2;
+}
+.calendarBoxMain[data-mode=YEAR] .calendarEvent{
+    background-color: var(--blue);
+    color: white;
+}
+
+/* MONTH */
+.calendarBoxMain[data-mode=MONTH] table{
+    width: 100%;
+    min-height: 70vh;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+.calendarBoxMain[data-mode=MONTH] th{
+    text-align: center;
+    padding: 10px 5px;
+    border-top: 1px solid gainsboro;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.calendarBoxMain[data-mode=MONTH] td{
+    text-align: right;
+    vertical-align: top;
+    padding: 10px;
+    border: 1px solid gainsboro;
+}
+.calendarBoxMain[data-mode=MONTH] td.notActiveDay{
+    background-color: #f3f3f3;
+}
+.calendarBoxMain[data-mode=MONTH] .calendarEvent{
+    padding-top: 3px;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+
+.calendarBox .monthPicker{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+}
+.calendarBox .monthPicker div{
+    cursor: pointer;
+    transition: 0.2s;
+    flex-grow: 1;
+    text-align: center;
+    padding: 5px;
+}
+.calendarBox .monthPicker div:hover{
+    background-color: var(--light-blue);
+    color: white;
+}
+.calendarBox .monthPicker div.act{
+    background-color: var(--blue);
+    color: white;
+}
+
+/* WEEK + DAY */
+.calendarBoxMain[data-mode=WEEK] table,
+.calendarBoxMain[data-mode=DAY] table{
+    width: 100%;
+    border-spacing: 0;
+}
+.calendarBoxMain[data-mode=WEEK] table{table-layout: fixed;}
+.calendarBoxMain[data-mode=DAY] table{border-top: 1px solid gainsboro;}
+.calendarBoxMain[data-mode=WEEK] th{
+    text-align: center;
+    padding: 10px 5px;
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.calendarBoxMain[data-mode=WEEK] td:first-child,
+.calendarBoxMain[data-mode=DAY] td:first-child{
+    padding: 5px;
+}
+.calendarBoxMain[data-mode=WEEK] td,
+.calendarBoxMain[data-mode=DAY] td{
+    border-left: 1px solid gainsboro;
+    border-right: 1px solid gainsboro;
+    border-bottom: 1px solid #f1f1f1;
+}
+.calendarBoxMain[data-mode=WEEK] tr td:first-child,
+.calendarBoxMain[data-mode=DAY] tr td:first-child{
+    text-align: center;
+    width: 100px;
+}
+.calendarBoxMain[data-mode=WEEK] .calendarEventBox,
+.calendarBoxMain[data-mode=DAY] .calendarEventBox{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.calendarBoxMain[data-mode=WEEK] .calendarEvent,
+.calendarBoxMain[data-mode=DAY] .calendarEvent{
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    flex-grow: 1;
+    flex-basis: 0;
+}
+
+
+.calendarBox .dayPicker{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+.calendarBox .dayPicker div{
+    text-align: center;
+    padding: 10px 5px;
+    flex-grow: 1;
+}
+.calendarBox .dayPicker div:first-child,
+.calendarBox .dayPicker div:last-child{
+    cursor: pointer;
+    transition: 0.2s;
+    font-weight: 900;
+}
+.calendarBox .dayPicker div:first-child:hover,
+.calendarBox .dayPicker div:last-child:hover{
+    background-color: var(--light-blue);
+    color: white;
+}
+
+.calendarBoxMain .todayDate{background-color: #ffd280;}
+
+/* EVENTS ON TOP */
+.calendarBox .calendarEventOnTop{
+    position: absolute;
+    transition: 0.2s;
+    cursor: pointer;
+    text-align: left;
+    border: 1px solid grey;
+    padding-bottom: 2px;
+    overflow: hidden;
+}
+.calendarBox .calendarEventOnTop.act{
+    box-shadow: 1px 1px 5px grey;
+    border: 1px solid var(--light-blue);
+    opacity: 0.7;
+}
+.calendarBox .calendarEventOnTop b{
+    display: block;
+    padding: 5px 0;
+    text-align: center;
+}
+.calendarBox .calendarEventOnTop span{
+    padding: 0 5px;
+}
+.calendarBox .calendarEventOnTop b,
+.calendarBox .calendarEventOnTop span{
+    display: block;
+    font-weight: 400;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.popup .userEventViewBox{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 0 5px;
+    background-color: gainsboro;
+}

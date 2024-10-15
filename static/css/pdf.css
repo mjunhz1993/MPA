@@ -1,0 +1,176 @@
+#html2pdfBox{
+	position: fixed;
+	display: flex;
+	align-items: stretch;
+	z-index: 998;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+}
+
+/* LEVO */
+#html2pdfBoxL{
+	flex-grow: 1;
+	background-color: rgb(82,86,89);
+	padding: 10px;
+	text-align: center;
+	overflow: auto;
+}
+
+#html2pdfBoxL #signatureInstructions{
+	display: inline-block;
+	background-color: black;
+    color: white;
+    padding: 10px 30px;
+    border-radius: 50px;
+    position: fixed;
+    top: 10px;
+    z-index: 3;
+}
+#html2pdfBoxL #signatureArea{
+	position:absolute;
+	border:1px solid var(--blue);
+	width:300px;
+	height:150px;
+	z-index: 3;
+}
+#signatureAreaTemp{ border: 1px solid gainsboro; }
+
+.html2pdfPaperCSS{
+	display: inline-block;
+	vertical-align: top;
+	margin: 10px;
+	background-color: white;
+	box-shadow: 0 0 10px black;
+	overflow: hidden;
+}
+
+.html2pdfPaper{
+	position: relative;
+	height: 100%;
+	display: inline-block;
+	background-color: white;
+	text-align: left;
+}
+
+.html2pdfPaper .html2pdfFooter{
+	position: absolute;
+	bottom: 0px;
+	left: 0px;
+	width: 100%;
+}
+
+.html2pdfPaper .htmlElementForPdf{
+	padding: 10px;
+	margin: 0;
+}
+
+.html2pdfPaper .col{
+    display: inline-block;
+    vertical-align: top;
+    box-sizing: border-box;
+}
+
+.html2pdfPaper .formField label{ font-weight: 600; }
+.html2pdfPaper .formField input[type=text]:not(.inputWithFlags input, .colpick input),
+.html2pdfPaper .formField input[type=number]:not(.inputWithUnit input),
+.html2pdfPaper .formField input[type=email],
+.html2pdfPaper .formField input[type=url],
+.html2pdfPaper .JOIN_ADD_placeholder,
+.html2pdfPaper .selectMenu{
+	width: 100%;
+	background-color: white;
+	border: 0;
+	padding: 2px;
+	margin-top: 5px;
+	border-bottom: 1px solid var(--blue);
+}
+
+.html2pdfPaper .selectMenu input{ display: none; }
+
+/* CHECKBOX */
+.html2pdfPaper input[type=checkbox]{
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+.html2pdfPaper input[type=checkbox] + label{
+    display: inline-block;
+    padding: 5px 10px 5px 10px;
+    margin: 5px;
+    border: 2px solid gainsboro;
+    border-radius: 5px;
+    background-color: white;
+    box-sizing: border-box;
+}
+
+.html2pdfPaper input[type=checkbox]:checked + label{background-color: var(--blue); color: white;}
+.html2pdfPaper input[type=checkbox]:disabled + label{background-color: grey; color: white;}
+
+.html2pdfPaper input[type=checkbox] + label svg{
+    display: none;
+    transition: 0.2s;
+    margin-right: 5px;
+    width: 17px;
+    height: 17px;
+    vertical-align: -3px;
+}
+.html2pdfPaper input[type=checkbox]:checked + label svg{display: inline-block;}
+
+/* TABLE */
+.html2pdfPaper .table th{
+	padding: 5px;
+	background-color: white;
+	border-bottom: 2px solid #dee6ed;
+}
+.html2pdfPaper .table td{
+	padding: 5px;
+	border-bottom: 1px solid #eff3f6;
+	white-space: nowrap;
+}
+.html2pdfPaper .table tr td:not(:first-child){ border-left: 1px solid #d5d5d5; }
+
+/* DESNO */
+#html2pdfBoxR{
+	padding: 10px;
+	text-align: center;
+	width: 280px;
+	min-width: 280px;
+	border-left:  1px solid gainsboro;
+}
+#html2pdfBoxLogo{
+	height: 50px;
+	margin-bottom: 10px;
+	background: url('/crm/templates/svg/logotop.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+#html2pdfBoxR .html2pdfFlex{
+	display:flex;
+	justify-content:space-around;
+	align-items:center;
+	margin-bottom: 5px;
+}
+#presetsizes{
+	width: 100%;
+	padding: 5px;
+	margin-bottom: 5px;
+}
+#html2pdfBoxW,
+#html2pdfBoxH
+{ width: 100px; }
+
+#html2pdfBoxRmini{
+	border-left: 1px solid gainsboro;
+	padding: 3px;
+}
+
+@media (max-width: 900px){
+	#html2pdfBoxR{ display: none !important; }
+}
+@media (min-width: 901px){
+	#html2pdfBoxRmini{ display: none !important; }
+}

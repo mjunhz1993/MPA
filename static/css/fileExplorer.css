@@ -1,0 +1,13 @@
+#fileExplorerSearch{
+	display: flex;
+	justify-content: space-between;
+}
+#fileExplorerSearch div{
+	align-self: center;
+}
+
+#fileExplorer [name=new_dir]{
+	box-sizing: border-box;
+	width: 100%;
+	padding: 5px;
+}

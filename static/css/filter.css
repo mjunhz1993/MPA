@@ -1,0 +1,85 @@
+#filterTable{
+    display: flex;
+    justify-content: center;
+    z-index: 998;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+    text-align: center;
+    overflow: auto;
+}
+#filterTableBox{
+    display: inline-block;
+    background: white;
+    padding: 10px;
+    text-align: left;
+    align-self: center;
+    box-sizing: border-box;
+    overflow: auto;
+}
+
+#filterTableBoxInner{padding: 10px 0;}
+
+.assignfilterbox{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    padding: 0 5px;
+    background-color: gainsboro;
+    margin: 5px 0;
+}
+
+#filterTable .filterHorButtons{ display: flex; }
+#filterTable .filterHorButtons button{ flex-grow: 1; }
+
+#filterTable .visible_columns_box{
+    display: flex;
+    overflow: auto;
+    background-color: gainsboro;
+    padding: 10px 0;
+}
+#filterTable .visible_columns_box div{
+    display: flex;
+    background-color: white;
+    align-self: center;
+    margin: 0 10px;
+}
+#filterTable .visible_columns_box div select{
+    margin: 0;
+    min-width: 100px;
+}
+#filterTable .visible_columns_box div a svg{
+    vertical-align: -13px;
+}
+
+#filterTable .conditionbox{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    text-align: center;
+    background-color: gainsboro;
+    padding: 20px 0;
+}
+#filterTable .conditionbox fieldset{ align-self: center; background-color: white; }
+#filterTable .conditionbox legend{ background-color: white; }
+#filterTable .conditionbox legend div{ display: flex; }
+#filterTable .conditionbox legend select{
+    border: 0;
+    color: var(--blue);
+    font-weight: 600;
+    margin: 0;
+}
+#filterTable .conditionbox legend div a{ align-self: center; }
+#filterTable .conditionbox legend:after{ display: none; }
+
+#filterTable .deleteXbutton{
+    transition: 0.2s;
+    display: inline-block;
+}
+#filterTable .deleteXbutton:hover{
+    background-color: #d9534f;
+    color: white;
+}

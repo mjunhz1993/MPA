@@ -1,0 +1,399 @@
+/* BASICS */
+body{
+    padding: 0;
+    margin: 0;
+    background-color: #eff3f6;
+    font-family: Poppins,-apple-system,BlinkMacSystemFont,Segoe UI,Helvetica Neue,Arial,sans-serif;
+    color: #6c757d;
+    font-size: 13px;
+    overflow-x: hidden;
+    overflow-y: scroll;
+}
+a{
+    cursor: pointer;
+    text-decoration: none;
+    color: #6c757d;
+}
+p{ margin: 0; }
+ul,ol{ text-align: left; }
+sup{ color: #ff7f50; margin-left: 3px; }
+pre{ text-align: left; }
+pre code{
+    display: block;
+    cursor: pointer;
+    background-color: #272822;
+    color: white;
+    min-height: 30px;
+    max-height: 200px;
+    overflow: auto;
+    padding: 10px 30px;
+}
+
+/* HIDE ON SMALL SCREEN */
+@media (max-width: 800px){.hideOnMobile{display: none !important;}}
+
+
+/* TOP NAV BAR */
+#TopNav{
+    border-spacing: 0px;
+    background-color: white;
+    padding: 0 10px;
+    box-shadow: 0 0 5px black;
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    height: var(--top-nav-height);
+    z-index: 997;
+}
+#TopNav #LeftNavToggleButton{
+    transition: 0.2s;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    vertical-align: middle;
+}
+
+#TopNav #TopNavCompanyLogo{
+    display: inline-block;
+    vertical-align: middle;
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    width: 100px;
+    height: 37px;
+    margin-left: 20px;
+}
+
+
+#TopNav #TopNavRight{text-align: right;}
+
+#TopNav #TopNavBell{
+    cursor: pointer;
+    display: inline-block;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+#TopNav #TopNavBell svg{vertical-align: middle;}
+#TopNav #TopNavBell span{
+    vertical-align: 6px;
+    font-size: 14px;
+    background-color: #ed0000;
+    color: white;
+    padding: 0 6px;
+    border-radius: 50%;
+    margin-left: -15px;
+}
+
+#TopNav #TopNavUser{cursor: pointer;}
+#TopNav #TopNavUser,
+#TopNav #TopNavUser .avatarSmall{
+    display: inline-block;
+    vertical-align: middle;
+}
+#TopNav #TopNavUser span{vertical-align: middle;}
+#TopNav #TopNavUser span:after{
+    content: "";
+    vertical-align: 2px;
+    border: solid;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2px;
+    margin: 0 5px;
+    transform: rotate(45deg);
+}
+#TopNav #TopNavUser svg{ vertical-align: middle; }
+
+
+/* LEFT NAV BAR */
+#LeftNavBox{
+    transition: 0.2s;
+    position: fixed;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    z-index: 996;
+    width: var(--left-nav-width);
+    height: calc(100vh - var(--top-nav-height));
+    background-color: var(--blue);
+    color: white;
+    box-shadow: 0 0 5px black;
+    margin-top: var(--top-nav-height);
+}
+#LeftNavScroll{
+    height: 100%;
+    overflow-y: scroll;
+}
+
+#LeftNav .group{}
+
+#LeftNav b,
+#LeftNav a{
+    display: block;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    transition: 0.2s;
+    color: white;
+}
+#LeftNav a.act,
+#LeftNav a:hover{
+    background-color: var(--light-blue);
+}
+
+#LeftNav b{
+    opacity: 0.7;
+    cursor: pointer;
+    position: relative;
+    padding: 20px 10px;
+    font-weight: 600;
+    background-color: var(--blue);
+}
+#LeftNav b:hover{background-color: #7cb1ff;}
+#LeftNav b.act{opacity: 1;}
+#LeftNav b:before{
+    content: " ";
+    transition: 0.2s;
+    border: solid;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2px;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 27px;
+    right: 30px;
+}
+#LeftNav b.act:before{transform: rotate(224deg);}
+
+#LeftNav .group a svg{
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+#LeftNav a svg,
+#LeftNav b svg{
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 10px;
+}
+
+#LeftNav a{padding: 20px 10px;}
+#LeftNav .group a{padding: 10px 10px 10px 30px;}
+
+#LeftNav a span{
+    vertical-align: middle;
+    padding-left: 5px;
+}
+
+/* DROPDOWN MENU */
+.DropdownMenuContent{display: none;}
+
+#DropdownMenu{
+    position: fixed;
+    z-index: 999;
+    background-color: white;
+    box-shadow: 0 0 5px black;
+    overflow: auto;
+}
+#DropdownMenu hr{ margin: 0; }
+#DropdownMenu p{
+    font-weight: 600;
+    padding: 5px 10px;
+    margin: 0;
+}
+#DropdownMenu a{
+    display: block;
+    transition: 0.2s;
+    padding: 5px 10px;
+}
+#DropdownMenu a:hover{background-color: gainsboro;}
+#DropdownMenu a svg{
+    height: 19px;
+    width: 19px;
+    vertical-align: -5px;
+}
+
+/* NOTIFICATIONS */
+#DropdownMenu .notificationBox{
+    width: 250px;
+    padding: 5px;
+    border-bottom: 1px solid grey;
+}
+.notificationBox .nTitle{
+    font-size: 15px;
+    margin:  0;
+}
+.notificationBox .nTime{
+    display: block;
+    padding-bottom:  5px;
+}
+.notificationBox .nDesc{
+    margin: 0;
+}
+.notificationBox .nDesc b{
+    cursor: pointer;
+    color: rgb(45 112 182);
+}
+.notificationBox .gtnm{
+    cursor: pointer;
+    border-bottom: 2px dotted;
+    color: var(--blue);
+}
+.notificationBox hr{
+    border: 1px solid gainsboro;
+}
+.noNotifications{
+    display: block;
+    padding: 5px 10px;
+}
+
+/* DROPDOWN MENU - JOIN_ADD */
+#DropdownMenu .loading20{margin: 5px;}
+#DropdownMenu .rightBox{
+    display: flex;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+#DropdownMenu .clearFieldSvg{
+    transition: 0.2s;
+    cursor: pointer;
+    padding: 1px;
+    background-color: red;
+    stroke: white;
+}
+#DropdownMenu .clearFieldSvg:hover{ opacity: 0.7; }
+#DropdownMenuSelectTable{
+    width: 100%;
+    border-spacing: 0;
+}
+#DropdownMenuSelectTable td{
+    padding: 10px;
+    border: 1px solid grey;
+}
+#DropdownMenuSelectTable tr:hover td,
+#DropdownMenuSelectTable tr.act td{
+    cursor: pointer;
+    background-color: var(--light-blue);
+    color: white;
+}
+#DropdownMenu .buttonSquare{ margin: 0; }
+
+/* DROPDOWN MENU - SELECT MENU */
+#DropdownMenu .selectOptions{
+    max-height: 200px;
+    overflow: auto;
+}
+#DropdownMenu .selectOptions a{font-weight: 600;}
+#DropdownMenu .selectOptions a:hover{opacity: 0.6;}
+
+/* DROPDOWN MENU - COUNTRY SELECT */
+#DropdownMenu .DropdownMenuSearchBox{
+    border: 0;
+    border-bottom: 1px solid gainsboro;
+    outline: 0;
+    padding: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+#DropdownMenu .countrieSelectBox{
+    max-height: 300px;
+    overflow: auto;
+}
+#DropdownMenu .countrieSelectBox a span{
+    display: inline-block;
+    width: 16px;
+    height: 13px;
+    margin-right: 10px;
+    background-image: url(/crm/static/img/icons/flags.png);
+    background-repeat: no-repeat;
+}
+#DropdownMenu .countrieSelectBox a b{
+    display: inline-block;
+    vertical-align: middle;
+}
+
+/* TOOLTIP */
+#tooltip{
+    position: fixed;
+    z-index: 998;
+    box-shadow: 0 0 5px black;
+}
+.tooltip{
+    background-color: black;
+    color: white;
+    padding: 5px 10px;
+}
+
+/* POPUP */
+.popup{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 998;
+    background-color: rgba(0,0,0,0.5);
+}
+.popup .popupBox{
+    position: relative;
+    display: inline-block;
+    background-color: white;
+    border-radius: 5px;
+    padding: 30px;
+    box-shadow: 0 0 10px black;
+    max-height: 85vh;
+    max-width: 85vw;
+    overflow: auto;
+}
+@media (max-width: 800px){
+    .popup .popupBox{
+        max-width: 95vw !important;
+        padding: 10px;
+    }
+}
+.popup .popupBox .popupTitle{display: block; font-size: 25px;}
+.popup .popupBox .button{width: 100%; margin-top: 10px; text-align: center;}
+.popup .popupBox .addonButtonBox .button{width: auto;}
+.popup #popupRightTopMenu{
+    position: absolute;
+    top: 5px;
+    right: 5px;
+}
+.popup #popupRightTopMenu a{
+    display: inline-block;
+    cursor: pointer;
+    line-height: 0;
+    background-color: rgba(255,255,255,0.6);
+    margin-left: 5px;
+}
+
+
+/* AVATAR */
+.avatarBig{
+    display: inline-block;
+    border: 1px solid gainsboro;
+    border-radius: 50%;
+    width: 128px;
+    height: 128px;
+    margin: 10px;
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+}
+.avatarSmall{
+    display: inline-block;
+    border: 1px solid gainsboro;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    background-color: white;
+    background-size: cover;
+    background-position: center;
+    vertical-align: middle;
+}

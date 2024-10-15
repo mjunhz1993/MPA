@@ -1,0 +1,194 @@
+/* CONVERSATION BOX */
+#conversationSearch{
+    margin: 10px 0px;
+    padding: 5px;
+    outline: 0;
+    border: 0;
+    box-shadow: 0 0 5px black;
+}
+
+.conversationBox{
+    max-height: 40vh;
+    overflow: auto;
+}
+.conversationBoxItem{
+    cursor: pointer;
+    transition: 0.2s;
+    display: flex;
+    align-items: center;
+    padding: 5px 5px;
+    border: 1px solid;
+}
+.conversationBoxItem:hover{
+    background-color: #7cb1ff;
+    color: white;
+}
+.conversationBoxItem .conversationBoxItemContent{ padding: 0 5px; }
+.conversationBoxItem .conversationBoxItemName{
+    font-size: 16px;
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 170px;
+}
+
+#MainChatBox{
+    position: relative;
+    background-color: #eff3f6;
+    overflow: auto;
+    max-height: 80vh;
+}
+
+/* INFO BOX */
+#chatInfo{
+    position: sticky;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: var(--black);
+    color: white;
+    border-spacing: 0;
+}
+#chatInfo td{
+    padding: 10px;
+    border-bottom: 1px solid grey;
+}
+#chatInfo .chatInfoLeft{ text-align:left; }
+#chatInfo .chatInfoLeft input{
+    width: 100%;
+    box-sizing: border-box;
+    margin-bottom: 5px;
+    border: 0;
+    background-color: var(--black);
+    color: white;
+    font-size: 20px;
+}
+#chatInfo .chatInfoLeft a{
+    color: white;
+    font-weight: 600;
+    border-bottom: 1px dotted;
+}
+#chatInfo .chatInfoRight{ text-align: right; }
+#chatInfo .chatInfoRight svg{
+    cursor: pointer;
+    transition: 0.2s;
+    vertical-align: middle;
+    margin: 5px;
+}
+#chatInfo .chatInfoRight svg:hover{ color: gainsboro; }
+
+
+/* CHAT BOX */
+.chatBox{
+    display: flex;
+    width: 100%;
+    padding: 10px 0;
+    margin: 0 auto;
+}
+
+.chatBox.me{justify-content: right;}
+.chatBox.you{justify-content: left;}
+
+.chatBox .chatBoxAvatar{
+    text-align: center;
+    min-width: 150px;
+}
+.chatBoxMessage{ max-width:60%; }
+.chatBox.me .chatBoxMessage{text-align: right;}
+.chatBox.you .chatBoxMessage{text-align: left;}
+
+.chatBox .chatBoxMessage .chatBoxMessageInner{ display: inline-block; }
+.chatBox .chatBoxMessage .chatBoxMessageInner b{
+    display: block;
+    padding-bottom: 5px;
+}
+.chatBox .chatBoxMessage .chatBoxMessageInner p{
+    display: block;
+    padding: 5px 10px;
+    margin: 0;
+    white-space: pre-wrap;
+    box-shadow: 0 0 5px black;
+    border-radius: 5px;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+.chatBox.me .chatBoxMessage .chatBoxMessageInner p{
+    text-align: left;
+    background-color: var(--blue);
+    color: white;
+}
+.chatBox.you .chatBoxMessage .chatBoxMessageInner p{ background-color: white; }
+
+.chatBox .chatBoxMessage .chatBoxMessageInner .link{
+    display: inline-block;
+    text-decoration: underline dotted;
+    font-weight: 600;
+    padding: 0 3px 1px 3px;
+}
+.chatBox .chatBoxMessage .chatBoxMessageInner .link:hover{ text-decoration: none; }
+.chatBox.me .chatBoxMessage .chatBoxMessageInner .link{ color: white; }
+
+.chatBox .fileArea{ width: 160px; }
+.chatBox.me .fileArea{ margin-left: auto; }
+.chatBox.you .fileArea{ margin-right: auto; }
+
+
+/* FORM */
+#chatForm{
+    position: sticky;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    text-align: center;
+}
+#chatFormInner{
+    display: flex;
+    margin-top: 10px;
+    background-color: white;
+    border: 1px solid grey;
+    box-shadow: 0 0 5px grey;
+    overflow: hidden;
+}
+#chatFormInner .chatFormBox:first-child{ flex-grow: 1; }
+#chatFormInner .chatFormBox{
+    align-self: center;
+}
+#chatFormInner .chatFormBox:last-child{ align-self: stretch; }
+
+#chatForm .fileArea{
+    background-color: rgba(0,0,0,0);
+    box-shadow: 0 0;
+}
+#chatForm textarea{
+    resize: none;
+    padding: 5px 10px;
+    outline: 0;
+    border: 0;
+}
+#chatForm label{
+    display: inline-block;
+    cursor: pointer;
+    transition: 0.2s;
+    color: black;
+    padding: 10px;
+    line-height: 0;
+}
+#chatForm label:hover{ background-color: gainsboro; }
+#chatForm button{
+    cursor: pointer;
+    transition: 0.2s;
+    background-color: var(--blue);
+    color: white;
+    border: 0;
+}
+#chatForm button:hover{opacity: 0.7;}
+
+@media (max-width: 800px){
+    .chatBox{
+        width: 100%;
+        margin: 0;
+    }
+    #chatFormInner{ margin: 0; }
+}

@@ -1,0 +1,156 @@
+/* MAIN TABLE */
+#Main .horizontalTable{overflow-x: auto;}
+
+#Main .table{
+    width: 100%;
+    border-spacing: 0;
+    position: relative;
+}
+#Main .table tr:nth-child(odd){background-color: #f4f7f9;}
+#Main .table tr:nth-child(even){background-color: white;}
+#Main .table thead th{
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+#Main .table th{
+    min-width: 100px;
+    transition: 0.2s;
+    text-align: left;
+    background-color: white;
+    border-top: 1px solid #dee6ed;
+    border-bottom: 2px solid #dee6ed;
+    padding: 10px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+#Main .table th:not(.no-sort):hover{cursor: pointer; background-color: gainsboro;}
+#Main .table th.sorted.ascending:before {content: "\2191"; padding-right: 5px;}
+#Main .table th.sorted.descending:before {content: "\2193"; padding-right: 5px;}
+
+#Main .table td{
+    padding: 10px;
+    border-bottom: 1px solid #eff3f6;
+    overflow: hidden;
+    white-space: nowrap;
+}
+#Main .table td:not(.toolRow){
+    text-align: left;
+    text-overflow: ellipsis;
+}
+#Main .table tr:not(.tableSumRow) td:not(:first-child){ border-left: 1px solid #d5d5d5; }
+#Main .table .hoverEffect:hover td{
+    cursor: pointer;
+    background-color: var(--blue);
+    color: white;
+}
+#Main .table td.td_select{ position: relative; cursor: pointer; }
+#Main .table td.td_select svg{
+    position: absolute;
+    transition: 0.2s;
+    top: 4px;
+    right: -40px;
+    width: 15px;
+    height: 15px;
+}
+#Main .table td.td_select:hover svg{ right: 4px; }
+
+#Main .table tfoot td{
+    border-top: 1px solid gainsboro;
+    border-bottom: 1px solid gainsboro;
+    background-color: #f3f3f3;
+    font-weight: 600;
+}
+
+#Main .table .link{
+    color: var(--blue);
+    font-weight: 700;
+    border-bottom: 1px dotted var(--blue);
+    padding: 0 3px;
+}
+#Main form.readOnlyForm .link{
+    display: inline-block;
+    color: var(--blue);
+    font-weight: 700;
+}
+
+#Main .table svg{ vertical-align: middle; }
+#Main .table .table_chat_act svg{ fill: #69b73e; }
+
+#Main .table td .more{display: inline-block; cursor: pointer;}
+#Main .table td .more:hover svg,
+#Main .table td a:hover svg{stroke: white;}
+
+#Main .table td .desc{
+    display: inline-block;
+    color: #949494;
+    font-weight: 700;
+}
+
+#Main .table .toolRow, #Main .table .toolColumn{ text-align: center; }
+
+/* FILTERS */
+#Main .table .tableFilterRow input,
+#Main .table .tableFilterRow select{
+    cursor: pointer;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 5px;
+    border: 1px solid gainsboro;
+    background-color: white;
+}
+
+#DateStartEndPicker input{
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* TOP TABLE */
+.tableTop{
+    width: 100%;
+    border-spacing: 0;
+    table-layout: fixed;
+}
+.tableTop h2{
+    display: inline-block;
+    vertical-align: middle;
+}
+.tableTop td{
+    padding: 10px 20px;
+    text-align: center;
+}
+.tableTop td:first-child{text-align: left;}
+.tableTop td.center{
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+.tableTop td.center a{ border-radius: 5px; }
+.tableTop td:last-child{text-align: right;}
+.tableTop svg{
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.tableTop .tableTopSelect{
+    cursor: pointer;
+    transition: 0.2s;
+    border: 0;
+    outline: 0;
+    margin-right: 5px;
+    padding: 4px;
+    color: var(--blue);
+    font-weight: 700;
+    vertical-align: middle;
+}
+.tableTop .tableTopSelect:hover{ background-color: #eff3f6; }
+
+@media (max-width: 800px){
+    .tableTop tr{
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

@@ -1,0 +1,157 @@
+#email_top_box{
+	display: flex;
+	justify-content: space-around;
+	flex-wrap: wrap;
+	background-color: var(--black);
+}
+#email_top_box .email_top_item{
+	align-self: center;
+	padding: 5px;
+	flex-grow: 1;
+}
+#email_top_box .email_top_item .email_top_item_underline{
+	display: inline-block;
+	padding-bottom: 3px;
+	border-bottom: 1px solid white;
+}
+#email_top_box .email_top_item select{
+	cursor: pointer;
+	border: 0;
+	outline: 0;
+	margin-right: 10px;
+	background-color: var(--black);
+	color: white;
+}
+#email_top_box .email_top_item input{
+	border: 0;
+	outline: 0;
+	background-color: var(--black);
+	color: white;
+}
+#email_top_box ::placeholder{ color: white; opacity: 1; }
+#email_top_box :-ms-input-placeholder{ color: white; }
+#email_top_box ::-ms-input-placeholder{ color: white; }
+
+#email_bottom_box{
+	display: flex;
+	justify-content: space-evenly;
+}
+
+#email_bottom_box .email_inner_box{
+	background-color: white;
+	overflow: auto;
+}
+
+
+#email_bottom_box .email_inner_box:first-child{
+	flex-grow: 1;
+	border-right: 1px solid gainsboro;
+}
+#email_bottom_box .email_inner_box:first-child .email_item_box{
+	display: flex;
+	justify-content: space-between;
+	align-items: stretch;
+	border-bottom: 1px solid gainsboro;
+}
+#email_bottom_box .email_inner_box:first-child .email_item:first-child{
+	position: relative;
+	flex-grow: 1;
+	padding: 5px 5px 5px 15px;
+}
+#email_bottom_box .email_inner_box:first-child .email_item:last-child{
+	padding: 10px;
+	margin: 0 5px;
+	border-radius: 5px;
+}
+#email_bottom_box .email_inner_box:first-child .email_item{
+	cursor: pointer;
+	transition: 0.2s;
+	text-align: left;
+	align-self: center;
+}
+#email_bottom_box .email_inner_box:first-child .email_item:hover,
+#email_bottom_box .email_inner_box:first-child .email_item.act{
+	background-color: var(--blue);
+	color: white;
+}
+#email_bottom_box .email_inner_box:first-child .email_item:first-child:hover{ opacity: 0.8; }
+#email_bottom_box .email_inner_box:first-child .email_item_subject{
+	font-weight: 700;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+	max-width: 420px;
+}
+#email_bottom_box .email_inner_box:first-child .email_item_new{
+	position: absolute;
+	bottom: 5px;
+	right: 5px;
+	background-color: green;
+	color: white;
+	padding: 2px 8px;
+	border-radius: 5px;
+}
+
+
+#email_bottom_box .email_inner_box:last-child{
+	flex-grow: 5;
+	position: relative;
+}
+
+.emailHeader{
+	padding: 10px;
+	border-bottom: 1px solid gainsboro;
+	background-color: var(--black);
+	color: white;
+}
+.emailHeader h2{
+	padding: 0  !important;
+	color: white !important;
+}
+.emailHeader svg{
+	cursor: pointer;
+	transition: 0.2s;
+}
+.emailHeader svg:hover{color: var(--blue);}
+.emailHeader .ehDate{text-align: left;}
+.emailHeader .ehflex{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+.emailHeader .ehflex a{
+	color: white;
+	border-bottom: 2px dotted;
+}
+.emailHeader .ehflex:last-child{margin-top: 10px;}
+.emailHeader .ehHorizontal{
+	overflow: auto;
+	white-space: nowrap;
+	padding-top: 10px;
+	text-align: left;
+}
+.emailHeader .ehAttachment{
+	cursor: pointer;
+	display: inline-block;
+	transition: 0.2s;
+	border: 1px solid gainsboro;
+	padding: 10px;
+	margin: 0 3px;
+}
+.emailHeader .ehAttachment:hover{
+	background-color: var(--blue);
+	color: white;
+}
+
+.emailFrame{
+	width: 100%;
+	border: 0;
+	background-color: white;
+}
+#email_response_bar{
+	position: absolute;
+	bottom: 20px;
+	right: 20px;
+}
+#email_response_bar button{ font-size: 20px; }
+#email_response_bar button:last-child{ margin-left: 20px; }

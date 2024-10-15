@@ -1,0 +1,53 @@
+#emailtemplateeditor{
+	position: fixed;
+	top: 0; left: 0;
+	z-index: 997;
+	width: 100%;
+	height: 100%;
+	background-color: white;
+}
+
+#emailtemplateeditor .etebutton{ cursor: pointer; }
+
+#etehead{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	position: fixed;
+	top: 0; left: 0;
+	width: 100%;
+	background-color: white;
+	box-shadow: 0 0 5px black;
+}
+#etehead .etetab{
+	padding: 0 10px;
+}
+#etelogo{
+	height: 50px;
+	width: 200px;
+	background: url('/crm/templates/svg/logotop.svg');
+	background-repeat: no-repeat;
+	background-position: center;
+}
+
+#etebody{
+	width: 100%;
+	height: 100vh;
+	overflow: auto;
+	text-align: center;
+}
+
+#etebodybox{
+	display: inline-block;
+	width: 100%;
+	padding-top: 90px;
+}
+#etebodybox .etetd{ cursor: grabbing; }
+#etebodybox .ui-sortable-helper td{ width: 600px; }
+#etebodybox .etetdplaceholder{ background-color: grey; }
+
+/* BODY HTML TAGS */
+#etebody a{
+	color: blue;
+	text-decoration: underline;
+}

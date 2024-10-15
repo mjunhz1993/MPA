@@ -1,0 +1,39 @@
+#userConfigMenu{ display:flex; }
+#userConfigMenu button{ flex-grow: 1; }
+
+#userconfigbox{
+	margin-top:10px;
+	max-height:50vh;
+	overflow:auto;
+}
+#userconfigbox .securitySVG{
+	transition: 2s;
+	display: inline-block;
+	padding: 20px;
+}
+#userconfigbox .securitySVG svg{
+	width: 140px;
+	height: 140px;
+	vertical-align: middle;
+}
+#userconfigbox .securitySVG span{
+	display: inline-block;
+	font-size: 30px;
+	vertical-align: middle;
+}
+
+#userconfigbox h2 sub{
+	font-size: 11px;
+	vertical-align: middle;
+	color: white;
+	padding: 2px 8px;
+	border-radius: 50px;
+}
+#userconfigbox .span{
+	display: block;
+	padding: 0 8px;
+}
+#userconfigbox .no_passkey_msg{
+	color: red;
+	display: none;
+}
