@@ -11,7 +11,7 @@ function check_if_email_room_exists($SQL, $SQL_db, $user_id, $mailSQL, $user_ema
     $path .= 'mail_room_'. $user_id. '/';
     if(!is_dir($path)){ mkdir($path); }
 
-    $A = $mailSQL->query("SELECT * FROM information_schema.tables WHERE table_schema = 'mail_rooms' AND table_name = '$user_email_table' LIMIT 1");
+    $A = $mailSQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '".$GLOBALS['MAIL']['DB']."' AND table_name = '$user_email_table' LIMIT 1");
     if($A->num_rows != 0){ return $data; }
     
     $mailSQL->query("CREATE TABLE $user_email_table

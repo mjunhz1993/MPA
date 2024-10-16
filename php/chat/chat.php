@@ -272,7 +272,8 @@ if(isset($_SESSION['user_id'])){
 
         $A = $chatSQL->query("SELECT s.message_time,s.message_user,s.user_username,s.user_avatar,s.message,s.attachment FROM
         (
-            SELECT message_time,message_user,user_username,user_avatar,message,attachment FROM chat_rooms.chat_room_$id
+            SELECT message_time,message_user,user_username,user_avatar,message,attachment 
+            FROM ".$GLOBALS['CHAT']['DB'].".chat_room_$id
             LEFT JOIN $SQL_db.user ON user_id = message_user
             WHERE message_time < '$time' ORDER BY message_time DESC LIMIT 20
         ) AS s
@@ -296,7 +297,9 @@ if(isset($_SESSION['user_id'])){
         $time = SafeInput($SQL, $_GET['time']);
         $st = 0;
 
-        $A = $chatSQL->query("SELECT message_time,message_user,user_username,user_avatar,message,attachment FROM chat_rooms.chat_room_$id
+        $A = $chatSQL->query("
+        SELECT message_time,message_user,user_username,user_avatar,message,attachment 
+        FROM ".$GLOBALS['CHAT']['DB'].".chat_room_$id
         LEFT JOIN $SQL_db.user ON user_id = message_user
         WHERE message_time > '$time' 
         ORDER BY message_time ASC");
