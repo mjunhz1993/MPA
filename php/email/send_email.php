@@ -2,7 +2,10 @@
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
-require $_SERVER['DOCUMENT_ROOT']. '/crm/vendor/autoload.php';
+
+require $GLOBALS['DIR']['ROOT'].'/PHPMailer/src/Exception.php';
+require $GLOBALS['DIR']['ROOT'].'/PHPMailer/src/PHPMailer.php';
+require $GLOBALS['DIR']['ROOT'].'/PHPMailer/src/SMTP.php';
 
 class smtpObj{
     public $acc;
