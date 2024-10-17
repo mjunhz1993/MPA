@@ -160,6 +160,16 @@ function create_dir(d, el){
 	})
 }
 
+function zip_dir(source, destination){
+	$.get('/crm/php/file/fileExplorer.php?zip_dir=1', {
+        source:source,
+        destination:destination
+    }, function(data){
+        data = JSON.parse(data);
+        console.log(data);
+    })
+}
+
 function upload_file_here(d, el){
 	var fileBox = el.closest('.popupBox').find('.fileExplorerBox');
 	var path = fileBox.attr('data-path');

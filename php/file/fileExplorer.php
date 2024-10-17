@@ -1,5 +1,6 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
+include(loadPHP('file/zip'));
 
 function get_files($SQL){
     $dir = $_SERVER['DOCUMENT_ROOT'].'/crm/static/uploads'.SafeInput($SQL, $_GET['path']);
@@ -125,6 +126,7 @@ if(isset($_SESSION['user_id'])){
     if(isset($_GET['rename_file'])){ echo json_encode(rename_file($SQL)); }
     if(isset($_GET['paste_file'])){ echo json_encode(paste_file($SQL)); }
     if(isset($_GET['move_files_by_year'])){ echo json_encode(move_files_by_year($SQL)); }
+    if(isset($_GET['zip_dir'])){ echo json_encode(zip_dir($SQL,$_GET['source'],$_GET['destination'])); }
     if(isset($_GET['delete_file'])){ echo json_encode(delete_file($SQL)); }
 }
 ?>
