@@ -61,9 +61,10 @@
     background-color: var(--black);
     color: white;
 }
-#Main .h1_table td:last-child{ text-align: right; }
-#Main .h1_table .svg{ margin-right: 15px; }
-#Main .h1_table svg{ stroke: white; }
+#Main .h1_table td:last-child{
+    text-align: right;
+    padding-right: 15px;
+}
 #Main h1{
     padding: 15px;
     margin: 0;

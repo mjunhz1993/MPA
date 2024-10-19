@@ -110,7 +110,7 @@ function updateEdtiBoxBreadCrumbs(breadcrumb, module, id, text1 = ''){
     h1.find('span:not(:first)').remove();
     h1.find('span').first().wrapInner('<a onClick="clickEditButton(\'\')">');
     h1.append('<span> / ' + text1 + ' ID ' + id + '</span>');
-    breadcrumb.find('td:last-child').html('<a class="svg" data-tooltip="'+slovar('Close')+'" onClick="clickEditButton(\'\')">'+getSVG('x')+'</a>')
+    breadcrumb.find('td:last-child').html('<a class="linksvg" data-tooltip="'+slovar('Close')+'" onClick="clickEditButton(\'\')">'+getSVG('x')+'</a>')
 }
 
 function submitEditBox(el){
