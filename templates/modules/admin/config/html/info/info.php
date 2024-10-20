@@ -16,11 +16,15 @@
                         <label data-slovar="APP_version"></label>
                         <input type="text" value="<?php echo $GLOBALS['APP_VERSION']; ?>" disabled>
                     </div><div class="col col50">
-                        <label data-slovar="IP_address"></label>
+                        <label data-slovar="Private_IP_address"></label>
                         <input type="text" value="<?php echo $_SERVER['SERVER_ADDR']; ?>" disabled>
                     </div>
 
-                    <span class="button buttonBlue button100" onclick="update_app_version($(this))" data-slovar="Update_APP_version"></span>
+                    <div class="col col50">
+                        <span class="button buttonBlue button100" onclick="update_app_version($(this))" data-slovar="Update_APP_version"></span>
+                    </div><div class="col col50">
+                        <span class="button buttonBlue button100" onclick="get_public_ip($(this))" data-slovar="Get_public_IP"></span>
+                    </div>
                 </div>
             </div>
 
@@ -52,6 +56,7 @@
                 </div>
             </div>
 
+            <?php if(function_exists('sys_getloadavg')): ?>
             <div class="box col80">
                 <div class="boxInner">
                     <h2 data-slovar="CPU_usage"></h2>
@@ -69,6 +74,7 @@
                     </div>
                 </div>
             </div>
+            <?php endif; ?>
 
         </form>
     </div>

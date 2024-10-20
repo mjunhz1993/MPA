@@ -27,8 +27,11 @@ function more_space_info($SQL){
     return $data;
 }
 
+function get_public_ip(){ return file_get_contents("http://ipecho.net/plain"); }
+
 if(isset($_SESSION['user_id'])){
     if(isset($_GET['update_app_version'])){ echo json_encode(update_app_version()); }
     if(isset($_GET['more_space_info'])){ echo json_encode(more_space_info($SQL)); }
+    if(isset($_GET['get_public_ip'])){ echo json_encode(get_public_ip()); }
 }
 ?>

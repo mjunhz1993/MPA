@@ -26,5 +26,16 @@ function showMoreSpaceInfo(el){
             remove_HTML_loader(el.parent());
             el.remove();
         }
-    }).fail(function(){console.log('ERROR: backend napaka');});
+    })
+}
+
+function get_public_ip(el, html = ''){
+    $.get('/crm/php/admin/info.php?get_public_ip=1', function(data){
+        data = JSON.parse(data);
+        var box = el.parent();
+        html += '<label>'+slovar('Public_IP_address')+'</label>';
+        html += '<input type="text" disabled>';
+        box.html(html);
+        box.find('input').val(data);
+    })
 }
