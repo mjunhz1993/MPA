@@ -124,7 +124,7 @@ function submitEditBox(el){
                 var module = form.attr('data-module');
                 removePOPUPbox();
                 if($('.tableBox[data-module="' + module + '"]').length > 0){ tableLoad($('.tableBox[data-module="' + module + '"]').last(), 0); }
-                if(typeof submitEditBoxQuickAfterEvent === 'function'){ submitEditBoxQuickAfterEvent(); }
+                runTrigger({ id:'submitEditBox' });
             }
             else{
                 tableLoad($('#main_table'), 0, function(){

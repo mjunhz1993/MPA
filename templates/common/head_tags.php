@@ -32,6 +32,7 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/check_user.php');
 <?php endif; ?>
 
 <script src="/crm/static/js/common/basics.js?v=<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
+<script src="/crm/static/js/common/trigger.js?v=<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/cookie.js?v=<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/converter.js?v=<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/date.js?v=<?php echo $GLOBALS['APP_VERSION']; ?>"></script>

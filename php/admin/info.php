@@ -27,7 +27,7 @@ function more_space_info($SQL){
     return $data;
 }
 
-function get_public_ip(){ return file_get_contents("http://ipecho.net/plain"); }
+function get_public_ip(){ return file_get_contents("https://api.ipify.org/"); }
 
 if(isset($_SESSION['user_id'])){
     if(isset($_GET['update_app_version'])){ echo json_encode(update_app_version()); }

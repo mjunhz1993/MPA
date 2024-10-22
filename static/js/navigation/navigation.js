@@ -51,7 +51,7 @@ function LeftNavToggle(){
             'margin-left':lnow
         });
         // CALL CALLBACK FUNCTION
-        if($.isFunction(window.LeftNavToggleCallback)){ LeftNavToggleCallback() }
+        runTrigger({ id:'LeftNavToggle' });
     }, 220);
 }
 

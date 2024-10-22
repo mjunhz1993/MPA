@@ -620,6 +620,17 @@ function removeCalendar(callback = false){
     if(callback){ callback() }
 }
 
-function LeftNavToggleCallback(){ displayEventsOnTopOfCalendar($('.calendarBox'), $('.calendarBoxMain').attr('data-mode')) }
-function submitAddBoxQuickAfterEvent(){ createCalendar($('.calendarBox').first()) }
-function submitEditBoxQuickAfterEvent(){ createCalendar($('.calendarBox').first()) }
+addTrigger({
+    id: 'submitAddBox',
+    trigger: function(){ createCalendar($('.calendarBox').first()) }
+});
+addTrigger({
+    id: 'submitEditBox',
+    trigger: function(){ createCalendar($('.calendarBox').first()) }
+});
+addTrigger({
+    id: 'LeftNavToggle',
+    trigger: function(){
+        displayEventsOnTopOfCalendar($('.calendarBox'), $('.calendarBoxMain').attr('data-mode'))
+    }
+});

@@ -111,7 +111,7 @@ function submitAddBoxQuick(module){
         submitForm($(this), function(){
             removePOPUPbox();
             if($('.tableBox[data-module="' + module + '"]').length > 0){ tableLoad($('.tableBox[data-module="' + module + '"]').last(), 0); }
-            if(typeof submitAddBoxQuickAfterEvent === 'function'){ submitAddBoxQuickAfterEvent(); }
+            runTrigger({ id:'submitAddBox' });
         });
     });
 }
