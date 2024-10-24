@@ -35,6 +35,7 @@ function get_RowFiles($SQL, $module, $col = array(), $id, $archive = false){
 }
 
 function createFileUploadDIR($path = ''){
+    if(!file_exists($_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads')){ mkdir($_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads'); }
     if(!file_exists($_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads/'.$path)){ mkdir($_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads/'.$path); }
 }
 
@@ -47,7 +48,6 @@ function deleteFileUploadDIR($path){
 }
 
 function checkFile($SQL, $files){
-    createFileUploadDIR();
     foreach($files as $column => $value){
         if(!is_array($value['tmp_name'])){ continue; }
         for($i=0; $i<count($value['tmp_name']); $i++){

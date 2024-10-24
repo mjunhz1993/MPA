@@ -194,6 +194,7 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
         html += 'data-list="' + data.list + '" ';
         if(!valEmpty(data.preselected_option[0])){ html += 'value="' + data.preselected_option[0] + '" ' }
         html += 'style="display:none;" ';
+        // html += 'onfocus="focusJOIN_ADDInput($(this).next())" ';
         if(data.mandatory){ html += 'required' }
         html += '><div class="inputPlaceholder JOIN_ADD_placeholder" data-list="' + data.list + '" onclick="focusJOIN_ADDInput($(this))">';
         if(!valEmpty(data.preselected_option[1])){ html += data.preselected_option[1] }

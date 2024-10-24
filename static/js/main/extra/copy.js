@@ -5,7 +5,6 @@ function copy_row(d){
         id:d.id,
         archive:d.year,
         done: function(data){
-            console.log(data);
             loadJS('main/add-box', function(){ copy_data_to_box(d, data) })
         },
         error: function(error){ return createAlertPOPUP(error) }
@@ -13,7 +12,7 @@ function copy_row(d){
 }
 
 function copy_data_to_box(d, data){
-    openAddBoxQuick(d.module, function(){
-        MoveRowDataToFormFields(data, d.module, $('.popup').last());
-    })
+    openAddBoxQuick(d.module, function(){setTimeout(function(){
+        MoveRowDataToFormFields(data, d.module, $('.popup').last(), 'COPY');
+    }, 500)})
 }

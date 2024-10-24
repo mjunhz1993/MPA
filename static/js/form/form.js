@@ -33,6 +33,10 @@ function MoveRowDataToFormFields(data, module, box, viewType = 'EDIT'){
     var form = box.find('form');
     form.find('input,textarea,select').each(function(){
         if($(this).hasClass('ignoreinput')){ return }
+        if(
+            viewType == 'COPY' &&
+            $(this).closest('.formField').is(':hidden')
+        ){ return }
         var inputBox = $(this).closest('.formField');
         var type = inputBox.attr('data-type');
         var inputName = $(this).attr('name');
@@ -71,7 +75,7 @@ function MoveRowDataToFormFields(data, module, box, viewType = 'EDIT'){
     });
 
     // GET UPLOADED FILES
-    if(data.file){ MoveRowFilesToFormFields(data, module, form) }
+    if(data.file && ['EDIT','READ'].includes(viewType)){ MoveRowFilesToFormFields(data, module, form) }
     
     // FIND JOIN_ADD PLACEHOLDERS
     RowDataToPlaceholder(form.find('.JOIN_ADD_placeholder'), data, [module]);

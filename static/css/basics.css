@@ -208,7 +208,9 @@ pre code{
     transition: 0.2s;
     padding: 5px 10px;
 }
+#DropdownMenu a.red{ color: red; }
 #DropdownMenu a:hover{background-color: gainsboro;}
+#DropdownMenu a.red:hover{ background-color: red; color: white; }
 #DropdownMenu a svg{
     height: 19px;
     width: 19px;

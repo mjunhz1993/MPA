@@ -69,7 +69,6 @@ function add_conversation($SQL, $chatSQL, $user_id){
     )
     CHARACTER SET utf8 COLLATE utf8_general_ci");
     // CREATE DIR
-    createFileUploadDIR();
     createFileUploadDIR('chat_rooms');
     createFileUploadDIR('chat_rooms/chat_room_'. $conversation_id);
     return $conversation_id;

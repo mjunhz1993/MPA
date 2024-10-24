@@ -31,7 +31,7 @@ function turnTableToMultiSelect(table){
 	table.find('.toolRow:not(:first)').each(function(){
 		var html = '<input type="checkbox" class="selectmultiple" id="selectmultiple' + i + '">';
 		html += '<label for="selectmultiple' + i + '" class="chekboxLabel">' + slovar('Select') + '</label>';
-		$(this).find('a').hide();
+		$(this).find('.linksvg').hide();
 		$(this).append(html);
 		i++;
 	});
@@ -48,7 +48,7 @@ function cancelSelectMultiple(el){
 	var box = el.parent().parent();
 	box.prev('button').show();
 	box.remove();
-	tr.find('a').show();
+	tr.find('.linksvg').show();
 	tr.find('input[type=checkbox], .chekboxLabel').remove();
 }
 
@@ -172,6 +172,6 @@ function deleteSelectMultiple(el){
 	var selected = $('.selectmultiple[type=checkbox]:checked');
 	var arr = [];
 	selected.each(function(){ arr.push($(this).closest('tr').attr('data-id')); });
-	tableClickDeleteButton(el, arr.join());
+	tableClickDeleteButton(el, el.closest('.tableBox').attr('data-module'), arr.join());
 	hideDropdownMenu();
 }

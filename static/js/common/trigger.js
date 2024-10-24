@@ -19,3 +19,10 @@ function runTrigger(d){
     if(!Array.isArray(trigger[d.id])){ return }
     trigger[d.id].forEach(thisTrigger => { thisTrigger.trigger(thisTrigger, d) });
 }
+
+function removeTrigger(d) {
+    if(!Array.isArray(trigger[d.id])){ return }
+    trigger[d.id] = trigger[d.id].filter(thisTrigger =>
+        thisTrigger.tag !== d.tag
+    );
+}

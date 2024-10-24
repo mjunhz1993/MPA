@@ -1,3 +1,44 @@
+function tableAddLoadedTools(module, box, id, data, html = ''){
+    if(!valEmpty(box.data('simplify'))){ return '' }
+    html += '<td class="toolRow">';
+    var archive = box.find('.archiveSelect').val();
+    if(valEmpty(archive)){ archive = '' }
+
+    html += '<a class="linksvg" href="/crm/templates/modules/main/main.php?module=' + module.module + '#' + id + '-READ-' + archive + '" ';
+    html += 'data-tooltip="' + slovar('View') + '">' + getSVG('list') + '</a>';
+
+    if(archive == '' && String(module.edit).split(',').includes(user_role_id)){
+        if(box.attr('id') == 'main_table'){
+            html += '<a class="linksvg" onClick="loadJS(\'main/edit-box\', function(){clickEditButton(' + id + ')})" ';
+            html += 'data-tooltip="'+slovar('Edit_row') + '">' + getSVG('edit') + '</a>';
+        }
+        else{
+            html += '<a class="linksvg" onClick="loadJS(\'main/edit-box\', function(){openEditBoxQuick(\'' + module.module + '\', ' + id + ', \'' + archive + '\')})" data-tooltip="';
+            html += slovar('Edit_row') + '">' + getSVG('edit') + '</a>';
+        }
+    }
+
+    html += '<div class="linksvg" onClick="showDropdownMenu($(this),true)" data-tooltip="'+slovar('Show_more')+'">'
+    html += getSVG('more');
+    html += '<div class="DropdownMenuContent">';
+    html += '<a onClick="loadJS(\'main/extra/copy\',function(){copy_row({module:\''+module.module+'\',id:'+id+'})})">';
+    html += getSVG('plus-circle')+' '+slovar('Copy_row')+'</a>';
+    if(archive == '' && String(module.delete).split(',').includes(user_role_id)){
+        html += '<hr><a class="red" onClick="tableClickDeleteButton($(this), \''+module.module+'\', '+id+')">';
+        html += getSVG('delete')+' '+slovar('Delete_row')+'</a>';
+    }
+    html += '</div>';
+    html += '</div>';
+
+    if(box.attr('data-filter') == 'trash' && box.attr('data-filtervalue', 1) && box.attr('id') == 'main_table'){
+        html += '<a class="linksvg" onClick="loadJS(\'table/table_trash\', function(){ clickRecoverFromTrash(' + id + ') })"';
+        html += ' data-tooltip="' + slovar('Recover_row') + '">' + getSVG('refresh') + '</a>';
+    }
+
+    html += '</td>';
+    return html;
+}
+
 function tableAddLoadedRows(module, id, value, c, table){
     var th = table.find('thead th:nth-child(' + (c + 1) + ')');
     if(table.find('thead .toolColumn').length == 0){ th = table.find('thead th:nth-child(' + c + ')'); }
@@ -126,38 +167,6 @@ function tableAddLoadedRows_BUTTON(module, list, id, th, html = ''){
 }
 function tableAddLoadedRows_DEFAULT(value){ return '<td>'+value+'</td>' }
 
-function tableAddLoadedTools(module, box, id, data, html = ''){
-    if(!valEmpty(box.data('simplify'))){ return '' }
-    html += '<td class="toolRow">';
-    var archive = box.find('.archiveSelect').val();
-    if(valEmpty(archive)){ archive = '' }
-
-    html += '<a class="linksvg" href="/crm/templates/modules/main/main.php?module=' + module.module + '#' + id + '-READ-' + archive + '" ';
-    html += 'data-tooltip="' + slovar('View') + '">' + getSVG('list') + '</a>';
-
-    if(archive == '' && String(module.edit).split(',').includes(user_role_id)){
-        if(box.attr('id') == 'main_table'){
-            html += '<a class="linksvg" onClick="loadJS(\'main/edit-box\', function(){clickEditButton(' + id + ')})" data-tooltip="';
-            html += slovar('Edit_row') + '">' + getSVG('edit') + '</a>';
-        }
-        else{
-            html += '<a class="linksvg" onClick="loadJS(\'main/edit-box\', function(){openEditBoxQuick(\'' + module.module + '\', ' + id + ', \'' + archive + '\')})" data-tooltip="';
-            html += slovar('Edit_row') + '">' + getSVG('edit') + '</a>';
-        }
-    }
-
-    if(archive == '' && String(module.delete).split(',').includes(user_role_id)){
-        html += '<a class="linksvg" onClick="tableClickDeleteButton($(this), ' + id + ')" data-tooltip="' + slovar('Delete_row') + '">' + getSVG('delete') + '</a>';
-    }
-
-    if(box.attr('data-filter') == 'trash' && box.attr('data-filtervalue', 1) && box.attr('id') == 'main_table'){
-        html += '<a class="linksvg" onClick="loadJS(\'table/table_trash\', function(){ clickRecoverFromTrash(' + id + ') })"';
-        html += ' data-tooltip="' + slovar('Recover_row') + '">' + getSVG('refresh') + '</a>';
-    }
-
-    html += '</td>';
-    return html;
-}
 
 function tableClickOnShowMoreButtonFile(el, module, column, id){
     var archive = el.closest('.tableBox').find('.archiveSelect').val();

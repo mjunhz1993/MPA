@@ -7,21 +7,10 @@ const socket = socket_config({
     port: '8080',
     user_id: user_id
 });
-const socketTriggers = [];
 
-function socket_check(msg, trigger){
-    if (socket && socket.readyState === WebSocket.OPEN){ return socket_id_check(msg, trigger) }
+function socket_check(){
+    if (socket && socket.readyState === WebSocket.OPEN){ return true }
     return false
-}
-function socket_id_check(msg, trigger){
-    if(msg.id == trigger.id){ return true }
-    return false
-}
-
-function socket_trigger(d){
-    if(valEmpty(d.id)){ return }
-    if(typeof d.trigger !== "function") { return }
-    socketTriggers.push(d);
 }
 
 function socket_send(msg){
@@ -29,20 +18,18 @@ function socket_send(msg){
 }
 
 socket.addEventListener("message", (msg) => {
-    socketTriggers.forEach(socketTrigger => {
-        if(!socket_check(msg.data, socketTrigger)){ return }
-        socketTrigger.trigger();
-    });
+    if(!socket_check()){ return }
+    runTrigger({ id:msg.data.id });
 });
 
 socket.addEventListener("open", (event) => {});
 
-function closeConnection() {
-    if (socket.readyState === WebSocket.OPEN) {
+function closeConnection(){
+    if(socket.readyState === WebSocket.OPEN){
         socket.close(1000, 'Closing connection');
     }
 }
 
-socket.onclose = function(event) {
+socket.onclose = function(event){
     console.log('WebSocket connection closed:', event);
 };

@@ -383,7 +383,10 @@ function tableAddLoaded(module, table, data, callback){loadJS('table/rows', func
     newRow = newRow.find('tr:hidden');
     // FADE IN NEW ROWS
     table.find('tbody tr').fadeIn('fast');
-    setTimeout(function(){ tableCreateFixedWidthColumns(table) }, 200);
+    setTimeout(function(){
+        tableCreateFixedWidthColumns(table);
+        resetDropdownMenuConfig();
+    }, 200);
     // GET NEW ROW COUNT
     var newTrL = table.find('tbody > tr.countme').length;
     // SHOW ROW COUNT
@@ -437,17 +440,15 @@ function tableLoadMoreButton(){
     });
 }
 
-function tableClickDeleteButton(el, id){POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
-    var box = el.closest('.tableBox');
-    box.find('.alert').remove();
-    $.post('/crm/php/main/module.php?delete_row=1&module=' + box.attr('data-module'), {
+function tableClickDeleteButton(el, module, id){POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
+    $.post('/crm/php/main/module.php?delete_row=1&module='+module, {
         csrf_token: $('[name=csrf_token]').val(),
         id: id
     }, function(data){
         data = JSON.parse(data);
-        if(data.error){ createAlert(box, 'Red', data.error) }
-        else{ tableLoad(box) }
-    }).fail(function(data){ console.log(data) });
+        if(data.error){ return createAlertPOPUP(data.error) }
+        tableLoad($('.tableBox[data-module="'+module+'"]'))
+    })
 })}
 
 function refreshAreaFromEl(el){

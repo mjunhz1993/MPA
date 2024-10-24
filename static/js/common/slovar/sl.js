@@ -124,6 +124,7 @@ var trans = {
     Set_columns: "Nastavite tudi vse stolpce",
     Sort_by: "Sortiraj po: ",
     Edit_row: "Uredi vrstico",
+    Copy_row: "Kopiraj vrstico",
     Delete_row: "Izbriši vrstico",
     Show_more_options: "Prikaži več opcij",
     No_items: "Noben predmet ni najden",

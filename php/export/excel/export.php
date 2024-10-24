@@ -12,7 +12,6 @@ function export_excel_module($SQL){
 	$WHERE = array();
 
 	// CREATE DIR
-	createFileUploadDIR();
 	createFileUploadDIR('excel');
 
 	// ADD FILTERS

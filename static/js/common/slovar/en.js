@@ -104,6 +104,7 @@ var trans = {
     Set_columns: "Also set all columns",
     Sort_by: "Sort by: ",
     Edit_row: "Edit row",
+    Copy_row: "Copy row",
     Delete_row: "Delete row",
     Show_more_options: "Show more options",
     No_items: "No items were found",

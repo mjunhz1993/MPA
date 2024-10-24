@@ -246,7 +246,6 @@ if(isset($_SESSION['user_id'])){
         $data = array();
         $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'campaign_event' LIMIT 1");
         if($A->num_rows != 1){
-            createFileUploadDIR();
             createFileUploadDIR('campaign');
 
             $A = $SQL->query("CREATE TABLE campaign_list
