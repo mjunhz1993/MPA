@@ -17,6 +17,7 @@ function testTriggerDuplicate(d, test = false){
 
 function runTrigger(d){
     if(!Array.isArray(trigger[d.id])){ return }
+    console.log('trigger = '+d.id);
     trigger[d.id].forEach(thisTrigger => { thisTrigger.trigger(thisTrigger, d) });
 }
 

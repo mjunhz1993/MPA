@@ -16,25 +16,26 @@ function open_send_email(d = {}, html = ''){
 
 
 
-        html += '<h2>' + slovar('New_mail') + '</h2>';
-        html += '<label>' + slovar('Recipient') + '</label>';
+        html += '<h2>'+slovar('New_mail')+'</h2>';
+        html += '<label>'+slovar('Recipient')+'</label>';
 
         html += '<table id="recipient_table" style="width:100%;"><tr>';
-        html += '<td><input type="email" name="addAddress[]" value="' + d.for + '" required></td>';
+        html += '<td><input type="email" name="addAddress[]" value="'+d.for+'" required></td>';
         html += '<td><select name="addAddressType[]">';
         html += '<option value="0"></option>';
         html += '<option value="CC">CC</option>';
         html += '<option value="BCC">BCC</option>';
         html += '</select></td>';
-        html += '<td><div style="display:none" class="buttonSquare buttonRed" onclick="remove_recipient($(this))">' + getSVG('x') + '</div></td>';
+        html += '<td><div style="display:none" class="buttonSquare buttonRed" onclick="remove_recipient($(this))">'+getSVG('x')+'</div></td>';
         html += '</tr></table>';
 
-        html += '<span onclick="add_recipient($(this))" class="button buttonBlue">' + slovar('Add_recipient') + '</span><br><br>';
+        html += '<span onclick="add_recipient($(this))" class="button buttonBlue">'+slovar('Add_recipient')+'</span><br><br>';
 
-        html += '<label for="email_subject">' + slovar('Subject') + '</label>';
-        html += '<input type="text" name="subject" value="' + d.subject + '" id="email_subject" required>';
-        html += '<label for="email_body">' + slovar('Body') + '</label><br>';
-        html += '<textarea name="body" id="email_body"></textarea>';
+        html += '<label for="email_subject">'+slovar('Subject')+'</label>';
+        html += '<input type="text" name="subject" value="'+d.subject+'" id="email_subject" required>';
+        html += '<label for="email_body">'+slovar('Body')+'</label>';
+        html += '<br>';
+        html += '<textarea name="body" id="email_body" data-type="email"></textarea>';
 
         html += '<div class="fileArea forwardFileArea">';
         if(!valEmpty(d.attachments)){
@@ -42,9 +43,9 @@ function open_send_email(d = {}, html = ''){
             for(var i=0; i<fs.length; i++){
                 var f = fs[i].split(',');
                 html += '<div class="file"><div class="img"></div>';
-                html += '<div class="fileDesc">' + f[1] + ' [' + ((f[2] * 0.001) * 0.001).toFixed(2) + ' Mb]</div>';
-                html += '<input type="hidden" name="forwardFile[]" value="' + f[0] + '">';
-                html += '<input type="hidden" name="forwardFileName[]" value="' + f[1] + '">';
+                html += '<div class="fileDesc">'+f[1]+' ['+((f[2] * 0.001) * 0.001).toFixed(2)+' Mb]</div>';
+                html += '<input type="hidden" name="forwardFile[]" value="'+f[0]+'">';
+                html += '<input type="hidden" name="forwardFileName[]" value="'+f[1]+'">';
                 html += '</div>'
             }
         }
@@ -52,13 +53,13 @@ function open_send_email(d = {}, html = ''){
 
         html += '<div class="col col100 formField fileFormField">';
         html += '<div class="fileArea"></div>';
-        html += '<label for="addAttachment" class="button button100 buttonBlue">' + slovar('Add_attachment') + '</label>';
+        html += '<label for="addAttachment" class="button button100 buttonBlue">'+slovar('Add_attachment')+'</label>';
         html += '<input type="file" name="addAttachment[]" id="addAttachment" data-list="ALL,5" ';
         html += 'onchange="selectFile($(this), this)" data-required="false">';
         html += '</div>';
 
-        html += '<hr><div style="position:sticky;bottom:0px;background-color:white;"><button class="button buttonGreen">' + slovar('Send') + '</button>';
-        html += '<span class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Cancel') + '</span></div>';
+        html += '<hr><div style="position:sticky;bottom:0px;background-color:white;"><button class="button buttonGreen">'+slovar('Send')+'</button>';
+        html += '<span class="button buttonGrey" onclick="removePOPUPbox()">'+slovar('Cancel')+'</span></div>';
         form.html(html);
 
         form.on('submit', function(e){
@@ -68,7 +69,10 @@ function open_send_email(d = {}, html = ''){
 
         popup.fadeIn('fast', function(){
             loadJS('form/cleditor', function(){
-                checkForTextAreaInputs(form, function(){ add_emailBodyContent(form, d.body) });
+                checkForTextAreaInputs(form, function(){
+                    add_AI_button_for_email(form);
+                    add_emailBodyContent(form, d.body);
+                });
                 if(typeof d.done === 'function'){ d.done(form) }
             });
         });
@@ -90,6 +94,26 @@ function add_secretRecipient(el, mail, html = ''){
     el.after(html);
 }
 function remove_recipient(el){el.closest('tr').remove()}
+
+function add_AI_button_for_email(form, html = ''){
+    html += '<div class="note-btn-group">';
+    html += '<button onclick="open_email_AI($(this))" type="button" class="note-btn" data-tooltip="Oktagon AI">AI</button></div>'
+    form.find('.note-toolbar').append(html);
+    tooltips();
+}
+function open_email_AI(el){loadJS('AI/AI', function(){
+    AI_box(el, {
+        instruction: 'write a email depending on user input, without subject',
+        placeholder: slovar('What_type_of_email_do_you_want'),
+        button1: slovar('Ask'),
+        button2: slovar('Use_template'),
+        done: function(data){
+            var form = el.closest('form');
+            form.find('#email_body').val(encodeAnswerWithDIV(data)+form.find('#email_body').val());
+            refreshTextarea(form);
+        }
+    });
+})}
 
 function add_emailBodyContent(form, content){
     var textarea = form.find('#email_body');

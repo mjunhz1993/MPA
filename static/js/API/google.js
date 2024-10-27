@@ -1,12 +1,6 @@
-var G_CLIENT_ID = '';
-var G_API_KEY = '';
 var G_DISCOVERY_DOCS = ["https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest"];
 var G_SCOPES = "https://www.googleapis.com/auth/calendar.readonly";
 var G_connected = false;
-
-function G_get_key(){
-  
-}
 
 function G_connect(callback){
   if(G_connected){
@@ -19,10 +13,16 @@ function G_connect(callback){
   })
 }
 
-function G_initClient(callback){
+function G_initClient(callback){GET_globals({
+  done:function(data){ G_initClient_start(callback, data) }
+})}
+
+function G_initClient_start(callback, data){
+  if(valEmpty(data.gcID)){ return callback(false, slovar('NO_gcID')) }
+  if(valEmpty(data.gcAPI)){ return callback(false, slovar('NO_gcAPI')) }
   gapi.client.init({
-    apiKey: G_API_KEY,
-    clientId: G_CLIENT_ID,
+    apiKey: data.gcAPI,
+    clientId: data.gcID,
     discoveryDocs: G_DISCOVERY_DOCS,
     scope: G_SCOPES
   }).then(function(){

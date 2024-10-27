@@ -37,6 +37,7 @@ function MoveRowDataToFormFields(data, module, box, viewType = 'EDIT'){
             viewType == 'COPY' &&
             $(this).closest('.formField').is(':hidden')
         ){ return }
+            
         var inputBox = $(this).closest('.formField');
         var type = inputBox.attr('data-type');
         var inputName = $(this).attr('name');

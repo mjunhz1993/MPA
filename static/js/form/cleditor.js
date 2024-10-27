@@ -9,7 +9,30 @@ function checkForTextAreaInputs(box, callback){
 }
 
 function InitializationOfTextAreaInputs(box, lang, callback){
-    var toolbar = [
+    var styleTags =  ['p', 'h1', 'h2', 'h3'];
+    box.find('textarea').each(function(){
+    	var ta = $(this);
+    	var toolbar = selectTextAreaToolBar(ta);
+        ta.summernote({
+        	lang:lang, minHeight:200, maxHeight:500, toolbar:toolbar, styleTags:styleTags, codeviewIframeFilter:true,
+        	callbacks:{ onChangeCodeview:function(a){ ta.val(a) }}
+    	});
+    });
+    if(typeof callback === 'function'){ callback() }
+}
+
+function selectTextAreaToolBar(ta){
+	if(ta.data('type') == 'email'){
+		return [
+	    	['fontsize', ['fontsize']],
+	        ['font', ['bold', 'underline', 'clear']],
+	        ['fontname', ['fontname']],
+	        ['color', ['forecolor', 'backcolor']],
+	        ['para', ['ul', 'ol', 'paragraph']],
+	        ['insert', ['hr','link']]
+        ]
+	}
+	return [
     	['fontsize', ['fontsize']],
         ['font', ['bold', 'underline', 'clear']],
         ['fontname', ['fontname']],
@@ -18,15 +41,7 @@ function InitializationOfTextAreaInputs(box, lang, callback){
         ['table', ['table']],
         ['insert', ['hr','link', 'picture', 'video']],
         ['view', ['codeview']]
-    ];
-    var styleTags =  ['p', 'h1', 'h2', 'h3'];
-    box.find('textarea').each(function(){ var ta = $(this);
-        ta.summernote({
-        	lang:lang, minHeight:200, maxHeight:500, toolbar:toolbar, styleTags:styleTags, codeviewIframeFilter:true,
-        	callbacks:{ onChangeCodeview:function(a){ ta.val(a) }}
-    	});
-    });
-    if(typeof callback === 'function'){ callback() }
+    ]
 }
 
 function tableClickOnShowMoreButtonTextarea(module, col, id, boxYear = ''){
@@ -43,4 +58,10 @@ function tableClickOnShowMoreButtonTextarea(module, col, id, boxYear = ''){
 	        popup.fadeIn('fast');
         }
     })
+}
+
+function refreshTextarea(box){
+	box.find('textarea').not('.note-codable').each(function(){ var ta = $(this);
+		ta.summernote('code', ta.val())
+	})
 }

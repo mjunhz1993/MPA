@@ -55,6 +55,18 @@
 	background-color: var(--light-blue);
 	border-top: 2px solid;
 }
+
+.readBoxMini textarea{
+	max-width: 100%;
+	min-width: 100%;
+	box-sizing: border-box;
+	max-height: 200px;
+	min-height: 50px;
+	padding: 10px;
+	border: 0;
+	outline: 0;
+}
+
 .readBoxMini .readBoxTools{
 	display: flex;
 	flex-wrap: wrap;

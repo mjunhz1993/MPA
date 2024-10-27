@@ -32,6 +32,10 @@ function create_config_file($SQL){
     if($_POST['stripePK'] != ''){ $t .= '"stripePK" => "'. SafeInput($SQL, $_POST['stripePK']). '", '; }
     if($_POST['stripeSK'] != ''){ $t .= '"stripeSK" => "'. SafeInput($SQL, $_POST['stripeSK']). '", '; }
 
+    if($_POST['AI'] != ''){ $t .= '"AI" => "'. SafeInput($SQL, $_POST['AI']). '", '; }
+    if($_POST['gcID'] != ''){ $t .= '"gcID" => "'. SafeInput($SQL, $_POST['gcID']). '", '; }
+    if($_POST['gcAPI'] != ''){ $t .= '"gcAPI" => "'. SafeInput($SQL, $_POST['gcAPI']). '", '; }
+
     if($_POST['usecaching'] == 'false'){ $_POST['usecaching'] = false; }
     else{ $_POST['usecaching'] = true; }
     $t .= '"usecaching" => "'. $_POST['usecaching']. '", ';

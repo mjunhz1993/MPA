@@ -23,15 +23,15 @@ function HTML_readBoxMini(el, module, id, html = ''){
 	return rbm;
 }
 
-function getData_readBoxMini(box, back, callback){
+function getData_readBoxMini(box, back){
 	box.css('max-width','');
 	var backButton = box.find('.dragTop svg').first();
 	if(back.length == 1){ backButton.attr('class','act') }else{ backButton.removeAttr('class') }
 	var last = back[back.length - 1];
 	box.find('.readBoxMiniBox').html(HTML_loader());
-	if(last[0] == 'row'){ return getData_readBoxMini_ROW(box, last[1], last[2], callback) }
-	if(last[0] == 'table'){ return getData_readBoxMini_TABLE(box, last[1][1], last[1][2], last[2], callback) }
-	if(last[0] == 'custom'){ return getData_readBoxMini_CUSTOM(box, last[1], callback) }
+	if(last[0] == 'row'){ return getData_readBoxMini_ROW(box, last[1], last[2], last[3]) }
+	if(last[0] == 'table'){ return getData_readBoxMini_TABLE(box, last[1][1], last[1][2], last[2], last[3]) }
+	if(last[0] == 'custom'){ return getData_readBoxMini_CUSTOM(box, last[1], last[3]) }
 }
 
 function getData_readBoxMini_ROW(box, module, id, callback){
@@ -136,7 +136,7 @@ function getData_readBoxMini_TABLE(box, module, col, row, callback, html = ''){
 
 function getData_readBoxMini_CUSTOM(box, module, callback){
 	box.find('.dragTop .title').html(module);
-	box.append('<div class="readBoxTools"/>');
+	if(box.find('.readBoxTools').length == 0){ box.append('<div class="readBoxTools"/>') }
 	callback(box.find('.readBoxMiniBox'), box.find('.readBoxTools'));
 }
 
@@ -155,8 +155,8 @@ function clickJOIN_GET_readBoxMini(el, list, id){
 
 function clickIn_readBoxMini(box, type, module, id, callback){
 	if(module.includes(',')){ module = module.split(',') }
-	add_readBoxMiniBackData(box, type, module, id);
-	getData_readBoxMini(box, grab_readBoxMiniBackData(box), callback);
+	add_readBoxMiniBackData(box, type, module, id, callback);
+	getData_readBoxMini(box, grab_readBoxMiniBackData(box));
 }
 function clickBack_readBoxMini(el){
 	var box = el.closest('.readBoxMini');
@@ -170,9 +170,9 @@ function grab_readBoxMiniBackData(box){
 	if(valEmpty(back)){ return [] }
 	return back;
 }
-function add_readBoxMiniBackData(box, type, module, id){
+function add_readBoxMiniBackData(box, type, module, id, callback){
 	var back = grab_readBoxMiniBackData(box);
-	back.push([type,module,id]);
+	back.push([type,module,id,callback]);
 	box.data('back',back);
 }
 function remove_readBoxMiniBackData(box){
