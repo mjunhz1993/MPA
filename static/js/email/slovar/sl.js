@@ -12,5 +12,8 @@ add_to_slovar({
     New_mail: "Nova pošta",
     Recipient: "Prejemnik",
     Add_recipient: "Dodaj prejemnika",
-    Body: "Telo"
+    Body: "Telo",
+    What_type_of_email_do_you_want: "Kakšno vrsto e-pošte želite ?",
+    Create_template: "Ustvari predlogo",
+    Use_template: "Uporabite predlogo",
 })

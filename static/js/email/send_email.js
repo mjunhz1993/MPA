@@ -106,7 +106,7 @@ function open_email_AI(el){loadJS('AI/AI', function(){
         type: 'ask',
         instruction: 'write a email depending on user input, without subject',
         placeholder: slovar('What_type_of_email_do_you_want'),
-        button1: slovar('Ask'),
+        button1: slovar('Create_template'),
         button2: slovar('Use_template'),
         done: function(data){
             var form = el.closest('form');

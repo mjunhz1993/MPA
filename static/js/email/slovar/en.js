@@ -12,5 +12,8 @@ add_to_slovar({
     New_mail: "New mail",
     Recipient: "Recipient",
     Add_recipient: "Add recipient",
-    Body: "Body"
+    Body: "Body",
+    What_type_of_email_do_you_want: "What type of email do you want ?",
+    Create_template: "Create template",
+    Use_template: "Use template",
 })
