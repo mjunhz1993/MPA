@@ -103,6 +103,7 @@ function add_AI_button_for_email(form, html = ''){
 }
 function open_email_AI(el){loadJS('AI/AI', function(){
     AI_box(el, {
+        type: 'ask',
         instruction: 'write a email depending on user input, without subject',
         placeholder: slovar('What_type_of_email_do_you_want'),
         button1: slovar('Ask'),

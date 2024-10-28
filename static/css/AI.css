@@ -1,0 +1,11 @@
+.ai_icon{
+	display: inline-block;
+    vertical-align: middle;
+	min-width: 25px;
+	height: 25px;
+	background-image: url(/crm/static/img/icons/ai.jpg);
+	background-size: contain;
+	background-position: center;
+	background-repeat: no-repeat;
+	animation: loading 4s linear infinite;
+}

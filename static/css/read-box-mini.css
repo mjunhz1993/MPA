@@ -67,6 +67,13 @@
 	outline: 0;
 }
 
+.readBoxMini .ai{
+	display: flex;
+	text-align: left;
+	padding: 10px;
+	gap: 10px;
+}
+
 .readBoxMini .readBoxTools{
 	display: flex;
 	flex-wrap: wrap;

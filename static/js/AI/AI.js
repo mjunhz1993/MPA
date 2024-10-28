@@ -1,12 +1,16 @@
 function AI_box(el, d){loadJS('main/read-box-mini', function(){
-	open_readBoxMini(el, 'custom', 'Oktagon AI', 1, function(box, tools, html = ''){
-		html += '<textarea placeholder="'+d.placeholder+'"></textarea>'
-		box.html(html);
-		tools.html('<button class="buttonSquare buttonBlue">'+d.button1+'</button>');
-		tools.find('button').click(function(){ AI_box_click_button(el, box, tools, d) });
-		setTimeout(function(){ box.find('textarea').focus() }, 500);
+	open_readBoxMini(el, 'custom', 'Oktagon AI', 1, function(box, tools){
+		if(d.type == 'ask'){ return AI_box_type_HTML(el, d, box, tools) }
 	});
 })}
+
+function AI_box_type_HTML(el, d, box, tools, html = ''){
+	html += '<textarea placeholder="'+d.placeholder+'"></textarea>';
+	box.html(html);
+	tools.html('<button class="buttonSquare buttonBlue">'+d.button1+'</button>');
+	tools.find('button').click(function(){ AI_box_click_button(el, box, tools, d) });
+	setTimeout(function(){ box.find('textarea').focus() }, 500);
+}
 
 function AI_box_click_button(el, box, tools, d){
 	d.val = box.find('textarea').val();
@@ -18,17 +22,20 @@ function AI_box_click_button(el, box, tools, d){
 	});
 }
 
-function AI_box_display_result(el, box, tools, d){
+function AI_box_display_result(el, box, tools, d, html = ''){
 	AI({
 		instruction: d.instruction,
 		ask: d.val,
 		answer: function(data){
-			box.html(encodeAnswerWithDIV(data));
+			html += '<div class="ai"><div class="ai_icon"></div><div>'+encodeAnswerWithDIV(data)+'</div></div>';
+			box.html(html);
 			tools.html('<button class="buttonSquare buttonBlue">'+d.button2+'</button>');
 			tools.find('button').click(function(){ d.done(data) })
 		}
 	});
 }
+
+// ----- EVENTS
 
 function AI(d){
 	ask_AI(d);
@@ -54,3 +61,5 @@ function grab_AI_answer(data, str = ''){ console.log(data);
 
 function encodeAnswerWithBR(text){ return text.replace(/\n/g, '<br>'); }
 function encodeAnswerWithDIV(text){ return text.split('\n').map(line => `<div>${line}</div>`).join(''); }
+
+loadCSS('AI')
