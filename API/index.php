@@ -1,25 +1,27 @@
 <?php
 header('Content-Type: application/json');
-include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
+include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/connect.php');
 
 function grabToken($header){
     if(!isset($header['Authorization'])){ return false; }
-    if(preg_match('/Bearer\s+(.*)$/i', $header['Authorization'], $matches)) { return $matches[1]; }
+    if(preg_match('/Basic\s+(.*)$/i', $header['Authorization'], $matches)) { return $matches[1]; }
     return false;
 }
-function validToken($SQL, $token){
-    $A = $SQL->query("SELECT token FROM token WHERE ip = '".$_SERVER['REMOTE_ADDR']."' LIMIT 1");
+function validToken($SQL, $token, $header){
+    $A = $SQL->query("SELECT username,password FROM api WHERE ip = '".$header['ip']."' LIMIT 1");
     if(!$A){ return false; }
-    while($B = $A->fetch_row()){if($token == $B[0]){ return true; }}
+    while($B = $A->fetch_row()){
+        if($token == base64_encode($B[0].':'.$B[1])){ return true; }
+    }
     return false;
 }
 
-function rateLimit($SQL, $token){
-    $A = $SQL->query("SELECT ratelimit FROM token WHERE ip = '".$_SERVER['REMOTE_ADDR']."' LIMIT 1");
+function rateLimit($SQL, $token, $header){
+    $A = $SQL->query("SELECT ratelimit,currentrate FROM api WHERE ip = '".$header['ip']."' LIMIT 1");
     if(!$A){ return false; }
     while($B = $A->fetch_row()){
-        if(time() < $B[0] + 5){ return false; }
-        $SQL->query("UPDATE token SET ratelimit = '".time()."' WHERE ip = '".$_SERVER['REMOTE_ADDR']."' LIMIT 1");
+        if(time() < $B[0] + $B[1]){ return false; }
+        $SQL->query("UPDATE api SET currentrate = '".time()."' WHERE ip = '".$header['ip']."' LIMIT 1");
         return true;
     }
     return false;
@@ -35,10 +37,11 @@ function api_event($file){
 function api($SQL){
     if($_SERVER['REQUEST_METHOD'] !== 'POST'){ return api_err('No_POST_request'); }
     $header = getallheaders();
+    $header['ip'] = safeInput($SQL, $_SERVER['REMOTE_ADDR']);
     $token = grabToken($header);
     if(!$token){ return api_err('No_token'); }
-    if(!validToken($SQL, $token)){ return api_err('Wrong_token_for: '.$_SERVER['REMOTE_ADDR']); }
-    if(!rateLimit($SQL, $token)){ return api_err('Rate_limit_exceeded'); }
+    if(!validToken($SQL, $token, $header)){ return api_err('Wrong_token_for: '.$header['ip']); }
+    if(!rateLimit($SQL, $token, $header)){ return api_err('Rate_limit_exceeded'); }
     if(!isset($header['Event'])){ return api_err('No_event_selected'); }
     if(!$_POST){ return api_err('No_POST_data'); }
     if(!api_event($header['Event'])){ return api_err('Event_does_not_exist'); }

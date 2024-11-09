@@ -8,7 +8,7 @@ if($A->num_rows == 1){while ($B = $A->fetch_row()){
 	$CJvalue = $B[1];
 	$CJurl = $B[2];
 	$CJtime = $CJtime + $B[3];
-	$UP = $SQL->query("UPDATE cron_jobs SET tstamp = '$CJtime' WHERE name = '$CJname' LIMIT 1");
+	$SQL->query("UPDATE cron_jobs SET tstamp = '$CJtime' WHERE name = '$CJname' LIMIT 1");
 } include(loadPHP($CJurl)); }
 $SQL->close();
 ?>

@@ -34,13 +34,15 @@ function getCustomFiles(table, callback){
 			html += '<td>' + d.project + '</td>';
 			html += '<td>' + getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(d.tstamp, 'UTC')) + '</td>';
 			html += '<td>';
+			html += '<a class="linksvg" target="_blank" href="'+d.path+'"';
+			html += '>'+getSVG('link')+'</a> ';
 			html += '<button class="buttonSquare buttonBlue" data-name="' + d.name + '" onclick="editCustomFile($(this))">' + slovar('Edit') + '</button>';
 			html += '<button class="buttonSquare buttonRed" data-name="' + d.name + '" onclick="deleteCustomFile($(this))">' + slovar('Delete') + '</button>';
 			html += '</tr>';
 		}
 		table.find('tbody').html(html);
 		if(typeof callback === 'function'){ callback() }
-	}).fail(function(data){ console.log('ERROR: backend-error'); });
+	})
 }
 
 function openCreateCustomFile(){
@@ -57,6 +59,7 @@ function openCreateCustomFile(){
 	html += '<option value="php">PHP</option>';
 	html += '<option value="js">JavaScript</option>';
 	html += '<option value="css">CSS</option>';
+	html += '<option value="api">API</option>';
 	html += '</select>';
 	html += '<input type="checkbox" onClick="toggleAddTamplate()" id="newfileTemplate">';
 	html += '<label for="newfileTemplate">' + slovar('Add_template') + '</label>';
@@ -67,17 +70,23 @@ function openCreateCustomFile(){
 
 	popupBox.find('form').on('submit', function(e){
 		e.preventDefault();
+		file_name = popup.find('[name=file_name]').val();
+		file_ext = popup.find('[name=file_ext]').val();
+		if(file_ext == 'api'){
+			file_name = 'api_'+file_name;
+			file_ext = 'php';
+		}
 		$.post('/crm/php/admin/custom_files.php?create_custom_file=1', {
 			csrf_token:$('input[name=csrf_token]').val(),
-			file_name: popup.find('[name=file_name]').val(),
+			file_name: file_name,
 			file_project: popup.find('[name=file_project]').val(),
-			file_ext: popup.find('[name=file_ext]').val(),
+			file_ext: file_ext,
 			file_data: popup.find('[name=file_data]').val()
 		}, function(data){
 	        data = JSON.parse(data);
 	        if(data.error){ createAlert(popupBox, 'Red', data.error); }
 	        else{ getCustomFiles($('#FileTable')); removePOPUPbox(); }
-	    }).fail(function(data){ console.log('ERROR: backend-error'); });
+	    })
 	})
 	
 	popup.fadeIn('fast');
@@ -107,6 +116,14 @@ function toggleAddTamplate(){
 			data += "function "+name+"(){\n";
 			data += "\tloadCSS('"+window.location.origin+"/crm/php/downloads/CustomCSS.css');\n";
 			data += "}\n\n$(document).ready(function(){ "+name+"() });";
+		}
+		else if(ext == 'api'){
+			data += "<?php\n";
+			data += "include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/connect.php');\n";
+			data += "include(loadPHP('file/path'));\n\n";
+			data += "function api_run($SQL){ return "+name+"(); }\n\n";
+			data += "function "+name+"(){\n\n}\n";
+			data += "?>";
 		}
 	}
 	textarea.val(data);

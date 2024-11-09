@@ -1,5 +1,6 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
+date_default_timezone_set("UTC");
 
 function test_cron_jobs_table($SQL, $SQL_db){
     $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'cron_jobs' LIMIT 1");
@@ -18,7 +19,6 @@ function test_cron_jobs_table($SQL, $SQL_db){
 }
 
 function add_cron_job($SQL){
-    date_default_timezone_set("UTC");
     $name = SafeInput($SQL, $_POST['name']);
     $url = 'downloads/'.pathinfo($_POST['url'],PATHINFO_FILENAME);
     $extra = SafeInput($SQL, $_POST['extra']);
@@ -30,7 +30,6 @@ function add_cron_job($SQL){
 }
 
 function update_cron_job($SQL){
-    date_default_timezone_set("UTC");
     $name = SafeInput($SQL, $_POST['name']);
     $extra = SafeInput($SQL, $_POST['extra']);
     $wait_for = SafeInput($SQL, $_POST['wait_for']);

@@ -21,7 +21,7 @@
     color: #8bbcef;
     text-shadow: 0 0 7px white;
     padding: 0 10%;
-    background-image: url('/crm/static/img/login1882023.gif');
+    background-image: url('/crm/static/img/login29102024.gif');
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
