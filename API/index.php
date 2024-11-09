@@ -42,9 +42,9 @@ function api($SQL){
     if(!$token){ return api_err('No_token'); }
     if(!validToken($SQL, $token, $header)){ return api_err('Wrong_token_for: '.$header['ip']); }
     if(!rateLimit($SQL, $token, $header)){ return api_err('Rate_limit_exceeded'); }
-    if(!isset($header['Event'])){ return api_err('No_event_selected'); }
+    if(!isset($header['event'])){ return api_err('No_event_selected'); }
     if(!$_POST){ return api_err('No_POST_data'); }
-    if(!api_event($header['Event'])){ return api_err('Event_does_not_exist'); }
+    if(!api_event($header['event'])){ return api_err('Event_does_not_exist'); }
     if(!function_exists('api_run')){ return api_err('No_run_function'); }
     return api_run($SQL);
 }
