@@ -119,7 +119,6 @@ function toggleAddTamplate(){
 		}
 		else if(ext == 'api'){
 			data += "<?php\n";
-			data += "include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/connect.php');\n";
 			data += "include(loadPHP('file/path'));\n\n";
 			data += "function api_run($SQL){ return "+name+"(); }\n\n";
 			data += "function "+name+"(){\n\n}\n";
