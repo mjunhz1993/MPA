@@ -8,6 +8,11 @@ function G_connect(callback){
     var GoogleUser = GoogleAuth.currentUser.get();
     return G_updateSigninStatus(GoogleAuth.isSignedIn.get(), GoogleUser, callback);
   }
+  /*
+  $.cachedScript('https://apis.google.com/js/api.js').done(function(script, textStatus){
+    gapi.load('client:auth2', function(){ G_initClient(callback) })
+  })
+  */
   $.cachedScript('https://apis.google.com/js/api.js').done(function(script, textStatus){
     gapi.load('client:auth2', function(){ G_initClient(callback) })
   })
