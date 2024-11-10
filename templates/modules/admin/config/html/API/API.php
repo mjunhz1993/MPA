@@ -5,7 +5,7 @@
 
     <?php if($_SESSION['user_id'] == 1): ?>
     <div id="Main">
-        <h1 data-slovar="Token"></h1>
+        <h1 data-slovar="API"></h1>
         <div>
             <?php include($_SERVER['DOCUMENT_ROOT']. '/crm/templates/modules/admin/config/html/nav.php'); ?>
         </div>

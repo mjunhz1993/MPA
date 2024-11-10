@@ -1,12 +1,12 @@
-function if_email_room_access(callback, callbackError){loadJS('email/slovar/' + slovar(), function(){
+function if_email_room_access(callback, callbackError){
     $.get('/crm/php/email/email.php?check_if_email_room_exists=1', function(data){
         data = JSON.parse(data);
         if(!data.error){if(typeof callback === 'function'){ callback(data) }}
         else{if(typeof callbackError === 'function'){ callbackError(data.error) }}
-    }).fail(function(){console.log('ERROR: backend napaka')});
-})}
+    })
+}
 
-function open_send_email(d = {}, html = ''){
+function open_send_email(d = {}, html = ''){loadJS('email/slovar/' + slovar(), function(){
     loadJS('file/file', function(){
         var popup = createPOPUPbox();
         popup.find('.popupBox').html('<form></form>');
@@ -77,7 +77,7 @@ function open_send_email(d = {}, html = ''){
             });
         });
     })
-}
+})}
 
 function add_recipient(el, mail = '', type = ''){
     if(!el.is('form')){ el = el.closest('form') }

@@ -1,5 +1,5 @@
 function config_cronjob_app(){
-	$('#Main').append('<div class="box col80 cronjobBox"></div>');
+	$('#Main').append('<div class="box col80 cronjobBox"></div><div class="box col80 cronjobInfoBox"></div>');
 	var box = $('.cronjobBox');
 	var html = '';
 	html += '<table class="tableTop"><tr>';
@@ -12,6 +12,7 @@ function config_cronjob_app(){
 	html += '<th>' + slovar('Time') + '</th>';
 	html += '</thead><tbody></tbody></table>';
 	box.html(html);
+	cronJobInfoBox($('.cronjobInfoBox'));
 	$.get('/crm/php/cron_jobs/cron_jobs_config.php?test_cron_jobs_table=1', function(data){ load_cronjob_table() })
 }
 
@@ -122,6 +123,14 @@ function HTML_cronjob(data = [], html = ''){
 	html += '<span class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Cancel') + '</span>';
 	html += '</form>';
 	return html
+}
+
+function cronJobInfoBox(box, html = ''){
+	html += '<div class="boxInner">';
+	html += '<label>Url</label>';
+	html += '<pre><code>curl -s "'+window.location.origin+'/crm/php/cron_jobs/cron_jobs.php"</code></pre>';
+	html += '</div>';
+	box.html(html);
 }
 
 config_cronjob_app();

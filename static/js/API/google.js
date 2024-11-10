@@ -31,7 +31,10 @@ function G_initClient_start(callback, data){
     GoogleAuth.isSignedIn.listen(G_updateSigninStatus);
     G_updateSigninStatus(GoogleAuth.isSignedIn.get(), GoogleUser, callback);
   }, function(error) {
-    if(typeof callback === 'function'){ callback(false, slovar('Connection_failed')) }
+    if(typeof callback === 'function'){
+      console.log(error);
+      callback(false, slovar('Connection_failed'))
+    }
   });
 }
 

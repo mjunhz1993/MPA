@@ -1,15 +1,16 @@
-<div class="box col80"><div class="boxInner">
-    <h2 data-slovar="phpMyAdmin"></h2>
-    <button id="phpmyadmin_b" class="button button100" 
-    onclick="toggle_phpmyadmin($(this))" data-svg="security" data-slovar="Secure"></button>
-</div></div>
+<style type="text/css">
+    .toggleConfigMenu{display: none;}
+    #configBox h2{cursor: pointer; transition:0.2s;}
+    #configBox h2:hover, #configBox h2.act{background-color: var(--blue); color:white;}
+</style>
 
-<form method="post" class="editForm">
+<form method="post" class="editForm" id="configBox">
 <input type="hidden" name="csrf_token" id="csrf_token" value="<?php echo $_SESSION['token']; ?>">
 
 <div class="box col80"><div class="boxInner">
-    <h2 data-slovar="Default_values"></h2>
+    <h2 data-slovar="Default_values" onclick="toggle_configMenu($(this))"></h2>
     
+    <div class="toggleConfigMenu">
     <div class="col col50">
         <label for="defaultDateFormat" data-slovar="Date_format"></label>
         <select name="defaultDateFormat" id="defaultDateFormat">
@@ -41,11 +42,13 @@
         <b>10000000 = 10Mb</b>
         <input type="text" name="max_file_size" id="max_file_size" value="<?php echo $GLOBALS["config"]["max_file_size"]; ?>">
     </div>
+    </div>
 </div></div>
 
 <div class="box col80"><div class="boxInner">
-    <h2 data-slovar="Email"></h2>
+    <h2 data-slovar="Email" onclick="toggle_configMenu($(this))"></h2>
 
+    <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="crm_email" data-slovar="Email"></label>
         <?php $A = $SQL->query("SELECT email_accounts_user, email_accounts_email FROM email_accounts"); ?>
@@ -63,11 +66,13 @@
     </div>
 
     <span class="button button100 buttonBlue" onclick="testEmail($(this))">Test MPA E-mail</span>
+    </div>
 </div></div>
 
 <div class="box col80"><div class="boxInner">
-    <h2 data-slovar="SMS"></h2>
+    <h2 data-slovar="SMS" onclick="toggle_configMenu($(this))"></h2>
     
+    <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="twilioID">twilio SID</label>
         <input type="text" name="twilioID" id="twilioID" value="<?php echo $GLOBALS["config"]["twilioID"] ?? ''; ?>">
@@ -80,11 +85,13 @@
         <label for="twilioPhone">twilio Phone number</label>
         <input type="text" name="twilioPhone" id="twilioPhone" value="<?php echo $GLOBALS["config"]["twilioPhone"] ?? ''; ?>">
     </div>
+    </div>
 </div></div>
 
 <div class="box col80"><div class="boxInner">
-    <h2>Video Call</h2>
+    <h2 onclick="toggle_configMenu($(this))">Video Call</h2>
     
+    <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="jitsipuk">JITSI Public key</label>
         <input type="text" name="jitsipuk" id="jitsipuk" value="<?php echo $GLOBALS["config"]["jitsipuk"] ?? ''; ?>">
@@ -97,11 +104,13 @@
         <label for="jitsiid">JITSI app ID</label>
         <input type="text" name="jitsiid" id="jitsiid" value="<?php echo $GLOBALS["config"]["jitsiid"] ?? ''; ?>">
     </div>
+    </div>
 </div></div>
 
 <div class="box col80"><div class="boxInner">
-    <h2>STRIPE Pay</h2>
+    <h2 onclick="toggle_configMenu($(this))">STRIPE Pay</h2>
     
+    <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="stripePK">STRIPE Publish key</label>
         <input type="text" name="stripePK" id="stripePK" value="<?php echo $GLOBALS["config"]["stripePK"] ?? ''; ?>">
@@ -110,11 +119,13 @@
         <label for="stripeSK">STRIPE Secret key</label>
         <input type="text" name="stripeSK" id="stripeSK" value="<?php echo $GLOBALS["config"]["stripeSK"] ?? ''; ?>">
     </div>
+    </div>
 </div></div>
 
 <div class="box col80"><div class="boxInner">
-    <h2>Google</h2>
+    <h2 onclick="toggle_configMenu($(this))">Google</h2>
     
+    <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="stripePK">Gemini</label>
         <input type="text" name="AI" id="AI" value="<?php echo $GLOBALS["config"]["AI"] ?? ''; ?>">
@@ -127,11 +138,13 @@
         <label for="stripeSK">Koledar API</label>
         <input type="text" name="gcAPI" id="gcAPI" value="<?php echo $GLOBALS["config"]["gcAPI"] ?? ''; ?>">
     </div>
+    </div>
 </div></div>
 
 <div class="box col80"><div class="boxInner">
-    <h2 data-slovar="Company"></h2>
+    <h2 data-slovar="Company" onclick="toggle_configMenu($(this))"></h2>
 
+    <div class="toggleConfigMenu">
     <div class="fileArea">
         <?php if(isset($GLOBALS['config']['company_logo'])): ?>
         <?php $company_logo = '/crm/php/user_data/'. $GLOBALS['config']['company_logo']; ?>
@@ -148,17 +161,20 @@
         <label for="company_logo" class="button button100 buttonBlue" data-slovar="Change_company_logo"></label>
         <input type="file" name="company_logo[]" id="company_logo" data-list="IMG,1" onchange="selectFile($(this), this)" data-required="false">
     </div>
+    </div>
 </div></div>
 
 <div class="box col80"><div class="boxInner">
-    <h2 data-slovar="Advanced"></h2>
+    <h2 data-slovar="Advanced" onclick="toggle_configMenu($(this))"></h2>
 
+    <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="usecaching" data-slovar="Use_caching"></label>
         <select name="usecaching" id="usecaching">
             <option <?php if($GLOBALS["config"]["usecaching"] == true){echo 'selected';} ?> value="true" data-slovar="Yes"></option>
             <option <?php if($GLOBALS["config"]["usecaching"] == false){echo 'selected';} ?> value="false" data-slovar="No"></option>
         </select>
+    </div>
     </div>
 </div></div>
 

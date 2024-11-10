@@ -13,27 +13,9 @@ $('.editForm').unbind().on('submit', function(e){
     })
 });
 
+function toggle_configMenu(el){ el.toggleClass('act').parent().find('.toggleConfigMenu').toggle() }
+
 function deleteCompanyLogo(){
     $('.editForm').append('<input type="hidden" name="REMOVE_COMPANY_LOGO" value="1">');
     $('.editForm').submit();
 }
-
-function toggle_phpmyadmin(el){
-    $.post('/crm/php/admin/config.php?toggle_phpmyadmin=1', {csrf_token:$('[name=csrf_token]').val()}, function(data){
-        data = JSON.parse(data);
-        if(data.error){ return createAlert(el.parent(), 'Red', data.error) }
-        check_phpmyadmin_file()
-    })
-}
-function check_phpmyadmin_file(){
-    $.post('/crm/php/admin/config.php?check_phpmyadmin_file=1', {csrf_token:$('[name=csrf_token]').val()}, function(data){
-        var b = $('#phpmyadmin_b');
-        if(JSON.parse(data) == false){
-            b.removeClass('buttonBlue').addClass('buttonGrey');
-            return b.find('svg').hide()
-        }
-        b.removeClass('buttonGrey').addClass('buttonBlue');
-        b.find('svg').show()
-    })
-}
-check_phpmyadmin_file();

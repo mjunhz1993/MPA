@@ -85,25 +85,7 @@ function remove_company_logo($path, $oldLogo){
     unlink($path. $oldSmallLogo[0]. '_small.'. $oldSmallLogo[1]);
 }
 
-function toggle_phpmyadmin(){
-    $phpmyadmin = $_SERVER['DOCUMENT_ROOT'].'/phpmyadmin/';
-    if(!file_exists($phpmyadmin)){ return ['error' => 'No_phpmyadmin']; }
-    $file = $phpmyadmin.'.htaccess';
-    if(check_phpmyadmin_file()){ return unlink($file); }
-    $newFile = fopen($file, "w");
-    fwrite($newFile, 'Deny from all');
-    fclose($newFile);
-    return '';
-}
-function check_phpmyadmin_file(){
-    $file = $_SERVER['DOCUMENT_ROOT'].'/phpmyadmin/.htaccess';
-    if(file_exists($file)){ return true; }
-    return false;
-}
-
 if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POST['csrf_token']){
     if(isset($_GET['create_config_file'])){ echo json_encode(create_config_file($SQL)); }
-    if(isset($_GET['toggle_phpmyadmin'])){ echo json_encode(toggle_phpmyadmin()); }
-    if(isset($_GET['check_phpmyadmin_file'])){ echo json_encode(check_phpmyadmin_file()); }
 }
 ?>
