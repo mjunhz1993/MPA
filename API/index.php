@@ -70,7 +70,7 @@ function API($SQL){
     if(!API_rateLimit($SQL, $token, $header)){ return API_err('Rate limit exceeded'); }
 
     if(!$_POST){ return API_err('No POST data'); }
-    $_POST = @json_decode($_POST);
+    $_POST = json_decode($_POST);
     if(!API_isJson()){ return API_err('POST data is not JSON'); }
 
     if(!API_event($header['event'])){ return API_err('Event does not exist'); }
