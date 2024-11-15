@@ -28,7 +28,7 @@ function GOOGLE_loadEvents(calendar, mode, time){
   }
 }
 
-function GOOGLE_loopEvents(event){
+function GOOGLE_loopEvents(calendar, mode, event){
   var id = 'google_' + i;
   var subject = event.summary;
   var start_date = event.start.dateTime;
