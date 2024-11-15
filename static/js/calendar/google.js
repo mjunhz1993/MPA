@@ -1,5 +1,5 @@
 function GOOGLE_listUpcomingEvents(calendar){loadJS('API/google', function(){
-  GOOGLE_connect({
+  GOOGLE_connect(
     docs: 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
     scope: 'https://www.googleapis.com/auth/calendar.readonly',
     done: function(){

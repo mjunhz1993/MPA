@@ -13,6 +13,7 @@ function GOOGLE_globals(d){GET_globals({
 function GOOGLE_loadApis(d, data){
   if(valEmpty(data.gcID)){ return callback(false, slovar('NO_gcID')) }
   if(valEmpty(data.gcAPI)){ return callback(false, slovar('NO_gcAPI')) }
+  if(valEmpty(d)){ return }
   if(valEmpty(d.scope)){ return }
   loadJS('https://apis.google.com/js/api.js', function(){ GOOGLE_loadClient(d, data) })
 }
