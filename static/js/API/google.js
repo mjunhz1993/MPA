@@ -27,6 +27,7 @@ function GOOGLE_initClient(d, data) {
         console.log('GAPI client loaded.');
         gapi.client.setToken({ access_token: localStorage.getItem("google_token") });
         GOOGLE_connected();
+        d.done();
     })
     .catch(function(error){
         console.log(error);
