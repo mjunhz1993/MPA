@@ -1,4 +1,4 @@
-var googlefiles = [];
+var googleFiles = [];
 loadCSS('google');
 
 function GOOGLE_connect(d){loadJS('https://accounts.google.com/gsi/client', function(){
