@@ -38,14 +38,14 @@ function HTML_googleButton(data){
 
 function GOOGLE_login(response){
 	const token = response.credential;
-    console.log("ID Token: ", token);
-    localStorage.setItem("google_token", token);
-    GOOGLE_connect({
-    	scope: 'https://www.googleapis.com/auth/userinfo.profile',
-    	done: function(){GOOGLE_getUserProfile(function(data){
-    		console.log(data);
-    	})}
-    })
+  console.log("ID Token: ", token);
+  localStorage.setItem("google_token", token);
+  GOOGLE_connect({
+  	scope: 'https://www.googleapis.com/auth/userinfo.profile',
+  	done: function(){GOOGLE_getUserProfile(function(data){
+  		console.log(data);
+  	})}
+  })
 }
 
 function GOOGLE_getUserProfile(callback){

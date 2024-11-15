@@ -26,19 +26,30 @@ function GOOGLE_loadClient(d, data){
 
 function GOOGLE_initClient(d, data){
   if(googleFiles.includes(d.scope) && typeof d.done === 'function'){ return d.done() }
+  googleFiles.push(d.scope);
   gapi.client.init({
     apiKey: data.gcAPI,
-    clientId: data.gcID,
-    discoveryDocs: d.docs,
-    scope: d.scope
+    discoveryDocs: d.docs
   }).then(function(){
     gapi.auth.setToken({ access_token: d.token });
-    googleFiles.push(d.scope);
-    if(typeof d.done === 'function'){ d.done() }
+    GOOGLE_initTokenClient(d, data);
   }, function(error) {
     console.log(error);
     createAlertPOPUP(slovar('Connection_failed'));
   });
+}
+
+function GOOGLE_initTokenClient(d, data){
+  google.accounts.oauth2.initTokenClient({
+    client_id: data.gcID,
+    scope: d.scope,
+    callback: (response) => {
+      if(response.error){ return createAlertPOPUP(response.error)}
+      accessToken = response.access_token;
+      localStorage.setItem('google_token', accessToken);
+      if(typeof d.done === 'function'){ d.done() }
+    }
+  })
 }
 
 function GOOGLE_connected(){
