@@ -8,7 +8,7 @@ function GOOGLE_listUpcomingEvents(calendar){loadJS('API/google', function(){
       if(!time){ return }
       GOOGLE_loadEvents(calendar, mode, time);
     }
-  )}
+  })
 })}
 
 function GOOGLE_loadEvents(calendar, mode, time){
