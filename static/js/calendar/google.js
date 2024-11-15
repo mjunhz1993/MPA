@@ -25,6 +25,9 @@ function GOOGLE_loadEvents(calendar, mode, time){
     if(events.length == 0){ return }
     for (i = 0; i < events.length; i++){ GOOGLE_loopEvents(calendar, mode, events[i]) }
     displayEventsOnTopOfCalendar(calendar, mode);
+  }, function(error) {
+    console.log(error);
+    createAlertPOPUP(slovar('Connection_failed'));
   })
 }
 

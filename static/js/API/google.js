@@ -36,10 +36,8 @@ function GOOGLE_initClient(d, data){
     googleFiles.push(d.scope);
     if(typeof d.done === 'function'){ d.done() }
   }, function(error) {
-    if(typeof callback === 'function'){
-      console.log(error);
-      createAlertPOPUP(slovar('Connection_failed'));
-    }
+    console.log(error);
+    createAlertPOPUP(slovar('Connection_failed'));
   });
 }
 
