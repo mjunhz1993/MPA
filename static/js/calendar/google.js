@@ -25,7 +25,7 @@ function GOOGLE_loadEvents(calendar, mode, time){
     if(events.length == 0){ return }
     for (i = 0; i < events.length; i++){ GOOGLE_loopEvents(calendar, mode, events[i]) }
     displayEventsOnTopOfCalendar(calendar, mode);
-  }
+  })
 }
 
 function GOOGLE_loopEvents(calendar, mode, event){
