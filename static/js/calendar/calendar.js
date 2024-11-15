@@ -354,7 +354,7 @@ function loadEvents(box, mode, year, month, day){
             displayEvents(box, mode, data);
             if(checkCookie('google_calendar')){
                 setTimeout(function(){
-                    loadJS('calendar/google', function(){ G_listUpcomingEvents(box) })
+                    loadJS('calendar/google', function(){ GOOGLE_listUpcomingEvents(box) })
                 }, 1000);
             }
         }

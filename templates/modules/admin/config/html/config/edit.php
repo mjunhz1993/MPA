@@ -131,11 +131,11 @@
         <input type="text" name="AI" id="AI" value="<?php echo $GLOBALS["config"]["AI"] ?? ''; ?>">
     </div>
     <div class="col col100">
-        <label for="stripeSK">Koledar ID</label>
+        <label for="stripeSK">GOOGLE CLOUD ID</label>
         <input type="text" name="gcID" id="gcID" value="<?php echo $GLOBALS["config"]["gcID"] ?? ''; ?>">
     </div>
     <div class="col col100">
-        <label for="stripeSK">Koledar API</label>
+        <label for="stripeSK">GOOGLE CLOUD API</label>
         <input type="text" name="gcAPI" id="gcAPI" value="<?php echo $GLOBALS["config"]["gcAPI"] ?? ''; ?>">
     </div>
     </div>
