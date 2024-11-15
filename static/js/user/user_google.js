@@ -7,10 +7,13 @@ function showUserConfig_google(box, html = ''){GET_globals({
 		if(checkCookie('google_calendar')){ html += 'checked'; }
 		html += '>';
 		html += '<label class="checkboxLabel" for="google_calendar_cookie">' + slovar('Google_calendar') + '</label>';
+		html += '<button class="button buttonRed" onclick="GOOGLE_logout()">'+slovar('Log_out')+'</butto>';
 		html += '</div>';
 		box.html(html + HTML_loader());
 		loadJS('API/google', function(){
-			GOOGLE_connect();
+			GOOGLE_connect({
+				done: function(){ GOOGLE_connected() }
+			});
 			remove_HTML_loader(box);
 		});
 	}

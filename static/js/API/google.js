@@ -13,7 +13,7 @@ function GOOGLE_initClient(d, data) {
   if(valEmpty(data.gcID)){ return callback(false, slovar('NO_gcID')) }
   if(valEmpty(data.gcAPI)){ return callback(false, slovar('NO_gcAPI')) }
   if(valEmpty(d)){ return }
-  if(valEmpty(d.scope)){ return }
+  if(valEmpty(d.scope)){ return d.done() }
 
   if(googleFiles.includes(d.scope) && typeof d.done === 'function'){ return d.done() }
   googleFiles.push(d.scope);
