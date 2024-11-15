@@ -1,4 +1,7 @@
-var googleFiles = [];
+var googleObj = {
+  files: [],
+  client: ''
+};
 loadCSS('google');
 
 function GOOGLE_connect(d){loadJS('https://accounts.google.com/gsi/client', function(){
@@ -15,8 +18,8 @@ function GOOGLE_initClient(d, data) {
   if(valEmpty(d)){ return }
   if(valEmpty(d.scope)){ return d.done() }
 
-  if(googleFiles.includes(d.scope) && typeof d.done === 'function'){ return d.done() }
-  googleFiles.push(d.scope);
+  if(googleObj.files.includes(d.scope) && typeof d.done === 'function'){ return d.done() }
+  googleObj.files.push(d.scope);
 
   gapi.load('client', function(){
     gapi.client.init({
@@ -25,7 +28,6 @@ function GOOGLE_initClient(d, data) {
     })
     .then(function(){
         console.log('GAPI client loaded.');
-        gapi.client.setToken({ access_token: localStorage.getItem("google_token") });
         GOOGLE_connected();
         d.done();
     })
@@ -35,7 +37,7 @@ function GOOGLE_initClient(d, data) {
     });
   });
 
-  google.accounts.oauth2.initTokenClient({
+  googleObj.client = google.accounts.oauth2.initTokenClient({
     client_id: data.gcID,
     scope: d.scope,
     callback: function (response){
@@ -53,6 +55,7 @@ function GOOGLE_connected(){
   if(localStorage.getItem("google_token")){
     $('.if-Google-Connected').show();
     $('.if-Google-disconnected').hide();
+    gapi.client.setToken({ access_token: localStorage.getItem("google_token") });
     return true;
   }
   $('.if-Google-Connected').hide();
