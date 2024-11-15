@@ -1,5 +1,5 @@
 function GOOGLE_listUpcomingEvents(calendar){loadJS('API/google', function(){
-  GOOGLE_connect(
+  GOOGLE_connect({
     docs: 'https://www.googleapis.com/discovery/v1/apis/calendar/v3/rest',
     scope: 'https://www.googleapis.com/auth/calendar.readonly',
     done: function(){
@@ -8,25 +8,24 @@ function GOOGLE_listUpcomingEvents(calendar){loadJS('API/google', function(){
       if(!time){ return }
       GOOGLE_loadEvents(calendar, mode, time);
     }
-  )
+  )}
 })}
 
 function GOOGLE_loadEvents(calendar, mode, time){
   gapi.client.calendar.events.list({
-      'calendarId': 'primary',
-      'timeMin': (stringToDate(time[0], 'UTC')).toISOString(),
-      'timeMax': (stringToDate(time[1], 'UTC')).toISOString(),
-      'showDeleted': false,
-      'singleEvents': true,
-      'maxResults': 100,
-      'orderBy': 'startTime'
-    }).then(function(response) {
-      var events = response.result.items;
-      if(events.length == 0){ return }
-      for (i = 0; i < events.length; i++){ GOOGLE_loopEvents(calendar, mode, events[i]) }
-      displayEventsOnTopOfCalendar(calendar, mode);
-    }
-  )
+    'calendarId': 'primary',
+    'timeMin': (stringToDate(time[0], 'UTC')).toISOString(),
+    'timeMax': (stringToDate(time[1], 'UTC')).toISOString(),
+    'showDeleted': false,
+    'singleEvents': true,
+    'maxResults': 100,
+    'orderBy': 'startTime'
+  }).then(function(response){
+    var events = response.result.items;
+    if(events.length == 0){ return }
+    for (i = 0; i < events.length; i++){ GOOGLE_loopEvents(calendar, mode, events[i]) }
+    displayEventsOnTopOfCalendar(calendar, mode);
+  }
 }
 
 function GOOGLE_loopEvents(event){
