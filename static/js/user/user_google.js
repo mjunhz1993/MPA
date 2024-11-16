@@ -28,6 +28,7 @@ function GOOGLE_test_login(box){
 function GOOGLE_login(){ googleObj.client.requestAccessToken() }
 
 function GOOGLE_getUserProfile(box){
+	if(!GOOGLE_connected()){ return }
   gapi.client.people.people
     .get({
       resourceName: 'people/me',
