@@ -4,7 +4,7 @@ function showUserConfig_google(box, html = ''){GET_globals({
 		html += '<div class="if-Google-disconnected">';
 		html += '<button class="button buttonGreen" onclick="GOOGLE_login()">'+slovar('Log_in')+'</butto>';
 		html += '</div>';
-		html += '<div class="if-Google-Connected"><hr>';
+		html += '<div class="if-Google-Connected"><p></p><hr>';
 		html += '<input type="checkbox" id="google_calendar_cookie" onclick="showUserConfig_googleChange($(this), this)" data-name="google_calendar"';
 		if(checkCookie('google_calendar')){ html += 'checked'; }
 		html += '>';
@@ -20,21 +20,21 @@ function GOOGLE_test_login(box){
 	GOOGLE_connect({
 		docs: 'https://people.googleapis.com/$discovery/rest?version=v1',
 		scope: 'https://www.googleapis.com/auth/userinfo.profile',
-		done: function(){ GOOGLE_getUserProfile() }
+		done: function(){ GOOGLE_getUserProfile(box) }
 	});
 	remove_HTML_loader(box);
 }
 
 function GOOGLE_login(){ googleObj.client.requestAccessToken() }
 
-function GOOGLE_getUserProfile(){
+function GOOGLE_getUserProfile(box){
   gapi.client.people.people
     .get({
       resourceName: 'people/me',
       personFields: 'names',
     })
     .then(function (response) {
-      console.log(response.result);
+      box.find('.if-Google-Connected p').text(response.result.names[0].displayName);
     })
     .catch(function (error) {
       console.error('Error fetching user info:', error);

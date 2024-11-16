@@ -13,10 +13,11 @@ function GOOGLE_globals(d){GET_globals({
 })}
 
 function GOOGLE_initClient(d, data) {
-  if(valEmpty(data.gcID)){ return callback(false, slovar('NO_gcID')) }
-  if(valEmpty(data.gcAPI)){ return callback(false, slovar('NO_gcAPI')) }
+  GOOGLE_connected();
+  if(valEmpty(data.gcID)){ return createAlertPOPUP(slovar('NO_gcID')) }
+  if(valEmpty(data.gcAPI)){ return createAlertPOPUP(slovar('NO_gcAPI')) }
   if(valEmpty(d)){ return }
-  if(valEmpty(d.scope)){ return d.done() }
+  if(valEmpty(d.scope) && typeof d.done === 'function'){ return d.done() }
 
   if(googleObj.files.includes(d.scope) && typeof d.done === 'function'){ return d.done() }
   googleObj.files.push(d.scope);
@@ -28,6 +29,7 @@ function GOOGLE_initClient(d, data) {
     })
     .then(function(){
         console.log('GAPI client loaded.');
+        gapi.client.setToken({ access_token: localStorage.getItem("google_token") });
         GOOGLE_connected();
         d.done();
     })
@@ -55,7 +57,6 @@ function GOOGLE_connected(){
   if(localStorage.getItem("google_token")){
     $('.if-Google-Connected').show();
     $('.if-Google-disconnected').hide();
-    gapi.client.setToken({ access_token: localStorage.getItem("google_token") });
     return true;
   }
   $('.if-Google-Connected').hide();
