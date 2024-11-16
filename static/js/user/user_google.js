@@ -18,6 +18,7 @@ function showUserConfig_google(box, html = ''){GET_globals({
 
 function GOOGLE_test_login(box){
 	GOOGLE_connect({
+		docs: 'https://people.googleapis.com/$discovery/rest?version=v1',
 		scope: 'https://www.googleapis.com/auth/userinfo.profile',
 		done: function(){  }
 	});
