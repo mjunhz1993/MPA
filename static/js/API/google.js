@@ -62,8 +62,3 @@ function GOOGLE_connected(){
   $('.if-Google-disconnected').show();
   return false;
 }
-
-function GOOGLE_logout() {
-  localStorage.removeItem("google_token");
-  GOOGLE_connected();
-}
