@@ -19,7 +19,7 @@ function showUserConfig_google(box, html = ''){GET_globals({
 function GOOGLE_test_login(box){
 	GOOGLE_connect({
 		scope: 'https://www.googleapis.com/auth/userinfo.profile',
-		done: function(){ GOOGLE_getUserProfile() }
+		done: function(){  }
 	});
 	remove_HTML_loader(box);
 }
