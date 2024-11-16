@@ -12,11 +12,11 @@ function showUserConfig_google(box, html = ''){GET_globals({
 		html += '<button class="button buttonRed" onclick="GOOGLE_logout()">'+slovar('Log_out')+'</butto>';
 		html += '</div>';
 		box.html(html + HTML_loader());
-		loadJS('API/google', function(){ GOOGLE_test_login() });
+		loadJS('API/google', function(){ GOOGLE_test_login(box) });
 	}
 })}
 
-function GOOGLE_test_login(){
+function GOOGLE_test_login(box){
 	GOOGLE_connect({
 		scope: 'https://www.googleapis.com/auth/userinfo.profile',
 		done: function(){ GOOGLE_getUserProfile() }
@@ -27,13 +27,17 @@ function GOOGLE_test_login(){
 function GOOGLE_login(){ googleObj.client.requestAccessToken() }
 
 function GOOGLE_getUserProfile(){
-  gapi.client.request({
-      'path': 'https://www.googleapis.com/oauth2/v3/userinfo',
-  }).then(function(response) {
-      console.log(response.result)
-  }).catch(function(error) {
-      console.error("Error fetching user profile:", error);
-  });
+  gapi.client.people.people
+    .get({
+      resourceName: 'people/me',
+      personFields: 'names',
+    })
+    .then(function (response) {
+      console.log(response.result);
+    })
+    .catch(function (error) {
+      console.error('Error fetching user info:', error);
+    });
 }
 
 function showUserConfig_googleChange(el, cb){
