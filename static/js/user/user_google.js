@@ -20,7 +20,7 @@ function GOOGLE_test_login(box){
 	GOOGLE_connect({
 		docs: 'https://people.googleapis.com/$discovery/rest?version=v1',
 		scope: 'https://www.googleapis.com/auth/userinfo.profile',
-		done: function(){  }
+		done: function(){ GOOGLE_getUserProfile() }
 	});
 	remove_HTML_loader(box);
 }
