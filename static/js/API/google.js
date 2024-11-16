@@ -32,7 +32,7 @@ function GOOGLE_initClient(d, data) {
         d.done();
     })
     .catch(function(error){
-        console.log(error);
+        console.log('gapi', error);
         createAlertPOPUP(error);
     });
   });
@@ -42,7 +42,7 @@ function GOOGLE_initClient(d, data) {
     scope: d.scope,
     callback: function (response){
       if (response.error) {
-        console.log('Error:', response.error);
+        console.log('google oauth2', response.error);
         return createAlertPOPUP(response.error);
       }
       localStorage.setItem('google_token', response.access_token);
