@@ -2,7 +2,7 @@ function getChatForm(id){
     var form = $('#chatForm');
     if(form.find('textarea').length == 0){
         var html = '<div class="fileArea"></div>';
-        html += '<input type="file" name="chatfile[]" id="chatFile" data-list="ALL,1" onchange="selectFile($(this), this)" />';
+        html += '<input type="file" name="chatfile[]" id="chatFile" data-list="ALL,4" onchange="selectFile($(this), this)" multiple>';
         html += '<div id="chatFormInner">';
         html += '<textarea class="chatFormBox" name="message"></textarea>';
         html += '<label class="chatFormBox" for="chatFile">' + getSVG('attachment') + '</label>';
@@ -56,7 +56,7 @@ function postNewMessage(id){
             setTimeout(function(){ form.removeClass('loading') }, 600);
             chatBox.val('').focus();
             chatButton.show();
-            if(form.find('.fileArea svg').length == 1){ removeFile(form.find('.fileArea svg')) }
+            if(form.find('.fileArea .file').length != 0){ removeFile(form.find('.fileArea svg')) }
             if(data.error){ return createAlert(form, 'Red', data.error) }
             loopLoadNewMessages(id);
         }
@@ -118,7 +118,7 @@ function displayClipboardData(data, fileArea, fileInput, ext, e){
 
     fileInput.after(fileInput.clone());
     file.find('svg').click(function(){ removeFile($(this)) });
-    checkFileInputLimit(fileInput, fileArea);
+    // checkFileInputLimit(fileInput, fileArea);
 }
 
 $(document).ready(function(){document.onpaste = function(e){ checkClipboard(e) }});

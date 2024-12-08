@@ -113,7 +113,7 @@ function changeAddonSelect1(module, el){
 	        	html += '</select>';
 	        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
 	        	html += '</div>';
-	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus-circle') + '</span>';
+	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
 		        box.html(html);
 			}
 		})
@@ -166,7 +166,7 @@ function changeAddonSelect1(module, el){
 	        	html += '</select>';
 	        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
 	        	html += '</div>';
-	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus-circle') + '</span>';
+	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
 	        	box.html(html);
 			}
 		})
@@ -196,7 +196,7 @@ function changeAddonSelect1(module, el){
 	        	html += '<select name="to[]" required></select>';
 	        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
 	        	html += '</div>';
-	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus-circle') + '</span>';
+	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
 		        box.html(html);
 			}
 		})
@@ -235,7 +235,7 @@ function changeAddonSelect1(module, el){
 	        	html += '</select>';
 	        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
 	        	html += '</div>';
-	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus-circle') + '</span>';
+	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
 		        box.html(html);
 			}
 		})
@@ -258,7 +258,7 @@ function changeAddonSelect1(module, el){
 	        	html += '</select>';
 	        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
 	        	html += '</div>';
-	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus-circle') + '</span>';
+	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
 		        box.html(html);
 			}
 		})
@@ -380,7 +380,7 @@ function getColumnsForCopy(module, el){
 			        	html += '</select>';
 			        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
 			        	html += '</div>';
-			        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus-circle') + '</span>';
+			        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
 						html += '</div>';
 						el.after(html);
 					}
@@ -437,7 +437,7 @@ function getParentCopyColumns(module, el){
 			        	html += '</select>';
 			        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
 			        	html += '</div>';
-			        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus-circle') + '</span>';
+			        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
 						html += '</div>';
 						el.after(html);
 					}

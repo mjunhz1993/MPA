@@ -153,8 +153,7 @@ function checkOtherDatePickerValue(el, hidden, value){
 }
 
 function resetDatePickerInputs(box){box.find('.datepickerinput,.timepickerinput,.datetimepickerinput').each(function(){resetDatePickerInput($(this))})}
-function resetDatePickerInput(input){
-	var t = '';
+function resetDatePickerInput(input, t = ''){
 	if(input.hasClass('datetimepickerinput')){ t = getDate(defaultDateFormat + ' ' + defaultTimeFormat, input.val()) }
 	else if(input.hasClass('datepickerinput')){ t = getDate(defaultDateFormat, input.val()) }
 	else if(input.hasClass('timepickerinput')){ t = getDate(defaultTimeFormat, input.val()) }

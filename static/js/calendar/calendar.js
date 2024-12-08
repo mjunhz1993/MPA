@@ -63,7 +63,7 @@ function createCalendarTopMenuHTML(boxMain, today, role_event_view_access, obj){
     if(obj.noAddButton != true){
         html += '<b class="addEvent" ';
         html += 'onclick="loadJS(\'main/add-box\', function(){ openAddBoxQuick(\''+boxMain.attr('data-module')+'\'); })">';
-        html += getSVG('plus-circle') + '<span>' + slovar('Add_new') + '</span></b>';
+        html += getSVG('plus_circle') + '<span>' + slovar('Add_new') + '</span></b>';
     }
     html += '</div>';
     html += '<div class="calendarBoxMenuTab">';
@@ -95,7 +95,7 @@ function createCalendarTopMenuHTML(boxMain, today, role_event_view_access, obj){
 function createCalendar(box){
     var boxMain = box.find('.calendarBoxMain');
     boxMain.hide();
-    $('#calendarHoverTool').hide();
+    boxMain.parent().find('.calendarHoverTool').hide();
     var mode = boxMain.attr('data-mode');
     var year = boxMain.attr('data-year');
     var month = boxMain.attr('data-month');
@@ -296,12 +296,23 @@ function changeDay(el, CalcDays){
 function mouseOverDayInMonth(el){
     boxMain = el.closest('.calendarBoxMain');
     if(boxMain.attr('data-mode') != 'MONTH'){ return }
-    if($('#calendarHoverTool').length == 0){
-        $('#Main').append('<div id="calendarHoverTool" class="hoverTool linksvg" data-tooltip="' + slovar('Add_new') + '">' + getSVG('plus-circle') + '</div>');
+
+    calendarBox = el.closest('.calendarBox');
+    if(calendarBox.find('.calendarHoverTool').length == 0){
+        calendarBox.append(`
+            <div 
+            class="calendarHoverTool hoverTool linksvg" 
+            data-tooltip="`+slovar('Add_new')+`"
+            >`+getSVG('plus_circle')+`</div>
+        `);
         tooltips();
     }
-    var button = $('#calendarHoverTool');
-    button.css({ 'top': el.offset().top, 'left': el.offset().left }).fadeIn('fast');
+
+    var button = calendarBox.find('.calendarHoverTool');
+    var top = el.position().top + calendarBox.scrollTop();
+    var left = el.position().left;
+
+    button.css({ 'top': top, 'left': left }).fadeIn('fast');
     button.unbind('click').click(function(){
         loadJS('main/add-box', function(){
             openAddBoxQuick(boxMain.attr('data-module'), function(){
@@ -615,7 +626,6 @@ function saveNewStartDate(box, eventItem, date){
 // ---------------------------- OTHER
 
 function removeCalendar(callback = false){
-    $('#calendarHoverTool').remove();
     $('.calendarBox').empty().removeClass('calendarBox');
     if(callback){ callback() }
 }

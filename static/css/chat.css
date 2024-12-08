@@ -159,7 +159,7 @@
 
 #chatForm .fileArea{
     background-color: rgba(0,0,0,0);
-    box-shadow: 0 0;
+    border: 0;
 }
 #chatForm textarea{
     resize: none;

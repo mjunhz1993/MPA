@@ -1,18 +1,21 @@
 var dragFileTimer;
-$(document).on('dragover', function(e) {
-    var dt = e.originalEvent.dataTransfer;
-    if(dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
-        $("input[type=file]").each(function(){
-            if($(this).val() != '' || $(this).prop('disabled')){ return }
-            $(this).attr('data-content',slovar('Drag_and_drop')).show()
-        });
-        window.clearTimeout(dragFileTimer);
-    }
-});
+function dragingFileEvent(){
+    $(document).on('dragover', function(e) {
+        var dt = e.originalEvent.dataTransfer;
+        if(dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
+            $("input[type=file]").each(function(){
+                if($(this).val() != '' || $(this).prop('disabled')){ return }
+                $(this).attr('data-content',slovar('Drag_and_drop')).show()
+            });
+            window.clearTimeout(dragFileTimer);
+        }
+    });
+    $(document).on('dragleave drop', function(){ hideAllFileInputs() });
+}
 function hideAllFileInputs(){ dragFileTimer = window.setTimeout(function(){ $("input[type=file]").hide() }, 25) }
-$(document).on('dragleave drop', function(){ hideAllFileInputs() });
+dragingFileEvent();
 
-function checkFileInputLimit(fileInput, fileArea){
+function checkFileInputLimit(fileInput, fileArea){ // REMOVE FUNCTIONS
     var fileLength = fileArea.find('.file').length;
     var maxLimit = 1;
     if(fileInput.attr('data-list') != undefined){ maxLimit = parseInt(fileInput.attr('data-list').split(',')[1]) }
@@ -21,15 +24,26 @@ function checkFileInputLimit(fileInput, fileArea){
     else{ fileInput.prop('disabled', false); button.addClass('buttonBlue').removeClass('buttonGrey'); }
 }
 
+function fileLimit(fileInput, input, maxLimit = 1){
+    if(fileInput.attr('data-list') != undefined){ maxLimit = parseInt(fileInput.attr('data-list').split(',')[1]) }
+    if(maxLimit < input.files.length + fileInput.parent().find('.fileArea .file').length){ return false }
+    return true
+}
+
 function selectFile(el, input){
     hideAllFileInputs();
     var inputType = el.attr('data-list').split(',')[0];
     var fileArea = el.parent().find('.fileArea');
     fileArea.parent().find('.alert').remove();
-    if(input.files && input.files[0]){
-        var thisFile = input.files[0];
-        // CHECK IF CORRECT FILE SELECTED
-        if(inputType == 'IMG' && !thisFile.type.includes('image')){
+
+    if(!fileLimit(el, input)){
+        el.val('');
+        createAlert(fileArea.parent(), 'Red', slovar('File_limit_reached'));
+        return;
+    }
+
+    Array.from(input.files).forEach(thisFile => {
+        if(inputType == 'IMG' && !thisFile.type.startsWith('image/')){
             el.val('');
             createAlert(fileArea.parent(), 'Red', slovar('Wrong_file_type'));
             return;
@@ -39,29 +53,28 @@ function selectFile(el, input){
             createAlert(fileArea.parent(), 'Red', slovar('Wrong_file_size'));
             return;
         }
-        // ADD FILE BLOCK
-        fileArea.append('<div class="file newFile" style="display:none;"><div class="img"></div><div class="fileDesc"></div>' + getSVG('x') + '</div>');
-        var file = fileArea.find('.file').last();
-        // ADD IMAGE TO BACKGROUND
-        if(thisFile.type.includes('image')){
+
+        fileArea.append(HTML_fileBlock());
+        var fileBlock = fileArea.find('.file').last();
+
+        if(thisFile.type.startsWith('image/')){
             var reader = new FileReader();
-            reader.onload = function(e){ file.find('.img').css('background-image', 'url("' + e.target.result + '")'); }
+            reader.onload = function(e){ fileBlock.find('.img').css('background-image', 'url("'+e.target.result+'")'); }
             reader.readAsDataURL(thisFile);
         }
-        // ADD DESCRIPTION
-        file.find('.fileDesc').text(thisFile.name + ' [' + ((thisFile.size * 0.001) * 0.001).toFixed(2) + ' Mb]');
-        // DISPLAY BLOCK
-        file.fadeIn('fast', function(){
-            // ADD REMOVE EVENT
-            file.find('svg').click(function(){ removeFile($(this)); });
-            // CLONE NEW INPUT + SELECT IT
+
+        fileBlock.find('.fileDesc').text(thisFile.name+' ['+((thisFile.size * 0.001) * 0.001).toFixed(2)+' Mb]');
+
+        fileBlock.fadeIn('fast', function(){
+            fileBlock.find('svg').click(function(){ removeFile($(this)) });
             el.after(el.clone()).attr('id','');
-            // REMOVE OLD DATA
             el.next().val('').prop('required', false);
-            // DISABLE ADDING IF LIMIT REACHED
-            checkFileInputLimit(el.next(), fileArea);
         });
-    }
+    });
+}
+
+function HTML_fileBlock(){
+    return '<div class="file newFile" style="display:none;"><div class="img"></div><div class="fileDesc"></div>'+getSVG('x')+'</div>'
 }
 
 function IF_fileSizeToBig(file){
@@ -89,7 +102,6 @@ function removeFile(el){
         var inputCount = fileArea.parent().find('input[type=file]').length;
         var inputRequired = fileArea.parent().find('input[type=file]').first().attr('data-required');
         if(inputCount == 1 && inputRequired == 'true'){ fileArea.parent().find('input[type=file]').prop('required', true); }
-        checkFileInputLimit(fileArea.parent().find('input[type=file]'), fileArea);
     }
 
     if(file.hasClass('newFile')){

@@ -35,7 +35,7 @@ function GOOGLE_initClient(d, data) {
     })
     .catch(function(error){
         console.log('gapi', error);
-        createAlertPOPUP(error);
+        createAlertPOPUP(error.error.message);
     });
   });
 

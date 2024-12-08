@@ -6,7 +6,7 @@ function ADDON_add_multiple(module, box, type, addon, i, html = ''){
     form.find('.buttonBlack').remove();
     form.find('.buttonSubmit').hide().attr('onclick','submitAddBoxMultipleEvent()');
     if(addBox.find('.buttonAddMultiple').length != 0){ return }
-    html += '<button class="buttonSquare button100 buttonBlue buttonAddMultiple">'+getSVG('plus-circle')+' Add more</button>';
+    html += '<button class="buttonSquare button100 buttonBlue buttonAddMultiple">'+getSVG('plus_circle')+' Add more</button>';
     html += '<div style="padding:5px;">';
     html += '<button class="button buttonGreen" onclick="submitAddBoxMultiple($(this))">'+slovar('Add_new')+'</button> ';
     html += '<button class="button buttonBlack" onclick="closeAddBox()">'+slovar('Cancel')+'</button>';

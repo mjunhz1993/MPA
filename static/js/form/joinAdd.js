@@ -144,7 +144,7 @@ function JOINADD_search(el, placeholder, searchInput, DropdownMenu, callback = '
                 html += '<div style="display:flex;">';
                 html += '<b class="buttonSquare button100 buttonGreen"';
                 html += 'onclick="loadJS(\'main/add-box\', function(){ hideDropdownMenu(); openAddBoxQuick(\''+module+'\'); })">';
-                html += getSVG('plus-circle')+' <span>'+slovar('Add_new')+'</span></b>';
+                html += getSVG('plus_circle')+' <span>'+slovar('Add_new')+'</span></b>';
                 html += '<b class="buttonSquare buttonBlue" ';
                 html += 'onclick="loadJS(\'filter/filter\', function(){openFilterTable(\''+module+'\')})"'
                 html += '>'+getSVG('filter')+'</b>'

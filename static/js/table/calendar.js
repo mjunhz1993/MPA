@@ -1,4 +1,4 @@
-function openCalendarTable(module){
+function openCalendarTable(module, box){
 	$.get('/crm/php/calendar/presets.php', {
 		get_presets:true,
 		module:module
@@ -10,7 +10,7 @@ function openCalendarTable(module){
 		if($('.calendarBox').length != 0){ return }
 
 		loadJS('calendar/calendar', function(){
-			setupCalendar($('.horizontalTable'), {
+			setupCalendar(box, {
 				module:module,
 				start:data.startCol,
 				end:data.endCol,

@@ -75,6 +75,7 @@ fieldset legend.closed:after{transform: rotate(45deg);}
 #readOnlyBox .col100 .horizontalTable{ max-height: 500px !important; }
 
 /* BASIC FIELDS */
+#Main form input[type=datetime-local],
 #Main form input[type=color],
 #Main form input[type=email],
 #Main form input[type=url],
@@ -198,7 +199,6 @@ fieldset legend.closed:after{transform: rotate(45deg);}
     padding: 5px;
     margin: 10px 0;
     border: 1px solid gainsboro;
-    background-color: gainsboro;
 }
 #Main .multiselectinputbox{
     display: inline-block;
@@ -314,13 +314,16 @@ fieldset legend.closed:after{transform: rotate(45deg);}
 
 /* FILE */
 input[type=file]{
+    position: absolute;
+    top: 0; left: 0;
     display: none;
     width: 100%;
-    border: 3px dashed;
-    border-top: 0;
+    height: 100%;
+    border: 3px dashed var(--blue);
     box-sizing: border-box;
-    padding: 50px 10px;
-    margin: 0 0 5px 0;
+    align-content: center;
+    margin: 0;
+    background-color: white;
 }
 input[type=file]::-webkit-file-upload-button{ visibility: hidden; }
 input[type=file]::before{
@@ -329,13 +332,13 @@ input[type=file]::before{
     width: 100%;
     text-align: center;
 }
+input[type=file]:hover{ color: var(--blue); }
 .fileArea{
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
     flex-wrap: wrap;
-    background-color: #ededed;
-    box-shadow: 0 0 5px grey inset;
+    border: 2px dotted var(--blue);
     margin: 10px 0;
 }
 .fileArea.visible{ min-height: 29px; }
@@ -345,8 +348,6 @@ input[type=file]::before{
     width: 100px;
     border: 1px solid gainsboro;
     margin: 5px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px grey;
     overflow: hidden;
 }
 .fileArea .file svg{

@@ -16,7 +16,7 @@ function loadWidgets(dashboard, html = ''){
 
 function loadWidgetCreatButton(can_add){
 	if(!can_add.includes(user_role_id)){ return '' }
-	return '<button class="buttonSquare button100 buttonGreen" onclick="openWidgets()">' + getSVG('plus-circle') + ' <span>' + slovar('Add_widget') + '</span></button>';
+	return '<button class="buttonSquare button100 buttonGreen" onclick="openWidgets()">' + getSVG('plus_circle') + ' <span>' + slovar('Add_widget') + '</span></button>';
 }
 
 function checkWidgets(dashboard, box){

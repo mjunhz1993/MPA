@@ -225,7 +225,7 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
         html += 'data-list="' + data.list + '" ';
         html += 'onchange="selectFile($(this), this)" ';
         if(data.mandatory){ html += 'data-required="true" required' }else{ html += 'data-required="false"' }
-        html += '>';
+        html += 'multiple>';
         return html
     }
 

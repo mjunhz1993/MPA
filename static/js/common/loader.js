@@ -4,7 +4,7 @@ jQuery.cachedScript = function(url, options){
 };
 
 function loadJS(js, callback, el = ''){
-    var url = '/crm/static/js/' + js + '.js?' + APP_VERSION;
+    var url = '/crm/static/js/' + js + '.js?v=' + APP_VERSION;
     if(js.substring(0,8) == 'https://'){ url = js }
     if(js.substring(0,7) == 'http://'){ url = js }
     if(!loadedJS.includes(url)){
@@ -17,7 +17,7 @@ function loadJS(js, callback, el = ''){
 }
 
 function loadCSS(css){
-    var url = '/crm/static/css/' + css + '.css?' + APP_VERSION;
+    var url = '/crm/static/css/' + css + '.css?v=' + APP_VERSION;
     if(css.substring(0,8) == 'https://'){ url = css }
     if(!loadedCSS.includes(url)){
         $('head').append('<link rel="stylesheet" type="text/css" href="' + url + '">');

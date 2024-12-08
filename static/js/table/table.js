@@ -82,19 +82,23 @@ function HTML_toggleTableView(accessories, html = ''){
 function toggleTableView(el,type){
     el.parent().find('a').removeClass('act');
     el.addClass('act');
+
+    box = el.closest('.tableBox');
+    scrollBox = box.find('.horizontalTable');
+
     if(type == 'list'){
         return removeCalendar(function(){
-            tableLoadColumns(el.closest('.tableBox'));
+            tableLoadColumns(box);
         })
     }
     if(type == 'calendar'){
         return loadJS('table/calendar', function(){
-            openCalendarTable(el.closest('.tableBox').attr('data-module'))
+            openCalendarTable(box.attr('data-module'), scrollBox)
         })
     }
     if(type == 'pipeline'){
         return loadJS('table/pipeline', function(){
-            openPipeline(el.closest('.tableBox').attr('data-module'))
+            openPipeline(box.attr('data-module'))
         })
     }
 }
@@ -108,7 +112,7 @@ function tableDisplayButtons(box, module, html = ''){
         if(buttons[i] == 'add'){
             html = '<button class="button buttonGreen" ';
             html += 'onclick="loadJS(\'main/add-box\', function(){ openAddBoxQuick(\'' + module + '\'); })">';
-            html += getSVG('plus-circle') + '<span class="SVGdesc">' + slovar('Add_new') + '</span></buttons>';
+            html += getSVG('plus_circle') + '<span class="SVGdesc">' + slovar('Add_new') + '</span></buttons>';
             tableTop.find('td').first().append(html);
         }
     }

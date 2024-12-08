@@ -18,7 +18,7 @@ function openFilterTable(module = '', filter_access = 0){loadJS('filter/slovar/'
         html += '<button class="buttonSquare buttonRed" onclick="deleteFilter(\''+module+'\','+filter_access+')">';
         html += getSVG('x') + '<span class="SVGdesc">' + slovar('Delete') + '</span></button>';
         html += '<button class="buttonSquare buttonGreen openFilterTableAdd">';
-        html += getSVG('plus-circle') + '<span class="SVGdesc">' + slovar('Add_new') + '</span></button></div>';
+        html += getSVG('plus_circle') + '<span class="SVGdesc">' + slovar('Add_new') + '</span></button></div>';
         boxInner.html(html);
     }
 

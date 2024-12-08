@@ -22,7 +22,7 @@ function tableAddLoadedTools(module, box, id, data, html = ''){
     html += getSVG('more');
     html += '<div class="DropdownMenuContent">';
     html += '<a onClick="loadJS(\'main/extra/copy\',function(){copy_row({module:\''+module.module+'\',id:'+id+'})})">';
-    html += getSVG('plus-circle')+' '+slovar('Copy_row')+'</a>';
+    html += getSVG('plus_circle')+' '+slovar('Copy_row')+'</a>';
     if(archive == '' && String(module.delete).split(',').includes(user_role_id)){
         html += '<hr><a class="red" onClick="tableClickDeleteButton($(this), \''+module.module+'\', '+id+')">';
         html += getSVG('delete')+' '+slovar('Delete_row')+'</a>';

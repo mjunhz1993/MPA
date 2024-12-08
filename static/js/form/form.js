@@ -101,7 +101,6 @@ function MoveRowFilesToFormFields(data, module, form){
             if(fileType.includes('image')){
                 fileArea.find('.file').last().find('.img').css('background-image', 'url("/crm/static/uploads/' + module + '/' + fileName + '")');
             }
-            checkFileInputLimit(fileInput, fileArea);
             fileInput.prop('required', false);
         }
     }
