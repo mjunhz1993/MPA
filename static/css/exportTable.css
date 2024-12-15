@@ -1,0 +1,13 @@
+#exportTablePreview .top{
+	display:flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 10px;
+}
+
+#exportTablePreview .bottom{
+	overflow:hidden;
+	max-height:50vh;
+	mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 40%);
+	-webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0) 20%, rgba(0, 0, 0, 1) 40%);
+}

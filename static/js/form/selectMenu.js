@@ -1,5 +1,6 @@
 function openSelectMenu(el){
     if(el.find('input').prop('disabled')){ return }
+    el.find('input').blur();
     if(el.find('.DropdownMenuContent').length == 0){
         var name = 'sm' + new Date().getTime();
         el.attr('data-name', name);
@@ -65,6 +66,7 @@ function selectMenuChoose(name, el, callback){
     input.val(el.attr('data-value')).next().text(t);
     hideDropdownMenu();
     if(!valEmpty(callback)){ eval(callback) }
+    input.closest('.formField').next().find('input').focus();
 }
 
 function selectMenuRefreshPlaceholders(box){box.find('.selectMenu input').each(function(){selectMenuRefreshPlaceholder($(this))})}

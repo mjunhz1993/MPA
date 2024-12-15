@@ -1,5 +1,6 @@
 function focusJOIN_ADDInput(placeholder){
     var input = placeholder.prev();
+    input.blur();
     if(input.prop('disabled')){ return }
     JOINADD_showDropdownMenu(input);
 }
@@ -27,6 +28,7 @@ function focusOutJOIN_ADDInput(input){
         })
     }
     if(placeholder.data('callback')){ eval(placeholder.data('callback')) }
+    input.closest('.formField').next().find('input').focus();
 }
 
 function JOINADD_showDropdownMenu(el, html = ''){setTimeout(function(){

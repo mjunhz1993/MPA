@@ -329,11 +329,19 @@ function changeAddonSelect1(module, el){
 		html += '<option value="READ">' + slovar('View') + '</option>';
 		html += '</select>';
 		html += '<label>' + slovar('Custom_command') + '</label><br>';
-		html += '<div onclick="loadJS(\'form/codeEditor\', function(el){ openCodeEditor(el, \'js\') }, $(this))">';
+		html += '<div class="openCodeEditor">';
 		html += '<pre><code></code></pre>';
 		html += '<textarea name="custom_data" style="display:none" required></textarea>';
 		html += '</div><div>';
 		box.html(html);
+		box.find('.openCodeEditor').click(function(){
+			loadJS('form/codeEditor', function(el){
+				openCodeEditor({
+					box: el,
+					type: 'js'
+				})
+			}, $(this))
+		})
 	}
 	else{ box.empty() }
 }

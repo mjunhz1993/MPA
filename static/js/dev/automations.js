@@ -74,7 +74,7 @@ function createModuleAutomation(el, module, form){
 			html += '<input type="hidden" name="module" value="' + module + '">';
 
 			html += '<label>' + slovar('Custom_command') + '</label><br>';
-			html += '<div onclick="loadJS(\'form/codeEditor\', function(el){ openCodeEditor(el, \'php\') }, $(this))">';
+			html += '<div class="openCodeEditor">';
 			html += '<pre><code></code></pre>';
 			html += '<textarea name="command" style="display:none" required></textarea>';
 			html += '</div><div>';
@@ -92,6 +92,16 @@ function createModuleAutomation(el, module, form){
 			html += '<hr><button class="button buttonGreen">' + slovar('Save_changes') + '</button>';
 		    html += '<span class="button buttonGrey">' + slovar('Cancel') + '</span></div>';
 			form.append(html);
+
+			form.find('.openCodeEditor').click(function(){
+				loadJS('form/codeEditor', function(el){
+					openCodeEditor({
+						box: el,
+						type: 'php'
+					}) 
+				}, $(this))
+			});
+
 			form.find('.buttonGrey').click(function(){ displayModuleAutomations(module, form); });
 		}
 	})

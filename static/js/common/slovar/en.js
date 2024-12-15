@@ -164,6 +164,7 @@ var trans = {
     Upload: "Upload",
     Save: "Save",
     Save_changes: "Save changes",
+    Save_changes_close: "Save changes and close",
     Saved: "Saved",
     Access_denied: "Access Denied",
     Total: "Total",

@@ -1,3 +1,11 @@
+setTimeout(function(){
+	loadJS('export/table', function(){
+		exportTable({
+			id: 'ddd'
+		})
+	})
+}, 1000)
+
 function getCustomFiles(table, callback){
 	var ProjectExt = '';
 	if($('#FileTableExtFilter').length == 1){ ProjectExt = $('#FileTableExtFilter').val() }
@@ -24,6 +32,7 @@ function getCustomFiles(table, callback){
 			html += '<td style="color:white;font-weight:600;text-align:center;font-size:20px;background-color:';
 			if(ext == 'js'){ html += 'blue' }
 			else if(ext == 'css'){ html += 'green' }
+			else if(ext == 'sql'){ html += 'purple' }
 			else{ html += 'orange' }
 			html += '">' + ext.toUpperCase() + '</td>';
 			html += '<td>';
@@ -60,6 +69,7 @@ function openCreateCustomFile(){
 	html += '<option value="js">JavaScript</option>';
 	html += '<option value="css">CSS</option>';
 	html += '<option value="api">API</option>';
+	html += '<option value="sql">SQL</option>';
 	html += '</select>';
 	html += '<input type="checkbox" onClick="toggleAddTamplate()" id="newfileTemplate">';
 	html += '<label for="newfileTemplate">' + slovar('Add_template') + '</label>';
@@ -144,7 +154,7 @@ function editCustomFile(el){
 		html += '<label>' + slovar('Project') + '</label>';
 		html += '<input type="text" name="file_project" value="' + data[1] + '" required>';
 		html += '<label>' + slovar('Data') + '</label>';
-		html += '<div onclick="loadJS(\'form/codeEditor\', function(el){ openCodeEditor(el, \'' + data[0].split('.').pop() + '\') }, $(this))">';
+		html += '<div class="openCodeEditor">';
 		html += '<pre><code></code></pre><textarea style="display:none" name="file_data">' + data[2] + '</textarea>';
 		html += '</div><hr>';
 		html += '<button class="button buttonGreen">' + slovar('Save_changes') + '</button>';
@@ -153,17 +163,33 @@ function editCustomFile(el){
 		popupBox.html(html);
 		popupBox.find('code').text(data[2]);
 
+		popupBox.find('.openCodeEditor').click(function(){
+			loadJS('form/codeEditor', function(el){ 
+				openCodeEditor({
+					box: el,
+					type: data[0].split('.').pop(),
+					callback: function(){ save_editCustomFile(popupBox) }
+				})
+			}, $(this));
+		});
+
 		popupBox.find('form').on('submit', function(e){
 			e.preventDefault();
-			$.post('/crm/php/admin/custom_files.php?create_custom_file=1', $(this).serialize(), function(data){
-		        data = JSON.parse(data);
-		        if(data.error){ createAlert(popupBox, 'Red', data.error); }
-		        else{ getCustomFiles($('#FileTable')); removePOPUPbox(); }
-		    }).fail(function(data){ console.log('ERROR: backend-error'); });
+			save_editCustomFile(popupBox, true);
 		});
 
 		popup.fadeIn('fast');
-	}).fail(function(data){ console.log('ERROR: backend-error'); });
+	})
+}
+
+function save_editCustomFile(popupBox, close = false){
+
+	$.post('/crm/php/admin/custom_files.php?create_custom_file=1', popupBox.find('form').serialize(), function(data){
+        data = JSON.parse(data);
+        if(data.error){ return createAlert(popupBox, 'Red', data.error) }
+        getCustomFiles($('#FileTable'));
+    	if(close){ removePOPUPbox() }
+    })
 }
 
 function deleteCustomFile(el){

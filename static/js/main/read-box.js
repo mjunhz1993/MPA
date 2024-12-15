@@ -284,6 +284,7 @@ function turnEditInputsToReadInputs(EditBox){
     // CHECK DATEPICKER INPUTS
     if(EditBox.find('.datepickerinput, .timepickerinput, .datetimepickerinput').length > 0){
         EditBox.find('.datepickerinput, .timepickerinput, .datetimepickerinput').each(function(){
+            $(this).removeClass('hiddenInput');
             if(valEmpty($(this).val())){ return }
             if($(this).hasClass('datetimepickerinput')){ $(this).val(getDate(defaultDateFormat + ' ' + defaultTimeFormat, $(this).val())); }
             else if($(this).hasClass('datepickerinput')){ $(this).val(getDate(defaultDateFormat, $(this).val())); }

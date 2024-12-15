@@ -5,6 +5,19 @@
 .popup .addFormInner, .popup .editFormInner{ text-align: left; max-height: 60vh; overflow: auto; }
 #Main form .col{padding: 0 2px; text-align: left;}
 
+.hiddenInput{
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    margin: -1px !important;
+    padding: 0 !important;
+    border: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important; /* Prevent content wrapping */
+    clip-path: inset(50%) !important;
+}
+
 fieldset{
     border: 2px solid var(--blue);
     border-radius: 5px;
@@ -188,7 +201,6 @@ fieldset legend.closed:after{transform: rotate(45deg);}
     top: 9px;
     right: 10px;
 }
-#Main .selectMenu input{ display: none; }
 
 /* MULTISELECT  */
 #Main .multiselectinput{

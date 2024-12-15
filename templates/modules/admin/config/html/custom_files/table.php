@@ -9,6 +9,7 @@
 					<option value="php">PHP</option>
 					<option value="js">Javascript</option>
 					<option value="css">CSS</option>
+					<option value="sql">SQL</option>
 				</select>
 				<input type="text" id="FileTableProjectFilter" placeholder="Search Project">
 			</td>

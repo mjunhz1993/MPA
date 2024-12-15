@@ -129,7 +129,9 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
     if(data.type == 'DATETIME'){
         html += label;
         if(data.mandatory){ html += '<span style="color: red;">*</span>'; }
-        html += '<input type="text" name="' + data.column + '" id="' + data.id + '" class="datetimepickerinput" ';
+        html += '<input type="text" name="' + data.column + '" id="' + data.id + '" ';
+        html += 'class="datetimepickerinput hiddenInput" ';
+        html += 'onfocus="createDatePickerInput($(this).parent())" ';
         if(data.list){ html += 'data-list="' + data.list + '" '; }
         html += 'value="' + yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + ii + ':00" ';
         if(data.mandatory){ html += 'required'; }
@@ -170,10 +172,10 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
         if(data.callback){ html += 'data-callback="'+data.callback+'"' }
         html += 'data-list="'+data.list+'" ';
         html += 'onclick="loadJS(\'form/selectMenu\', function(el){ openSelectMenu(el); }, $(this))" ';
-        html += '><input type="text" id="'+data.id+'" name="'+data.column+'"';
+        html += '><input type="text" id="'+data.id+'" name="'+data.column+'" class="hiddenInput" ';
         if(data.preselected_option[0] != null){ html += 'value="'+data.preselected_option[0]+'" '; }
         if(data.mandatory){ html += 'required'; }
-        html += '><div>';
+        html += ' onfocus="loadJS(\'form/selectMenu\', function(el){ openSelectMenu(el); }, $(this).parent())"><div>';
         if(data.preselected_option[0] != null){
             var listSplit = data.list.split('|');
             for(var i=0; i<listSplit.length; i++){
@@ -191,10 +193,9 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
         html += label;
         if(data.mandatory){ html += '<span style="color: red;">*</span>' }
         html += '<input type="text" name="' + data.column + '" id="' + data.id + '" ';
-        html += 'data-list="' + data.list + '" ';
+        html += 'data-list="' + data.list + '" class="hiddenInput" ';
         if(!valEmpty(data.preselected_option[0])){ html += 'value="' + data.preselected_option[0] + '" ' }
-        html += 'style="display:none;" ';
-        // html += 'onfocus="focusJOIN_ADDInput($(this).next())" ';
+        html += 'onfocus="focusJOIN_ADDInput($(this).next())" ';
         if(data.mandatory){ html += 'required' }
         html += '><div class="inputPlaceholder JOIN_ADD_placeholder" data-list="' + data.list + '" onclick="focusJOIN_ADDInput($(this))">';
         if(!valEmpty(data.preselected_option[1])){ html += data.preselected_option[1] }

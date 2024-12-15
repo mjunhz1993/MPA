@@ -153,6 +153,7 @@ var trans = {
     Fill_in_this_field: "Izpolnite to polje",
 
     // COMMON
+    Preview: "Predogled",
     Select: "Izberi",
     Select_all: "Izberi vse",
     Select_multiple: "Izberi več",
@@ -185,6 +186,7 @@ var trans = {
     Upload: "Naloži",
     Save: "Shrani",
     Save_changes: "Shrani spremembe",
+    Save_changes_close: "Shrani spremembe in zapri",
     Saved: "Shranjeno",
     Access_denied: "Dostop zavrnjen",
     Total: "Seštej",

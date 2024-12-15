@@ -16,13 +16,14 @@ function checkForDatePickerInputs(box){
 
     if(box.find('.datetimepickerinput').length > 0){box.find('.datetimepickerinput').each(function(){
     	if($(this).val() != ''){ value = getDate(defaultDateFormat + ' ' + defaultTimeFormat, $(this).val()) }else{ value = slovar('Empty') }
-    	$(this).hide().wrap('<div class="inputPlaceholder"></div>').after('<div>' + getSVG('calendar') + '<span>' + value + '</span></div>');
+    	$(this).wrap('<div class="inputPlaceholder"></div>').after('<div>' + getSVG('calendar') + '<span>' + value + '</span></div>');
         $(this).parent().click(function(){ createDatePickerInput($(this)); });
     })}
 }
 
 function createDatePickerInput(el){loadJS('calendar/extras', function(){setTimeout(function(){
 	var input = el.find('input');
+	input.blur();
 	var dropdownMenu = $('#DropdownMenu');
 	if(input.val() != ''){ var today = stringToDate(input.val()) }else{ var today = new Date() }
 	checkDatePickerTypeInput(el, input, dropdownMenu, today);
@@ -47,6 +48,7 @@ function checkDatePickerTypeInput(el, input, dropdownMenu, today){
 
 function displayDatePickerInputDate(el, input, dropdownMenu, today){
 	var html = '<div id="datepickerDM">';
+	html += '<input type="text" class="hiddenInput">';
 	html += '<div class="datepickerDMinner"><div>';
 	html += '<b onclick="DPchangeYear($(this), -1)">' + slovar('Year') + ' -</b>';
     html += '<span class="calendarYear">' + today.getFullYear() + '</span>';
@@ -66,6 +68,58 @@ function displayDatePickerInputDate(el, input, dropdownMenu, today){
 	dropdownMenu.find('td').removeClass('act');
 	var thisDate = today.getFullYear() + '-' + String(today.getMonth() + 1).padStart(2, '0') + '-' + String(today.getDate()).padStart(2, '0');
 	dropdownMenu.find('td[data-date="' + thisDate + '"]').addClass('act');
+	setTimeout(function(){ DATEPICKER_keyEvents(el, dropdownMenu) }, 100)
+}
+
+function DATEPICKER_keyEvents(el, dropdownMenu){
+	input = dropdownMenu.find('.hiddenInput');
+	td = dropdownMenu.find('td.act');
+	focus_hidden_keyevents(input);
+	input.unbind('keyup').keyup(function(e){
+		if(e.keyCode == 38){
+        	td.removeClass('act');
+        	tr = td.parent().prev();
+        	if(valEmpty(tr[0])){
+        		td.closest('tbody').find('tr').last().find('td').eq(td.index()).addClass('act');
+        		return td = dropdownMenu.find('td.act');
+        	}
+        	tr.find('td').eq(td.index()).addClass('act');
+        	return td = dropdownMenu.find('td.act');
+        }
+        if(e.keyCode == 40){
+        	td.removeClass('act');
+        	tr = td.parent().next();
+        	if(valEmpty(tr[0])){
+        		td.closest('tbody').find('tr').first().find('td').eq(td.index()).addClass('act');
+        		return td = dropdownMenu.find('td.act');
+        	}
+        	tr.find('td').eq(td.index()).addClass('act');
+        	return td = dropdownMenu.find('td.act');
+        }
+        if(e.keyCode == 37){
+        	td.removeClass('act');
+        	newTd = td.prev();
+        	if(valEmpty(newTd[0])){
+        		td.closest('tr').find('td').last().addClass('act');
+        		return td = dropdownMenu.find('td.act');
+        	}
+        	newTd.addClass('act');
+        	return td = dropdownMenu.find('td.act');
+        }
+        if(e.keyCode == 39){
+        	td.removeClass('act');
+        	newTd = td.next();
+        	if(valEmpty(newTd[0])){
+        		td.closest('tr').find('td').first().addClass('act');
+        		return td = dropdownMenu.find('td.act');
+        	}
+        	newTd.addClass('act');
+        	return td = dropdownMenu.find('td.act');
+        }
+        if(e.keyCode == 13 && dropdownMenu.find('td.act').length == 1){
+        	return submitDatePickerInput(el, dropdownMenu);
+        }
+    });
 }
 
 function DPchangeYear(el, num){changeYear(el, num, function(){ DPdate() })}
@@ -75,6 +129,11 @@ function DPdate(el){
 	box.find('tbody').html(displayDaysInMonth(box.find('.calendarYear').text(), box.find('select').val()));
 	box.find('td').first().addClass('act');
 	box.find('td').click(function(){ DatePickerSelectDate(el, box, $(this)) });
+	focus_hidden_keyevents(box.find('.hiddenInput'));
+}
+
+function focus_hidden_keyevents(el){
+	el.closest('#datepickerDM').find('.hiddenInput').focus();
 }
 
 function DatePickerSelectDate(el, box, thisDay){
@@ -133,6 +192,7 @@ function submitDatePickerInput(el, box){
 	input.val(value);
 	resetDatePickerInput(input);
 	hideDropdownMenu();
+	input.closest('.formField').next().find('input').focus();
 }
 
 function checkOtherDatePickerValue(el, hidden, value){
