@@ -4,14 +4,6 @@ include(loadPHP('export/extra'));
 include(loadPHP('export/excel/Classes/PHPExcel'));
 include(loadPHP('export/excel/Classes/PHPExcel/Writer/Excel2007'));
 
-function excel_save($module, $spreadsheet){
-    $module = $module.'_'.time();
-    $url = '/crm/static/uploads/excel/'.$module.'.xlsx';
-    $writer = new PHPExcel_Writer_Excel2007($spreadsheet);
-    $writer->save($_SERVER['DOCUMENT_ROOT'].$url);
-    return $url;
-}
-
 function izvoz($SQL){
     $query = get_table_query($SQL);
     if(!$query){ return ['error' => 'No_query_found']; }

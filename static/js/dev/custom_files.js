@@ -1,11 +1,3 @@
-setTimeout(function(){
-	loadJS('export/table', function(){
-		exportTable({
-			id: 'ddd'
-		})
-	})
-}, 1000)
-
 function getCustomFiles(table, callback){
 	var ProjectExt = '';
 	if($('#FileTableExtFilter').length == 1){ ProjectExt = $('#FileTableExtFilter').val() }
