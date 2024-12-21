@@ -72,7 +72,7 @@ function insertData_readBoxMini_ROW(box, module, id, col, row, callback, html = 
 	html += '</div>';
 	if(thisTitle.length > 0){ box.find('.dragTop .title').html(thisTitle.join(', ')) }
 	box.find('.readBoxMiniBox').html(html);
-	RowDataToPlaceholder(box.find('.placeholder'), row, [module]);
+	readBoxMini_joinadds(box.find('.placeholder'), row, [module]);
 	if(typeof callback === 'function'){ callback() }
 }
 function insertCategory_readBoxMini(c){ return '<tr><th colspan="2">'+slovar(c)+'</th></tr>' }
@@ -120,15 +120,16 @@ function insertRow_readBoxMini(box, col, row, html = ''){
     return data;
 }
 
-function getData_readBoxMini_TABLE(box, module, col, row, callback, html = ''){
+function getData_readBoxMini_TABLE(box, module, col, row, callback){
 	box.css('max-width','50vw');
 	GET_module({
 		module:module,
 		done:function(m){
-			html += '<div class="tableBox" data-module="'+module+'" data-simplify="1" data-filter="'+col+'" data-filtervalue="'+row+'">';
-			html += '<div class="horizontalTable" style="max-height:40vh"></div>';
-			html += '<button class="buttonSquare button100 buttonBlue tableLoadMoreButton">'+slovar('Show_more')+'</button></div>';
-			box.find('.readBoxMiniBox').html(html);
+			box.find('.readBoxMiniBox').html(`
+				<div class="tableBox" data-module="`+module+`" data-simplify="1" data-filter="`+col+`" data-filtervalue="`+row+`">
+					<div class="horizontalTable" style="max-height:40vh"></div>
+				</div>
+			`);
 			return loadJS('table/table', function(){ tableLoadColumns(box.find('.tableBox')) });
 		}
     })
@@ -184,6 +185,23 @@ function remove_readBoxMiniBackData(box){
 function edit_readBoxMini(el, module, id){
 	close_readBoxMini(el.closest('.readBoxMini'));
 	loadJS('main/edit-box',function(){ openEditBoxQuick(module, id) });
+}
+
+function readBoxMini_joinadds(placeholders, data, all_modules){
+    placeholders.each(function(){
+        var placeholder = $(this);
+        var list = placeholder.attr('data-list').split(',');
+        var module = list[1];
+        if(all_modules.includes(module)){ module = module + (all_modules.length) }
+        all_modules.push(module);
+        var ref_module = module + '.' + list[1] + '_';
+        var arr = [];
+        for(const [key, col] of Object.entries(data)){
+            if(key.includes(ref_module) && col != null){ arr.push(col) }
+        }
+        if(arr.length != 0){ placeholder.text(arr.join(', ')) }
+        else{ placeholder.text(slovar('Search')) }
+    });
 }
 
 function animation_readBoxMini(el, box){

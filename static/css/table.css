@@ -152,6 +152,14 @@
 }
 .tableTop .tableTopSelect:hover{ background-color: #eff3f6; }
 
+/* FOOT TABLE */
+.tableFooter{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
 @media (max-width: 800px){
     .tableTop tr{
         display: flex;

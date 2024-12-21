@@ -91,7 +91,7 @@ function get_event_filter($SQL, $module, $user_id, $user_role_id){
 }
 
 function get_event_subject($SQL, $module){
-    $A = $SQL->query("SELECT data FROM module_calendar WHERE module = '$module' LIMIT 1");
+    $A = $SQL->query("SELECT data FROM module_presets WHERE module = '$module' AND type = 'calendar' LIMIT 1");
     if(!$A || $A->num_rows == 0){ return get_default_event_subject($SQL, $module); }
     while ($B = $A->fetch_row()){
         $data = json_decode($B[0]);

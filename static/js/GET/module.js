@@ -5,7 +5,7 @@ function GET_globals(d){
 	}).fail(function(){console.log('ERROR: backend napaka')});
 }
 
-function GET_module(d){
+function GET_module(d){ console.log({loading_module:d.module});
 	$.get('/crm/php/main/GET_module.php?get_modules=1', {module:d.module}, function(data){
 		data = JSON.parse(data);
 		if(d.error && data.error){ return d.error(data.error) }
@@ -14,7 +14,7 @@ function GET_module(d){
 	}).fail(function(){console.log('ERROR: backend napaka')});
 }
 
-function GET_column(d){
+function GET_column(d){ console.log({loading_column:d.module});
 	$.get('/crm/php/main/GET_column.php?get_columns=1', {
 		module:d.module,
 		column:d.column,
@@ -29,7 +29,7 @@ function GET_column(d){
 	}).fail(function(){console.log('ERROR: backend napaka')});
 }
 
-function GET_row(d){
+function GET_row(d){ console.log({loading_row:d.module});
 	$.get('/crm/php/main/GET_row.php?get_row=1', {
 		readonly:d.readonly,
 		module:d.module,

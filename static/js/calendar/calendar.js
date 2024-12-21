@@ -625,11 +625,6 @@ function saveNewStartDate(box, eventItem, date){
 
 // ---------------------------- OTHER
 
-function removeCalendar(callback = false){
-    $('.calendarBox').empty().removeClass('calendarBox');
-    if(callback){ callback() }
-}
-
 addTrigger({
     id: 'submitAddBox',
     trigger: function(){ createCalendar($('.calendarBox').first()) }

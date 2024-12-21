@@ -7,12 +7,6 @@
         right: { table: "Options_table" }
     }
     $('#main_table').prepend(HTML_tableTop(data));
-
-    var data = {
-        left: {table: "counter"},
-        right: {table: "load_more"}
-    }
-    $('#main_table').append(HTML_tableTop(data));
 </script>
 
 <?php if(!isset($moduleCanAdd) || !in_array($_SESSION['user_role_id'], $moduleCanAdd)): ?>

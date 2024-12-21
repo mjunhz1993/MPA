@@ -9,6 +9,7 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/check_user.php');
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="UTF-8">
 
 <link rel="shortcut icon" href="/crm/static/img/OKTAGON-IT.ico">
 <link rel="manifest" href="/crm/static/PWA/manifest.json">

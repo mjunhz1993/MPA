@@ -1,9 +1,13 @@
-function openCalendarTable(module, box){
-	$.get('/crm/php/calendar/presets.php', {
+function openCalendarTable(box){
+	module = box.attr('data-module');
+	box = box.find('.horizontalTable');
+
+	$.get('/crm/php/presets/presets.php', {
 		get_presets:true,
-		module:module
+		module:module,
+		type:'calendar'
 	}, function(data){
-		data = JSON.parse(data);
+		data = JSON.parse(data); console.log(data);
 		if(!data){ return createAlertPOPUP(slovar('Empty')) }
 		data = data.data;
 		if(valEmpty(data.startCol)){ return createAlertPOPUP(slovar('Empty')) }

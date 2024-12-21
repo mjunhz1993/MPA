@@ -16,7 +16,7 @@ function bind_param_to_table($A){
 
 	$types = '';
 	$values = [];
-	foreach ($d as $param) {
+	foreach ($_GET['param'] as $param) {
 	    $types .= $param['type'];
 	    $values[] = &$param['value'];
 	}

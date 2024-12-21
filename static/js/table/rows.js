@@ -1,5 +1,8 @@
 function tableAddLoadedTools(module, box, id, data, html = ''){
-    if(!valEmpty(box.data('simplify'))){ return '' }
+    if(
+        !valEmpty(box.data('simplify')) ||
+        valEmpty(module)
+    ){ return '' }
     html += '<td class="toolRow">';
     var archive = box.find('.archiveSelect').val();
     if(valEmpty(archive)){ archive = '' }
@@ -88,7 +91,7 @@ function tableAddLoadedRows_VARCHAR(list, value, th, id, module, archive, html =
         for(i=0; i<valueSplit.length; i++){
             var v = valueSplit[i].split(';');
             if(valEmpty(v[0])){ continue }
-            html += '<div class="multiselectinputbox"><span>'+v[1]+'</span></div>';
+            html += `<div class="multiselectinputbox"><span>`+v[1]+`</span></div>`;
         }
     }
     return html+'</td>';

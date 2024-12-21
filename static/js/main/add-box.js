@@ -74,7 +74,8 @@ function submitAddBox(){
     form.unbind('submit').on('submit', function(e){
         e.preventDefault();
         submitForm($(this), function(){
-            tableLoad($('#main_table'), 0, function(){ closeAddBox() })
+            tableLoadColumns($('#main_table'), function(){ closeAddBox() });
+            // tableLoad($('#main_table'), 0, function(){ closeAddBox() })
         });
     });
 }

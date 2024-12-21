@@ -43,17 +43,12 @@
                         <div class="linksvg more" data-svg="settings" onClick="showDropdownMenu($(this))">
                             <div class="DropdownMenuContent">
                                 <a onclick="openEditModule('<?php echo $B[0]; ?>')" data-slovar="Edit_module"></a>
-                                <?php if($B[9] == ''): ?>
-                                <a onclick="openEditNotifications('<?php echo $B[0]; ?>')" data-slovar="Edit_notifications"></a>
-                                <?php endif; ?>
-                                <?php if($B[9] == ''): ?>
-                                <a onclick="loadJS('dev/calendar', function(){openEditCalendar('<?php echo $B[0]; ?>')})" data-slovar="Edit_calendar"></a>
-                                <?php endif; ?>
-                                <?php if($B[9] == ''): ?>
-                                <a onclick="loadJS('dev/automations', function(){openEditAutomations('<?php echo $B[0]; ?>')})" data-slovar="Edit_automations"></a>
-                                <?php endif; ?>
                                 <a onclick="loadJS('dev/addons', function(){openEditAddons('<?php echo $B[0]; ?>')})" data-slovar="Edit_addons"></a>
                                 <?php if($B[9] == ''): ?>
+                                <a onclick="openEditNotifications('<?php echo $B[0]; ?>')" data-slovar="Edit_notifications"></a>
+                                <a onclick="loadJS('dev/presets', function(){openEditPreset('<?php echo $B[0]; ?>','calendar')})" data-slovar="Edit_calendar"></a>
+                                <a onclick="loadJS('dev/presets', function(){openEditPreset('<?php echo $B[0]; ?>','pipeline')})" data-slovar="Edit_pipeline"></a>
+                                <a onclick="loadJS('dev/automations', function(){openEditAutomations('<?php echo $B[0]; ?>')})" data-slovar="Edit_automations"></a>
                                 <a onclick="openColumns('<?php echo $B[0]; ?>')" data-slovar="Edit_columns"></a>
                                 <?php endif; ?>
                                 <?php if($B[1] == 1): ?>

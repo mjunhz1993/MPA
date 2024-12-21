@@ -1,9 +1,9 @@
 function tableLoadColumns(box, callback){
-    if(box.length == 0){ return console.log('ERROR: no outer table box') }
-    var module = box.attr('data-module');
+    if(box.length == 0){ return console.log('ERROR: no table box') }
+    var module = box.data('module');
     var tableBox = box.find('.horizontalTable');
     if(tableBox.length == 0){ return console.log('ERROR: no inner table box') }
-    tableLoadMoreButton();
+    table_addFooter(box);
     loadJS('form/form', function(){loadJS('GET/module', function(){
         GET_module({
             module:module,
@@ -66,7 +66,7 @@ function checkIfMainTable(box, tableBox, moduleData, html = ''){
 
 function HTML_toggleTableView(accessories, html = ''){
     if(
-        !accessories.includes('calendar')
+        !accessories.some(r=> ['calendar','pipeline'].includes(r))
     ){ return '' }
 
     html += '<a class="act" onclick="toggleTableView($(this),\'list\')" data-tooltip="'+slovar('General')+'">'+getSVG('list')+'</a>';
@@ -84,21 +84,20 @@ function toggleTableView(el,type){
     el.addClass('act');
 
     box = el.closest('.tableBox');
-    scrollBox = box.find('.horizontalTable');
+    box.find('.horizontalTable').attr('class','horizontalTable');
+    box.find('.tableFooter').remove();
 
     if(type == 'list'){
-        return removeCalendar(function(){
-            tableLoadColumns(box);
-        })
+        tableLoadColumns(box);
     }
     if(type == 'calendar'){
-        return loadJS('table/calendar', function(){
-            openCalendarTable(box.attr('data-module'), scrollBox)
+        return loadJS('table/mode/calendar', function(){
+            openCalendarTable(box)
         })
     }
     if(type == 'pipeline'){
-        return loadJS('table/pipeline', function(){
-            openPipeline(box.attr('data-module'))
+        return loadJS('table/mode/pipeline', function(){
+            openPipeline(box)
         })
     }
 }
@@ -193,7 +192,7 @@ function tableCreateFiltersHTML(el, column, type, list, html =''){
     {
         html += '<div class="selectMenu inputPlaceholder" data-callback="tableLoad(input)" data-list="' + list + '" ';
         html += 'onclick="loadJS(\'form/selectMenu\', function(el){ openSelectMenu(el); }, $(this))">';
-        html += '<input type="text" name="' + column + '">';
+        html += '<input class="hiddenInput" type="text" name="' + column + '">';
         html += '<div>' + slovar('Select') + '</div></div>';
         return html
     }
@@ -209,9 +208,9 @@ function tableCreateFiltersHTML(el, column, type, list, html =''){
     if(type == 'DATE'){ return '<input type="text" class="DateStartEndPickerInput" onfocus="openDateStartEndPicker($(this))">' }
     if(type == 'TIME'){ return '<input type="text" class="DateStartEndPickerInput" onfocus="openDateStartEndPicker($(this), \'time\')">' }
     if(type == 'JOIN_ADD'){
-        html += '<input type="text" ';
+        html += '<input type="text" class="hiddenInput" ';
         html += 'data-list="' + list + '" onfocusout="focusOutJOIN_ADDInput($(this))" ';
-        html += 'autocomplete="off" style="display:none;" placeholder="' + slovar('Search') + '">';
+        html += 'autocomplete="off" placeholder="' + slovar('Search') + '">';
         html += '<div class="inputPlaceholder JOIN_ADD_placeholder" data-list="' + list + '" onclick="focusJOIN_ADDInput($(this))">' + slovar('Search') + '</div>';
         return html
     }
@@ -429,19 +428,29 @@ function tableCreateFixedWidthColumns(box){
     }
 }
 
-function tableLoadMoreButton(){
-    $('.tableLoadMoreButton').unbind('click').click(function(){
-        var box = $(this).closest('.tableBox');
-        if(box.length == 1){
-            var table = box.find('.table').first();
-            if(box.length == 1){
-                var tr = table.find('tbody > tr.countme');
-                tableLoad(table, tr.length);
-            }
-            else{console.log('ERROR: button has no table');}
-        }
-        else{console.log('ERROR: button has no box');}
-    });
+function table_addFooter(box){
+    if(box.find('.tableFooter').length != 0){ return }
+    box.append(`
+        <div class="tableFooter">
+            <div>
+                `+slovar('Showing')+`
+                <b class="tableRowCount"></b>
+                `+slovar('Entries')+`
+            </div>
+            <button class="button buttonBlue tableLoadMoreButton" onclick="tableLoadMoreButton($(this))">
+                `+getSVG('show_more')+`
+                <span>`+slovar('Show_more')+`</span>
+            </button>
+        </div>
+    `);
+}
+function tableLoadMoreButton(el){
+    var box = el.closest('.tableBox');
+    if(box.length == 0){ return }
+    var table = box.find('.table').first();
+    if(box.length == 0){ return }
+    var tr = table.find('tbody > tr.countme');
+    tableLoad(table, tr.length);
 }
 
 function tableClickDeleteButton(el, module, id){POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){

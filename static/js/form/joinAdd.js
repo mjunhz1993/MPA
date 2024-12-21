@@ -193,25 +193,36 @@ function JOINADD_click(input, placeholder, el){
 
 function JOINADD_clear(el){ el.val(''); hideDropdownMenu(); focusOutJOIN_ADDInput(el); }
 
-function JOINADD_refreshFormData(input){
-    var placeholder = input.next();
-    if(valEmpty(input.val())){ return placeholder.text(slovar('Search')) }
-    placeholder.html(HTML_loader());
+function JOINADD_refreshAllFormData(form){
+    form.find('[data-type=JOIN_ADD]').addClass('loadingJOINADD');
+    form.find('.loadingJOINADD .inputPlaceholder').html(HTML_loader());
+    JOINADD_refreshFormData(form);
+}
+function JOINADD_refreshFormData(form){
+    const box = form.find('.loadingJOINADD').first();
+    const input = box.find('input[type=text]');
+    const placeholder = input.next();
+    box.removeClass('loadingJOINADD');
+    if(valEmpty(input.val())){ return JOINADD_errorLoading(form, placeholder) }
     var module = input.attr('data-list').split(',')[1];
     GET_column({
         module:module,
         done:function(col){GET_row({
             module:module, id:input.val(),
             done:function(data){
-                if(data.error){ return placeholder.text(slovar('Search')) }
-                var cf = col.filter(function(el){return el.list == 'PRIMARY'});
-                var t = [];
-                for(var i=0; i<cf.length; i++){ t.push(data[cf[i].column]) }
-                if(t.length == 0){ return placeholder.text(slovar('Search')) }
-                placeholder.text(t.join(' - '))
+                if(data.error){ return JOINADD_errorLoading(form, placeholder) }
+                col = col.filter(function(el){return el.list == 'PRIMARY'})
+                .map(function(el){ return data[el.column] });
+                if(col.length == 0){ return JOINADD_errorLoading(form, placeholder) }
+                placeholder.text(col.join(' - '));
+                setTimeout(function(){ JOINADD_refreshFormData(form) }, 500);
             }
         })}
     })
+}
+function JOINADD_errorLoading(form, placeholder){
+    placeholder.text(slovar('Search'));
+    setTimeout(function(){ JOINADD_refreshFormData(form) }, 500);
 }
 
 var dropdownMenuDelay = (function(){

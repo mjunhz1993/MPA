@@ -78,8 +78,7 @@ function MoveRowDataToFormFields(data, module, box, viewType = 'EDIT'){
     // GET UPLOADED FILES
     if(data.file && ['EDIT','READ'].includes(viewType)){ MoveRowFilesToFormFields(data, module, form) }
     
-    // FIND JOIN_ADD PLACEHOLDERS
-    RowDataToPlaceholder(form.find('.JOIN_ADD_placeholder'), data, [module]);
+    refreshFormData(form);
     tooltips();
 }
 
@@ -108,23 +107,6 @@ function MoveRowFilesToFormFields(data, module, form){
     if(form.hasClass('readonly')){ form.find('.fileArea svg').remove() }
     else{form.find('.fileArea svg').click(function(){ removeFile($(this)) })}
     form.find('.fileArea .img').click(function(){ clickOnFile(module, $(this)) });
-}
-
-function RowDataToPlaceholder(placeholders, data, all_modules){
-    placeholders.each(function(){
-        var placeholder = $(this);
-        var list = placeholder.attr('data-list').split(',');
-        var module = list[1];
-        if(all_modules.includes(module)){ module = module + (all_modules.length) }
-        all_modules.push(module);
-        var ref_module = module + '.' + list[1] + '_';
-        var arr = [];
-        for(const [key, col] of Object.entries(data)){
-            if(key.includes(ref_module) && col != null){ arr.push(col) }
-        }
-        if(arr.length != 0){ placeholder.text(arr.join(', ')) }
-        else{ placeholder.text(slovar('Search')) }
-    });
 }
 
 // ----------------------- USER EVENTS
@@ -178,9 +160,7 @@ function refreshFormData(form){loadJS('GET/module', function(){
     if(form.find('.datepickerinput,.timepickerinput,.datetimepickerinput').length > 0){loadJS('form/datepicker',function(){resetDatePickerInputs(form)})}
     // if(form.find('textarea').length > 0){loadJS('form/cleditor',function(){checkForTextAreaInputs(form.find('form').first())})}
     if(form.find('.colorpicker').length > 0){loadJS('form/colorpicker',function(){resetColorPickerInputs(form)})}
-    if(form.find('[data-type=JOIN_ADD]').length > 0){form.find('[data-type=JOIN_ADD]').each(function(){
-        JOINADD_refreshFormData($(this).find('input[type=text]'));
-    })}
+    if(form.find('[data-type=JOIN_ADD]').length > 0){ JOINADD_refreshAllFormData(form) }
 })}
 
 // ----------------------- SUBMIT

@@ -12,10 +12,6 @@ function HTML_tableTop(data, html = ''){
             html += '<button class="button buttonGreen" onClick="loadJS(\'main/add-box\', function(){openAddBox()})">';
             html += getSVG('plus_circle') + '<span class="SVGdesc">' + slovar('Add_new') + '</span></button>';
         }
-        if(data.left.table == 'counter'){
-            html += slovar('Showing') + ' <span class="tableRowCount"></span> ' + slovar('Entries');
-        }
-
     }
     html += '</td>';
     if(data.center){ html += '<td class="center"></td>'; }
@@ -26,11 +22,6 @@ function HTML_tableTop(data, html = ''){
             html += getSVG('settings') + '<span class="SVGdesc">' + slovar('Show_more_options') + '</span>';
             html += '<div class="DropdownMenuContent"></div></div>';
         }
-        if(data.right.table == 'load_more'){
-            html += '<button class="button buttonBlue tableLoadMoreButton">';
-            html += getSVG('show_more') + '<span class="SVGdesc">' + slovar('Show_more') + '</span></button>';
-        }
-
     }
     html += '</td></tr></table>';
     return html;

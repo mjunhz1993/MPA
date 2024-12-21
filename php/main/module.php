@@ -3,7 +3,7 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 include(loadPHP('main/module_functions'));
 include(loadPHP('main/automations'));
 
-if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POST['csrf_token']){
+if(isset($_SESSION['user_id'])){
     
     $user_id = $_SESSION['user_id'];
     $user_role_id = $_SESSION['user_role_id'];
@@ -152,8 +152,6 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         if(!is_array($SET)){ addToDiary($SQL, $module, $id, $diary_description, 'EDIT'); }
         return ['message' => slovar('Successfully_edited')];
     }
-    if(isset($_GET['edit_row']) && isset($_GET['module'])){ echo json_encode(edit_row($SQL, $user_id, $user_role_id)); }
-    
     
     function delete_file($SQL){
         $user_id = $_SESSION['user_id'];
@@ -242,15 +240,14 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         echo json_encode($data);
     }
 
+    if(isset($_GET['edit_row']) && isset($_GET['module'])){ echo json_encode(edit_row($SQL, $user_id, $user_role_id)); }
     if(isset($_GET['delete_file'])){ echo json_encode(delete_file($SQL)); }
-
     if(isset($_GET['archive_module'])){
         $module = SafeInput($SQL, $_POST['module']);
         $col = SafeInput($SQL, $_POST['col']);
         $year = SafeInput($SQL, $_POST['year']);
         echo json_encode(archive_module($SQL, $SQL_db, $module, $col, $year));
     }
-    
     if(isset($_GET['resize_columns'])){
         $column_id = $_POST['column_id'];
         $size = $_POST['size'];
