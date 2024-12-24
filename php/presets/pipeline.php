@@ -14,6 +14,7 @@ function get_pipeline($SQL){
     }
 
 	$SELECT[] = $module['module'].'.'.$module['module'].'_id AS id';
+	$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['status']).' AS status';
 	$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['subject']).' AS subject';
 	$SELECT[] = $assigned.' AS assigned';
 	$SELECT[] = 'user_username AS assignedName';
@@ -29,18 +30,21 @@ function get_pipeline($SQL){
 		$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['share']).' AS share';
 	}
 
+	$LIMIT = 10;
+	$OFFSET = $_GET['data']['OFFSET'] ?? 0;
+
 	$A = $SQL->query("
 		SELECT ".implode(',', $SELECT)." 
 		FROM ".$module['module']."
 		LEFT JOIN user ON user_id = $assigned
 		WHERE ".implode(' AND ', $WHERE)."
-		LIMIT 10
+		LIMIT $LIMIT OFFSET $OFFSET
 	");
 	if($A->num_rows == 0){ return []; }
-	$arr = [];
+	$arr['loadMore'] = ($A->num_rows == $LIMIT);
 	while($B = $A->fetch_assoc()){
 		$B = pipeline_decode($SQL, $B);
-		$arr[] = $B;
+		$arr['rows'][] = $B;
 	}
 	return $arr;
 }

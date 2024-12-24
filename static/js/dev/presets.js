@@ -40,7 +40,7 @@ function appendColumnToForm(popup, c){
 	if(c.type == 'DATETIME'){ popup.find('.date-type').append(html) }
 	if(c.type == 'JOIN_ADD'){ popup.find('.join-type').append(html) }
 	if(c.type == 'PRICE'){ popup.find('.price-type').append(html) }
-	if(c.type == 'VARCHAR' && c.list == 'MULTISELECT'){ popup.find('.share-type').append(html) }
+	if(c.type == 'VARCHAR' && c.list.includes('MULTISELECT')){ popup.find('.share-type').append(html) }
 	if(c.type == 'VARCHAR' && c.list == 'COLOR'){ popup.find('.color-type').append(html) }
 }
 

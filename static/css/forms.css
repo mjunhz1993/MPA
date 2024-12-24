@@ -213,6 +213,7 @@ fieldset legend.closed:after{transform: rotate(45deg);}
     border: 1px solid gainsboro;
 }
 #Main .multiselectinputbox{
+    cursor: pointer;
     display: inline-block;
     color: var(--blue);
     border: 1px solid;

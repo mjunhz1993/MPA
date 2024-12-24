@@ -1,61 +1,40 @@
-function generate_analytic_bar(data, callback){
-	$.post(ANALobj.post, { generate_analytic_pie:true, data:data}, function(data){ callback(JSON.parse(data)) })
-}
-
-function HTML_ANAL_bar(table, data, html = ''){generate_analytic_bar(data, function(d){
-	HTML_ANAL_bar_chart(table, d)
-})}
-
-function HTML_ANAL_bar_chart(table, data){loadJS('chart/chart', function(){
-	table.append('<div class="bar"></div>');
-	box = table.find('.bar');
-	if(valEmpty(data[0])){ return createAlert(box, 'Red', slovar('No_data')) }
+function HTML_ANAL_bar(box, data){loadJS('chart/chart', function(){
+	thisBox = box.closest(ANALobj.box);
+	box.append('<div class="bar"></div>');
+	bar = box.find('.bar');
 	extra = ['modeIndex'];
-
-	CHART_get(table.data('type'), box, 150, add_dataset_bar(data), extra);
+	if(thisBox.data('extra') === 'price'){ extra.push('PRICE') }
+	if(thisBox.data('extra') === 'percent'){ extra.push('PERCENT') }
+	console.log(data, add_dataset_bar(data));
+	CHART_get(thisBox.data('type'), bar, 150, add_dataset_bar(data), extra);
 })}
 
 function add_dataset_bar(data){
 	return {
-		labels: grab_bar_labels(data),
-		datasets: add_dataset_bar_loop(data)
+		labels: grab_bar_data(data),
+		datasets: loop_dataset_bar(data)
 	}
 }
 
-function add_dataset_bar_loop(data, hex = null, datasets = []){
-	d = data[1];
-	for(i=1; i<d[0].length; i++){
-		hex = generateColorPalette(1, hex);
-		datasets.push({
-			label: slovar(data[0][i].name),
-			data: grab_bar_data(d, i),
-			backgroundColor: hex,
-		})
-	}
-	return datasets;
-}
-
-function grab_bar_data(data, i, arr = []){for(j=0; j<data.length; j++){
-	arr.push(data[j][i]);
-} return arr }
-
-function grab_bar_labels(data, arr = []){
-	col = data[0][0];
-
-	if(col.type == 'SELECT'){
-		col.list = col.list.split('|');
-	}
-
-	for(i=0; i<data[1].length; i++){
-		d = data[1][i][0];
-		if(col.type == 'SELECT'){
-			for(j=0; j<col.list.length; j++){
-				l = col.list[j].split(',');
-				if(l[0] == d){ d = slovar(l[1]) }
-			}
-		}
-		arr.push(d);
-	}
-
+function grab_bar_data(data, col = 0, arr = []){
+	data.forEach((item) => {
+		arr.push(item[Object.keys(item)[col]])
+	})
 	return arr
+}
+
+function loop_dataset_bar(data, loop = []){
+	col = Object.keys(data[0]);
+	col.shift();
+	st = 1;
+	colorPalette = generateColorPalette(data.length);
+	col.forEach((item) => {
+		loop.push({
+			label: item,
+			data: grab_bar_data(data, st),
+			backgroundColor: colorPalette[st],
+		})
+		st++;
+	})
+	return loop
 }

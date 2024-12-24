@@ -43,7 +43,7 @@ function FORM_analytic(id = null){
 		$.post(ANALobj.post, $(this).serialize(), function(data){ data = JSON.parse(data);
 			if(data.error){ return createAlertPOPUP(data.error) }
 			removePOPUPbox();
-			HTML_ANAL_select('#'+ANALobj.select, function(id){ get_analytic_tables('#'+ANALobj.main, data.id) })
+			HTML_ANAL_select(ANALobj.select, function(id){ get_analytic_tables(ANALobj.main, data.id) })
 		})
 	});
 
@@ -135,7 +135,7 @@ function FORM_analytic_table(pid, id = null, html = ''){
 		$.post(ANALobj.post, $(this).serialize(), function(data){ data = JSON.parse(data);
 			if(data.error){ return createAlertPOPUP(data.error) }
 			removePOPUPbox();
-			get_analytic_tables('#'+ANALobj.main, pid);
+			get_analytic_tables(ANALobj.main, pid);
 		})
 	});
 
@@ -154,6 +154,54 @@ function add_analytic_table_to_form(form, data){
 
 // CONTENT
 
-function FORM_analytic_content(pid, id){loadJS('analytics/tools/table', function(){
-	FORM_analytic_content_generate(pid, id)
+function FORM_analytic_content(pid, html = ''){loadJS('dev/custom_files', function(){
+	hideDropdownMenu();
+	popup = createPOPUPbox();
+	popupBox = popup.find('.popupBox');
+	popupBox.html(HTML_ANAL_form());
+
+	form = popup.find('.addFormInner');
+	form.append('<input type="hidden" name="analytic_content_create">');
+	form.append('<input type="hidden" name="pid" value="'+pid+'">');
+	form.append(`
+		<label>Url</label>
+		<select name="href"></select>
+		<label>Extra</label>
+		<select name="extra">
+			<option></option>
+			<option>price</option>
+			<option>percent</option>
+		</select>
+	`);
+
+	loadCustomFiles({
+		ext:'sql',
+		filter:'analytics_',
+		done:function(files){
+			files.forEach(file => {
+				form.find('[name=href]').append(`<option>${file.name}</option>`)
+			});
+			if(pid){ analytic_content_get(function(data){ add_analytic_content_to_form(form, data) }, pid) }
+		}
+	});
+
+	popup.find('form').on('submit', function(e){
+		e.preventDefault();
+		$.post(ANALobj.post, $(this).serialize(), function(data){ data = JSON.parse(data);
+			if(data.error){ return createAlertPOPUP(data.error) }
+			removePOPUPbox();
+			thisEl = $(ANALobj.box+'[data-id="'+pid+'"]');
+			thisEl.addClass('loading');
+			find_loading_analytic_tables(thisEl.parent());
+		})
+	});
+
+	popup.fadeIn('fast');
 })}
+
+function add_analytic_content_to_form(form, data){
+	form.find('[name=href]').val(data.href);
+	form.find('[name=extra]').val(data.extra);
+	loadJS('form/form', function(){ refreshFormData(form) });
+	form.parent().find('.buttonGreen').text(slovar('Edit'));
+}

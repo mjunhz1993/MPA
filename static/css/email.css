@@ -155,3 +155,13 @@
 }
 #email_response_bar button{ font-size: 20px; }
 #email_response_bar button:last-child{ margin-left: 20px; }
+
+.popup .crm_email{
+	position: absolute;
+    top: 0;
+    right: 0;
+    background-color: var(--light-blue);
+    color: white;
+    padding: 5px 10px;
+    border-radius: 0 5px 0 5px;
+}

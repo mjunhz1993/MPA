@@ -41,10 +41,7 @@
     overflow: hidden;
     white-space: nowrap;
 }
-#Main .table td:not(.toolRow){
-    text-align: left;
-    text-overflow: ellipsis;
-}
+#Main .table td:not(.toolRow){ text-align: left; }
 #Main .table tr:not(.tableSumRow) td:not(:first-child){ border-left: 1px solid #d5d5d5; }
 #Main .table .hoverEffect:hover td{
     cursor: pointer;

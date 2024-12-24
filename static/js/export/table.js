@@ -27,8 +27,6 @@ function loadExportTable(d){
 }
 
 function addExportTableToBox(d, data){
-	
-
 	d.box.html(`
 	<div id="exportTablePreview">
 	<div class="top">

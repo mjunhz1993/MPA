@@ -101,7 +101,7 @@ function insertRow_readBoxMini(box, col, row, html = ''){
     	if(col.list == 'URL'){ return urlifyMessage(data) }
     	if(col.list == 'EMAIL'){ return '<a class="link" onclick="moveToCorner_readBoxMini($(this));clickMailToLink(\''+data+'\')">'+data+'</a>' }
     	if(col.list == 'COLOR'){ return '<div style="display:inline-block;padding:5px;border-radius:50%;background-color:'+data+'"></div>' }
-	    if(col.list == 'MULTISELECT'){
+	    if(col.list.includes('MULTISELECT')){
 	        var valueSplit = data.split('|'); data = [];
 	        for(var i=0; i<valueSplit.length; i++){
 	            var v = valueSplit[i].split(';');

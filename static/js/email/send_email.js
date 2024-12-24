@@ -37,7 +37,7 @@ function open_send_email(d = {}, html = ''){loadJS('email/slovar/' + slovar(), f
         html += '<br>';
         html += '<textarea name="body" id="email_body" data-type="email"></textarea>';
 
-        html += '<div class="fileArea forwardFileArea">';
+        html += '<div class="forwardFileArea">';
         if(!valEmpty(d.attachments)){
             var fs = d.attachments.split('|');
             for(var i=0; i<fs.length; i++){
@@ -137,6 +137,9 @@ function add_emailBodyContent(form, content){
 }
 
 function add_custom_forwardFile(form, path, file, fileName, html = ''){
+    if(!form.find('.forwardFileArea').hasClass('fileArea')){
+        form.find('.forwardFileArea').addClass('fileArea');
+    }
     if(form.find('[name=custom_file_path]').length == 0){
         form.find('.fileFormField').hide();
         html += '<input type="hidden" name="custom_file_path" value="' + path + '">';
@@ -154,6 +157,7 @@ function change_sender(form, user_id){
 function change_sender_to_crm(form){
     if(form.find('[name=crm_email]').length != 0){ form.find('[name=crm_email]').remove() }
     form.prepend('<input type="hidden" name="crm_email" value="1">');
+    form.append('<div class="crm_email">MPA email</div>');
 }
 
 function send_email(form, callback){

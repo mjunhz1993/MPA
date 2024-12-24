@@ -67,34 +67,41 @@ function tableAddLoadedRows(module, id, value, c, table){
     return tableAddLoadedRows_DEFAULT(value)
 }
 
-function tableAddLoadedRows_VARCHAR(list, value, th, id, module, archive, html = ''){
-    if(valEmpty(list)){ return tableAddLoadedRows_DEFAULT(value) }
-    html += '<td ';
-    if(list == 'COLOR'){ html += 'style="background-color:' + value + ';"' }
-    html += '>';
-    if(list == 'PRIMARY'){
-        html += '<a class="link primary" title="' + value.replace('"', '') + '"';
-        if(th.closest('.tableBox').attr('id') == 'main_table'){
-            html += 'onClick="loadJS(\'main/edit-box\',function(){clickEditButton('+id+',\'READ\','+archive+')})"';
-        }
-        if(!valEmpty(th.closest('.tableBox').data('simplify'))){
-            html += 'onClick="loadJS(\'main/read-box-mini\',function(el){open_readBoxMini(el,\'row\',\''+module.module+'\','+id+')},$(this))"';
-        }
-        else{ html += 'href="/crm/templates/modules/main/main.php?module='+module.module+'#'+id+'-READ-'+archive+'"' }
-        html += '>'+value+'</a>';
+function tableAddLoadedRows_VARCHAR(list, value, th, id, module, archive, html = '') {
+    if (valEmpty(list)) return tableAddLoadedRows_DEFAULT(value);
+
+    html += `<td ${list === 'COLOR' ? `style="background-color:${value};"` : ''}>`;
+
+    if (list === 'PRIMARY') {
+        const isMainTable = th.closest('.tableBox').attr('id') === 'main_table';
+        const simplify = th.closest('.tableBox').data('simplify');
+        const link = !valEmpty(simplify)
+            ? `onClick="loadJS('main/read-box-mini', el => open_readBoxMini(el, 'row', '${module.module}', ${id}), $(this))"`
+            : `href="/crm/templates/modules/main/main.php?module=${module.module}#${id}-READ-${archive}"`;
+        const edit = isMainTable
+            ? `onClick="loadJS('main/edit-box', () => clickEditButton(${id}, 'READ', ${archive}))"`
+            : '';
+        html += `<a class="link primary" title="${value.replace('"', '')}" ${edit} ${link}>${value}</a>`;
+    } else if (list === 'URL') {
+        html += urlifyMessage(value);
+    } else if (list === 'PHONE') {
+        html += `<a class="link" onclick="clickTelLink('${value}')">${value}</a>`;
+    } else if (list === 'EMAIL') {
+        html += `<a class="link" onclick="clickMailToLink('${value}')">${value}</a>`;
+    } else if (list.includes('MULTISELECT')) {
+        const listModule = list.split('|')[1];
+        value.split('|').forEach(val => {
+            const [multiId, label] = val.split(';');
+            if (!valEmpty(multiId)) {
+                const onClick = !valEmpty(listModule)
+                    ? `onclick="loadJS('main/read-box-mini', el => open_readBoxMini(el, 'row', '${listModule}', ${multiId}), $(this))"`
+                    : '';
+                html += `<div class="multiselectinputbox" ${onClick}><span>${label || ''}</span></div>`;
+            }
+        });
     }
-    else if(list == 'URL'){ html += urlifyMessage(value) }
-    else if(list == 'PHONE'){ html += '<a class="link" onclick="clickTelLink(\'' + value + '\')">' + value + '</a>' }
-    else if(list == 'EMAIL'){ html += '<a class="link" onclick="clickMailToLink(\'' + value + '\')">' + value + '</a>' }
-    else if(list == 'MULTISELECT'){
-        valueSplit = value.split('|');
-        for(i=0; i<valueSplit.length; i++){
-            var v = valueSplit[i].split(';');
-            if(valEmpty(v[0])){ continue }
-            html += `<div class="multiselectinputbox"><span>`+v[1]+`</span></div>`;
-        }
-    }
-    return html+'</td>';
+
+    return `${html}</td>`;
 }
 function tableAddLoadedRows_SELECT(list, value, html = ''){
     html += '<td onmouseover="loadJS(\'table/edit/selectMenu\',function(el){ hoverTDselectMenu(el) },$(this))" ';

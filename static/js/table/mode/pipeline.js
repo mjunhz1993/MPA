@@ -52,25 +52,30 @@ function pipeline_displayStatusRow(box, data, html = ''){
 }
 
 function pipeline_loadAllColumns(box, data, thisCol = false){
-	if(!thisCol){ thisCol = box.find('.pipeline tbody td').first() }
-	pipeline_loadColumn(box, data, thisCol, function(){
+	if(!thisCol){
+		box.find('.pipeline tbody td').append(HTML_loader());
+		thisCol = box.find('.pipeline tbody td').first()
+	}
+	pipeline_loadColumn(box, data, thisCol, true, function(){
 		nextCol = thisCol.next('td');
 		if(nextCol.length == 0){ return }
 		pipeline_loadAllColumns(box, data, nextCol);
 	})
 }
 
-function pipeline_loadColumn(box, data, thisCol, callback = false){
-	thisCol.empty();
+function pipeline_loadColumn(box, data, thisCol, emptyCol = true, callback = false){
+	if(emptyCol){ thisCol.empty() }
 	$.get('/crm/php/presets/pipeline.php', {
 		get_pipeline: true,
 		data: data,
 		statusValue: thisCol.data('status')
 	}, function(rows){
 		rows = JSON.parse(rows);
-		if(callback){ callback() }
+		remove_HTML_loader(thisCol);
+		setTimeout(function(){ if(callback){callback()} }, 100)
 		if(rows.error || rows.length == 0){ return }
-		pipeline_displayRow(box, thisCol, data, rows);
+		pipeline_displayRow(box, thisCol, data, rows.rows);
+		if(rows.loadMore){ pipeline_HTMLloadMore(box, data, thisCol) }
 		tooltips();
 	})
 }
@@ -112,44 +117,52 @@ function pipeline_dragEvent(box, thisCol, data){
 				'left':''
 			});
 			d.box.closest('tr').find('td').removeClass('moveTo');
-			pipeline_changeStatus(d.box, data);
+			pipeline_changeStatus(box, d.box, data);
 		}
 	})
 }
 
-function pipeline_changeStatus(el, data){
+function pipeline_changeStatus(box, el, data){
     $.post('/crm/php/main/edit_in_table.php?change_status_pipeline=1&module='+data.module, {
     	id: el.data('id'),
     	column: data.status,
     	table_value: el.parent().data('status')
     }, function(thisData){
     	thisData = JSON.parse(thisData);
+    	console.log(thisData);
+    	if(thisData.error){ return pipeline_moveBack(box, el) }
+    	el.data('status', el.parent().data('status'))
+    	// pipeline_loadColumn(box, data, el.closest('td'));
     })
+}
+
+function pipeline_moveBack(box, el){
+	el.prependTo(box.find(`tbody td[data-status="${el.data('status')}"]`))
 }
 
 function pipeline_HTMLrow(data, r){
 	return `
-	<div class="pipelineBox" data-id="`+r.id+`">
+	<div class="pipelineBox" data-id="${r.id}" data-status="${r.status}">
 		<div class="top">
-			<div class="title">`+r.subject+`</div>
+			<div class="title">${r.subject}</div>
 			<div class="drag"></div>
 		</div>
 		`+pipeline_HTMLextraText(r)+`
 		<div class="middle">
-			<div class="users">`+pipeline_HTMLusers(r.assigned)+`</div>
+			<div class="users">${pipeline_HTMLusers(r.assigned)}</div>
 			<div class="date">
 				`+getSVG('clock')+`
 				`+getDate(defaultDateFormat, stringToDate(r.date, 'UTC'))+`
 			</div>
 		</div>
 		<div class="bottom">
-			<div class="price">`+pipeline_HTMLprice(r)+`</div>
+			<div class="price">${pipeline_HTMLprice(r)}</div>
 			<div class="buttons">
 				<button 
-				data-tooltip="`+slovar('View')+`"
+				data-tooltip="${slovar('View')}"
 				class="view"
-				onclick="loadJS('main/read-box-mini', function(el){ open_readBoxMini(el,'row','`+data.module+`',`+r.id+`)},$(this))"
-				>`+getSVG('list')+`</button>
+				onclick="loadJS('main/read-box-mini', function(el){ open_readBoxMini(el,'row','${data.module}',${r.id})},$(this))"
+				>${getSVG('list')}</button>
 			</div>
 		</div>
 	</div>
@@ -172,6 +185,15 @@ function pipeline_HTMLusers(users, html = ''){
 function pipeline_HTMLprice(r){
 	if(valEmpty(r.price)){ return '' }
 	return `<span>`+r.price+' '+defaultCurrency+`</span>`
+}
+
+function pipeline_HTMLloadMore(box, data, thisCol){
+	thisCol.append(`<button class="button button100 buttonBlue buttonLoadMore">${slovar('Show_more')}</button>`);
+	thisCol.find('.buttonLoadMore').click(function(){
+		$(this).remove();
+		data.OFFSET = thisCol.find('.pipelineBox').length;
+		pipeline_loadColumn(box, data, thisCol, false);
+	});
 }
 
 addTrigger({

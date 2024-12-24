@@ -1,6 +1,6 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
-if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POST['csrf_token']){
+if(isset($_SESSION['user_id'])){
 
     // CUSTOM FILE
     if(isset($_GET['get_custom_files'])){

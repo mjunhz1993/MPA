@@ -22,8 +22,7 @@ function draggable_start(d, x, y){
 function draggable_move(d, x, y){
 	if(valEmpty(d.box.data('dragstart'))){ return }
 	start = d.box.data('dragstart');
-	start[0] = start[0] - x;
-	start[1] = start[1] - y;
+	start = [start[0] -x, start[1] - y];
 	d.box.data('dragstart', [x,y]);
 	var left = d.box.position().left - start[0];
 	if(left < 0){ left = 0 }

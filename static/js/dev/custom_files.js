@@ -3,47 +3,54 @@ function getCustomFiles(table, callback){
 	if($('#FileTableExtFilter').length == 1){ ProjectExt = $('#FileTableExtFilter').val() }
 	var ProjectFilter = '';
 	if($('#FileTableProjectFilter').length == 1){ ProjectFilter = $('#FileTableProjectFilter').val() }
-	$.post('/crm/php/admin/custom_files.php?get_custom_files=1', {
-		csrf_token:$('input[name=csrf_token]').val(),
-		ProjectExt: ProjectExt,
-		ProjectFilter: ProjectFilter
-	}, function(data){
-		data = JSON.parse(data);
-		var nextProject = '';
-		var html = '';
-		for(var i=0; i<data.length; i++){
-			var d = data[i];
-			if(nextProject == ''){ nextProject = d.project }
-			if(nextProject != d.project){
-				nextProject = d.project;
-				html += '<tr><td colspan="4"></td></tr>';
+	
+	loadCustomFiles({
+		ext:ProjectExt,
+		filter:ProjectFilter,
+		done:function(data){
+			var nextProject = '';
+			var html = '';
+			for(var i=0; i<data.length; i++){
+				var d = data[i];
+				if(nextProject == ''){ nextProject = d.project }
+				if(nextProject != d.project){
+					nextProject = d.project;
+					html += '<tr><td colspan="4"></td></tr>';
+				}
+				var ext = d.path.split('.').pop();
+				d.path = '/crm/'+d.path.split('/crm/')[1];
+				html += '<tr>';
+				html += '<td style="color:white;font-weight:600;text-align:center;font-size:20px;background-color:';
+				if(ext == 'js'){ html += 'blue' }
+				else if(ext == 'css'){ html += 'green' }
+				else if(ext == 'sql'){ html += 'purple' }
+				else{ html += 'orange' }
+				html += '">' + ext.toUpperCase() + '</td>';
+				html += '<td>';
+				html += '<b>' + d.name + '</b><br>';
+				html += '<input style="border:0;outline:0;background-color:inherit;width:100%;box-sizing: border-box;"';
+				html += 'value="' + d.path + '" readonly>';
+				html += '</td>';
+				html += '<td>' + d.project + '</td>';
+				html += '<td>' + getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(d.tstamp, 'UTC')) + '</td>';
+				html += '<td>';
+				html += '<a class="linksvg" target="_blank" href="'+d.path+'"';
+				html += '>'+getSVG('link')+'</a> ';
+				html += '<button class="buttonSquare buttonBlue" data-name="' + d.name + '" onclick="editCustomFile($(this))">' + slovar('Edit') + '</button>';
+				html += '<button class="buttonSquare buttonRed" data-name="' + d.name + '" onclick="deleteCustomFile($(this))">' + slovar('Delete') + '</button>';
+				html += '</tr>';
 			}
-			var ext = d.path.split('.').pop();
-			d.path = '/crm/'+d.path.split('/crm/')[1];
-			html += '<tr>';
-			html += '<td style="color:white;font-weight:600;text-align:center;font-size:20px;background-color:';
-			if(ext == 'js'){ html += 'blue' }
-			else if(ext == 'css'){ html += 'green' }
-			else if(ext == 'sql'){ html += 'purple' }
-			else{ html += 'orange' }
-			html += '">' + ext.toUpperCase() + '</td>';
-			html += '<td>';
-			html += '<b>' + d.name + '</b><br>';
-			html += '<input style="border:0;outline:0;background-color:inherit;width:100%;box-sizing: border-box;"';
-			html += 'value="' + d.path + '" readonly>';
-			html += '</td>';
-			html += '<td>' + d.project + '</td>';
-			html += '<td>' + getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(d.tstamp, 'UTC')) + '</td>';
-			html += '<td>';
-			html += '<a class="linksvg" target="_blank" href="'+d.path+'"';
-			html += '>'+getSVG('link')+'</a> ';
-			html += '<button class="buttonSquare buttonBlue" data-name="' + d.name + '" onclick="editCustomFile($(this))">' + slovar('Edit') + '</button>';
-			html += '<button class="buttonSquare buttonRed" data-name="' + d.name + '" onclick="deleteCustomFile($(this))">' + slovar('Delete') + '</button>';
-			html += '</tr>';
+			table.find('tbody').html(html);
+			if(typeof callback === 'function'){ callback() }
 		}
-		table.find('tbody').html(html);
-		if(typeof callback === 'function'){ callback() }
 	})
+}
+
+function loadCustomFiles(d){
+	$.post('/crm/php/admin/custom_files.php?get_custom_files=1', {
+		ProjectExt: d.ext,
+		ProjectFilter: d.filter
+	}, function(data){ d.done(JSON.parse(data)) })
 }
 
 function openCreateCustomFile(){

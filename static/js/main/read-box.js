@@ -337,21 +337,22 @@ function turnEditInputsToReadInputs(EditBox){
         });
     }
     // CHECK MULTISELECT INPUTS
-    input = EditBox.find('input[data-list=MULTISELECT][type=text]');
-    if(input.length > 0){
-        input.each(function(){
-            if(valEmpty($(this).val())){ return }
-            html = '<div class="inputPlaceholder">';
-            var valueSplit = $(this).val().split('|');
-            for(var i=0; i<valueSplit.length; i++){
-                var v = valueSplit[i].split(';');
-                if(valEmpty(v[0])){ continue }
-                html += '<div class="multiselectinputbox"><span>'+v[1]+'</span></div>';
-            }
-            html += '</div>';
-            $(this).replaceWith(html);
-        });
-    }
+    EditBox.find('input[data-list^="MULTISELECT"][type=text]').each(function() {
+        const inputVal = $(this).val();
+        if (valEmpty(inputVal)) return;
+
+        const listModule = $(this).data('list').split('|')[1];
+        const html = inputVal.split('|').map(v => {
+            const [id, text] = v.split(';');
+            if (valEmpty(id)) return '';
+            const onClick = !valEmpty(listModule)
+                ? `onclick="loadJS('main/read-box-mini', el => open_readBoxMini(el, 'row', '${listModule}', ${id}), $(this))"`
+                : '';
+            return `<div class="multiselectinputbox" ${onClick}><span>${text}</span></div>`;
+        }).join('');
+
+        $(this).replaceWith(`<div class="inputPlaceholder">${html}</div>`);
+    });
     // CHECK TEXTAREA INPUTS
     EditBox.find('textarea').each(function(){ $(this).replaceWith('<div class="readonlyTextarea">'+$(this).val()+'</div>') });
     // CHECK JOIN_ADD INPUTS

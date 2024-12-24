@@ -188,7 +188,9 @@
 <script>
     function testEmail(el){
         loadJS('email/send_email', function(){
-            open_send_email({done:function(form){ change_sender_to_crm(form) }})
+            open_send_email({done:function(form){
+                change_sender_to_crm(form);
+            }})
         });
     }
 </script>
