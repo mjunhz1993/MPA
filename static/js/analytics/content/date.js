@@ -1,10 +1,10 @@
-function HTML_ANAL_date(content, data, html = ''){
+function HTML_ANAL_date(content, extraData, data){
 	loadJS('calendar/extras', function(){loadJS('calendar/slovar/'+slovar(), function(){
-		HTML_ANAL_date_chart(content, data)
+		HTML_ANAL_date_chart(content, extraData, data)
 	})})
 }
 
-function HTML_ANAL_date_chart(content, data){loadJS('chart/chart', function(){
+function HTML_ANAL_date_chart(content, extraData, data){loadJS('chart/chart', function(){
 	thisBox = content.closest(ANALobj.box);
 	content.append(`
 		<div class="date">
@@ -13,18 +13,18 @@ function HTML_ANAL_date_chart(content, data){loadJS('chart/chart', function(){
 			</div>
 		<div class="dateChart"></div></div>
 	`);
-	generate_analytic_date(thisBox, content, data);
+	generate_analytic_date(thisBox, content, extraData, data);
 })}
 
-function generate_analytic_date(thisBox, content, data){
+function generate_analytic_date(thisBox, content, extraData, data){
 	data = analytic_date_to_UTC(data);
 
 	dateChart = thisBox.find('.dateChart');
 	dateChart.empty();
 
 	extra = ['modeIndex'];
-	if(thisBox.data('extra') === 'price'){ extra.push('PRICE') }
-	if(thisBox.data('extra') === 'percent'){ extra.push('PERCENT') }
+	if(extraData.includes('price')){ extra.push('PRICE') }
+	if(extraData.includes('percent')){ extra.push('PERCENT') }
 	CHART_get('line', dateChart, 150, add_dataset_date(thisBox, data), extra);
 }
 
@@ -115,7 +115,12 @@ function load_new_date_analytic(thisBox){setTimeout(function(){
 			month:month
 		},
 		done: function(thisData){
-			generate_analytic_date(thisBox, thisBox.find('.'+ANALobj.content), thisData) 
+			generate_analytic_date(
+				thisBox, 
+				thisBox.find('.'+ANALobj.content), 
+				thisBox.data('extra').split('|'), 
+				thisData
+			) 
 		}
 	});
 }, 100)}

@@ -66,15 +66,18 @@ function checkIfMainTable(box, tableBox, moduleData, html = ''){
 
 function HTML_toggleTableView(accessories, html = ''){
     if(
-        !accessories.some(r=> ['calendar','pipeline'].includes(r))
+        !accessories.some(r=> ['calendar','pipeline','analytic'].includes(r))
     ){ return '' }
 
-    html += '<a class="act" onclick="toggleTableView($(this),\'list\')" data-tooltip="'+slovar('General')+'">'+getSVG('list')+'</a>';
+    html += `<a class="act" onclick="toggleTableView($(this),'list')" data-tooltip="${slovar('General')}">${getSVG('list')}</a>`;
     if(accessories.includes('calendar')){
-        html += '<a onclick="toggleTableView($(this),\'calendar\')" data-tooltip="'+slovar('Calendar')+'">'+getSVG('calendar')+'</a>';
+        html += `<a onclick="toggleTableView($(this),'calendar')" data-tooltip="${slovar('Calendar')}">${getSVG('calendar')}</a>`;
     }
     if(accessories.includes('pipeline')){
-        html += '<a onclick="toggleTableView($(this),\'pipeline\')" data-tooltip="'+slovar('Pipeline')+'">'+getSVG('pipeline')+'</a>';
+        html += `<a onclick="toggleTableView($(this),'pipeline')" data-tooltip="${slovar('Pipeline')}">${getSVG('pipeline')}</a>`;
+    }
+    if(accessories.includes('analytic')){
+        html += `<a onclick="toggleTableView($(this),'analytic')" data-tooltip="${slovar('Analytics')}">${getSVG('analytics')}</a>`
     }
     return html;
 }
@@ -98,6 +101,11 @@ function toggleTableView(el,type){
     if(type == 'pipeline'){
         return loadJS('table/mode/pipeline', function(){
             openPipeline(box)
+        })
+    }
+    if(type == 'analytic'){
+        return loadJS('table/mode/analytic', function(){
+            openAnalytic(box)
         })
     }
 }

@@ -46,8 +46,7 @@
                                 <a onclick="loadJS('dev/addons', function(){openEditAddons('<?php echo $B[0]; ?>')})" data-slovar="Edit_addons"></a>
                                 <?php if($B[9] == ''): ?>
                                 <a onclick="openEditNotifications('<?php echo $B[0]; ?>')" data-slovar="Edit_notifications"></a>
-                                <a onclick="loadJS('dev/presets', function(){openEditPreset('<?php echo $B[0]; ?>','calendar')})" data-slovar="Edit_calendar"></a>
-                                <a onclick="loadJS('dev/presets', function(){openEditPreset('<?php echo $B[0]; ?>','pipeline')})" data-slovar="Edit_pipeline"></a>
+                                <a onclick="loadJS('dev/presets', function(){openPreset('<?php echo $B[0]; ?>')})" data-slovar="Edit_presets"></a>
                                 <a onclick="loadJS('dev/automations', function(){openEditAutomations('<?php echo $B[0]; ?>')})" data-slovar="Edit_automations"></a>
                                 <a onclick="openColumns('<?php echo $B[0]; ?>')" data-slovar="Edit_columns"></a>
                                 <?php endif; ?>

@@ -22,7 +22,7 @@ function analytics_connect($SQL, $SQL_db){
             name VARCHAR(255),
             order_num INT(100),
             active TINYINT DEFAULT 1,
-            width INT(11) DEFAULT 100,
+            width DECIMAL(10,2) DEFAULT 100,
             category VARCHAR(255),
             type VARCHAR(100)
         )
@@ -117,16 +117,29 @@ function analytic_tables_create($SQL){
     return true;
 }
 
+function update_width_of_analytic_table($SQL){
+    if(!analytic_access($SQL, null, 'can_edit')){ return ['error' => 'Access_denied']; }
+    return $SQL->query("UPDATE analytics_tables SET
+    width = '".SafeInput($SQL, $_POST['width'])."'
+    WHERE id = ".SafeInput($SQL, $_POST['id'])." LIMIT 1");
+}
+
 function analytic_tables_get($SQL, $arr = []){
+    $pid = SafeInput($SQL, $_POST['pid']);
+    $user = $_SESSION['user_id'];
     $WHERE = '';
     if($_POST['id']){ $WHERE = ' AND t1.id = '.SafeInput($SQL, $_POST['id']); }
+
 	$A = $SQL->query("SELECT 
     t1.id AS id, t1.pid AS pid, t1.name AS name, t1.order_num AS order_num,
     t1.active AS active, t1.width AS width, t1.category AS category, t1.type AS type,
     t2.extra AS extra
     FROM analytics_tables t1
     LEFT JOIN analytics_content t2 ON t2.pid = t1.id
-    WHERE t1.pid = ".SafeInput($SQL, $_POST['pid'])." AND t1.active = 1 $WHERE
+    LEFT JOIN analytics t3 ON t3.id = t1.pid
+    WHERE t1.pid = $pid AND t1.active = 1 AND 
+    (added = '$user' OR share LIKE '%|$user|%')
+    $WHERE
 	ORDER BY t1.order_num");
     if(!$A){ return ['error' => $SQL->error]; }
 	while ($B = $A->fetch_assoc()){ array_push($arr, $B); }
@@ -176,8 +189,8 @@ function analytic_content_data($SQL){
 
     $A = $SQL->prepare($query);
     if(!$A){ return ['error' => $SQL->error]; }
-
     bind_param_to_table($A);
+    
     $A->execute();
     $result = $A->get_result();
     if ($result->num_rows == 0) { return []; }
@@ -201,8 +214,12 @@ function analytics_delete($SQL){
 }
 
 function analytic_access($SQL, $id, $access = 'can_view'){
-    $A = $SQL->query("SELECT * FROM analytics WHERE id = $id AND added = ".$_SESSION['user_id']." LIMIT 1");
-    if($A->num_rows == 0 && $id !== null){ return false; }
+    $A = $SQL->query("
+        SELECT * FROM analytics 
+        WHERE id = $id AND added = ".$_SESSION['user_id']."
+        LIMIT 1
+    ");
+    if($id !== null && $A->num_rows == 0){ return false; }
     $A = $SQL->query("SELECT $access FROM module WHERE module = 'analytics' LIMIT 1");
     while ($B = $A->fetch_row()){
         if(!in_array($_SESSION['user_role_id'], explode(',',$B[0]))){ return false; }

@@ -1,6 +1,17 @@
-function openEditPreset(module, type){
+function openPreset(module){
 	hideDropdownMenu();
 	popup = createPOPUPbox();
+	popupBox = popup.find('.popupBox');
+	popupBox.html(`
+		<button class="button buttonBlue" onclick="openEditPreset('${module}', 'calendar')">${slovar('Calendar')}</button>
+		<button class="button buttonBlue" onclick="openEditPreset('${module}', 'pipeline')">${slovar('Pipeline')}</button>
+		<button class="button buttonBlue" onclick="openEditPreset('${module}', 'analytic')">${slovar('Analytic')}</button>
+	`)
+	popup.fadeIn('fast');
+}
+
+function openEditPreset(module, type){
+	popup = $('.popup').last();
 	popupBox = popup.find('.popupBox');
 
 	popupBox.html(`
@@ -24,13 +35,12 @@ function openEditPreset(module, type){
 		e.preventDefault();
 		updateEditCalendar(popup);
 	})
-
-	popup.fadeIn('fast');
 }
 
 function HTML_forForm(type){
 	if(type == 'calendar'){ return HTML_calendarForm() }
 	if(type == 'pipeline'){ return HTML_pipelineForm() }
+	if(type == 'analytic'){ return HTML_analyticForm() }
 }
 
 function appendColumnToForm(popup, c){
@@ -65,7 +75,7 @@ function updateEditCalendar(popup){
 	})
 }
 
-// CALENDAR
+// HTML
 
 function HTML_calendarForm(){
 	return `
@@ -91,8 +101,6 @@ function HTML_calendarForm(){
 	<select class="color-type" name="data[colorCol]"><option></option></select>
 	`
 }
-
-// PIPELINE
 
 function HTML_pipelineForm(){
 	return `
@@ -124,5 +132,12 @@ function HTML_pipelineForm(){
 		<label>Share column</label>
 		<select class="share-type" name="data[share]"><option></option></select>
 	</div>
+	`
+}
+
+function HTML_analyticForm(){
+	return `
+	<label>Analytic ID</label>
+	<input type="number" name="data[id]">
 	`
 }

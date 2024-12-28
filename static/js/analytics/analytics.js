@@ -23,22 +23,6 @@ function analytic_content_data(d){
 	$.post(ANALobj.post, {analytic_content_data:true, pid:d.pid, data:d.data}, function(data){ d.done(JSON.parse(data)) })
 }
 
-function analytics(box = $('#Main'), html = ''){analytics_connect(function(){
-	html += '<table class="h1_table"><tr>'
-	html += '<td><h1>'+slovar('Analytics')+'</h1></td>';
-	html += '<td>';
-	if(user_id == 1){
-		html += '<button class="buttonSquare buttonGreen" ';
-		html += 'onclick="loadJS(\'analytics/analytic_tools\',function(){FORM_analytic()})">Add Analytic</button>';
-	}
-	html += '<select id="anal_select"></select>'
-	html += '</td>'
-	html += '</tr></table>';
-	html += '<div id="anal_main"></div>';
-	box.html(html);
-	HTML_ANAL_select(ANALobj.select, function(id){ get_analytic_tables(ANALobj.main, id) });
-})}
-
 function analytics_connect(callback){
 	loadCSS('analytics');
 	loadJS('analytics/slovar/'+slovar(), function(){
@@ -48,6 +32,40 @@ function analytics_connect(callback){
 			callback()
 		})
 	})
+}
+
+function analytics(box = $('#Main'), d = {}){analytics_connect(function(){
+	box.html(`
+	${HTML_add_analytic_top(d)}
+	<div id="anal_main"></div>
+	`);
+	if(!valEmpty(d.id)){ return get_analytic_tables($(ANALobj.main), d.id, d) }
+	HTML_ANAL_select($(ANALobj.select), function(id){
+		get_analytic_tables($(ANALobj.main), id)
+	});
+})}
+
+function HTML_add_analytic_top(d){
+	if(!valEmpty(d.id)){ return '' }
+	return `
+		<div class="analytics_top">
+			<h2>${slovar('Analytics')}</h2>
+			<div>
+				${HTML_add_analytic_button()}
+				<select id="anal_select"></select>
+			</div>
+		</div>
+	`
+}
+
+function HTML_add_analytic_button(){
+	if(user_id != 1){ return '' }
+	return `
+		<button 
+		class="buttonSquare buttonGreen"
+		onclick="loadJS('analytics/analytic_tools',()=>FORM_analytic())"
+		>Add Analytic</button>
+	`
 }
 
 function HTML_ANAL_select(el, callback, html = ''){
@@ -60,71 +78,89 @@ function HTML_ANAL_select(el, callback, html = ''){
 			}
 			html += '<option value="'+a.id+'">'+a.name+'</option>';
 		}
-		$(el).html(html);
-		$(ANALobj.select).change(function(){ callback($(this).val()) });
-		callback($(ANALobj.select).val())
+		el.html(html);
+		el.unbind('change').change(function(){ console.log($(this).val()); callback($(this).val()) });
+		callback(el.val())
 	})
 }
 
-function get_analytic_tables(mainBox, id){
-	mainBox = $(mainBox);
-	mainBox.empty();
+function get_analytic_tables(mainBox, id, d = {}){
+	mainBox.empty().data('id', parseInt(id));
 	analytic_tables_get(function(data){
 		if(data.error){ return createAlert(mainBox, 'Red', slovar('Is_empty')) }
-		HTML_ANAL_tools(mainBox, id);
+		HTML_ANAL_tools(mainBox, id, d);
 		mainBox.append('<div id="anal_box"></div>');
 		mainBox = $('#anal_box');
-		for(var i=0; i<data.length; i++){ HTML_ANAL_tables(mainBox, id, data[i]) }
+		for(var i=0; i<data.length; i++){ HTML_ANAL_tables(mainBox, id, data[i], d) }
+		resize_analytic_box();
 		resetDropdownMenuConfig();
 		find_loading_analytic_tables(mainBox);
 	}, id)
 }
 
-function HTML_ANAL_tools(el, id, html = ''){
-	if(user_id != 1){ return }
-	html += '<div id="anal_tools">';
-	html += '<div>';
-	html += '<button ';
-	html += 'onclick="loadJS(\'analytics/analytic_tools\',function(){FORM_analytic_table('+id+')})" ';
-	html += 'class="button buttonGreen">Add Analytic Box</button>';
-	html += '</div><div>';
-	html += '<a class="linksvg" onclick="loadJS(\'analytics/analytic_tools\',function(){FORM_analytic('+id+')})">';
-	html += getSVG('edit')+'<span>'+slovar('Edit')+'</span></a>'
-	html += '<a class="linksvg" onclick="delete_analytic('+id+','+id+')">'+getSVG('delete')+'</a>';
-	html += '</div>';
-	html += '</div>';
-	el.html(html);
+function HTML_ANAL_tools(el, id, d, html = ''){
+	if(user_id != 1 || !valEmpty(d.id)){ return }
+	el.html(`
+	<div id="anal_tools">
+		<div>
+			<button 
+			onclick="loadJS('analytics/analytic_tools',()=>FORM_analytic_table(${id}))" 
+			class="button buttonGreen"
+			>Add Analytic Box</button>
+		</div>
+		<div>
+			<a 
+			class="linksvg" 
+			onclick="loadJS('analytics/analytic_tools',()=>FORM_analytic(${id}))"
+			>
+				${getSVG('edit')}
+				<span>${slovar('Edit')}</span>
+			</a>
+			<a class="linksvg" onclick="delete_analytic(${id},${id})">${getSVG('delete')}</a>
+		</div>
+	</div>
+	`);
 }
 
 function check_analytic_table_category(el, category){
 	if(el.find('legend[data-category="'+category+'"]').length == 1){ return }
 	el.append('<fieldset><legend data-category="'+category+'">'+category+'</legend></fieldset>');
+	el.find('legend').last().click(function(){
+		$(this).parent().children().not($(this)).toggle();
+	})
 }
 
-function HTML_ANAL_tables(el, id, data, html = ''){
-	check_analytic_table_category(el, data.category);
-	el = el.find('legend[data-category="'+data.category+'"]').parent();
-	html += '<div class="col col'+data.width+'"><div class="analbox loading" ';
-	html += 'data-id="'+data.id+'" data-type="'+data.type+'" data-extra="'+data.extra+'">';
-	html += '<div class="top">';
-	html += '<h2>'+data.name+'</h2>';
-	html += '<div class="settings">';
-	if(user_id == 1){
-		html += '<button class="linksvg" onclick="showDropdownMenu($(this))">';
-		html += getSVG('more');
-		html += '<div class="DropdownMenuContent">';
-		html += '<a onclick="loadJS(\'analytics/analytic_tools\',function(){FORM_analytic_content('+data.id+')})"'
-		html += '>'+getSVG('edit')+' Add Analytic Content</a>';
-		html += '<a onclick="loadJS(\'analytics/analytic_tools\',function(){FORM_analytic_table('+id+','+data.id+')})"';
-		html += '>'+getSVG('edit')+' Edit Analytic Box</a>';
-		html += '<hr><a onclick="delete_analytic('+id+','+data.id+', \'_tables\')">'+getSVG('delete')+' '+slovar('Delete')+'</a>';
-		html += '</div>';
-		html += '</button>'
-	}
-	html += '</div></div>';
-	html += '<div class="'+ANALobj.content+'"></div>';
-	html += '</div></div>';
-	el.append(html);
+function HTML_ANAL_tables(el, id, data, d = {}) {
+    check_analytic_table_category(el, data.category);
+    el = el.find(`legend[data-category="${data.category}"]`).parent();
+    el.append(`
+    <div class="col" style="width:${data.width}%">
+    	<div class="analbox loading" data-id="${data.id}" data-type="${data.type}" data-extra="${data.extra}">
+            <div class="top">
+                <h2>${data.name}</h2>
+                <div class="settings">
+                	${HTML_ANAL_dropdown(id, data, d)}
+    				<div class="resizeAnalBox"></div>
+                </div>
+            </div>
+            <div class="${ANALobj.content}"></div>
+        </div>
+    </div>
+    `);
+}
+
+function HTML_ANAL_dropdown(id, data, d){
+	if(user_id != 1 || !valEmpty(d.id)){ return '' }
+	return `
+	<button class="linksvg" onclick="showDropdownMenu($(this))">
+	    ${getSVG('more')}
+	    <div class="DropdownMenuContent">
+	        <a onclick="loadJS('analytics/analytic_tools', () => FORM_analytic_content(${data.id}))">${getSVG('edit')} Add Analytic Content</a>
+	        <a onclick="loadJS('analytics/analytic_tools', () => FORM_analytic_table(${id}, ${data.id}))">${getSVG('edit')} Edit Analytic Box</a>
+	        <hr>
+	        <a class="red" onclick="delete_analytic(${id}, ${data.id}, '_tables')">${getSVG('delete')} ${slovar('Delete')}</a>
+	    </div>
+	</button>`
 }
 
 function find_loading_analytic_tables(mainBox){setTimeout(function(){
@@ -143,6 +179,7 @@ function get_analytic_content(mainBox, box, data = {}){
 }
 
 function find_analytic_content_type(mainBox, box, data){
+	extra = box.data('extra') ? box.data('extra').split('|') : [];
 	contentBox = box.find('.'+ANALobj.content);
 	contentBox.empty();
 	if(data.error){
@@ -151,27 +188,27 @@ function find_analytic_content_type(mainBox, box, data){
 	}
 
 	if(box.data('type') == 'TABLE'){loadJS('analytics/content/table', function(){
-		HTML_ANAL_table(contentBox, data);
+		HTML_ANAL_table(contentBox, extra, data);
 		return find_loading_analytic_tables(mainBox);
 	})}
 
 	if(box.data('type') == 'SUM'){loadJS('analytics/content/sum', function(){
-		HTML_ANAL_sum(contentBox, data);
+		HTML_ANAL_sum(contentBox, extra, data);
 		return find_loading_analytic_tables(mainBox);
 	})}
 
 	if(['pie','doughnut','polarArea'].includes(box.data('type'))){loadJS('analytics/content/pie', function(){
-		HTML_ANAL_pie(contentBox, data);
+		HTML_ANAL_pie(contentBox, extra, data);
 		return find_loading_analytic_tables(mainBox);
 	})}
 
 	if(['bar','line'].includes(box.data('type'))){loadJS('analytics/content/bar', function(){
-		HTML_ANAL_bar(contentBox, data);
+		HTML_ANAL_bar(contentBox, extra, data);
 		return find_loading_analytic_tables(mainBox);
 	})}
 
 	if(['DATE'].includes(box.data('type'))){loadJS('analytics/content/date', function(){
-		HTML_ANAL_date(contentBox, data);
+		HTML_ANAL_date(contentBox, extra, data);
 		return find_loading_analytic_tables(mainBox);
 	})}
 }
@@ -187,7 +224,59 @@ function delete_analytic(pid, id, type = ''){
 		}, function(data){ data = JSON.parse(data);
 			if(data.error){ return createAlertPOPUP(slovar(data.error)) }
 			if(type == '_table'){ return $(ANALobj.box+'[data-id='+id+']').remove() }
-			return HTML_ANAL_select(ANALobj.select, function(id){ get_analytic_tables(ANALobj.main, id) })
+			return HTML_ANAL_select($(ANALobj.select), function(id){ get_analytic_tables($(ANALobj.main), id) })
 		})
 	})
+}
+
+// EXTRA
+
+function resize_analytic_box() {
+    let isResizing = false;
+    let startX, startWidth, parentWidth, newWidthPercent;
+
+    $('.resizeAnalBox').off('mousedown').on('mousedown', function (e) {
+        isResizing = true;
+        startX = e.pageX;
+        const $col = $(this).closest('.col');
+        $col.addClass('isResizing');
+        startWidth = $col.width();
+        parentWidth = $col.parent().width();
+        e.preventDefault();
+    });
+
+    $(document).off('mousemove.resizeAnalBox').on('mousemove.resizeAnalBox', function (e) {
+        if (isResizing) {
+            const $col = $('.isResizing');
+            const newWidthPx = startWidth + (e.pageX - startX);
+            newWidthPercent = (newWidthPx / parentWidth) * 100;
+            newWidthPercent = Math.max(20, Math.min(100, newWidthPercent));
+            $col.css({
+                width: newWidthPercent + '%'
+            });
+        }
+    });
+
+    $(document).off('mouseup.resizeAnalBox').on('mouseup.resizeAnalBox', function () {
+        const $thisBox = $('.isResizing');
+        if ($thisBox.length !== 1 || newWidthPercent == undefined) return;
+
+        const boxID = $thisBox.find(ANALobj.box).data('id');
+        const analyticsID = $thisBox.closest(ANALobj.main).data('id');
+        $thisBox.removeClass('isResizing');
+        isResizing = false;
+
+        $.post(ANALobj.post, {
+            update_width_of_analytic_table: true,
+            width: newWidthPercent,
+            id: boxID,
+            pid: analyticsID
+        }, function(thisData){
+        	thisData = JSON.parse(thisData);
+        	if(thisData.error){
+        		createAlertPOPUP(slovar(thisData.error));
+        		$thisBox.width(startWidth);
+        	}
+        });
+    });
 }

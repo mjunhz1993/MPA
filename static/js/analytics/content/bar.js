@@ -1,11 +1,10 @@
-function HTML_ANAL_bar(box, data){loadJS('chart/chart', function(){
+function HTML_ANAL_bar(box, extraData, data){loadJS('chart/chart', function(){
 	thisBox = box.closest(ANALobj.box);
 	box.append('<div class="bar"></div>');
 	bar = box.find('.bar');
 	extra = ['modeIndex'];
-	if(thisBox.data('extra') === 'price'){ extra.push('PRICE') }
-	if(thisBox.data('extra') === 'percent'){ extra.push('PERCENT') }
-	console.log(data, add_dataset_bar(data));
+	if(extraData.includes('price')){ extra.push('PRICE') }
+	if(extraData.includes('percent')){ extra.push('PERCENT') }
 	CHART_get(thisBox.data('type'), bar, 150, add_dataset_bar(data), extra);
 })}
 

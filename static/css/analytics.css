@@ -1,14 +1,20 @@
+.analytics_top{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: white;
+}
+
 #anal_select{
 	padding: 7px 10px;
 	vertical-align: middle;
-	margin-right: 15px;
 }
 
 #anal_tools{
 	display: flex;
 	justify-content: space-between;
 	align-items: center;
-	background-color: white;
+	background-color: var(--light-blue);
 	padding: 10px;
 }
 
@@ -17,6 +23,10 @@
 .tabs a.act{
 	background-color: var(--blue);
 	color: white;
+}
+
+#anal_box{
+	text-align: center;
 }
 
 .analbox{
@@ -32,14 +42,36 @@
 	border-bottom: 1px solid grey;
 }
 
-.analbox .top .settings input{
-	border: 0;
-	color: var(--blue);
-	border-bottom: 1px solid;
-	width: 50px;
-	text-align: center;
-	margin: 0 20px 0 10px;
+.analbox .top .settings{
+	display: flex;
+	gap: 10px;
+	align-items: center;
 }
+
+.analbox .top .resizeAnalBox{
+	cursor: move;
+	width: 10px;
+	height: 20px;
+	border: 2px dotted;
+	color: var(--light-blue);
+}
+
+.analcontent{ overflow:auto; }
+
+.analbox th.act{ position: relative; }
+.analbox th.act:after{
+	content: " ";
+    transition: 0.2s;
+    border: solid;
+    border-width: 0 2px 2px 0;
+    display: inline-block;
+    padding: 2px;
+    transform: rotate(45deg);
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+.analbox th.act.desc:after{ transform: rotate(-135deg); }
 
 .analbox .analSum{ font-size: 25px; padding: 20px 10px; }
 

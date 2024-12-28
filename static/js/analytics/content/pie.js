@@ -1,10 +1,10 @@
-function HTML_ANAL_pie(content, data){loadJS('chart/chart', function(){
+function HTML_ANAL_pie(content, extraData, data){loadJS('chart/chart', function(){
 	thisBox = content.closest(ANALobj.box);
 	content.append('<div class="pie"></div>');
 	pie = content.find('.pie');
 	extra = ['noX','noY','noGrid'];
-	if(thisBox.data('extra') === 'price'){ extra.push('PRICE') }
-	if(thisBox.data('extra') === 'percent'){ extra.push('PERCENT') }
+	if(extraData.includes('price')){ extra.push('PRICE') }
+	if(extraData.includes('percent')){ extra.push('PERCENT') }
 	CHART_get(thisBox.data('type'), pie, 50, add_dataset_pie(data), extra);
 })}
 

@@ -43,7 +43,7 @@ function FORM_analytic(id = null){
 		$.post(ANALobj.post, $(this).serialize(), function(data){ data = JSON.parse(data);
 			if(data.error){ return createAlertPOPUP(data.error) }
 			removePOPUPbox();
-			HTML_ANAL_select(ANALobj.select, function(id){ get_analytic_tables(ANALobj.main, data.id) })
+			HTML_ANAL_select($(ANALobj.select), function(id){ get_analytic_tables($(ANALobj.main), id) })
 		})
 	});
 
@@ -95,15 +95,10 @@ function FORM_analytic_table(pid, id = null, html = ''){
 		column:'name',
 		mandatory:true,
 	}));
-	form.append(createFormField({
-		editable:true,
-		name:'Width',
-		type:'SELECT',
-		column:'width',
-		list:'30,30|40,40|50,50|60,60|70,70|80,80|90,90|100,100',
-		preselected_option:'100',
-		mandatory:true,
-	}));
+	form.append(`
+		<label>Width</label>
+		<input type="number" min="20" max="100" step="0.01" value="50" name="width">
+	`);
 	form.append(createFormField({
 		editable:true,
 		name:'Category',
@@ -135,7 +130,7 @@ function FORM_analytic_table(pid, id = null, html = ''){
 		$.post(ANALobj.post, $(this).serialize(), function(data){ data = JSON.parse(data);
 			if(data.error){ return createAlertPOPUP(data.error) }
 			removePOPUPbox();
-			get_analytic_tables(ANALobj.main, pid);
+			get_analytic_tables($(ANALobj.main), pid);
 		})
 	});
 
@@ -167,11 +162,7 @@ function FORM_analytic_content(pid, html = ''){loadJS('dev/custom_files', functi
 		<label>Url</label>
 		<select name="href"></select>
 		<label>Extra</label>
-		<select name="extra">
-			<option></option>
-			<option>price</option>
-			<option>percent</option>
-		</select>
+		<input type="text" name="extra">
 	`);
 
 	loadCustomFiles({

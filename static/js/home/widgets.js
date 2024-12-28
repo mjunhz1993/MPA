@@ -64,10 +64,7 @@ function displayWidgets(dashboard, box, widget){
 	else if(type == 'ANALYTICS'){
 		loadJS('analytics/analytics', function(){
 			widget.html('<div id="analytics_main"></div>');
-			analytics_config(function(){
-				get_analytics($('#analytics_main'));
-				configDisplayedWidget(dashboard, box, widget);
-			})
+			analytics($('#analytics_main'));
 		})
 	}
 }

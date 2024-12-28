@@ -44,6 +44,7 @@
             <div style="display:flex;flex-wrap::wrap;gap:10px;padding:10px;">
                 <div>calendar</div>
                 <div>pipeline</div>
+                <div>analytic</div>
             </div>
 
             <br>

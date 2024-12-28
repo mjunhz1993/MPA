@@ -6,21 +6,11 @@ function analytic_get_data_id($SQL){
 }
 
 function check_for_special_data($SQL, $query){
-    $query = check_for_roderBy($SQL, $query);
-    $query = check_for_presets($query);
+    $query = check_for_presets($SQL, $query);
     return $query;
 }
 
-function check_for_roderBy($SQL, $query){
-    if (strpos($query, 'ORDER BY {THIS}') !== false) {
-        $orderBy = SafeInput($SQL, $_POST['data']['orderBy'] ?? '');
-        if(empty($orderBy)){ $orderBy = get_first_select_column($query); }
-        return str_replace('{THIS}', $orderBy, $query);
-    }
-    return $query;
-}
-
-function check_for_presets($query){
+function check_for_presets($SQL, $query){
     date_default_timezone_set("UTC");
     if (strpos($query, '{YEAR}') !== false) {
         $preset = intval($_POST['data']['year'] ?? date('Y'));
@@ -33,6 +23,15 @@ function check_for_presets($query){
     if (strpos($query, '{USER}') !== false) {
         $preset = intval($_POST['data']['user'] ?? $_SESSION['user_id']);
         $query = str_replace('{USER}', $preset, $query);
+    }
+    if (strpos($query, '{ORDER_BY}') !== false) {
+        $orderBy = SafeInput($SQL, $_POST['data']['orderBy'] ?? '');
+        if(empty($orderBy)){ $orderBy = get_first_select_column($query); }
+        $query = str_replace('{ORDER_BY}', $orderBy, $query);
+    }
+    if (strpos($query, '{OFFSET}') !== false) {
+        $preset = intval($_POST['data']['offset'] ?? 0);
+        $query = str_replace('{OFFSET}', $preset, $query);
     }
     return $query;
 }

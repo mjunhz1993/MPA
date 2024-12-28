@@ -9,6 +9,7 @@ if(isset($_SESSION['user_id'])){
     if(isset($_POST['analytics_create'])){ echo json_encode(analytics_create($SQL)); }
     if(isset($_POST['analytics_get'])){ echo json_encode(analytics_get($SQL, $_SESSION['user_id'])); }
     if(isset($_POST['analytic_tables_create'])){ echo json_encode(analytic_tables_create($SQL)); }
+    if(isset($_POST['update_width_of_analytic_table'])){ echo json_encode(update_width_of_analytic_table($SQL)); }
     if(isset($_POST['analytic_tables_get'])){ echo json_encode(analytic_tables_get($SQL)); }
     if(isset($_POST['analytic_content_get'])){ echo json_encode(analytic_content_get($SQL)); }
     if(isset($_POST['analytic_content_create'])){ echo json_encode(analytic_content_create($SQL)); }
