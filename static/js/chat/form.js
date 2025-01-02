@@ -118,7 +118,6 @@ function displayClipboardData(data, fileArea, fileInput, ext, e){
 
     fileInput.after(fileInput.clone());
     file.find('svg').click(function(){ removeFile($(this)) });
-    // checkFileInputLimit(fileInput, fileArea);
 }
 
 $(document).ready(function(){document.onpaste = function(e){ checkClipboard(e) }});

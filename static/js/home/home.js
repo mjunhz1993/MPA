@@ -76,6 +76,7 @@ function homepage_getConversation(dashboard, box = $('#lastconversation'), html 
 			limit:1,
 			done:function(con){
 				loadJS('home/widgets', function(){ loadWidgets(dashboard) })
+				if(con.error){ return createAlert(box, 'Red', con.error) }
 				if(con.length == 0){
 					html += '<button class="buttonSquare button100 buttonGreen" ';
 					html += 'onclick="loadJS(\'chat/conversation_create\', function(){openAddConversation()})">'+slovar('Add_new')+'</button>';

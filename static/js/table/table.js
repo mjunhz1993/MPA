@@ -1,8 +1,8 @@
 function tableLoadColumns(box, callback){
     if(box.length == 0){ return console.log('ERROR: no table box') }
     var module = box.data('module');
+    if(box.find('.horizontalTable').length == 0){ box.append('<div class="horizontalTable"></div>') }
     var tableBox = box.find('.horizontalTable');
-    if(tableBox.length == 0){ return console.log('ERROR: no inner table box') }
     table_addFooter(box);
     loadJS('form/form', function(){loadJS('GET/module', function(){
         GET_module({
@@ -117,10 +117,15 @@ function tableDisplayButtons(box, module, html = ''){
     buttons = box.attr('data-button').split(',');
     for(var i=0; i<buttons.length; i++){
         if(buttons[i] == 'add'){
-            html = '<button class="button buttonGreen" ';
-            html += 'onclick="loadJS(\'main/add-box\', function(){ openAddBoxQuick(\'' + module + '\'); })">';
-            html += getSVG('plus_circle') + '<span class="SVGdesc">' + slovar('Add_new') + '</span></buttons>';
-            tableTop.find('td').first().append(html);
+            tableTop.find('td').first().append(`
+                <button 
+                class="button buttonGreen"
+                onclick="loadJS('main/add-box', ()=>openAddBoxQuick('${module}'))"
+                >
+                    ${getSVG('plus_circle')}
+                    <span class="SVGdesc">${slovar('Add_new')}</span>
+                </buttons>
+            `);
         }
     }
 }
@@ -232,55 +237,44 @@ function keyupVARCHARtableFitler(el, key){
 }
 
 // SUM
-function tableCreateSumColumns(box){
-    if(!valEmpty(box.data('simplify'))){ return }
-    var tableBox = box.find('.horizontalTable');
+function tableCreateSumColumns(box) {
+    if (!valEmpty(box.data('simplify'))) return;
+
+    const tableBox = box.find('.horizontalTable');
     tableBox.find('tfoot').remove();
-    var sumColumns = 0;
-    var html = '<tfoot><tr class="tableSumRow ignoreRow">';
-    tableBox.find('thead th').each(function(){
-        var colModule = $(this).attr('data-module');
-        var column = $(this).attr('data-column');
-        var type = $(this).attr('data-type');
+
+    let sumColumns = 0;
+    let html = '<tfoot><tr class="tableSumRow ignoreRow">';
+
+    tableBox.find('thead th').each(function () {
+        const type = $(this).attr('data-type');
+        
         html += '<td>';
-        if(['ID','INT','DECIMAL','PRICE','PERCENT'].includes(type)){
-            var calcType = 'SUM';
-            if(type == 'ID'){ calcType = 'COUNT'; }
-            else if(type == 'PERCENT'){ calcType = 'AVG'; }
-            var buttonLabel = 'Total';
-            if(type == 'ID'){ buttonLabel = 'Count'; }
-            else if(type == 'PERCENT'){ buttonLabel = 'Average'; }
-            html += '<button class="button button100 buttonBlue" ';
-            html += 'onclick="getColumnSum($(this), \'' + colModule + '\', \'' + column + '\', \'' + calcType + '\')">' + slovar(buttonLabel); + '</button>';
+
+        if (['ID', 'INT', 'DECIMAL', 'PRICE', 'PERCENT','SELECT'].includes(type)) {
+            const calcType = 
+            type === 'ID' ? 'COUNT' :
+            type === 'PERCENT' ? 'AVG' :
+            type === 'SELECT' ? 'SELECT' :
+            'SUM';
+            const buttonLabel = slovar(
+                type === 'ID' ? 'Count' : 
+                type === 'PERCENT' ? 'Average' : 
+                'Total'
+            );
+
+            html += `<button class="button button100 buttonBlue" 
+                      onclick="loadJS('table/sum', () => getColumnSum($(this), '${calcType}'))">
+                      ${buttonLabel}</button>`;
             sumColumns++;
         }
+
         html += '</td>';
     });
+
     html += '</tr></tfoot>';
-    if(sumColumns != 0){ tableBox.find('tbody').after(html); }
+    if (sumColumns) tableBox.find('tbody').after(html);
 }
-
-
-function getColumnSum(el, module, col, type){
-    var box = el.closest('.tableBox');
-    var F = getFilterData(box, module);
-    var filters = F[0];
-    var filter_values = F[1];
-    var year = '';
-    if(box.find('.archiveSelect').length == 1){ year = box.find('.archiveSelect').val() }
-    el.hide();
-    $.get('/crm/php/main/module.php?get_column_sum=1&module=' + module, {
-        column: col,
-        filters: filters,
-        filter_values: filter_values,
-        archive: year,
-        type: type
-    }, function(data){
-        data = JSON.parse(data);
-        if(data){ el.before(data.sum); }
-    }).fail(function(){console.log('ERROR: backend napaka');});
-}
-
 
 function sortByColumn(el){
     var table = el.closest('table');

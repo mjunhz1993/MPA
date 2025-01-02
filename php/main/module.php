@@ -261,35 +261,6 @@ if(isset($_SESSION['user_id'])){
     
     $user_id = $_SESSION['user_id'];
     $user_role_id = $_SESSION['user_role_id'];
-
-    if(isset($_GET['get_column_sum']) && isset($_GET['module']) && isset($_GET['column'])){
-        $data = array();
-        $module = SafeInput($SQL, $_GET['module']);
-        $column = SafeInput($SQL, $_GET['column']);
-        $type = SafeInput($SQL, $_GET['type']);
-        $WHERE = array();
-        // CHECK ARCHIVE YEAR
-        if($_GET['archive'] != ''){ $archive = SafeInput($SQL, $_GET['archive']); }else{ $archive = ''; }
-        if($archive == ''){ $FROM = $module; }
-        else{ $FROM = $GLOBALS['ARCHIVE_NAME_START']. '_'. $archive. '_'. $module; }
-        // GET FILTERS
-        $F = getFilterData($SQL, $module, $user_id);
-        $selected_conditions = $F[3];
-        // GET TABLE FILTERS
-        if(is_array($_GET['filters'])){ $WHERE = getTableFilterData($SQL, $_GET['filters'], $_GET['filter_values']); }
-        // IF FILTERS EXIST - CHANGE THEM TO SQL SYNTAX
-        if(count($WHERE) != 0){
-            $WHERE = 'WHERE ('. implode(' AND ', $WHERE). ')';
-            if(count($selected_conditions) != 0){ $WHERE .= ' AND ('. implode(' OR ', $selected_conditions). ')'; }
-        }
-        else{
-            $WHERE = '';
-            if(count($selected_conditions) != 0){ $WHERE .= 'WHERE ('. implode(' OR ', $selected_conditions). ')'; }
-        }
-        $A = $SQL->query("SELECT $type($column) FROM $FROM $WHERE LIMIT 1");
-        while ($B = $A->fetch_row()){ $data['sum'] = $B[0]; }
-        echo json_encode($data);
-    }
     
     // ------------------------ GLOBAL USAGE
 

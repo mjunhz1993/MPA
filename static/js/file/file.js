@@ -1,40 +1,9 @@
-var dragFileTimer;
-function dragingFileEvent(){
-    $(document).on('dragover', function(e) {
-        var dt = e.originalEvent.dataTransfer;
-        if(dt.types && (dt.types.indexOf ? dt.types.indexOf('Files') != -1 : dt.types.contains('Files'))) {
-            $("input[type=file]").each(function(){
-                if($(this).val() != '' || $(this).prop('disabled')){ return }
-                $(this).attr('data-content',slovar('Drag_and_drop')).show()
-            });
-            window.clearTimeout(dragFileTimer);
-        }
-    });
-    $(document).on('dragleave drop', function(){ hideAllFileInputs() });
-}
-function hideAllFileInputs(){ dragFileTimer = window.setTimeout(function(){ $("input[type=file]").hide() }, 25) }
-dragingFileEvent();
-
-function checkFileInputLimit(fileInput, fileArea){ // REMOVE FUNCTIONS
-    var fileLength = fileArea.find('.file').length;
-    var maxLimit = 1;
-    if(fileInput.attr('data-list') != undefined){ maxLimit = parseInt(fileInput.attr('data-list').split(',')[1]) }
-    var button = fileInput.parent().find('.buttonSquare');
-    if(maxLimit <= fileLength){ fileInput.prop('disabled', true); button.addClass('buttonGrey').removeClass('buttonBlue'); }
-    else{ fileInput.prop('disabled', false); button.addClass('buttonBlue').removeClass('buttonGrey'); }
-}
-
-function fileLimit(fileInput, input, maxLimit = 1){
-    if(fileInput.attr('data-list') != undefined){ maxLimit = parseInt(fileInput.attr('data-list').split(',')[1]) }
-    if(maxLimit < input.files.length + fileInput.parent().find('.fileArea .file').length){ return false }
-    return true
-}
+loadJS('file/drag');
 
 function selectFile(el, input){
-    hideAllFileInputs();
+    hideFileInputs();
     var inputType = el.attr('data-list').split(',')[0];
     var fileArea = el.parent().find('.fileArea');
-    fileArea.parent().find('.alert').remove();
 
     if(!fileLimit(el, input)){
         el.val('');
@@ -73,8 +42,10 @@ function selectFile(el, input){
     });
 }
 
-function HTML_fileBlock(){
-    return '<div class="file newFile" style="display:none;"><div class="img"></div><div class="fileDesc"></div>'+getSVG('x')+'</div>'
+function fileLimit(fileInput, input, maxLimit = 1){
+    if(fileInput.attr('data-list') != undefined){ maxLimit = parseInt(fileInput.attr('data-list').split(',')[1]) }
+    if(maxLimit < input.files.length + fileInput.parent().find('.fileArea .file').length){ return false }
+    return true
 }
 
 function IF_fileSizeToBig(file){
@@ -82,16 +53,11 @@ function IF_fileSizeToBig(file){
     return false
 }
 
-function clickOnFile(path, el, fileName = '', fakeFileName = '', extra = ''){
-    if(fileName == ''){ fileName = el.closest('.file').attr('data-file') }
-    if(fakeFileName == ''){ fakeFileName = fileName }
-    var url = '/crm/static/uploads/'+path+'/'+fileName;
-    var ext = url.split('.').pop().toUpperCase();
-    if(['JPG','JPEG','PNG','GIF'].includes(ext)){ return openImgFile(url, fakeFileName, extra) }
-    if(ext == 'PDF'){ return openPdfFile(url, fakeFileName, extra) }
-    if(['MP3','MP4'].includes(ext)){ return openMediaFile(url, ext, fakeFileName, extra) }
-    return openUnknownFile(url, fakeFileName);
+function HTML_fileBlock(){
+    return '<div class="file newFile" style="display:none;"><div class="img"></div><div class="fileDesc"></div>'+getSVG('x')+'</div>'
 }
+
+// --- REMOVE FILE
 
 function removeFile(el){
     var file = el.parent();
@@ -133,7 +99,18 @@ function removeFile(el){
     }
 }
 
-// ---------------------- OPEN FILES
+// --- OPEN FILE
+
+function clickOnFile(path, el, fileName = '', fakeFileName = '', extra = ''){
+    if(fileName == ''){ fileName = el.closest('.file').attr('data-file') }
+    if(fakeFileName == ''){ fakeFileName = fileName }
+    var url = '/crm/static/uploads/'+path+'/'+fileName;
+    var ext = url.split('.').pop().toUpperCase();
+    if(['JPG','JPEG','PNG','GIF'].includes(ext)){ return openImgFile(url, fakeFileName, extra) }
+    if(ext == 'PDF'){ return openPdfFile(url, fakeFileName, extra) }
+    if(['MP3','MP4'].includes(ext)){ return openMediaFile(url, ext, fakeFileName, extra) }
+    return openUnknownFile(url, fakeFileName);
+}
 
 function fileOpenTopNav_HTML(url, name, extra, html = ''){
     html += '<div id="popupRightTopMenu">';

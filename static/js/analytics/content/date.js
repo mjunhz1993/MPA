@@ -29,6 +29,7 @@ function generate_analytic_date(thisBox, content, extraData, data){
 }
 
 function analytic_date_to_UTC(data){
+	if(data.length == 0){ return [] }
 	const dayKey = Object.keys(data[0])[0]
 	return data.map(item => {
 	    const localDate = new Date(item[dayKey] + "Z");
@@ -54,6 +55,7 @@ function grab_date_labels(thisBox, arr = []){
 }
 
 function loop_dataset_date(thisBox, data, loop = []){
+	if(data.length == 0){ return [] }
 	days = getNumberOfDaysInMonth(parseInt(thisBox.find('.calendarYear').text()), thisBox.find('.calendarMonth').val()-1);
 	col = Object.keys(data[0]);
 	col.shift();

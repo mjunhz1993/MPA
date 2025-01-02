@@ -8,15 +8,11 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         
         if($_SESSION['user_id'] == 1){
             
-            $can_view = '';
-            if(is_array($_POST['view']) && count($_POST['view']) != 0){ $can_view = SafeInput($SQL, implode(',', $_POST['view'])); }
-            $can_add = '';
-            if(is_array($_POST['add']) && count($_POST['add']) != 0){ $can_add = SafeInput($SQL, implode(',', $_POST['add'])); }
-            $can_edit = '';
-            if(is_array($_POST['edit']) && count($_POST['edit']) != 0){ $can_edit = SafeInput($SQL, implode(',', $_POST['edit'])); }
-            $can_delete = '';
-            if(is_array($_POST['delete']) && count($_POST['delete']) != 0){ $can_delete = SafeInput($SQL, implode(',', $_POST['delete'])); }
-            
+            $can_view = isset($_POST['view']) && is_array($_POST['view']) && $_POST['view'] ? SafeInput($SQL, implode(',', $_POST['view'])) : '';
+            $can_add = isset($_POST['add']) && is_array($_POST['add']) && $_POST['add'] ? SafeInput($SQL, implode(',', $_POST['add'])) : '';
+            $can_edit = isset($_POST['edit']) && is_array($_POST['edit']) && $_POST['edit'] ? SafeInput($SQL, implode(',', $_POST['edit'])) : '';
+            $can_delete = isset($_POST['delete']) && is_array($_POST['delete']) && $_POST['delete'] ? SafeInput($SQL, implode(',', $_POST['delete'])) : '';
+
             if(isset($_POST['module'])){
                 $module = SafeInput($SQL, $_POST['module']);
                 $A = $SQL->query("UPDATE module SET 

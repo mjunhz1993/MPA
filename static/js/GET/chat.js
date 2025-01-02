@@ -7,5 +7,5 @@ function GET_conversation(d){
 		if(d.error && data.error){ return d.error(data.error) }
 		if(d.each){for(var i=0; i<data.length; i++){ d.each(data[i]) }}
 		if(d.done){ d.done(data) }
-	}).fail(function(){console.log('ERROR: backend napaka')});
+	})
 }

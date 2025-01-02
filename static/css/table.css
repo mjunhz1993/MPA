@@ -65,6 +65,13 @@
     background-color: #f3f3f3;
     font-weight: 600;
 }
+#Main .table tfoot .statusSum{
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+    border: 1px solid grey;
+}
+#Main .table tfoot .statusSum div{ height: 17px }
 
 #Main .table .link{
     color: var(--blue);

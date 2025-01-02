@@ -1,6 +1,9 @@
 function getArchiveYears(tableBox){
 	var module = tableBox.attr('data-module');
-	$.get('/crm/php/main/module.php?get_archive_years=1&module=' + module, function(data){
+	$.get('/crm/php/main/module.php', {
+		get_archive_years: true,
+		module: module
+	}, function(data){
 		data = JSON.parse(data);
 		if(data.length != 0){
 			if(tableBox.find('.tableTop').length == 0){ tableBox.prepend('<table class="tableTop"><tr><td></td><td></td></tr></table>'); }
@@ -11,7 +14,7 @@ function getArchiveYears(tableBox){
 			html += '</select>';
 			td.prepend(html);
 		}
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 
 function selectArchiveYear(el){ tableLoadColumns(el.closest('.tableBox')); }
