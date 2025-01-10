@@ -3,9 +3,9 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-require $GLOBALS['DIR']['ROOT'].'/PHPMailer/src/Exception.php';
-require $GLOBALS['DIR']['ROOT'].'/PHPMailer/src/PHPMailer.php';
-require $GLOBALS['DIR']['ROOT'].'/PHPMailer/src/SMTP.php';
+require '/home/oktagon/PHPMailer/src/Exception.php';
+require '/home/oktagon/PHPMailer/src/PHPMailer.php';
+require '/home/oktagon/PHPMailer/src/SMTP.php';
 
 class smtpObj{
     public $acc;

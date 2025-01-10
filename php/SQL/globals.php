@@ -5,7 +5,4 @@ $GLOBALS['ALLOWED_IMG_TYPES'] = 'JPG,JPEG,PNG,GIF,TIF';
 $GLOBALS['ALLOWED_TABLE_SIZE'] = 50;
 $GLOBALS['ARCHIVE_NAME_START'] = 'crm_archive';
 $GLOBALS['MAP']['UPLOADS'] = '/crm/static/uploads/';
-$GLOBALS['DIR']['ROOT'] = explode('/',$_SERVER['DOCUMENT_ROOT']);
-array_pop($GLOBALS['DIR']['ROOT']);
-$GLOBALS['DIR']['ROOT'] = implode('/',$GLOBALS['DIR']['ROOT']);
 ?>
