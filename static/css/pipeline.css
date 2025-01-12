@@ -37,9 +37,7 @@
 	border-left: 18px solid white;
 }
 .pipeline thead th:first-child::before { display: none; }
-.pipeline thead th span{
-	display: inline-block;
-	width: 100%;
+.pipeline thead th div{
 	padding: 0 5px;
 	overflow: hidden;
     white-space: nowrap;
@@ -53,6 +51,11 @@
 }
 .pipeline tbody td:last-child{ border-right:0 }
 .pipeline tbody td.moveTo{ background-color: gainsboro; }
+
+.pipeline .sumPrice{
+	font-size: 20px;
+	padding-bottom: 10px;
+}
 
 .pipelineBox{
 	border: 1px solid gainsboro;

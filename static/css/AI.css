@@ -1,10 +1,97 @@
-.ai_icon{
+#AI{
+	z-index: 9999;
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0,0,0, 0.9);
+	color: white;
+	overflow-y: auto;
+}
+#AI .top{
+	position: sticky;
+	top: 0px;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	padding: 10px;
+}
+#AI .top .title{
+	display: flex;
+	gap: 10px;
+	align-items: center;
+}
+#AI .top h2{ margin: 0; }
+#AI .top select{
+	background-color: rgba(0, 0, 0, 0.9);
+    color: white;
+    border: 1px solid;
+    padding: 5px 35px;
+    font-size: 18px;
+    border-radius: 5px;
+}
+#AI .top a{ color:white; }
+#AI .top a svg{ width: 36px; height: 36px; }
+
+#AI .instruction{
+	white-space: pre-wrap;
+}
+
+#AI .conversation{
+	width: 80vw;
+	margin: 0 auto;
+	min-height: calc(100vh - 175px);
+}
+#AI .bubbleBox{
+	margin: 10px 0;
+}
+#AI .bubbleBox.user{ text-align: right; }
+#AI .bubble{
 	display: inline-block;
-    vertical-align: middle;
-	min-width: 25px;
-	height: 25px;
-	background-image: url(/crm/static/img/icons/ai.gif);
-	background-size: contain;
-	background-position: center;
-	background-repeat: no-repeat;
+	white-space: pre-wrap;
+	padding: 10px 20px;
+}
+#AI .user .bubble{
+	text-align: left;
+	background-color: #333537;
+	border-radius: 10px 0 10px 10px;
+}
+
+#AI .input{
+	position: sticky;
+	padding-bottom: 56px;
+	width: 50vw;
+	bottom: 0px;
+	left: calc(50% - (50vw / 2));
+}
+#AI .input textarea{
+	width: 50vw;
+	max-width: 50vw;
+	min-width: 50vw;
+	height: 70px;
+	max-height: 70px;
+	min-height: 70px;
+	background-color: rgba(0,0,0, 0.8);
+	color: white;
+	font-size: 19px;
+	padding: 10px;
+	border-radius: 5px;
+}
+
+/* extra */
+
+#AI .code{
+	background-color: black;
+    border: 1px solid;
+    padding: 10px;
+    box-shadow: 0 0 5px;
+    border-radius: 5px;
+}
+
+#AI .code table{ border-collapse: collapse; }
+#AI .code th,
+#AI .code td{
+	padding: 5px;
+	border: 1px solid;
 }

@@ -6,6 +6,14 @@ $GLOBALS['AI']['talk'] = [
     "contents" => array()
 ];
 
+function loadIn_AI_models($SQL, $WHERE = ''){
+    if(isset($_GET['id'])){ $WHERE = "AND id = {$_GET['id']} LIMIT 1"; }
+    $A = $SQL->query("SELECT * FROM ai WHERE FIND_IN_SET('{$_SESSION['user_id']}', share) > 0 $WHERE");
+    if(!$A || $A->num_rows == 0){ return []; }
+    while ($B = $A->fetch_assoc()){ $arr[] = $B; }
+    return $arr;
+}
+
 function wakeUp_AI(){
     if(!isset($GLOBALS["config"]['AI'])){ return false; }
 	$ch = curl_init();
@@ -22,6 +30,11 @@ function generate_instruction($text){
     array_push($GLOBALS['AI']['talk']['system_instruction']['parts'], [
         "text" => $text
     ]);
+}
+
+function generate_talk_history(){
+    if(!isset($_POST['history']) || !is_array($_POST['history'])){ return; }
+    foreach($_POST['history'] as $v){ generate_talk($v['text'], $v['role']); }
 }
 
 function generate_talk($text, $role = 'user'){
@@ -43,14 +56,16 @@ function ask_AI(){
     return $response;
 }
 
-function AI_err(){ return json_encode(['error' => 'error']); }
+function AI_err($str = 'error'){ return json_encode(['error' => $str]); }
 
 function run_AI(){
-    if(!isset($_POST['ask']) || $_POST['ask'] == ''){ return AI_err(); }
-	if(!wakeUp_AI()){ return AI_err(); }
+    if(!isset($_POST['ask']) || $_POST['ask'] == ''){ return AI_err('Empty_message'); }
+	if(!wakeUp_AI()){ return AI_err('Oktagon_AI_not_available'); }
 
     if(isset($_POST['instruction']) && $_POST['instruction'] != ''){ generate_instruction($_POST['instruction']); }
     else{ generate_instruction('Your name is Oktagon AI'); }
+
+    generate_talk_history();
 
     generate_talk($_POST['ask']);
 
@@ -58,6 +73,7 @@ function run_AI(){
 }
 
 if(isset($_SESSION['user_id'])){
+    if(isset($_GET['loadIn_AI_models'])){ echo json_encode(loadIn_AI_models($SQL)); }
 	if(isset($_POST['AI'])){ echo (run_AI()); }
 }
 ?>

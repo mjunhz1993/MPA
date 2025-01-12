@@ -22,14 +22,14 @@ function move_ContentToNewPaper(paper, newPaper){
 	return true
 }
 
-function if_ContentIsElement(paper, newPaper, child){
-	if(child.outerHeight(true) >= get_PdfPaperSpace(newPaper)){ return false }
-	prependElementToPdfPaper(newPaper, child)
-	return true
-}
 function if_ContentIsTable(paper, newPaper, child){
 	if(child.outerHeight(true) - child.find('tbody').outerHeight(true) >= get_PdfPaperSpace(newPaper)){ return false }
 	prependTableToPdfPaper(paper, newPaper, child);
+	return true
+}
+function if_ContentIsElement(paper, newPaper, child){
+	if(child.outerHeight(true) >= get_PdfPaperSpace(newPaper)){ return false }
+	prependElementToPdfPaper(newPaper, child)
 	return true
 }
 

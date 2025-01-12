@@ -13,7 +13,7 @@ if(isset($_SESSION['user_id'])){
         $st = 0;
         while ($B = $A->fetch_row()){
             $data[$st]['name'] = $B[0];
-            $data[$st]['path'] = $B[1];
+            $data[$st]['path'] = $_SERVER['DOCUMENT_ROOT'].$B[1];
             $data[$st]['project'] = $B[2];
             $data[$st]['tstamp'] = date('Y-m-d H:i:s', $B[3]);
             $st++;
@@ -25,8 +25,11 @@ if(isset($_SESSION['user_id'])){
         $file_name = $_POST['file_name'];
         $A = $SQL->query("SELECT path,project FROM downloads WHERE name = '$file_name' LIMIT 1");
         if($A->num_rows == 1){
-            while ($B = $A->fetch_row()){ $path = $B[0]; $project = $B[1]; }
-            $temp_path = $_SERVER['DOCUMENT_ROOT']. '/crm/php/downloads/'. $file_name. '.txt';
+            while ($B = $A->fetch_row()){
+                $path = $_SERVER['DOCUMENT_ROOT'].$B[0];
+                $project = $B[1];
+                $temp_path = $_SERVER['DOCUMENT_ROOT']. '/crm/php/downloads/'. $file_name. '.txt';
+            }
             rename($path, $temp_path);
             @$file_data = file_get_contents($temp_path);
             rename($temp_path, $path);
@@ -40,8 +43,8 @@ if(isset($_SESSION['user_id'])){
         $file_project = $_POST['file_project'];
         $file_data = $_POST['file_data'];
         $tstamp = time();
+        $path = '/crm/php/downloads/'.$file_name.'.'.($_POST['file_ext'] ?? 'php');
 
-        $path = $_SERVER['DOCUMENT_ROOT'].'/crm/php/downloads/'.$file_name.'.'.($_POST['file_ext'] ?? 'php');
         if(isset($_POST['update'])){
             $A = $SQL->query("SELECT path FROM downloads WHERE name = '$file_name' LIMIT 1");
             while ($B = $A->fetch_row()){ $path = $B[0]; }
@@ -49,16 +52,25 @@ if(isset($_SESSION['user_id'])){
 
         if($file_name == ''){ $data['error'] = 'File_name_empty'; }
         else{
-            if(file_exists($path) && !isset($_POST['update'])){ $data['error'] = 'File_name_duplicate'; }
+            if(
+                file_exists($_SERVER['DOCUMENT_ROOT'].$path) && 
+                !isset($_POST['update'])
+            ){
+                $data['error'] = 'File_name_duplicate';
+            }
             else{
                 if(isset($_POST['update'])){
-                    $A = $SQL->query("UPDATE downloads SET project = '$file_project', tstamp = '$tstamp' WHERE name = '$file_name' LIMIT 1");
+                    $A = $SQL->query("UPDATE downloads SET project = '$file_project', tstamp = '$tstamp'
+                    WHERE name = '$file_name' LIMIT 1");
                 }
-        		else{ $A = $SQL->query("INSERT INTO downloads (name,path,project,tstamp) VALUES ('$file_name','$path','$file_project','$tstamp')"); }
+        		else{
+                    $A = $SQL->query("INSERT INTO downloads (name,path,project,tstamp)
+                    VALUES ('$file_name','$path','$file_project','$tstamp')");
+                }
 
     			if(!$A){ $data['error'] = $SQL->error; }
     			else{
-    				$myfile = fopen($path, "w");
+    				$myfile = fopen($_SERVER['DOCUMENT_ROOT'].$path, "w");
     				fwrite($myfile, $file_data);
     				fclose($myfile);
     			}
@@ -73,7 +85,7 @@ if(isset($_SESSION['user_id'])){
         $file_name = $_POST['file_name'];
         $A = $SQL->query("SELECT path FROM downloads WHERE name = '$file_name' LIMIT 1");
         if($A->num_rows == 1){
-            while ($B = $A->fetch_row()){ $path = $B[0]; }
+            while ($B = $A->fetch_row()){ $path = $_SERVER['DOCUMENT_ROOT'].$B[0]; }
             if(unlink($path)){
             	$A = $SQL->query("DELETE FROM downloads WHERE name = '$file_name' LIMIT 1");
     			if(!$A){ $data['error'] = $SQL->error; }

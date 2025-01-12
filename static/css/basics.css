@@ -38,8 +38,10 @@ pre code{
 
 
 /* TOP NAV BAR */
-#TopNav{
-    border-spacing: 0px;
+#TopNav{ 
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     background-color: white;
     padding: 0 10px;
     box-shadow: 0 0 5px black;
@@ -70,13 +72,18 @@ pre code{
 }
 
 
-#TopNav #TopNavRight{text-align: right;}
+#TopNav #TopNavRight{
+    display: flex;
+    align-items: center;
+    gap: 17px;
+    padding-right: 17px;
+    text-align: right;
+}
 
 #TopNav #TopNavBell{
     cursor: pointer;
     display: inline-block;
     vertical-align: middle;
-    margin-right: 10px;
 }
 #TopNav #TopNavBell svg{vertical-align: middle;}
 #TopNav #TopNavBell span{
@@ -107,6 +114,18 @@ pre code{
     transform: rotate(45deg);
 }
 #TopNav #TopNavUser svg{ vertical-align: middle; }
+
+.ai_icon{
+    display: inline-block;
+    vertical-align: middle;
+    min-width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background-image: url(/crm/static/img/icons/ai.gif);
+    background-size: 140%;
+    background-position: center;
+    background-repeat: no-repeat;
+}
 
 
 /* LEFT NAV BAR */

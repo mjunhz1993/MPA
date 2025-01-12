@@ -28,7 +28,7 @@ function openSelectMultiple(el){
 
 function turnTableToMultiSelect(table){
 	var i = 0;
-	table.find('.toolRow:not(:first)').each(function(){
+	table.find('tbody .toolRow:not(:first)').each(function(){
 		var html = '<input type="checkbox" class="selectmultiple" id="selectmultiple' + i + '">';
 		html += '<label for="selectmultiple' + i + '" class="chekboxLabel">' + slovar('Select') + '</label>';
 		$(this).find('.linksvg').hide();

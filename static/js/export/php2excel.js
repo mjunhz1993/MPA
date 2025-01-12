@@ -27,15 +27,15 @@ function php2excel(module){
         if(form.find('#export_type').val() == 1){ selected.each(function(){ selectedID.push($(this).closest('tr').attr('data-id')); }); }
 
         $.post('/crm/php/export/excel/export.php?excel_module=1', {
-            csrf_token: $('[name=csrf_token]').val(),
             module:module,
             export_type: form.find('#export_type').val(),
             selectedID: selectedID.join(',')
         }, function(url){
             url = JSON.parse(url);
-            if(url.error){ remove_HTML_loader(popupBox); form.show(); }
-            else{ removePOPUPbox(); window.location.href = url; }
-        }).fail(function(){console.log('ERROR: backend napaka');});
+            removePOPUPbox();
+            if(url.error){ return createAlertPOPUP(url.error) }
+            window.location.href = url;
+        })
     });
 
     popup.fadeIn('fast');

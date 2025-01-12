@@ -1,7 +1,7 @@
 <style type="text/css">
     .toggleConfigMenu{display: none;}
-    #configBox h2{cursor: pointer; transition:0.2s;}
-    #configBox h2:hover, #configBox h2.act{background-color: var(--blue); color:white;}
+    #configBox h2{cursor: pointer; transition:0.2s; padding: 10px !important; margin-bottom: 10px;}
+    #configBox h2:hover, #configBox h2.act{background-color: var(--light-blue); color:white;}
 </style>
 
 <form method="post" class="editForm" id="configBox">

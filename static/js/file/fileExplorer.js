@@ -63,7 +63,7 @@ function load_fileDir(d, fileBox, path, OFFSET = 0, callback){
         fileBox.find('table').fadeIn('fast');
         add_events_to_file_explorer(d, fileBox, data);
         if(typeof callback === 'function'){ callback() }
-    }).fail(function(){console.log('ERROR: backend napaka');});
+    })
 }
 
 function move_files_by_year(d, fileBox, path){POPUPconfirm('Premakni po letnicah ?','',function(){
@@ -73,7 +73,7 @@ function move_files_by_year(d, fileBox, path){POPUPconfirm('Premakni po letnicah
         data = JSON.parse(data);
         console.log(data);
         load_fileDir(d, fileBox, path);
-    }).fail(function(){console.log('ERROR: backend napaka');});
+    })
 })}
 
 function display_fileDir(d, fileBox, path, data){
@@ -81,19 +81,28 @@ function display_fileDir(d, fileBox, path, data){
 	if(path == '/'){ fileBox.find('.goback').hide() }else{ fileBox.find('.goback').show() }
 	if(!data.file){ return }
 	var html = '';
-	for(var i=0; i<data.file.length; i++){
-		var f = data.file[i];
-		html += '<tr data-path="' + path + f.name + '">';
-		html += '<td>';
-		if(!f.extension){ html += getSVG() }else{ html += getSVG('attachment') }
-		html += '</td><td class="renameFile">' + f.name + '</td>';
-		html += '<td>' + display_fileDirTools(path, f) + '</td>';
-		html += '</tr>';
-	}
+	data.file.forEach(f => {
+	    html += `
+	    <tr data-path="${path}${f.name}">
+	        <td>${getSVG(f.extension ? 'attachment' : '')}</td>
+	        <td>
+	    		<div class="renameFile">${f.name}</div>
+	    		<a class="showSize" onclick="show_file_size($(this))">${slovar('Show_size')}</a>
+	        </td>
+	        <td>${display_fileDirTools(path, f)}</td>
+        </tr>
+        `
+	});
 	fileBox.find('tbody').append(html);
 
 	if(!data.OFFSET){ return }
-	fileBox.find('tfoot').html('<tr><td colspan="3"><button class="buttonSquare button100 buttonBlue buttonShowMore">' + slovar('Show_more') + '</button></td></tr>');
+	fileBox.find('tfoot').html(`
+		<tr>
+			<td colspan="3">
+				<button class="buttonSquare button100 buttonBlue buttonShowMore">${slovar('Show_more')}</button>
+			</td>
+		</tr>
+	`);
 }
 
 function display_fileDirTools(path, f){
@@ -136,7 +145,8 @@ function open_rename_file(d, fileBox, el){
 }
 function submit_rename_file(d, fileBox, e, el){if(e.which == 13){
 	var file = el.closest('tr').attr('data-path');
-	$.get('/crm/php/file/fileExplorer.php?rename_file=1', {
+	$.get('/crm/php/file/fileExplorer.php', {
+		rename_file:true,
 		file:file,
 		name:el.val()
 	}, function(data){
@@ -145,6 +155,17 @@ function submit_rename_file(d, fileBox, e, el){if(e.which == 13){
         load_fileDir(d, fileBox, fileBox.attr('data-path'))
     })
 }}
+
+function show_file_size(el){
+	el.html(HTML_loader());
+	$.get('/crm/php/file/fileExplorer.php', {
+		getFileSize: el.closest('tr').data('path')
+	}, function(data){
+		data = JSON.parse(data);
+		if(!data){ return }
+		el.replaceWith(data);
+	})
+}
 
 function create_dir(d, el){
 	if(valEmpty(el.val())){ return }

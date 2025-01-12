@@ -11,7 +11,7 @@ function exportTable(d = {}){
 }
 
 function loadExportTable(d){
-	$.get('/crm/php/export/table.php', {
+	$.post('/crm/php/export/table.php', {
 		exportTable: true,
 		id:d.id,
 		param:d.param

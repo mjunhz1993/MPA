@@ -37,8 +37,8 @@ function pipeline_displayStatusRow(box, data, html = ''){
 	data.statusRow.forEach(row => {
 		if(valEmpty(row[2])){ row[2] = '#ffffff' }
 		html += `
-		<th style="background-color:`+row[2]+`; color:`+row[2]+`;" >
-			<span style="color:`+getContrastYIQ(row[2])+`;">`+row[1]+`</span>
+		<th style="background-color:${row[2]}; color:${row[2]};" >
+			<div style="color:${getContrastYIQ(row[2])};">${row[1]}<span></span></div>
 		</th>`;
 	})
 	html += '</tr></thead><tbody><tr>';
@@ -51,15 +51,13 @@ function pipeline_displayStatusRow(box, data, html = ''){
 	pipeline_loadAllColumns(box, data)
 }
 
-function pipeline_loadAllColumns(box, data, thisCol = false){
-	if(!thisCol){
-		box.find('.pipeline tbody td').append(HTML_loader());
-		thisCol = box.find('.pipeline tbody td').first()
-	}
+function pipeline_loadAllColumns(box, data){
+	thisCol = box.find('.pipeline tbody td').not('.loaded').first();
+	if(thisCol.length == 0){ return }
+
+	thisCol.append(HTML_loader()).addClass('loaded');
 	pipeline_loadColumn(box, data, thisCol, true, function(){
-		nextCol = thisCol.next('td');
-		if(nextCol.length == 0){ return }
-		pipeline_loadAllColumns(box, data, nextCol);
+		pipeline_loadAllColumns(box, data);
 	})
 }
 
@@ -70,7 +68,12 @@ function pipeline_loadColumn(box, data, thisCol, emptyCol = true, callback = fal
 		data: data,
 		statusValue: thisCol.data('status')
 	}, function(rows){
-		rows = JSON.parse(rows);
+		pipeline_displayColumn(box, data, thisCol, callback, JSON.parse(rows))
+	})
+}
+
+function pipeline_displayColumn(box, data, thisCol, callback, rows){
+	pipeline_loadColumn_sum(data, thisCol, function(){
 		remove_HTML_loader(thisCol);
 		setTimeout(function(){ if(callback){callback()} }, 100)
 		if(rows.error || rows.length == 0){ return }
@@ -87,6 +90,24 @@ function pipeline_displayRow(box, thisCol, data, rows){
 	})
 }
 
+function pipeline_loadColumn_sum(data, thisCol, callback){
+	$.get('/crm/php/presets/pipeline.php', {
+		get_pipeline_sum: true,
+		data: data,
+		statusValue: thisCol.data('status')
+	}, function(sum){
+		sum = JSON.parse(sum);
+		console.log(sum);
+		thisCol.closest('table')
+		.find('thead th').eq(thisCol.index())
+		.find('span').text(' / '+sum.countItems);
+		if(sum.price){
+			thisCol.prepend(`<div class="sumPrice">${Price(sum.price)}</div>`)
+		}
+		callback();
+	})
+}
+
 function pipeline_dragEvent(box, thisCol, data){
 	thisEl = thisCol.find('.pipelineBox').last();
 	draggable({
@@ -97,6 +118,7 @@ function pipeline_dragEvent(box, thisCol, data){
 				'width':d.box.width(),
 				'position':'fixed'
 			})
+			.parent().removeClass('loaded');
 		},
 		move: function(d, x){
 			newPosition = false;
@@ -115,7 +137,8 @@ function pipeline_dragEvent(box, thisCol, data){
 				'position':'',
 				'top':'',
 				'left':''
-			});
+			})
+			.parent().removeClass('loaded');
 			d.box.closest('tr').find('td').removeClass('moveTo');
 			pipeline_changeStatus(box, d.box, data);
 		}
@@ -132,7 +155,7 @@ function pipeline_changeStatus(box, el, data){
     	console.log(thisData);
     	if(thisData.error){ return pipeline_moveBack(box, el) }
     	el.data('status', el.parent().data('status'))
-    	// pipeline_loadColumn(box, data, el.closest('td'));
+    	pipeline_loadAllColumns(box, data);
     })
 }
 
@@ -147,12 +170,12 @@ function pipeline_HTMLrow(data, r){
 			<div class="title">${r.subject}</div>
 			<div class="drag"></div>
 		</div>
-		`+pipeline_HTMLextraText(r)+`
+		${pipeline_HTMLextraText(r)}
 		<div class="middle">
 			<div class="users">${pipeline_HTMLusers(r.assigned)}</div>
 			<div class="date">
-				`+getSVG('clock')+`
-				`+getDate(defaultDateFormat, stringToDate(r.date, 'UTC'))+`
+				${getSVG('clock')}
+				${getDate(defaultDateFormat, stringToDate(r.date, 'UTC'))}
 			</div>
 		</div>
 		<div class="bottom">
@@ -176,15 +199,15 @@ function pipeline_HTMLusers(users, html = ''){
 	users.forEach(u => {
 		html += `
 		<span
-		onclick="loadJS('main/read-box-mini', function(el){ open_readBoxMini(el,'row','user',`+u[0]+`)},$(this))"
-		data-tooltip="`+u[1]+`">
-		`+u[1][0]+`</span>`;
+		onclick="loadJS('main/read-box-mini', function(el){ open_readBoxMini(el,'row','user',${u[0]})},$(this))"
+		data-tooltip="${u[1]}">
+		${u[1][0]}</span>`;
 	});
 	return html;
 }
 function pipeline_HTMLprice(r){
 	if(valEmpty(r.price)){ return '' }
-	return `<span>`+r.price+' '+defaultCurrency+`</span>`
+	return `<span>${Price(r.price, true)}</span>`
 }
 
 function pipeline_HTMLloadMore(box, data, thisCol){

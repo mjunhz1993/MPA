@@ -53,6 +53,32 @@ function get_files_filterd($filter, $dir, $fakeDir, $data = array()){
     return $data;
 }
 
+// --- EVENTS
+
+function getFileSize($thisFile) {
+    $thisFile = $_SERVER['DOCUMENT_ROOT'].'/crm/static/uploads'.$thisFile;
+    
+    if (is_file($thisFile)) { return formatSize(filesize($thisFile)); }
+
+    $size = 0;
+
+    foreach (new RecursiveIteratorIterator(new RecursiveDirectoryIterator($thisFile)) as $file) {
+        if ($file->isFile()) {
+            $size += $file->getSize();
+        }
+    }
+
+    return formatSize($size);
+}
+function formatSize($size){
+    $mb = $size / (1024 * 1024);
+    if ($mb >= 1024) {
+        $gb = $mb / 1024;
+        return number_format($gb, 2) . " GB";
+    }
+    return number_format($mb, 2) . " MB";
+}
+
 function create_dir(){
     $name = $_POST['name'];
     $path = $_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads'.$_POST['path'];
@@ -124,6 +150,7 @@ if(isset($_SESSION['user_id'])){
     if(isset($_GET['create_dir'])){ echo json_encode(create_dir($SQL)); }
     if(isset($_GET['upload_file'])){ echo json_encode(upload_file($SQL)); }
     if(isset($_GET['rename_file'])){ echo json_encode(rename_file($SQL)); }
+    if(isset($_GET['getFileSize'])){ echo json_encode(getFileSize($_GET['getFileSize'])); }
     if(isset($_GET['paste_file'])){ echo json_encode(paste_file($SQL)); }
     if(isset($_GET['move_files_by_year'])){ echo json_encode(move_files_by_year($SQL)); }
     if(isset($_GET['zip_dir'])){ echo json_encode(zip_dir($SQL,$_GET['source'],$_GET['destination'])); }

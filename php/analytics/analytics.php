@@ -48,7 +48,7 @@ function analytics_connect($SQL, $SQL_db){
 // MAIN
 
 function analytics_create($SQL){
-    $share = '|'.SafeInput($SQL, implode('|', $_POST['share'] ?? [])).'|';
+    $share = SafeInput($SQL, implode(',', $_POST['share'] ?? []));
     if(isset($_POST['id'])){
         $id = SafeInput($SQL, $_POST['id']);
         if(!analytic_access($SQL, $id, 'can_edit')){ return ['error' => 'Access_denied']; }
@@ -76,10 +76,10 @@ function analytics_get($SQL, $user, $arr = []){
     $WHERE = '';
     if($_POST['id']){ $WHERE = ' AND id = '.SafeInput($SQL, $_POST['id']); }
 	$A = $SQL->query("SELECT * FROM analytics
-	WHERE (added = '$user' OR share LIKE '%|$user|%') AND active = 1 $WHERE
+	WHERE (added = '$user' OR FIND_IN_SET('$user', share) > 0) AND active = 1 $WHERE
 	ORDER BY category,name");
 	while ($B = $A->fetch_assoc()){
-        $B['share'] = explode('|', trim($B['share'], '|'));
+        $B['share'] = explode(',', $B['share']);
         array_push($arr, $B);
     }
 	return $arr;
@@ -138,7 +138,7 @@ function analytic_tables_get($SQL, $arr = []){
     LEFT JOIN analytics_content t2 ON t2.pid = t1.id
     LEFT JOIN analytics t3 ON t3.id = t1.pid
     WHERE t1.pid = $pid AND t1.active = 1 AND 
-    (added = '$user' OR share LIKE '%|$user|%')
+    (added = '$user' OR FIND_IN_SET('$user', share) > 0)
     $WHERE
 	ORDER BY t1.order_num");
     if(!$A){ return ['error' => $SQL->error]; }
@@ -180,8 +180,8 @@ function analytic_content_create($SQL){
 // DATA
 
 function analytic_content_data($SQL){
-    $_GET['id'] = analytic_get_data_id($SQL);
-    if(!$_GET['id']){ return ['error' => 'No_data']; }
+    $_POST['id'] = analytic_get_data_id($SQL);
+    if(!$_POST['id']){ return ['error' => 'No_data']; }
 
     $query = get_table_query($SQL);
     if(!$query){ return ['error' => 'Wrong_href']; }

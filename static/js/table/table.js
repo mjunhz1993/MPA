@@ -110,24 +110,27 @@ function toggleTableView(el,type){
     }
 }
 
-function tableDisplayButtons(box, module, html = ''){
-    if(box.find('.tableTop').length == 1){ return }
+function tableDisplayButtons(box, module, html = '') {
+    if (box.find('.tableTop').length) return;
+
     box.prepend('<table class="tableTop"><tr><td></td><td></td></tr></table>');
-    var tableTop = box.find('.tableTop').first();
-    buttons = box.attr('data-button').split(',');
-    for(var i=0; i<buttons.length; i++){
-        if(buttons[i] == 'add'){
+    const tableTop = box.find('.tableTop').first();
+    const buttons = box.attr('data-button').split(',');
+
+    buttons.forEach(button => {
+        if (button === 'add') {
             tableTop.find('td').first().append(`
                 <button 
-                class="button buttonGreen"
-                onclick="loadJS('main/add-box', ()=>openAddBoxQuick('${module}'))"
+                    class="button buttonGreen"
+                    onclick="loadJS('main/add-box', () => openAddBoxQuick('${module}'))"
                 >
                     ${getSVG('plus_circle')}
                     <span class="SVGdesc">${slovar('Add_new')}</span>
-                </buttons>
-            `);
+                </button>
+            `)
         }
-    }
+        if (button === 'archive') { loadJS('table/archive', () => getArchiveYears(box)) }
+    });
 }
 
 function tableDisplayColumns(tableBox, data, callback){
@@ -249,7 +252,7 @@ function tableCreateSumColumns(box) {
     tableBox.find('thead th').each(function () {
         const type = $(this).attr('data-type');
         
-        html += '<td>';
+        html += `<td class="${$(this).hasClass('toolColumn') ? 'toolRow' : ''}">`;
 
         if (['ID', 'INT', 'DECIMAL', 'PRICE', 'PERCENT','SELECT'].includes(type)) {
             const calcType = 

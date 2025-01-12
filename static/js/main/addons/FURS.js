@@ -1,7 +1,9 @@
+loadCSS('DURS');
+
 function ADDON_FURS(module, box, type, addon, i, html = ''){
     if(!['ADD','EDIT'].includes(type)){ return }
 	var copy = addon[3];
-    var clickEvent = 'openCopyFromFURS($(this))';
+    var clickEvent = 'openCopyFromDURS($(this))';
     var label = addon[2];
     var group = addon[1];
     html += '<b class="button buttonBlue" data-copy="'+copy+'" onclick="'+clickEvent+'">'+slovar(label)+'</b>';
@@ -11,66 +13,78 @@ function ADDON_FURS(module, box, type, addon, i, html = ''){
     box.find('.addonButtonBox[data-group="'+group+'"]').append(html);
 }
 
-function openCopyFromFURS(el, html = ''){
+function openCopyFromDURS(el){
     var popup = createPOPUPbox();
     var popupBox = popup.find('.popupBox');
-    html += '<div class="toggleDiv"><div class="horizontalTable"><table class="table"><thead><tr>';
-    html += '<th class="no-sort">' + slovar('Company') + '</th>';
-    html += '<th class="no-sort">' + slovar('Street') + '</th>';
-    html += '<th class="no-sort">' + slovar('Postal') + '</th>';
-    html += '<th class="no-sort">' + slovar('City') + '</th>';
-    html += '<th class="no-sort">' + slovar('Tax_number') + '</th>';
-    html += '<th class="no-sort">' + slovar('Registration_number') + '</th>';
-    html += '<th class="no-sort">' + slovar('Taxpayer') + '</th>';
-    html += '</tr></thead><tbody></tbody></table></div><hr>';
-    html += '<input type="text" placeholder="' + slovar('Search') + '"  style="width:100%;box-sizing:border-box;padding:5px;">';
-    html += '<hr><button class="button buttonBlue">' + slovar('Search') + '</button></div>';
-    html += '<button class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Cancel') + '</button>';
-    popupBox.html(html);
-    popupBox.find('input[type=text]').keyup(function(e){if(e.keyCode == 13){ searchFURS(popup, el) }});
+    popupBox.css('padding',0);
+    popupBox.html(DURS_form_HTML());
+    popupBox.find('input[type=text]').keyup(function(e){if(e.keyCode == 13){ DURS_search(popup, el) }});
     popupBox.find('.buttonBlue').click(function(){ searchFURS(popup, el) });
     popup.fadeIn('fast', function(){ popupBox.find('input[type=text]').focus() });
 }
-function searchFURS(popup, el, html = ''){
+
+function DURS_form_HTML(){
+    return `
+    <div id="DURS">
+        <div class="DURS"></div>
+        <div class="DURSbottom">
+            <input type="text" placeholder="${slovar('Search')}"  style="width:100%;box-sizing:border-box;padding:5px;">
+            <hr>
+            <button class="button buttonBlue">${slovar('Search')}</button>
+            <button class="button buttonGrey" onclick="removePOPUPbox()">${slovar('Cancel')}</button>
+        </div>
+    </div>
+    `
+}
+
+function DURS_search(popup, el, html = ''){
     var popupBox = popup.find('.popupBox');
-    var box = popupBox.find('.toggleDiv')
-    var table = popupBox.find('.table tbody');
+    var box = popupBox.find('#DURS');
+    var table = popupBox.find('.DURS');
+    var buttons = popupBox.find('.DURSbottom');
     var value = popup.find('input[type=text]').val();
     if(valEmpty(value)){ return }
-    popupBox.prepend(HTML_loader());
-    box.hide();
-    $.get('/crm/php/main/FURS.php?search_FURS=1', {search:value}, function(data){
+    table.html(HTML_loader());
+    buttons.hide();
+    $.get('/crm/php/API/DURS.php', {
+        DURS:true,
+        search:value
+    }, function(data){
         data = JSON.parse(data);
-        if(data){for(var i=0; i<data.length; i++){ html += FURSToTable(data[i]) }}
+        if(data){for(var i=0; i<data.length; i++){ html += DURSToTable(data[i]) }}
         table.html(html);
-        table.find('.hoverEffect').click(function(){ copyFromFURS($(this), el) });
+        table.find('.DURSbox').click(function(){ copyFromDURS($(this), el) });
         remove_HTML_loader(popupBox);
-        box.show();
+        buttons.show();
     })
 }
-function FURSToTable(comp){
-    var html = '';
-    html += '<tr class="hoverEffect">';
-    html += '<td data-col="naziv">' + comp.ime + '</td>';
-    html += '<td  data-col="ulica">' + comp.ulica + '</td>';
-    html += '<td  data-col="posta">' + comp.posta + '</td>';
-    html += '<td  data-col="mesto">' + comp.mesto + '</td>';
-    html += '<td  data-col="davcna">' + comp.davcna + '</td>';
-    html += '<td  data-col="maticna">' + comp.maticna + '</td>';
-    html += '<td  data-col="placnik">' + comp.zavezanec + '</td>';
-    html += '</tr>';
-    return html;
+function DURSToTable(comp){
+    return `
+    <div class="DURSbox">
+        <b data-col="naziv">${comp.ime}</b>
+        <br>
+        <span data-col="ulica">${comp.ulica}</span>
+        <br>
+        <span data-col="posta">${comp.posta}</span>
+        <span data-col="mesto">${comp.mesto}</span>
+        <hr>
+        <span>${slovar('Tax_number')}: <b data-col="davcna">${comp.davcna}</b></span>
+        <br>
+        <span>${slovar('Registration_number')}: <b data-col="maticna">${comp.maticna}</b></span>
+        <br>
+        <span>${slovar('Taxpayer')}: <b data-col="placnik">${comp.zavezanec}</b></span>
+    </div>
+    `
 }
-function copyFromFURS(row, el){
+
+function copyFromDURS(row, el) {
     var box = el.closest('form');
-    var arr = el.attr('data-copy').split(',');
-    for(var i=0; i<arr.length; i += 2){
-        var from = row.find('td[data-col="' + arr[i] + '"]').text();
-        var to = arr[i+1];
-        var input = box.find('[name="' + to + '"]');
-        var formField = input.closest('.formField');
-        input.val(from);
-    }
+    el.attr('data-copy').split(',').forEach((val, i, arr) => {
+        if (i % 2 === 0) {
+            box.find(`[name="${arr[i + 1]}"]`)
+            .val(row.find(`[data-col="${val}"]`).text());
+        }
+    });
     refreshFormData(box);
     removePOPUPbox();
 }

@@ -101,7 +101,7 @@ function add_AI_button_for_email(form, html = ''){
     form.find('.note-toolbar').append(html);
     tooltips();
 }
-function open_email_AI(el){loadJS('AI/AI', function(){
+function open_email_AI(el){loadJS('AI/AI-mini', function(){
     AI_box(el, {
         type: 'ask',
         instruction: 'write a email depending on user input, without subject',

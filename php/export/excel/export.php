@@ -5,6 +5,7 @@ include(loadPHP('export/excel/Classes/PHPExcel/Writer/Excel2007'));
 include(loadPHP('main/module_functions'));
 
 function export_excel_module($SQL){
+	if(!class_exists('ZipArchive')){ return ['error' => 'ZipArchive_not_installed']; }
 	$data = array();
 	$user_id = $_SESSION['user_id'];
 	$module = SafeInput($SQL, $_POST['module']);
@@ -17,10 +18,6 @@ function export_excel_module($SQL){
 	// ADD FILTERS
 	$F = getFilterData($SQL, $module, $user_id);
     if(count($F[3]) != 0){ array_push($WHERE, '('. implode(' OR ', $F[3]). ')'); }
-
-    // ADD TRASH SYSTEM
-    $moduleData = getModuleData($SQL, $module);
-    if(in_array('TRASH', $moduleData['accessories'])){ array_push($WHERE, $module.'.trash = 0'); }
 
 	// DELETE OLD FILES
 	$files = glob($_SERVER['DOCUMENT_ROOT'].'/crm/static/uploads/excel/'.$module.'_*');
@@ -88,7 +85,7 @@ function excel_save($module, $spreadsheet){
 	return $url;
 }
 
-if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POST['csrf_token']){
+if(isset($_SESSION['user_id'])){
 	if(isset($_GET['excel_module'])){ echo json_encode(export_excel_module($SQL)); }
 }
 ?>

@@ -1,0 +1,28 @@
+#DURS .DURS{
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	justify-content: space-evenly;
+	background-color: var(--black);
+	padding: 30px;
+}
+#DURS .DURS .DURSbox{
+	transition: 0.2s;
+	cursor: pointer;
+	border: 1px solid;
+	text-align: left;
+	padding: 5px 10px;
+	width: 250px;
+	background-color: white;
+	box-shadow: 0 0 5px black;
+}
+#DURS .DURS .DURSbox:hover{
+	background-color: var(--blue);
+	color: white;
+}
+#DURS .DURSbottom{
+	position: sticky;
+	bottom: 0px;
+	background-color: white;
+	padding: 30px;
+}

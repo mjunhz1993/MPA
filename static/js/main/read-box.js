@@ -63,9 +63,9 @@ function displayReadForm(data, EditBox, breadcrumb, module, id, boxYear){
                         module:temp[1],
                         name:d.name,
                         group:temp[1],
-                        add:true,
                         filter:[temp[2]],
-                        filtervalue:[id]
+                        filtervalue:[id],
+                        buttons: ['add']
                     });
                 }
             }
@@ -79,7 +79,8 @@ function displayReadForm(data, EditBox, breadcrumb, module, id, boxYear){
                 filter:['diary_module','diary_row'],
                 filtervalue:[module,id],
                 svg:'clock',
-                simplify:true
+                simplify:true,
+                buttons: ['archive']
             });
         }
     }
@@ -171,7 +172,7 @@ function addReadBoxJOIN(d){
     html = '<div class="box col100 readOnlyFormBox" data-group="'+d.group+'" style="display:none;">';
     html += '<h2>'+slovar(d.name)+'</h2>';
     html += '<div class="tableBox" ';
-    if(d.add){ html += 'data-button="add" ' }
+    if(d.buttons){ html += 'data-button="'+d.buttons.join(',')+'" ' }
     if(d.simplify){ html += 'data-simplify="1" ' }
     html += 'data-module="'+d.module+'" ';
     if(d.filter){ html += 'data-filter="'+d.filter.join(',')+'" ' }
