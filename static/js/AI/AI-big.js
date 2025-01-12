@@ -1,11 +1,10 @@
-function AI_window(d = {}){loadJS('AI/AI', function(){
+function AI_window(d = {}){loadJS('AI/slovar/'+slovar(),()=>{loadJS('AI/AI', ()=>{
 	if($('#AI').length == 1){ return }
 	$('body').append(AI_window_HTML());
 	var box = $('#AI');
 	box.fadeIn('fast', function(){ $(this).find('textarea').focus() });
-
 	loadIn_AI_models();
-})}
+})})}
 
 function AI_window_HTML(){
 	return `
@@ -32,6 +31,7 @@ function AI_window_HTML(){
 function loadIn_AI_models(){
 	$.get('/crm/php/AI/AI.php', {loadIn_AI_models:true}, function(data){
 		data = JSON.parse(data);
+		if(data.length == 0){ return add_conversation_bubble(slovar('I_cant_help_you'), 'au') }
 		data.forEach(m => {
 			$('#AI select').append(`
 				<option value="${m.id}">${m.name}</option>
@@ -117,7 +117,7 @@ function work_with_answer(el, text, d){
 
 function if_JSON_answer(el, text, jsonObject){
 	if(encodeAnswerWithSQLselect(jsonObject)){ return foundSelectStatement(jsonObject.sql, text) }
-	default_answer(el, 'Action_denied');
+	default_answer(el, slovar('I_am_not_allowed_to_do_that'));
 }
 
 function default_answer(el, d){
@@ -156,8 +156,7 @@ function userFreandlyAnswer(instruction, text){ console.log(instruction);
 		instruction: $('#AI .instruction').text(),
 		ask:text,
 		answer: function(d){
-			$('#AI textarea').show().focus();
-			add_conversation_bubble(d, 'ai');
+			work_with_answer($('#AI textarea'), text, d);
 			add_AI_instructions(currentInstructions);
 		}
 	})

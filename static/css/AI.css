@@ -89,9 +89,9 @@
     border-radius: 5px;
 }
 
-#AI .code table{ border-collapse: collapse; }
-#AI .code th,
-#AI .code td{
+#AI .bubble table{ border-collapse: collapse; }
+#AI .bubble th,
+#AI .bubble td{
 	padding: 5px;
 	border: 1px solid;
 }
