@@ -7,10 +7,10 @@ function openCodeEditor(d){
 		$('body').append(`
 			<div id="codeEditor">
 				<div id="codeEditorTop">
-					<button class="buttonSquare buttonGreen save1">`+slovar('Save_changes')+`</button>
-					<button class="buttonSquare buttonGreen save2">`+slovar('Save_changes_close')+`</button>
-					<b>`+d.type+`</b>
-					<button class="buttonSquare buttonGrey" onclick="closeCodeEditor()">`+slovar('Cancel')+`</button>
+					<button class="buttonSquare buttonGreen save1">${slovar('Save_changes')}</button>
+					<button class="buttonSquare buttonGreen save2">${slovar('Save_changes_close')}</button>
+					<b>${d.name ?? ''}.${d.type}</b>
+					<button class="buttonSquare buttonGrey" onclick="closeCodeEditor()">${slovar('Cancel')}</button>
 				</div>
 				<div id="codeEditorInput"></div>
 			</div>

@@ -7,7 +7,7 @@ function showUserConfig_security(box){
 }
 
 function showUserConfig_security_check(callback){
-	$.get('/crm/php/auth/user_config.php', {check_security:true}, function(data){ callback(JSON.parse(data)) })
+	$.getJSON('/crm/php/auth/user_config.php', {check_security:true}, function(data){ callback(data) })
 }
 
 function HTML_showUserConfig_security(box, data, html = ''){
@@ -49,10 +49,10 @@ function color_securitySVG(){
 }
 
 function toggle_security(el){
-	$.get('/crm/php/auth/user_config.php', {
+	$.getJSON('/crm/php/auth/user_config.php', {
 		toggle_security:true,
 		toggle:el.attr('id')
-	}, function(data){ data = JSON.parse(data);
+	}, function(data){
 		if(data.error){
 			createAlert(el.parent(), 'Red', data.error);
 			el.prop('checked', !el.prop('checked'));

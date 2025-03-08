@@ -1,5 +1,5 @@
 #AI{
-	z-index: 9999;
+	z-index: 998;
 	position: fixed;
 	top: 0;
 	left: 0;
@@ -22,7 +22,10 @@
 	gap: 10px;
 	align-items: center;
 }
-#AI .top h2{ margin: 0; }
+#AI .top h2{
+	margin: 0;
+	color: white;
+}
 #AI .top select{
 	background-color: rgba(0, 0, 0, 0.9);
     color: white;
@@ -39,6 +42,7 @@
 }
 
 #AI .conversation{
+	text-align: left;
 	width: 80vw;
 	margin: 0 auto;
 	min-height: calc(100vh - 175px);

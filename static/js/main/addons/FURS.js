@@ -46,11 +46,10 @@ function DURS_search(popup, el, html = ''){
     if(valEmpty(value)){ return }
     table.html(HTML_loader());
     buttons.hide();
-    $.get('/crm/php/API/DURS.php', {
+    $.getJSON('/crm/php/API/DURS.php', {
         DURS:true,
         search:value
     }, function(data){
-        data = JSON.parse(data);
         if(data){for(var i=0; i<data.length; i++){ html += DURSToTable(data[i]) }}
         table.html(html);
         table.find('.DURSbox').click(function(){ copyFromDURS($(this), el) });

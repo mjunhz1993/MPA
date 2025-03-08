@@ -6,6 +6,7 @@ function exportTable($SQL){
 	if(isset($_POST['stringQuery']) && $_POST['stringQuery'] != ''){ $query = $_POST['stringQuery']; }
 	else{ $query = get_table_query($SQL); }
 	if(!$query){ return ['error' => 'No_query_found']; }
+	if(!queryIsSafe($query)){ return ['error' => 'Event_denied']; }
 
 	$query = check_table_limit($query);
 

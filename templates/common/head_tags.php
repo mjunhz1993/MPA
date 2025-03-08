@@ -69,6 +69,7 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/check_user.php');
 
 <?php if(isset($_SESSION['user_id'])): ?>
 <script src="/crm/static/js/notifications/notifications.js?v=<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
+<script src="/crm/static/js/GET/user.js?v=<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
 <script type="text/javascript">
     var user_id = "<?php echo $_SESSION['user_id']; ?>";
     var user_username = "<?php echo $_SESSION['user_username']; ?>";

@@ -47,14 +47,11 @@ function stats_loadData(){
 	var labels = [];
 	for(var i=1; i<=day; i++){ labels.push(slovar('Day') + ':' + i); }
 
-	$.get('/crm/php/campaign/stats.php?get_stats=1', {
+	$.getJSON('/crm/php/campaign/stats.php?get_stats=1', {
 		type: type,
 		year: year,
 		month: month
 	}, function(data){
-
-		data = JSON.parse(data);
-
 		if(type == 'stats'){
 			html = '<div style="overflow:auto;"><div id="chartBoxMain"></div></div>';
 			html += '<div id="chartBoxInner"><div class="chartBox chartBox1"></div><div class="chartBox chartBox2"></div><div class="chartBox chartBox3"></div></div>';
@@ -80,7 +77,7 @@ function stats_loadData(){
 			$('#chartBox2').parent().prepend('<h2>' + slovar('Devices') + '</h2>');
 		}
 
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 
 function stats_getData(type, day, data, labels){

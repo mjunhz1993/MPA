@@ -52,5 +52,5 @@ function send_SMS(d){
 		data = JSON.parse(data);
 		if(d.error && data.RestException){ return d.error(data.RestException.Message) }
 		if(d.done){ return d.done() }
-	}).fail(function(){console.log('ERROR: backend napaka')});
+	})
 }

@@ -12,8 +12,7 @@ function countrieToConfig(el, input){ $('#' + input).val(el.attr('data-phone') +
 
 function get_countries(el, callback){
     if(el.find('.DropdownMenuContent').length == 0){
-        $.get('/crm/php/main/countries.php', function(data){
-            data = JSON.parse(data);
+        $.getJSON('/crm/php/main/countries.php', function(data){
             // ADD CLICK EVENT
             if(callback == 'PHONE'){ callback = 'countrieToPhone($(this), \'' + el.parent().find('input').attr('id') + '\')'; }
             else if(callback == 'CONFIG'){ callback = 'countrieToConfig($(this), \'phonezipcode\')'; }
@@ -30,7 +29,7 @@ function get_countries(el, callback){
             showDropdownMenu(el);
             $('#DropdownMenu input').focus();
             resetDropdownMenuConfig();
-        }).fail(function(){console.log('ERROR: backend napaka');});
+        })
     }
     else{ showDropdownMenu(el); $('#DropdownMenu input').focus(); }
 }

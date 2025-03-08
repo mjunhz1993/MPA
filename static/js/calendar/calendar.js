@@ -36,16 +36,14 @@ function loadInCalendarData(box, obj){
             });
             // CREATE MENU
             if(valEmpty(box.attr('data-viewaccess'))){
-                loadJS('GET/user', function(){
-                    GET_myself({
-                        done:function(d){
-                            box.attr('data-viewaccess', d.role_event_view_access);
-                            box.attr('data-filteraccess', d.role_module_filter_access);
-                            html = createCalendarTopMenuHTML(boxMain, today, box.attr('data-viewaccess'), obj);
-                            boxMenu.html(html);
-                            createCalendar(box);
-                        }
-                    })
+                GET_myself({
+                    done:function(d){
+                        box.attr('data-viewaccess', d.role_event_view_access);
+                        box.attr('data-filteraccess', d.role_module_filter_access);
+                        html = createCalendarTopMenuHTML(boxMain, today, box.attr('data-viewaccess'), obj);
+                        boxMenu.html(html);
+                        createCalendar(box);
+                    }
                 })
             }
             else{

@@ -1,17 +1,15 @@
 function get_notifications_COUNT(){
-	var counter = $('#TopNavBell span');
-	if(counter.parent().hasClass('shake')){ counter.parent().removeClass('shake') }
-	$.get('/crm/php/notifications/notifications_exec.php?get_notifications_COUNT=1', function(data){
-		data = JSON.parse(data);
-		if(counter.text() != data[0]){ counter.text(data[0]) }
-		if(counter.text() != '0'){
-			counter.show();
-			counter.parent().addClass('shake');
-			if(!$('#DropdownMenu').is(':visible')){ run_pushNotification() }
-		}
-		else{ counter.hide() }
-		setTimeout(function(){ get_notifications_COUNT() }, 10000);
-	})
+    let counter = $('#TopNavBell span'), parent = counter.parent();
+    parent.removeClass('shake');
+    $.getJSON('/crm/php/notifications/notifications_exec.php?get_notifications_COUNT=1', data => {
+        let count = data[0];
+        counter.text(count).toggle(count != '0');
+        if(count != '0') {
+            parent.addClass('shake');
+            if(!$('#DropdownMenu').is(':visible')) run_pushNotification();
+        }
+        setTimeout(get_notifications_COUNT, 10000);
+    });
 }
 
 function run_pushNotification(){loadJS('notifications/pushNotifications', function(){
@@ -33,8 +31,7 @@ function run_pushNotification(){loadJS('notifications/pushNotifications', functi
 })}
 
 function get_notifications(el, callback){
-	$.get('/crm/php/notifications/notifications_exec.php?get_notifications=1', function(data){
-		data = JSON.parse(data);
+	$.getJSON('/crm/php/notifications/notifications_exec.php?get_notifications=1', function(data){
 		if(typeof callback === 'function'){ callback(el, data) }
 	})
 }
@@ -73,11 +70,10 @@ function get_notifications_buttons(list, html = ''){
 function showMore_notifications(button, html = ''){
 	hideDropdownMenu();
 	note = button.closest('.notificationBox')
-	$.get('/crm/php/notifications/notifications_exec.php?get_notifications=1', {
+	$.getJSON('/crm/php/notifications/notifications_exec.php?get_notifications=1', {
 		type: note.attr('data-type'),
 		time: note.attr('data-time')
 	}, function(data){
-		data = JSON.parse(data);
 		if(data.error){ return createAlert(note, 'Red', data.error) }
 		var popup = createPOPUPbox();
 		var popupBox = popup.find('.popupBox');
@@ -92,12 +88,12 @@ function confirm_notifications(button){
 	var note = button.closest('.notificationBox');
 	var value = button.attr('data-value');
 	var type = note.attr('data-type');
-	$.get('/crm/php/notifications/notifications_exec.php', {
+	$.getJSON('/crm/php/notifications/notifications_exec.php', {
 		confirm_notifications: true,
 		type: type,
 		time: note.attr('data-time'),
 		value: value,
-	}, function(data){ data = JSON.parse(data);
+	}, function(data){
 		if(data.error){ return createAlert(note, 'Red', data.error) }
 		hide_notification(note, function(){
 			if(!valEmpty(value) && value.substring(0,8) == 'https://'){ return window.open(value, '_blank') }
@@ -111,10 +107,10 @@ function open_chat_notification(id){loadJS('chat/chat', function(){chat(function
 
 function delete_notification(el, callback){
 	var note = el.closest('.notificationBox');
-	$.get('/crm/php/notifications/notifications_exec.php', {
+	$.getJSON('/crm/php/notifications/notifications_exec.php', {
 		delete_notification: true,
 		time: note.attr('data-time'),
-	}, function(data){ data = JSON.parse(data);
+	}, function(data){
 		if(data.error){ return createAlert(note, 'Red', data.error) }
 		hide_notification(note);
 		if(typeof callback === 'function'){ callback() }

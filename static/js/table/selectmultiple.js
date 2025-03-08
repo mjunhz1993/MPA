@@ -106,8 +106,7 @@ function table2campaign(){
 	GET_column({
 		module:module,
 		done: function(col){
-			$.get('/crm/php/campaign/campaign.php?get_all_lists=1', function(data){
-	        	var list = JSON.parse(data);
+			$.getJSON('/crm/php/campaign/campaign.php?get_all_lists=1', function(list){
 		        html += '<form>';
 				html += '<label for="export_type">' + slovar('Export_type') + '</label>';
 				html += '<select id="export_type" required>';
@@ -158,7 +157,7 @@ function table2campaign(){
 					}, function(data){ data = JSON.parse(data);
 						if(data.error){ return createAlert(popupBox, 'Red', data.error) }
 						removePOPUPbox()
-					}).fail(function(){console.log('ERROR: backend napaka');});
+					})
 				});
 
 				popup.fadeIn('fast');

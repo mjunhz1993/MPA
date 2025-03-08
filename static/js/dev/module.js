@@ -36,7 +36,7 @@ $('.addModuleForm').on('submit', function(e){
         data = JSON.parse(data);
         if(data.error){ createAlert(form, 'Red', data.error); }
         else{ location.reload(); }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 });
 
 
@@ -78,7 +78,7 @@ $('.editModuleForm').on('submit', function(e){
         data = JSON.parse(data);
         if(!data.error){ location.reload(); }
         else{ createAlert(form, 'Red', data.error); }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 });
 
 
@@ -137,7 +137,7 @@ $('.editNotificationsForm').on('submit', function(e){
         data = JSON.parse(data);
         if(!data.error){ location.reload(); }
         else{ createAlert(form, 'Red', data.error); }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 });
 
 // TOGGLE MODULE
@@ -154,7 +154,7 @@ function toggleModule(el){
 
     $.post('/crm/php/admin/module.php?toggle_module=1', form.serialize(), function(data){
         if(!data.error){ el.show(); }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 }
 
 
@@ -171,7 +171,7 @@ function deleteModule(module){
             data = JSON.parse(data);
             if(!data.error){ location.reload(); }
             else{ createAlert($('#modul_table'), 'Red', data.error); }
-        }).fail(function(data){ console.log('ERROR: backend-error'); });
+        })
     });
 }
 
@@ -220,7 +220,7 @@ function findImportModule(form){
         data = JSON.parse(data);
         if(data.error){ createAlert(form, 'Red', data.error); }
         else{ openConfigImportModule(form, table_name, data); }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 }
 
 function openConfigImportModule(form, table_name, data){
@@ -276,7 +276,7 @@ function addImportModule(form){
         data = JSON.parse(data);
         if(data.error){ createAlert(form, 'Red', data.error); }
         else{ location.reload(); }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 }
 
 // SORT
@@ -317,7 +317,7 @@ loadJS('https://code.jquery.com/ui/1.12.1/jquery-ui.js', function(){
             form.find('[name=column_id]').val(column);
 
             $.post('/crm/php/admin/module.php?sort_columns=1', form.serialize(), function(data){
-            }).fail(function(data){ console.log('ERROR: backend-error'); });
+            })
         },
     });
 });

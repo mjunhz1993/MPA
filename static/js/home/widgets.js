@@ -1,8 +1,7 @@
 function loadWidgets(dashboard, html = ''){
 	$('#Main').append('<div id="widgetBox"></div>');
 	var box = $('#widgetBox');
-	$.get('/crm/php/home/widget.php?get_widgets=1', function(data){
-		data = JSON.parse(data);
+	$.getJSON('/crm/php/home/widget.php?get_widgets=1', function(data){
 		for(var i=0; i<data.length; i++){
 			var d = data[i];
 			html += '<div data-orderNum="'+d.order_num+'" data-widgetType="'+d.type+'" data-widgetList="'+d.list+'" ';
@@ -112,8 +111,7 @@ function openWidgets(){
 }
 
 function openWidgets_admin(form){
-	$.get('/crm/php/main/module.php?get_all_users=1', function(data){
-        data = JSON.parse(data);
+	GET_users({done:function(data){
         var html = '';
         html += '<select name="user_assing">';
         for(var i=0; i<data.length; i++){
@@ -121,7 +119,7 @@ function openWidgets_admin(form){
         }
         html += '</select>';
         form.prepend(html);
-    }).fail(function(){console.log('ERROR: backend napaka');});
+    }})
 }
 
 function changeWidget(el){
@@ -151,7 +149,7 @@ function addWidget(){
         data = JSON.parse(data);
         if(data.error){ createAlert(form, 'Red', data.error); }
         else{ location.reload(); }
-    }).fail(function(data){ console.log(data); });
+    })
 }
 
 function deleteWidget(widget){
@@ -163,6 +161,6 @@ function deleteWidget(widget){
 			data = JSON.parse(data);
 			if(data.error){ createAlert(widget, 'Red', data.error); }
 			else{ location.reload(); }
-		}).fail(function(data){ console.log(data); });
+		})
 	});
 }

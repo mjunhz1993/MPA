@@ -55,11 +55,11 @@ function appendColumnToForm(popup, c){
 }
 
 function checkPreSelectedValuesForForm(popup, module, type){
-	$.get('/crm/php/presets/presets.php', {
+	$.getJSON('/crm/php/presets/presets.php', {
 		get_presets:true,
 		module:module,
 		type:type
-	}, function(data){ data = JSON.parse(data);
+	}, function(data){
 		if(!data){ return }
 		Object.entries(data.data).forEach((value) => {
 			popup.find('[name="data['+value[0]+']"]').val(value[1])

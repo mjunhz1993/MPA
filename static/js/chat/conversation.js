@@ -31,8 +31,7 @@ function getConversationsHTML(conv, html = ''){
 function clickConversation(id){removePOPUPbox(function(){ chat_box(id) })}
 
 function showConversation(id){
-    $.get('/crm/php/chat/chat.php?load_conversation=1&id=' + id, function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/chat/chat.php?load_conversation=1&id=' + id, function(data){
         if(valEmpty(data.id)){ return clearConversationArea() }
         loadConversationHEAD(data, data.id);
         $('#chatForm').css('opacity', 1);

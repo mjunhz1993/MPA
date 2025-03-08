@@ -44,14 +44,13 @@ function campaign_loadEmails(id, offset = 0){
 	if(offset == 0){ table.text(''); }
 
 	box.append(HTML_loader());
-	$.get('/crm/php/campaign/campaign.php?get_emails=1', {
+	$.getJSON('/crm/php/campaign/campaign.php?get_emails=1', {
 		id: id,
 		search: search,
 		orderBy: sortColumnName,
 		orderDir: sortColumnDir,
 		offset: offset
 	}, function(data){
-		data = JSON.parse(data);
 		var arrTest = [];
 		if(data){for(var i=0; i<data.length; i++){
 			var e = data[i], hideTR = false;
@@ -73,7 +72,7 @@ function campaign_loadEmails(id, offset = 0){
 		table.append(html);
 		remove_HTML_loader(box);
 		tooltips();
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 
 function campaign_emailOrderBy(id, el){
@@ -117,7 +116,7 @@ function campaign_openAddEmail(listID, el = ''){
 			}, function(data){ data = JSON.parse(data);
 				if(data.error){ createAlert(popupBox, 'Red', data.error); }
 				else{ removePOPUPbox(); setTimeout(function(){ campaign_loadEmails(listID); }, 500); }
-			}).fail(function(){console.log('ERROR: backend napaka');});
+			})
 		}
 		else{ createAlert(popupBox, 'Red', slovar('Name_empty')); }
 	});
@@ -137,7 +136,7 @@ function campaign_deleteEmail(listID, el){
 			    data = JSON.parse(data);
 			    if(data.error){ createAlert(popupBox, 'Red', data.error); }
 			    else{ campaign_loadEmails(listID); }
-			}).fail(function(){console.log('ERROR: backend napaka');});
+			})
 		}
 		else{ createAlert(popupBox, 'Red', slovar('Access_denied')) }
 	});

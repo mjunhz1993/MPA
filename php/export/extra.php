@@ -5,6 +5,14 @@ function get_table_query($SQL){
 	return file_get_contents($query);
 }
 
+function queryIsSafe($string) {
+    $pattern = '/\b(DELETE|UPDATE|INSERT|DROP|CREATE|ALTER|TRUNCATE|REPLACE|GRANT|REVOKE|SET|USE|LOCK|UNLOCK|CALL)\b/i';
+    if(preg_match($pattern, $string)){ return false; }
+    $selectPattern = '/\bSELECT\b/i';
+    if(preg_match($selectPattern, $string)){ return true; }
+    return false;
+}
+
 function bind_param_to_table($A){
 	if(
 		!isset($_POST['param']) ||

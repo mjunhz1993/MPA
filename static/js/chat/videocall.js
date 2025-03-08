@@ -5,11 +5,10 @@ function videocall(room, moderator = true){
 }
 
 function videocall_config(room, moderator, jID){loadJS('https://8x8.vc/'+jID+'/external_api.js', function(){
-    $.get('/crm/php/chat/jwt.php', {
+    $.getJSON('/crm/php/chat/jwt.php', {
         generate_jwt: true,
         moderator: moderator
     }, function(jwt){
-        jwt = JSON.parse(jwt);
         if(jwt.error){ return }
         jitsi_load(room, jID, jwt);
     })

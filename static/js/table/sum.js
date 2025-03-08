@@ -4,7 +4,7 @@ function getColumnSum(el, type){
     var F = getFilterData(box, module);
     var th = box.find(`.table thead th:nth-child(${el.parent().index() + 1})`);
     el.hide();
-    $.get('/crm/php/main/sum.php', {
+    $.getJSON('/crm/php/main/sum.php', {
         get_column_sum: true,
         module: module,
         column: th.attr('data-column'),
@@ -12,7 +12,6 @@ function getColumnSum(el, type){
         filter_values: F[1],
         type: type
     }, function(data){
-        data = JSON.parse(data);
         if(data){
             displayColumnSum({
                 el: el,

@@ -28,8 +28,7 @@ function campaign_loadEvents(){
 		var year = box.parent().find('.calendarYear').text();
 		var month = box.parent().find('.statsdate select').val();
 		box.html(HTML_loader());
-		$.get('/crm/php/campaign/campaign.php?get_all_events=1', {year:year,month:month}, function(data){
-			data = JSON.parse(data);
+		$.getJSON('/crm/php/campaign/campaign.php?get_all_events=1', {year:year,month:month}, function(data){
 			var html = '<table class="table"><thead><tr>';
 			html += '<th>' + slovar('Events') + '</th>';
 			html += '<th>' + slovar('Progress') + '</th>';
@@ -54,7 +53,7 @@ function campaign_loadEvents(){
 			html += '</tbody></table>';
 			box.html(html);
 			tooltips();
-		}).fail(function(){console.log('ERROR: backend napaka')});
+		})
 	}
 }
 
@@ -65,12 +64,11 @@ function restart_event_form(box){ remove_HTML_loader(box); box.find('form').show
 function campaign_createEvent(){
 	hideDropdownMenu();
 	var popup = createPOPUPbox();
-	$.get('/crm/php/campaign/campaign.php?get_all_templates=1', function(data){
-		var templates = JSON.parse(data);
-		$.get('/crm/php/campaign/campaign.php?get_all_lists=1', function(data){
-			campaign_displaEventForm(popup, templates, JSON.parse(data));
-		}).fail(function(){console.log('ERROR: backend napaka');});
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	$.getJSON('/crm/php/campaign/campaign.php?get_all_templates=1', function(templates){
+		$.getJSON('/crm/php/campaign/campaign.php?get_all_lists=1', function(data){
+			campaign_displaEventForm(popup, templates, data);
+		})
+	})
 }
 
 function campaign_displaEventForm(popup, templates, lists){
@@ -127,7 +125,7 @@ function campaign_displaEventForm(popup, templates, lists){
 		}, function(data){ data = JSON.parse(data); console.log(data);
 			if(data.error){ createAlert(popupBox, 'Red', data.error); restart_event_form(popupBox); }
 			else{ campaign_sendEvent(data.batch_id, 0, popupBox); }
-		}).fail(function(){console.log('ERROR: backend napaka');});
+		})
 		*/
 	});
 
@@ -149,7 +147,7 @@ function campaign_addEvent(batch_id, send_at, popupBox){
 	}, function(data){ data = JSON.parse(data);
 		if(data.error){ createAlert(popupBox, 'Red', data.error); restart_event_form(popupBox); return; }
 		removePOPUPbox()
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 
 function campaign_sendEvent(batch_id, send_at, OFFSET, popupBox){
@@ -170,5 +168,5 @@ function campaign_sendEvent(batch_id, send_at, OFFSET, popupBox){
 		if(data.error){ return createAlert(popupBox, 'Red', data.error); restart_event_form(popupBox) }
 		if(data.OFFSET > OFFSET){ return campaign_sendEvent(batch_id, send_at, data.OFFSET, popupBox) }
 		campaign_addEvent(batch_id, subject, template, list, send_at, popupBox)
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }

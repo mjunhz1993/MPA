@@ -13,12 +13,11 @@ function config_cronjob_app(){
 	html += '</thead><tbody></tbody></table>';
 	box.html(html);
 	cronJobInfoBox($('.cronjobInfoBox'));
-	$.get('/crm/php/cron_jobs/cron_jobs_config.php?test_cron_jobs_table=1', function(data){ load_cronjob_table() })
+	$.get('/crm/php/cron_jobs/cron_jobs_config.php?test_cron_jobs_table=1', function(){ load_cronjob_table() })
 }
 
 function load_cronjob_table(){
-	$.get('/crm/php/cron_jobs/cron_jobs_config.php?get_cron_jobs=1', function(data){
-        data = JSON.parse(data);
+	$.getJSON('/crm/php/cron_jobs/cron_jobs_config.php?get_cron_jobs=1', function(data){
         var html = '';
         for(var i=0; i<data.length; i++){
         	var d = data[i];
@@ -36,7 +35,7 @@ function load_cronjob_table(){
         	html += '</tr>';
         }
         $('.cronjobTable tbody').html(html);
-    }).fail(function(){ console.log('ERROR: backend-error'); });
+    })
 }
 
 function add_cronjob(){
@@ -61,7 +60,7 @@ function add_cronjob(){
 		        data = JSON.parse(data);
 		        if(data.error){ createAlert(popupBox, 'Red', data.error) }
 		        else{ removePOPUPbox(); load_cronjob_table(); }
-		    }).fail(function(){ console.log('ERROR: backend-error'); });
+		    })
 		})
 		popup.fadeIn('fast');
 	})
@@ -86,7 +85,7 @@ function edit_cronjob(name, extra, wait_for){
 	        data = JSON.parse(data);
 	        if(data.error){ createAlert(popupBox, 'Red', data.error) }
 	        else{ removePOPUPbox(); load_cronjob_table(); }
-	    }).fail(function(){ console.log('ERROR: backend-error'); });
+	    })
 	})
 	popup.fadeIn('fast');
 }
@@ -100,7 +99,7 @@ function delete_cronjob(name){
 	        data = JSON.parse(data);
 	        if(data.error){ createAlert(popupBox, 'Red', data.error) }
 	        else{ load_cronjob_table(); }
-	    }).fail(function(){ console.log('ERROR: backend-error'); });
+	    })
     });
 }
 

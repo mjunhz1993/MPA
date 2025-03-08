@@ -290,7 +290,7 @@ $('.addColumnForm').on('submit', function(e){
         else{
             loadColumns(module, function(){ closeAddColumn(); });
         }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 });
 
 
@@ -490,7 +490,7 @@ $('.editColumnForm').on('submit', function(e){
         else{
             loadColumns(module, function(){ closeEditColumn(); });
         }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 });
 
 // GET CATEGORY LIST
@@ -527,7 +527,7 @@ function deleteColumn(column){
             data = JSON.parse(data);
             if(!data.error){ loadColumns(module); }
             else{ createAlert($('#column_table'), 'Red', data.error); }
-        }).fail(function(data){ console.log('ERROR: backend-error'); });
+        })
     });
 }
 

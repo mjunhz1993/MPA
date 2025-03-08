@@ -183,7 +183,7 @@ function find_analytic_content_type(mainBox, box, data){
 	contentBox = box.find('.'+ANALobj.content);
 	contentBox.empty();
 	if(data.error){
-		createAlert(contentBox, 'Red', slovar('Is_empty'));
+		createAlert(contentBox, 'Red', slovar(data.error));
 		return find_loading_analytic_tables(mainBox);
 	}
 

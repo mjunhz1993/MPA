@@ -396,7 +396,7 @@ function ETE_save_template(id, name, popupBox){
 	    	$('#etebodybox').find('img').addClass('eteLoading');
 	    	ETE_save_template_images(data.id, popupBox);
 	    }
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 function ETE_save_template_images(id, popupBox){
 	if($('#etebodybox').find('.eteLoading').length == 0){ return ETE_save_template_body(id, popupBox) }
@@ -411,7 +411,7 @@ function ETE_save_template_images(id, popupBox){
 		img.attr('src', window.location.origin + '/crm/static/uploads/campaign/campaign' + id + '/' + data.name);
 		img.removeClass('eteLoading');
 	    setTimeout(function(){ ETE_save_template_images(id, popupBox) }, 1000);
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 function ETE_save_template_body(id, popupBox){
 	$.post('/crm/php/campaign/campaign.php?save_template_body=1', {
@@ -422,7 +422,7 @@ function ETE_save_template_body(id, popupBox){
 	    data = JSON.parse(data);
 	    if(data.error){ createAlert(popupBox, 'Red', data.error); }
 	    else{ removePOPUPbox(); ETE_close(); }
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 
 // CLOSE

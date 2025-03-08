@@ -1,6 +1,5 @@
 function if_email_room_access(callback, callbackError){
-    $.get('/crm/php/email/email.php?check_if_email_room_exists=1', function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/email/email.php?check_if_email_room_exists=1', function(data){
         if(!data.error){if(typeof callback === 'function'){ callback(data) }}
         else{if(typeof callbackError === 'function'){ callbackError(data.error) }}
     })

@@ -10,7 +10,7 @@ function ask_AI(d){
 		data = JSON.parse(data);
 		if(data.error){
 			console.log(data.error);
-			return createAlertPOPUP(data.error);
+			return createAlertPOPUP(data.error.message ?? data.error);
 		}
 		if(typeof d.answer === 'function'){ d.answer(grab_AI_answer(data)) }
 	})

@@ -1,8 +1,7 @@
 function oktagonPay(price, currency, onDone = ''){
     loadJS('https://js.stripe.com/v3/', function(){
         loadJS('oktagonPay/slovar/'+slovar(), function(){
-            $.get('/crm/php/oktagonPay/oktagonPay.php', {oktagon_pay_key: true}, function(key){
-                key = JSON.parse(key);
+            $.getJSON('/crm/php/oktagonPay/oktagonPay.php', {oktagon_pay_key: true}, function(key){
                 if(valEmpty(key)){ return }
                 run_oktagonPay(key, price, currency, onDone)
             })

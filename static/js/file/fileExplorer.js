@@ -51,12 +51,11 @@ function load_fileDir(d, fileBox, path, OFFSET = 0, callback){
 		fileBox.prepend(HTML_loader()).find('table').hide();
 		fileBox.find('tbody').text('');
 	}
-	$.get('/crm/php/file/fileExplorer.php?get_files=1', {
+	$.getJSON('/crm/php/file/fileExplorer.php?get_files=1', {
 		path:path,
 		filter:$('#fileExplorerSearch input').val(),
 		OFFSET:OFFSET
 	}, function(data){
-        data = JSON.parse(data);
         if(data.error){ createAlert(fileBox, 'Red', slovar(data.error)) }
         else{ display_fileDir(d, fileBox, path, data) }
         remove_HTML_loader(fileBox);
@@ -145,12 +144,11 @@ function open_rename_file(d, fileBox, el){
 }
 function submit_rename_file(d, fileBox, e, el){if(e.which == 13){
 	var file = el.closest('tr').attr('data-path');
-	$.get('/crm/php/file/fileExplorer.php', {
+	$.getJSON('/crm/php/file/fileExplorer.php', {
 		rename_file:true,
 		file:file,
 		name:el.val()
 	}, function(data){
-        data = JSON.parse(data);
         if(data == false){ return createAlert(fileBox, 'Red', slovar('Rename_error')) }
         load_fileDir(d, fileBox, fileBox.attr('data-path'))
     })
@@ -158,10 +156,9 @@ function submit_rename_file(d, fileBox, e, el){if(e.which == 13){
 
 function show_file_size(el){
 	el.html(HTML_loader());
-	$.get('/crm/php/file/fileExplorer.php', {
+	$.getJSON('/crm/php/file/fileExplorer.php', {
 		getFileSize: el.closest('tr').data('path')
 	}, function(data){
-		data = JSON.parse(data);
 		if(!data){ return }
 		el.replaceWith(data);
 	})
@@ -182,11 +179,10 @@ function create_dir(d, el){
 }
 
 function zip_dir(source, destination){
-	$.get('/crm/php/file/fileExplorer.php?zip_dir=1', {
+	$.getJSON('/crm/php/file/fileExplorer.php?zip_dir=1', {
         source:source,
         destination:destination
     }, function(data){
-        data = JSON.parse(data);
         console.log(data);
     })
 }
@@ -230,18 +226,17 @@ function paste_file(d, file, el){
         data = JSON.parse(data);
         if(data == true){ load_fileDir(d, fileBox, path) }
         else{ createAlert(fileBox, 'Red', slovar('Paste_error')) }
-    }).fail(function(){console.log('ERROR: backend napaka')});
+    })
 }
 
 function delete_file(d, el){POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
 	var file = el.closest('tr').attr('data-path');
     var fileBox = el.closest('.fileExplorerBox');
     fileBox.find('.alert').remove();
-    $.get('/crm/php/file/fileExplorer.php?delete_file=1', {
+    $.getJSON('/crm/php/file/fileExplorer.php?delete_file=1', {
         file:file
     }, function(data){
-        data = JSON.parse(data);
         if(data == false){ createAlert(fileBox, 'Red', slovar('Delete_error')) }
         else{ load_fileDir(d, fileBox, fileBox.attr('data-path')) }
-    }).fail(function(){console.log('ERROR: backend napaka')});
+    })
 })}

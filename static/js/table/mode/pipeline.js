@@ -3,12 +3,11 @@ function openPipeline(box){loadJS('API/draggable',function(){
 	module = box.attr('data-module');
 	box = box.find('.horizontalTable');
 
-	$.get('/crm/php/presets/presets.php', {
+	$.getJSON('/crm/php/presets/presets.php', {
 		get_presets:true,
 		module:module,
 		type:'pipeline'
 	}, function(data){
-		data = JSON.parse(data);
 		if(!data){ return createAlertPOPUP(slovar('Empty')) }
 		data = data.data;
 		if(valEmpty(data.status)){ return createAlertPOPUP(slovar('Empty')) }
@@ -63,12 +62,12 @@ function pipeline_loadAllColumns(box, data){
 
 function pipeline_loadColumn(box, data, thisCol, emptyCol = true, callback = false){
 	if(emptyCol){ thisCol.empty() }
-	$.get('/crm/php/presets/pipeline.php', {
+	$.getJSON('/crm/php/presets/pipeline.php', {
 		get_pipeline: true,
 		data: data,
 		statusValue: thisCol.data('status')
 	}, function(rows){
-		pipeline_displayColumn(box, data, thisCol, callback, JSON.parse(rows))
+		pipeline_displayColumn(box, data, thisCol, callback, rows)
 	})
 }
 
@@ -91,12 +90,11 @@ function pipeline_displayRow(box, thisCol, data, rows){
 }
 
 function pipeline_loadColumn_sum(data, thisCol, callback){
-	$.get('/crm/php/presets/pipeline.php', {
+	$.getJSON('/crm/php/presets/pipeline.php', {
 		get_pipeline_sum: true,
 		data: data,
 		statusValue: thisCol.data('status')
 	}, function(sum){
-		sum = JSON.parse(sum);
 		console.log(sum);
 		thisCol.closest('table')
 		.find('thead th').eq(thisCol.index())

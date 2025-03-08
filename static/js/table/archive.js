@@ -1,10 +1,9 @@
 function getArchiveYears(tableBox){
 	var module = tableBox.attr('data-module');
-	$.get('/crm/php/main/module.php', {
+	$.getJSON('/crm/php/main/module.php', {
 		get_archive_years: true,
 		module: module
 	}, function(data){
-		data = JSON.parse(data);
 		if(data.length != 0){
 			if(tableBox.find('.tableTop').length == 0){ tableBox.prepend('<table class="tableTop"><tr><td></td><td></td></tr></table>'); }
 			var td = tableBox.find('.tableTop').first().find('td').last();
@@ -59,18 +58,17 @@ function HTML_archiveMakerDateSelector(data){
 }
 
 function archiveDateSelectorChange(el){
-	$.get('/crm/php/main/module.php?get_date_column_years=1', {
+	$.getJSON('/crm/php/main/module.php?get_date_column_years=1', {
 		module:$('#main_table').attr('data-module'),
 		col:el.val()
 	}, function(data){
-        data = JSON.parse(data);
         var html = '';
         for(var i=0; i<data.length; i++){
         	var d = data[i];
         	html += '<option value="' + d.year + '">' + slovar('Year') + ' - ' + d.year + ' (' + d.count + ' ' + slovar('Entries') + ')</option>';
         }
         el.nextAll('[name=year]').html(html);
-    }).fail(function(){console.log('ERROR: backend napaka')});
+    })
 }
 
 function submit_archiveMaker(form){POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_archive'), function(){
@@ -85,5 +83,5 @@ function submit_archiveMaker(form){POPUPconfirm(slovar('Confirm_event'), slovar(
         data = JSON.parse(data);
         if(data.error){ form.show(); createAlert(form, 'Red', data.error); }
         else{ removePOPUPbox(); tableLoadColumns($('#main_table')); }
-    }).fail(function(){console.log('ERROR: backend napaka')});
+    })
 })}

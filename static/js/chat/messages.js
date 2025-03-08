@@ -1,8 +1,7 @@
 function loadOldMessages(id, time, callback){
     if(valEmpty(id)){ return console.log('ERROR: no chat ID') }
     $('#chatBox .chatNoMessages').remove();
-    $.get('/crm/php/chat/chat.php?load_old_messages=1', {id: id, time: time}, function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/chat/chat.php?load_old_messages=1', {id: id, time: time}, function(data){
         if(data.length == 0){ noOldMessages() }
         else{ getMessages($('#chatBox'), data, id, 'OLD') }
         if(typeof callback === 'function'){ callback(); }
@@ -32,8 +31,7 @@ function loadNewMessages(id, callback){
     box.addClass('loading');
     var time = $('.chatBox').last().find('.chatBoxTime').attr('data-time');
     if(valEmpty(time)){ time = getDate('Y-m-d H:i:s', new Date(1999, 01, 01), 'UTC') }
-    $.get('/crm/php/chat/chat.php?load_new_messages=1', {id:id, time:time}, function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/chat/chat.php?load_new_messages=1', {id:id, time:time}, function(data){
         getMessages(box, data, id, 'NEW');
         if(typeof callback === 'function'){ callback() }
     })

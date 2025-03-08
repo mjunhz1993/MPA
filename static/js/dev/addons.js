@@ -12,14 +12,13 @@ function openEditAddons(module){
 	        data = JSON.parse(data);
 	        if(data.error){ createAlert(form, 'Red', data.error); }
 	        else{ displayModuleAddons(module, form); }
-	    }).fail(function(data){ console.log('ERROR: backend-error'); });
+	    })
 	});
 }
 
 
 function displayModuleAddons(module, form, callback){
-	$.get('/crm/php/admin/module.php?get_module_addons=1&module=' + module, function(data){
-        data = JSON.parse(data);
+	$.getJSON('/crm/php/admin/module.php?get_module_addons=1&module=' + module, function(data){
         var html = '<h2>' + slovar('Addons') + '</h2>';
         if(data){
         	for(var i=0; i<data.length; i++){
@@ -42,7 +41,7 @@ function displayModuleAddons(module, form, callback){
         form.html(html);
         form.find('.buttonGreen').click(function(){ createModuleAddon(module, form); });
         if(typeof callback === 'function'){ callback(); }
-    }).fail(function(){console.log('ERROR: backend napaka');});
+    })
 }
 
 function createModuleAddon(module, form){
@@ -501,6 +500,6 @@ function deleteModuleAddon(el, tstamp){
 	        data = JSON.parse(data);
 	        if(data.error){ createAlert(form, 'Red', data.error); }
 	        else{ displayModuleAddons(module, form); }
-	    }).fail(function(data){ console.log('ERROR: backend-error'); });
+	    })
 	});
 }

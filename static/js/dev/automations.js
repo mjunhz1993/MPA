@@ -12,13 +12,12 @@ function openEditAutomations(module){
 	        data = JSON.parse(data);
 	        if(data.error){ createAlert(form, 'Red', data.error); }
 	        else{ displayModuleAutomations(module, form); }
-	    }).fail(function(data){ console.log('ERROR: backend-error'); });
+	    })
 	});
 }
 
 function displayModuleAutomations(module, form, callback){
-	$.get('/crm/php/admin/module.php?get_module_automations=1&module=' + module, function(data){
-        data = JSON.parse(data);
+	$.getJSON('/crm/php/admin/module.php?get_module_automations=1&module=' + module, function(data){
         var html = '<h2>' + slovar('Automations') + '</h2>';
         if(data){
     		html += '<table class="table"><tr>';
@@ -45,7 +44,7 @@ function displayModuleAutomations(module, form, callback){
         form.html(html);
         form.find('.buttonGreen').click(function(){ selectAutomationAction(module, form); });
         if(typeof callback === 'function'){ callback(); }
-    }).fail(function(){console.log('ERROR: backend napaka');});
+    })
 }
 
 function selectAutomationAction(module, form){
@@ -121,6 +120,6 @@ function deleteModuleAutomation(el){
 	        data = JSON.parse(data);
 	        if(data.error){ createAlert(form, 'Red', data.error); }
 	        else{ displayModuleAutomations(module, form); }
-	    }).fail(function(data){ console.log('ERROR: backend-error'); });
+	    })
 	});
 }

@@ -9,7 +9,8 @@ function HTML_ANAL_date_chart(content, extraData, data){loadJS('chart/chart', fu
 	content.append(`
 		<div class="date">
 			<div class="top">
-				${HTML_ANAL_year()+HTML_ANAL_months()}
+				${HTML_ANAL_year()}
+				${extraData.includes('month') ? '' : HTML_ANAL_months()}
 			</div>
 		<div class="dateChart"></div></div>
 	`);
@@ -17,7 +18,7 @@ function HTML_ANAL_date_chart(content, extraData, data){loadJS('chart/chart', fu
 })}
 
 function generate_analytic_date(thisBox, content, extraData, data){
-	data = analytic_date_to_UTC(data);
+	data = analytic_date_to_UTC(data, extraData);
 
 	dateChart = thisBox.find('.dateChart');
 	dateChart.empty();
@@ -25,38 +26,43 @@ function generate_analytic_date(thisBox, content, extraData, data){
 	extra = ['modeIndex'];
 	if(extraData.includes('price')){ extra.push('PRICE') }
 	if(extraData.includes('percent')){ extra.push('PERCENT') }
-	CHART_get('line', dateChart, 150, add_dataset_date(thisBox, data), extra);
+	CHART_get('line', dateChart, 150, add_dataset_date(thisBox, extraData, data), extra);
 }
 
-function analytic_date_to_UTC(data){
+function analytic_date_to_UTC(data, extraData){
 	if(data.length == 0){ return [] }
-	const dayKey = Object.keys(data[0])[0]
+	const dateKey = Object.keys(data[0])[0]
 	return data.map(item => {
-	    const localDate = new Date(item[dayKey] + "Z");
-	    const dayOnly = String(localDate.getUTCDate()).padStart(2, '0');
+	    const localDate = new Date(item[dateKey] + "Z");
+	    let thisData = extraData.includes('month') 
+	    ? localDate.getUTCMonth() + 1 
+	    : String(localDate.getUTCDate()).padStart(2, '0');
 	    return {
 	        ...item,
-	        [dayKey]: parseInt(dayOnly)
+	        [dateKey]: parseInt(thisData)
 	    };
 	});
 }
 
-function add_dataset_date(thisBox, data){
+function add_dataset_date(thisBox, extraData, data){
 	return {
-		labels: grab_date_labels(thisBox),
-		datasets: loop_dataset_date(thisBox, data)
+		labels: grab_date_labels(thisBox, extraData),
+		datasets: loop_dataset_date(thisBox, extraData, data)
 	}
 }
 
-function grab_date_labels(thisBox, arr = []){
-	days = getNumberOfDaysInMonth(parseInt(thisBox.find('.calendarYear').text()), thisBox.find('.calendarMonth').val()-1);
-	for(i=1; i<=days; i++){ arr.push(slovar('Day')+' '+i) }
+function grab_date_labels(thisBox, extraData, arr = []){
+	thisLoop = get_bottom_date_loop(thisBox, extraData);
+	for(i=1; i<=thisLoop; i++){
+		if(extraData.includes('month')){ arr.push(getNameOfMonth(i)); continue }
+		arr.push(slovar('Day')+' '+i);
+	}
 	return arr;
 }
 
-function loop_dataset_date(thisBox, data, loop = []){
+function loop_dataset_date(thisBox, extraData, data, loop = []){
 	if(data.length == 0){ return [] }
-	days = getNumberOfDaysInMonth(parseInt(thisBox.find('.calendarYear').text()), thisBox.find('.calendarMonth').val()-1);
+	thisLoop = get_bottom_date_loop(thisBox, extraData);
 	col = Object.keys(data[0]);
 	col.shift();
 	st = 1;
@@ -64,7 +70,7 @@ function loop_dataset_date(thisBox, data, loop = []){
 	col.forEach((item) => {
 		loop.push({
 			label: item,
-			data: loop_dataset_date_days(data, item, days),
+			data: loop_dataset_date_data(data, item, thisLoop),
 			backgroundColor: colorPalette[st],
 		})
 		st++;
@@ -72,11 +78,16 @@ function loop_dataset_date(thisBox, data, loop = []){
 	return loop
 }
 
-function loop_dataset_date_days(data, item, days, arr = []){
-	const dayKey = Object.keys(data[0])[0]
-	for(i=1; i<=days; i++){
+function get_bottom_date_loop(thisBox, extraData){
+	if(extraData.includes('month')){ return 12 }
+	return getNumberOfDaysInMonth(parseInt(thisBox.find('.calendarYear').text()), thisBox.find('.calendarMonth').val()-1);
+}
+
+function loop_dataset_date_data(data, item, thisLoop, arr = []){ console.log(data);
+	const dayKey = Object.keys(data[0])[0];
+	for(i=1; i<=thisLoop; i++){
 		const entry = data.find(item => item[dayKey] === i);
-    	const num = entry ? entry[item] : 0;
+    	const num = entry ? entry[item] : 0; console.log(num);
     	arr.push(num);
 	}
 	return arr;

@@ -1,8 +1,8 @@
 function loadAddFilter(el){
     var box = el.closest('.calendarBox');
-    $.get('/crm/php/main/module.php?get_all_users=1', function(data){
-        displayAddFilter(box, createPOPUPbox(), JSON.parse(data), box.attr('data-filteraccess'));
-    })
+    GET_users({done:function(data){
+        displayAddFilter(box, createPOPUPbox(), data, box.attr('data-filteraccess'));
+    }})
 }
 
 function displayAddFilter(box, popup, data, role_module_filter_access){

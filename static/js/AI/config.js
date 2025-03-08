@@ -3,10 +3,9 @@ function open_AI_config(){
 	popupBox = popup.find('.popupBox');
 	popupBox.html(HTML_loader());
 	popup.fadeIn('fast');
-	$.get('/crm/php/AI/AI_config.php', {
+	$.getJSON('/crm/php/AI/AI_config.php', {
 		check_for_AI_table:true
 	}, function(data){
-		data = JSON.parse(data);
 		if(data.error){ removePOPUPbox(); return createAlertPOPUP(data.error) }
 		popupBox.html(`
 			<div class="AI_models horizontalTable"></div>
@@ -19,10 +18,9 @@ function open_AI_config(){
 }
 
 function load_AI_models(box){
-	$.get('/crm/php/AI/AI_config.php', {
+	$.getJSON('/crm/php/AI/AI_config.php', {
 		load_AI_models: true
 	}, function(data){
-		data = JSON.parse(data);
 		if(data.error){ return createAlertPOPUP(data.error) }
 		display_AI_models(box, data);
 	})
@@ -53,41 +51,44 @@ function display_AI_models(box, data, html = ''){
 	`);
 }
 
-function add_AI_model(el, id = false){$.get('/crm/php/main/module.php?get_all_users=1', function(data){
-	popup = createPOPUPbox();
-	popupBox = popup.find('.popupBox');
-	popupBox.html(`
-	<form>
-		${add_id_input(id)}
-		<label>Name</label>
-		<input type="text" name="name" required>
-		${HTML_share_AI_users(data)}
-		<label>instructions</label><br>
-		<textarea
-		name="instructions"
-		style="min-width:500px;min-height:175px;"
-		></textarea>
-		<hr>
-		<button class="button buttonGreen">${slovar('Add_new')}</button>
-		<span class="button buttonGrey" onclick="removePOPUPbox()">Close</span>
-	</form>
-	`)
+function add_AI_model(el, id = false){
+	GET_users({
+		done:function(data){
+			popup = createPOPUPbox();
+			popupBox = popup.find('.popupBox');
+			popupBox.html(`
+			<form>
+				${add_id_input(id)}
+				<label>Name</label>
+				<input type="text" name="name" required>
+				${HTML_share_AI_users(data)}
+				<label>instructions</label><br>
+				<textarea
+				name="instructions"
+				style="min-width:500px;min-height:175px;"
+				></textarea>
+				<hr>
+				<button class="button buttonGreen">${slovar('Add_new')}</button>
+				<span class="button buttonGrey" onclick="removePOPUPbox()">Close</span>
+			</form>
+			`)
 
-	if(id){ add_data_to_form(popupBox.find('form'), id) }
+			if(id){ add_data_to_form(popupBox.find('form'), id) }
 
-	popupBox.find('form').on('submit', function(e){
-		e.preventDefault();
-		save_AI_model(el, $(this));
+			popupBox.find('form').on('submit', function(e){
+				e.preventDefault();
+				save_AI_model(el, $(this));
+			})
+
+			popup.fadeIn('fast');
+		}
 	})
-
-	popup.fadeIn('fast');
-})}
+}
 function add_id_input(id){
 	if(!id){ return '' }
 	return `<input type="hidden" name="id" value="${id}">`
 }
 function HTML_share_AI_users(data, html = ''){
-    data = JSON.parse(data);
     html += '<label>'+slovar('Share')+'</label>';
     html += '<div class="analshare">';
     for(var i=0; i<data.length; i++){
@@ -102,12 +103,11 @@ function HTML_share_AI_users(data, html = ''){
     return html;
 }
 function add_data_to_form(form, id){
-	$.get('/crm/php/AI/AI_config.php', {
+	$.getJSON('/crm/php/AI/AI_config.php', {
 		load_AI_models: true,
 		id:id
 	}, function(data){
-		data = JSON.parse(data);
-		data = data[0]; console.log(data);
+		data = data[0];
 		form.find('[name=name]').val(data.name);
 		form.find('[name=instructions]').val(data.instructions);
 		data.share.forEach(s => { form.find('#share'+s).prop('checked', true) })
@@ -123,10 +123,9 @@ function save_AI_model(el, form){
 }
 
 function delete_AI_model(el, id){POPUPconfirm('Delete this AI ?','', function(){
-	$.get('/crm/php/AI/AI_config.php', {
+	$.getJSON('/crm/php/AI/AI_config.php', {
 		delete_AI_model:id
 	}, function(data){
-		data = JSON.parse(data);
 		if(data.error){ return createAlertPOPUP(data.error) }
 		load_AI_models(el.closest('.popupBox').find('.AI_models'));
 	})

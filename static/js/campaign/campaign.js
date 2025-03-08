@@ -13,7 +13,7 @@ function campaign_checkEnvironment(mainBox){
 	        		if(data.can_view.includes(user_role_id)){
 	        			$.get('/crm/php/campaign/campaign.php?check_environment=1', function(){
 			        		campaign_createEnvironment(mainBox, data);
-			        	}).fail(function(){console.log('ERROR: backend napaka');});
+			        	})
 			        }
 				}
 			}
@@ -55,7 +55,7 @@ function campaign_createEnvironment(mainBox, data){
 
 function toggle_stats(el){
 	if(el.attr('data-stats') == 'show'){ el.attr('data-stats','hide') }else{ el.attr('data-stats','show') }
-	$.get('/crm/php/campaign/stats.php', { toggle_stats:el.attr('data-stats') }, function(data){ location.reload() }).fail(function(){console.log('ERROR: backend napaka');});
+	$.get('/crm/php/campaign/stats.php', { toggle_stats:el.attr('data-stats') }, function(data){ location.reload() })
 }
 
 function campaign_createTable(box){
@@ -73,10 +73,10 @@ function campaign_createTable(box){
 }
 
 function campaign_loadTableList(tbody, callback){
-	$.get('/crm/php/campaign/campaign.php?get_all_lists=1', function(data){
-		campaign_displayTableList(tbody, JSON.parse(data));
+	$.getJSON('/crm/php/campaign/campaign.php?get_all_lists=1', function(data){
+		campaign_displayTableList(tbody, data);
 		if(typeof callback === 'function'){ callback(); }
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 
 function campaign_displayTableList(tbody, data){
@@ -129,7 +129,7 @@ function campaign_openAddEmailList(id = ''){
 			}, function(data){ data = JSON.parse(data);
 				if(data.error){ createAlert(popupBox, 'Red', data.error); }
 				else{ removePOPUPbox(); campaign_loadTableList($('.table tbody')); }
-			}).fail(function(){console.log('ERROR: backend napaka');});
+			})
 		}
 		else{ createAlert(popupBox, 'Red', slovar('Name_empty')); }
 	});
@@ -148,7 +148,7 @@ function campaign_deleteEmailList(id){
 			    data = JSON.parse(data);
 			    if(data.error){ createAlert(box, 'Red', data.error) }
 			    else{ campaign_loadTableList($('.table tbody')); }
-			}).fail(function(){console.log('ERROR: backend napaka');});
+			})
 		}
 		else{ createAlert(box, 'Red', slovar('Access_denied')) }
 	});

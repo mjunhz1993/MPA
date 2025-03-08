@@ -10,7 +10,7 @@ function config_homepage(){loadJS('GET/module', function(){
 	})
 })}
 
-function homepage_getUser(dashboard, box, html = ''){loadJS('GET/user', function(){
+function homepage_getUser(dashboard, box, html = ''){
 	GET_myself({
 		done:function(u){
 			box.css('border-bottom', '2px solid ' + u.user_color);
@@ -22,13 +22,13 @@ function homepage_getUser(dashboard, box, html = ''){loadJS('GET/user', function
 			homepage_getNotepad(dashboard, box);
 		}
 	})
-})}
+}
 
 function homepage_getNotepad(dashboard, box){
 	$.get('/crm/php/home/notepad.php?get_notepad=1', function(data){
         box.find('.homeNotePad textarea').val(data);
         homepage_getNotification(dashboard);
-    }).fail(function(data){console.log(data)});
+    })
 }
 
 function homepage_getNotification(dashboard, box = $('#lastnotification')){
@@ -138,7 +138,7 @@ function saveNotes(el){
 	$.post('/crm/php/home/notepad.php?write_notepad=1', {
 		csrf_token:$('[name=csrf_token]').val(),
 		notepad:el.prev().val()
-	}, function(data){ el.hide() }).fail(function(data){console.log(data)});
+	}, function(data){ el.hide() })
 }
 
 loadCSS('home');

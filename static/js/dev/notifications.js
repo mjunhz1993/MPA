@@ -19,10 +19,9 @@ function checkEnvironment(){
 }
 
 function loadAllNotifications(){
-	$.get('/crm/php/admin/notifications.php?get_notifications=1', function(data){
-        data = JSON.parse(data);
+	$.getJSON('/crm/php/admin/notifications.php?get_notifications=1', function(data){
         displayAllNotifications(data, $('#Main .table tbody'));
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 }
 
 function displayAllNotifications(data, tbody){if(data){
@@ -46,12 +45,11 @@ function showDesc(user, time){
 	var popup = createPOPUPbox();
 	var popupBox = popup.find('.popupBox');
 	var html = '';
-	$.get('/crm/php/admin/notifications.php?show_desc=1', {user:user, time:time}, function(data){
-		data = JSON.parse(data);
+	$.getJSON('/crm/php/admin/notifications.php?show_desc=1', {user:user, time:time}, function(data){
 		html = '<pre style="text-align:left;">' + data.desc + '</pre><hr><button class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Close') + '</button>';
 		popupBox.html(html);
 		popup.fadeIn('fast');
-	}).fail(function(){console.log('ERROR: backend napaka');});
+	})
 }
 
 function addNewNotification(){
@@ -59,8 +57,7 @@ function addNewNotification(){
 	var popupBox = popup.find('.popupBox');
 	var html = '';
 
-	$.get('/crm/php/main/module.php?get_all_users=1', function(data){
-        data = JSON.parse(data);
+	GET_users({done:function(data){
         html += '<h2>' + slovar('Add_notification') + '</h2><form>';
 		html += '<label for="nTitle">' + slovar('Title') + '</label>';
 		html += '<input type="text" name="title" id="nTitle" required>';
@@ -95,7 +92,7 @@ function addNewNotification(){
 		popup.fadeIn('fast', function(){
 			loadJS('form/cleditor', function(){ checkForTextAreaInputs(form) })
 		});
-    })
+    }})
 }
 
 function toggleAssigns(){
@@ -116,8 +113,7 @@ function addNewNotificationEvent(form){
 function deleteThisNotification(el, user, time){
 	POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
 		el.closest('.box').find('.alert').remove();
-		$.get('/crm/php/admin/notifications.php?delete_notification=1', {user:user, time:time}, function(data){
-	        data = JSON.parse(data);
+		$.getJSON('/crm/php/admin/notifications.php?delete_notification=1', {user:user, time:time}, function(data){
 	        if(data.error){ createAlert(el.closest('.box'), 'Red', data.error); }
         	else{ loadAllNotifications(); }
 	    })

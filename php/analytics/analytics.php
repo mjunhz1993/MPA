@@ -185,6 +185,8 @@ function analytic_content_data($SQL){
 
     $query = get_table_query($SQL);
     if(!$query){ return ['error' => 'Wrong_href']; }
+    if(!queryIsSafe($query)){ return ['error' => 'Event_denied']; }
+
     $query = check_for_special_data($SQL, $query);
 
     $A = $SQL->prepare($query);

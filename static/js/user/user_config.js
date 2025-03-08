@@ -1,4 +1,4 @@
-function openUserConfig(){loadJS('user/slovar/'+slovar(), function(){loadJS('GET/user', function(){
+function openUserConfig(){loadJS('user/slovar/'+slovar(), function(){
 	loadCSS('userConfig');
 	hideDropdownMenu();
 	GET_myself({done:function(me){
@@ -18,7 +18,7 @@ function openUserConfig(){loadJS('user/slovar/'+slovar(), function(){loadJS('GET
 		popupBox.html(html);
 		popup.fadeIn('fast', function(){ showUserConfig(popup.find('.buttonSquare').first()) });
 	}})
-})})}
+})}
 
 function showUserConfig(el){
 	toggleUserConfigMenu(el);

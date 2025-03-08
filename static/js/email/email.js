@@ -53,12 +53,11 @@ function get_new_emails(el){
         el.html('<span class="loading20"></span>');
         el.parent().find('.alert').remove();
         var box = el.closest('.email_main_box');
-    	$.get('/crm/php/email/email.php?get_new_emails=1', function(data){
-            data = JSON.parse(data);
+    	$.getJSON('/crm/php/email/email.php?get_new_emails=1', function(data){
             if(data.error){ createAlert(el.parent(), 'Red', data.error); }
             if(data.GO_AGAIN){ get_emails(box, buttonText, 'NEW', function(){ get_new_emails($('#newEmailButton')); }); }
             else{ get_emails(box, buttonText); }
-        }).fail(function(){console.log('ERROR: backend napaka');});
+        })
     }
 }
 
@@ -80,15 +79,14 @@ function get_emails(box, buttonText, type='NEW', callback){
     if(type == 'NEW'){ var uid = leftBox.find('.email_item_box').first().attr('data-uid'); }
     else if(type == 'OLD'){ var uid = leftBox.find('.email_item_box').last().attr('data-uid'); }
     else if(type == 'SEARCH'){ leftBox.find('.email_item_box').remove(); }
-    $.get('/crm/php/email/email.php?get_emails=1', {uid:uid, type:type, dir:emailDir, search:searchInput}, function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/email/email.php?get_emails=1', {uid:uid, type:type, dir:emailDir, search:searchInput}, function(data){
         if(data.error){}
         else{
             showEmails(box, type, data);
             leftBox.find('.loading20').parent().text(buttonText);
             if(typeof callback === 'function'){ callback(); }
         }
-    }).fail(function(){console.log('ERROR: backend napaka');});
+    })
 }
 
 
@@ -145,11 +143,10 @@ function openEmail(box, uid, extra = []){loadJS('email/slovar/' + slovar(), func
     leftBox.find('.email_item').removeClass('act');
     leftBox.find('.email_item_box[data-uid=' + uid + '] .email_item').first().addClass('act').find('.email_item_new').remove();
 
-    $.get('/crm/php/email/email.php?get_email=1', {
+    $.getJSON('/crm/php/email/email.php?get_email=1', {
         uid:uid,
         mail_room:extra.mail_room
     }, function(data){
-        data = JSON.parse(data);
         if(data.error){ createAlert(rightBox, 'Red', data.error); }
         else{if(data){
             // CREATE HEADER

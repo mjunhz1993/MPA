@@ -22,16 +22,14 @@ function openAddConversation(module = '', row = ''){loadJS('chat/chat', function
 
 function find_conversation(module, row, callback){
     if(valEmpty(module) || valEmpty(row)){ return callback() }
-    $.get('/crm/php/chat/chat.php?find_conversation=1', {module:module,row:row}, function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/chat/chat.php?find_conversation=1', {module:module,row:row}, function(data){
         if(!data){ return callback() }
         return chat(function(){ chat_box(data) })
     })
 }
 
 function displayAddConversation(form, module, row, html = ''){
-    $.get('/crm/php/main/module.php?get_all_users=1', function(data){
-        data = JSON.parse(data);
+    GET_users({done:function(data){
         if(!valEmpty(module) && !valEmpty(row)){
             html += '<input type="hidden" name="module" value="' + module + '">';
             html += '<input type="hidden" name="row" value="' + row + '">';
@@ -56,7 +54,7 @@ function displayAddConversation(form, module, row, html = ''){
             e.preventDefault();
             addConversation(form);
         });
-    })
+    }})
 }
 
 function addConversation(form){

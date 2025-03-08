@@ -51,9 +51,8 @@ function FORM_analytic(id = null){
 }
 
 function HTML_ANAL_select_users(form, callback, html = ''){
-	$.get('/crm/php/main/module.php?get_all_users=1', function(data){
-        data = JSON.parse(data);
-        html += '<label>'+slovar('Share')+'</label>';
+	GET_users({done:function(data){
+		html += '<label>'+slovar('Share')+'</label>';
         html += '<div class="analshare">';
         for(var i=0; i<data.length; i++){
             html += checkboxInput({
@@ -66,7 +65,7 @@ function HTML_ANAL_select_users(form, callback, html = ''){
         html += '</div>';
         form.append(html);
         callback();
-    })
+	}})
 }
 
 function add_analytic_to_form(form, data){

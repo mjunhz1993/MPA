@@ -49,7 +49,6 @@ function ask_AI(){
 	curl_setopt($GLOBALS['AI']['curl'], CURLOPT_POSTFIELDS, json_encode($GLOBALS['AI']['talk']));
 	$response = curl_exec($GLOBALS['AI']['curl']);
 	if(curl_errno($GLOBALS['AI']['curl'])){
-        $error_msg = 'AI error: ' . curl_error($GLOBALS['AI']['curl']);
         curl_close($GLOBALS['AI']['curl']);
         return false;
     }

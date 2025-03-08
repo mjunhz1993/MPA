@@ -1,6 +1,5 @@
 function checkForModuleAddons(module, box, type = '', row = null){
-	$.get('/crm/php/admin/module.php?get_module_addons=1&module=' + module, function(data){
-        data = JSON.parse(data);
+	$.getJSON('/crm/php/admin/module.php?get_module_addons=1&module=' + module, function(data){
         if(data){for(var i=0; i<data.length; i++){
         	var addon = data[i].addon.split('|');
             if(addon[0] == 'JSCommand'){

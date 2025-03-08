@@ -24,6 +24,6 @@ function clickRecoverFromTrash(id){
 		}, function(data){ data = JSON.parse(data);
 			if(data.error){ createAlert(box, 'Red', data.error); }
 			else{ tableLoad(box); }
-		}).fail(function(){console.log('ERROR: backend napaka');});
+		})
 	});
 }

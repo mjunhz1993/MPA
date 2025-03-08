@@ -14,8 +14,7 @@ function campaign_loadTemplateList(){
 	var box = $('#templateListBox');
 	if(box.length == 1){
 		box.html(HTML_loader());
-		$.get('/crm/php/campaign/campaign.php?get_all_templates=1', function(data){
-			data = JSON.parse(data);
+		$.getJSON('/crm/php/campaign/campaign.php?get_all_templates=1', function(data){
 			var html = '<table class="table"><thead><tr>';
 			html += '<th></th><th>ID</th><th>' + slovar('Name') + '</th>';
 			html += '</tr></thead><tbody>';
@@ -29,7 +28,7 @@ function campaign_loadTemplateList(){
 			html += '</tbody></table>';
 			box.html(html);
 			tooltips();
-		}).fail(function(){console.log('ERROR: backend napaka');});
+		})
 	}
 }
 
@@ -41,8 +40,7 @@ function campaign_editTemplate(id, name){
 	removePOPUPbox();
 	loadJS('campaign/emailTemplateEditor', function(){
 		openEmailTemplateEditor(function(){
-			$.get('/crm/php/campaign/campaign.php?get_template_body=1', {id:id}, function(data){
-				data = JSON.parse(data);
+			$.getJSON('/crm/php/campaign/campaign.php?get_template_body=1', {id:id}, function(data){
 				$('#etebodybox').html(data.body);
 				$('#etesavebutton').attr('data-id', id).attr('data-name', name);
 				ETE_refreshTools();
@@ -62,7 +60,7 @@ function campaign_deleteTemplate(id){
 			    data = JSON.parse(data);
 			    if(data.error){ createAlert(popupBox, 'Red', data.error); }
 			    else{ campaign_loadTemplateList(); }
-			}).fail(function(){console.log('ERROR: backend napaka');});
+			})
 		}
 		else{ createAlert(popupBox, 'Red', slovar('Access_denied')) }
 	});

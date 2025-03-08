@@ -1,8 +1,7 @@
 // -------------------- ADDING NEW FILTER
 
 function openFilterTableAdd(module, callback){
-    $.get('/crm/php/main/module.php?get_all_users=1', function(users){
-        users = JSON.parse(users);
+    GET_users({done:function(users){
         GET_column({
             module:module,
             showAll:true,
@@ -38,7 +37,7 @@ function openFilterTableAdd(module, callback){
                 if(typeof callback === 'function'){ callback(); }
             }
         })
-    })
+    }})
 }
 
 function generateFilterFrom(cols, users, html = ''){
@@ -331,8 +330,8 @@ function createFilter(module){
 
 function openFilterTableEdit(module){
     var id = $('#filterTableBoxInner select').val();
-    $.get('/crm/php/main/module_filters.php?get_filter=1&id=' + id, function(data){
-        data = JSON.parse(data); console.log(data);
+    $.getJSON('/crm/php/main/module_filters.php?get_filter=1&id=' + id, function(data){
+        console.log(data);
         if(data.error){ return console.log(data.error) }
         openFilterTableAdd(module, function(){
             var box = $('#filterTableBoxInner');

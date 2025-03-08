@@ -166,6 +166,7 @@ function editCustomFile(el){
 			loadJS('form/codeEditor', function(el){ 
 				openCodeEditor({
 					box: el,
+					name: data[1],
 					type: data[0].split('.').pop(),
 					callback: function(){ save_editCustomFile(popupBox) }
 				})
@@ -202,7 +203,7 @@ function deleteCustomFile(el){
 	        data = JSON.parse(data);
 	        if(data.error){ createAlert(box, 'Red', data.error); }
 	        else{ getCustomFiles($('#FileTable')); removePOPUPbox(); }
-	    }).fail(function(data){ console.log('ERROR: backend-error'); });
+	    })
 	});
 }
 

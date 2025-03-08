@@ -29,8 +29,7 @@ function openFilterTable(module = '', filter_access = 0){loadJS('filter/slovar/'
 })}
 
 function loadInFilters(module, boxInner, filter_access){
-    $.get('/crm/php/main/module_filters.php?get_filters=1&module=' + module, function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/main/module_filters.php?get_filters=1&module=' + module, function(data){
         if(data.error){ return }
         html = '<form><select name="filter_id" onchange="changeFilter($(this), \''+module+'\')">';
         if(filter_access == 1){ html += '<option value="0">'+slovar('No_filter')+'</option>' }
@@ -109,10 +108,8 @@ function openFilterTableAssing(module, html = ''){
     if(form.find('select option[value=0]').length == 0){ filter_access = 0 }
 
     form.find('#assignfilterbox').remove();
-    $.get('/crm/php/main/module_filters.php?get_filter_assigns=1&' + filter, function(data){
-        var assigns = JSON.parse(data);
-    $.get('/crm/php/main/module.php?get_all_users=1', function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/main/module_filters.php?get_filter_assigns=1&' + filter, function(assigns){
+    GET_users({done:function(data){
         html += '<div id="assignfilterbox" class="assignfilterbox" ';
         if(filter_access == 0){ html += 'style="display:none"' }
         html += '>';
@@ -134,7 +131,7 @@ function openFilterTableAssing(module, html = ''){
         html += '</div>';
         form.append(html);
         if(filter_access == 0){ selectCurrentFilterForMe() }
-    })
+    }})
     })
 }
 

@@ -16,12 +16,11 @@ function load_API_table(html = ''){
 	html += '<th>' + slovar('Current_rate') + '</th>';
 	html += '</thead><tbody></tbody></table>';
 	box.html(html);
-	$.get('/crm/php/admin/API.php?test_API_table=1', function(data){ load_API_rows() })
+	$.get('/crm/php/admin/API.php?test_API_table=1', function(){ load_API_rows() })
 }
 
 function load_API_rows(){
-	$.get('/crm/php/admin/API.php?load_API_rows=1', function(data){
-        data = JSON.parse(data);
+	$.getJSON('/crm/php/admin/API.php?load_API_rows=1', function(data){
         var html = '';
         for(var i=0; i<data.length; i++){
         	var d = data[i];

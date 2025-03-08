@@ -106,7 +106,7 @@ function saveClipboardData(e, blob, ext, fileArea, fileInput){
             if(data.error){ console.log(data.error); return false }
             else{ displayClipboardData(data, fileArea, fileInput, ext, e) }
         }
-    }).fail(function(data){ console.log('ERROR: backend-error'); });
+    })
 }
 
 function displayClipboardData(data, fileArea, fileInput, ext, e){

@@ -1,7 +1,7 @@
 function showUserConfig_change(box){
-	$.get('/crm/php/main/module.php?get_all_users=1', function(data){
-        HTML_changeUser(box, JSON.parse(data));
-    })
+	GET_users({done:function(data){
+        HTML_changeUser(box, data);
+    }})
 }
 
 function HTML_changeUser(box, data, html = ''){

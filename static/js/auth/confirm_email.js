@@ -1,6 +1,5 @@
 function sendConfirmEmail(box){
-    $.get("/crm/php/auth/confirm_email.php", function(data){
-        data = JSON.parse(data);
+    $.getJSON("/crm/php/auth/confirm_email.php", function(data){
         if(data){ displayConfirmEmailForm(box) }
         else{ box.find('.result').text('Error') }
     });

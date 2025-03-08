@@ -46,8 +46,7 @@ function openEditAccess(el, type){
     form.append('<h2>' + slovar('Edit') + '</h2><dov class="edit_edit_box"></dov>');
     if(type == 'MODULE'){ form.append('<h2>' + slovar('Delete') + '</h2><dov class="edit_delete_box"></dov>'); }
     
-    $.get('/crm/php/main/module.php?get_all_roles=1', function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/main/module.php?get_all_roles=1', function(data){
         for(var i=0; i<data.length; i++){
             form.find('.edit_view_box').append(checkboxInput({
                 name:'view[]',
@@ -97,7 +96,7 @@ function openEditAccess(el, type){
         popup.find('.buttonBlue').click(function(){ submitEditAccess(form, popup, type, $(this).attr('data-button')) })
         
         popup.fadeIn('fast');
-    }).fail(function(){console.log('ERROR: backend napaka');});
+    })
 }
 
 function checkAccessFields(el, form, type){
@@ -134,7 +133,7 @@ function submitEditAccess(form, popup, type, button = ''){
             if(type == 'MODULE'){ loadModulesAccess() }
             else if(type == 'COLUMN'){ openColumns($('#column_table').attr('data-module'), $('#column_table').attr('data-name')) }
             removePOPUPbox()
-        }).fail(function(data){ console.log('ERROR: backend-error'); });
+        })
         
     });
     form.submit();

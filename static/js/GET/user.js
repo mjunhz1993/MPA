@@ -1,7 +1,13 @@
 function GET_myself(d){
-    $.get('/crm/php/main/GET_user.php?myself=1', function(data){
-        data = JSON.parse(data);
+    $.getJSON('/crm/php/main/GET_user.php?myself=1', function(data){
         if(data.error){ return console.log(data) }
         if(typeof d.done === 'function'){ d.done(data) }
-    }).fail(function(){console.log('ERROR: backend napaka')});
+    })
+}
+
+function GET_users(d){
+    $.getJSON('/crm/php/main/module.php?get_all_users=1', function(data){
+        if(data.error){ return console.log(data) }
+        if(typeof d.done === 'function'){ d.done(data) }
+    })
 }
