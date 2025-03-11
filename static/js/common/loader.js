@@ -1,27 +1,28 @@
-jQuery.cachedScript = function(url, options){
-    options = $.extend(options || {}, {dataType:"script", cache:usecaching, url:url});
-    return jQuery.ajax( options );
-};
+$.cachedScript = (url, options = {}) =>
+    $.ajax({ ...options, dataType: "script", cache: usecaching, url });
 
-function loadJS(js, callback, el = ''){
-    var url = '/crm/static/js/' + js + '.js?v=' + APP_VERSION;
-    if(js.substring(0,8) == 'https://'){ url = js }
-    if(js.substring(0,7) == 'http://'){ url = js }
-    if(!loadedJS.includes(url)){
+const loadedJS = loadedCSS = new Set();
+
+function loadJS(js, callback, el = '') {
+    let url = `/crm/static/js/${js}.js?v=${APP_VERSION}`;
+    if(js.startsWith('https://') || js.startsWith('http://')){ url = js }
+
+    if(!loadedJS.has(url)){
         $.cachedScript(url).done(function(script, textStatus){
-            loadedJS.push(url);
+            loadedJS.add(url);
             if(typeof callback === 'function'){ callback(el) }
-        }).fail(function(jqxhr, settings, exception){ console.log(exception + ' - ' + url) });
+        }).fail(function(jqxhr, settings, exception){ console.error(exception + ' - ' + url) });
     }
-    else{if(typeof callback === 'function'){ callback(el) }}
+    else if(typeof callback === 'function'){ callback(el) }
 }
 
-function loadCSS(css){
-    var url = '/crm/static/css/' + css + '.css?v=' + APP_VERSION;
-    if(css.substring(0,8) == 'https://'){ url = css }
-    if(!loadedCSS.includes(url)){
-        $('head').append('<link rel="stylesheet" type="text/css" href="' + url + '">');
-        loadedCSS.push(url);
+function loadCSS(css) {
+    let url = `/crm/static/css/${css}.css?v=${APP_VERSION}`;
+    if(css.startsWith('https://') || css.startsWith('http://')){ url = css }
+
+    if(!loadedCSS.has(url)){
+        $('head').append(`<link rel="stylesheet" type="text/css" href="${url}">`);
+        loadedCSS.add(url);
     }
 }
 
@@ -31,5 +32,3 @@ function loadURL(url, callback, data = ''){
     window.history.replaceState(null, '', '/crm/templates/' + url + '.php' + param);
     if(typeof callback === 'function'){ callback(data); }
 }
-
-var loadedJS = loadedCSS = [];

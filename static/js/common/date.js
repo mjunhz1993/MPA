@@ -1,68 +1,63 @@
 function getCurrentDate(timeZone = 'local'){
-    var today = new Date();
-    if(timeZone == 'local'){
-        var dd = String(today.getDate()).padStart(2, '0');
-        var mm = String(today.getMonth() + 1).padStart(2, '0');
-        var yyyy = today.getFullYear();
-        var hh = String(today.getHours()).padStart(2, '0');
-        var ii = String(today.getMinutes()).padStart(2, '0');
-    }
-    else{
-        var dd = String(today.getUTCDate()).padStart(2, '0');
-        var mm = String(today.getUTCMonth() + 1).padStart(2, '0');
-        var yyyy = today.getUTCFullYear();
-        var hh = String(today.getUTCHours()).padStart(2, '0');
-        var ii = String(today.getUTCMinutes()).padStart(2, '0');
-    }
-    return yyyy + '-' + mm + '-' + dd + ' ' + hh + ':' + ii + ':00';
+    const today = new Date();
+    const isLocal = timeZone === 'local';
+
+    const pad = (num) => String(num).padStart(2, '0');
+    
+    const dd = pad(isLocal ? today.getDate() : today.getUTCDate());
+    const mm = pad(isLocal ? today.getMonth() + 1 : today.getUTCMonth() + 1);
+    const yyyy = isLocal ? today.getFullYear() : today.getUTCFullYear();
+    const hh = pad(isLocal ? today.getHours() : today.getUTCHours());
+    const ii = pad(isLocal ? today.getMinutes() : today.getUTCMinutes());
+
+    return `${yyyy}-${mm}-${dd} ${hh}:${ii}:00`;
 }
 
 function getDate(format, time, timeZone = 'local'){
-    if(time instanceof Date){ var d = time; }
-    else{
-        if(time.includes('-')){ var d = new Date(time); }
-        else{ var d = new Date('01-01-2020 '+time); } // IF ONLY TIME - ADD RANDOM DATE
-    }
-    var date = [], year, month, day, hour, minute, second;
+    let d;
     
-    if(timeZone == 'UTC'){
-        year = d.getUTCFullYear();
-        month = String(d.getUTCMonth() + 1).padStart(2, '0');
-        day = String(d.getUTCDate()).padStart(2, '0');
-        hour = String(d.getUTCHours()).padStart(2, '0');
-        minute = String(d.getUTCMinutes()).padStart(2, '0');
-        second = String(d.getUTCSeconds()).padStart(2, '0');
-    }
-    else{
-        year = d.getFullYear();
-        month = String(d.getMonth() + 1).padStart(2, '0');
-        day = String(d.getDate()).padStart(2, '0');
-        hour = String(d.getHours()).padStart(2, '0');
-        minute = String(d.getMinutes()).padStart(2, '0');
-        second = String(d.getSeconds()).padStart(2, '0');
-    }
+    if(time instanceof Date){ d = time }
+    else{ d = time.includes('-') ? new Date(time) : new Date(`2020-01-01T${time}`) }
 
-    if(format.includes('Y-m-d')){ date.push(year+'-'+month+'-'+day) }
-    if(format.includes('d.m.Y')){ date.push(day+'.'+month+'.'+year) }
-    if(format.includes('H:i:s')){ date.push(hour+':'+minute+':'+second) }
-    else if(format.includes('H:i')){ date.push(hour+':'+minute) }
+    if(isNaN(d)) return 'Invalid Date';
+
+    const getFormattedDate = (dateObj, useUTC = false) => {
+        const pad = (num) => String(num).padStart(2, '0');
+        return {
+            year: useUTC ? dateObj.getUTCFullYear() : dateObj.getFullYear(),
+            month: pad(useUTC ? dateObj.getUTCMonth() + 1 : dateObj.getMonth() + 1),
+            day: pad(useUTC ? dateObj.getUTCDate() : dateObj.getDate()),
+            hour: pad(useUTC ? dateObj.getUTCHours() : dateObj.getHours()),
+            minute: pad(useUTC ? dateObj.getUTCMinutes() : dateObj.getMinutes()),
+            second: pad(useUTC ? dateObj.getUTCSeconds() : dateObj.getSeconds()),
+        };
+    };
+
+    const { year, month, day, hour, minute, second } = getFormattedDate(d, timeZone === 'UTC');
     
-    return date.join(' ');
+    let dateParts = [];
+    if (format.includes('Y-m-d')) dateParts.push(`${year}-${month}-${day}`);
+    if (format.includes('d.m.Y')) dateParts.push(`${day}.${month}.${year}`);
+    if (format.includes('H:i:s')) dateParts.push(`${hour}:${minute}:${second}`);
+    else if (format.includes('H:i')) dateParts.push(`${hour}:${minute}`);
+
+    return dateParts.join(' ');
 }
 
+
 function stringToDate(str, timeZone = 'local'){
-    if(['',null,undefined].includes(str)){ return }
-    if(!str.includes(':')){ str = str+' 00:00:00' }
-    else if(!str.includes('-')){ str = '2020-01-01 '+str }
-    str = str.split(' ');
-    var yyyy = str[0].split('-')[0];
-    var mm = String(parseInt(str[0].split('-')[1]) - 1).padStart(2, '0');
-    var dd = String(str[0].split('-')[2]).padStart(2, '0');
-    var hh = String(str[1].split(':')[0]).padStart(2, '0');
-    var ii = String(str[1].split(':')[1]).padStart(2, '0');
-    var ss = String(str[1].split(':')[2]).padStart(2, '0');
-    if(timeZone == 'local'){ return new Date(yyyy, mm, dd, hh, ii, ss) }
-    else{ return new Date(Date.UTC(yyyy, mm, dd, hh, ii, ss)) }
+    if (!str) return;
+
+    if (!str.includes(':')) str += ' 00:00:00';  
+    if (!str.includes('-')) str = '2020-01-01 ' + str;  
+
+    const [datePart, timePart] = str.split(' ');
+    const [yyyy, mm = 1, dd = 1] = datePart.split('-').map(Number);
+    const [hh = 0, ii = 0, ss = 0] = timePart.split(':').map(Number);
+
+    return timeZone === 'local' 
+        ? new Date(yyyy, mm - 1, dd, hh, ii, ss) 
+        : new Date(Date.UTC(yyyy, mm - 1, dd, hh, ii, ss));
 }
 
 function UTCtoInput(v){ return getDate('Y-m-d H:i:s', stringToDate(v, 'UTC')) }

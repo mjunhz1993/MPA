@@ -1,5 +1,5 @@
 function socket_config(d){
-    return new WebSocket(d.url':'+d.port+'?user='+d.user_id+'&host='+window.location.hostname);
+    return new WebSocket(d.url+':'+d.port+'?user='+d.user_id+'&host='+window.location.hostname);
 }
 
 const socket = socket_config({
@@ -19,7 +19,9 @@ function socket_send(msg){
 
 socket.addEventListener("message", (msg) => {
     if(!socket_check()){ return }
-    runTrigger({ id:msg.data.id });
+    msg = JSON.parse(msg.data);
+    console.log(msg);
+    // runTrigger({ id:msg.data.id });
 });
 
 socket.addEventListener("open", (event) => {});

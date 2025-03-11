@@ -1,19 +1,12 @@
 function getMainBoxFreeHaight(){ return $(window).height() - $('#Main').height() - $('#TopNav').height() }
-function smallDevice(){if($(window).width() <= 800){return true}return false}
-function valEmpty(v){if(['',null,undefined].includes(v)){return true}return false}
+function smallDevice(){ return $(window).width() <= 800 }
+function valEmpty(v){ return ['',null,undefined].includes(v) }
 
-function Price(p, raw = false, html = ''){
-    let e = Intl.NumberFormat('de-DE', {style:'currency', currency:defaultCurrency, currencyDisplay:'code'});
-    if(raw){ return e.format(p) }
-    html += '<span style="color:';
-	if(p < 0){ html += 'red' }else{ html += 'green' }
-	html += '">'+e.format(p)+'</span>';
-    return html;
+function Price(p, raw = false) {
+    let e = Intl.NumberFormat('de-DE', { style: 'currency', currency: defaultCurrency, currencyDisplay: 'code' });
+    return raw ? e.format(p) : `<span style="color:${p < 0 ? 'red' : 'green'}">${e.format(p)}</span>`;
 }
-function Percent(p, raw = false, html = ''){
-	if(raw){ return p+' %' }
-    html += '<span style="color:';
-	if(p < 0){ html += 'red' }else{ html += 'green' }
-	html += '">'+p+' %</span>';
-    return html;
+
+function Percent(p, raw = false) {
+    return raw ? `${p} %` : `<span style="color:${p < 0 ? 'red' : 'green'}">${p} %</span>`;
 }

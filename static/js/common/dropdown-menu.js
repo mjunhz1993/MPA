@@ -40,7 +40,7 @@ function hideDropdownMenu(){ hideTooltip(); $('#DropdownMenu').hide() }
 function resetDropdownMenuConfig(callback){$('.DropdownMenuContent').parent().unbind('click').click(function(e){ e.stopPropagation() })}
 
 $(document).ready(function(){
-    $('body').append('<div id="DropdownMenu" style="display: none;"></div>');
+    $('body').append('<div id="DropdownMenu" style="display:none;"></div>');
     $(document).click(function(){ $('#DropdownMenu').hide() });
     $('#DropdownMenu').click(function(e){ e.stopPropagation() });
     resetDropdownMenuConfig()

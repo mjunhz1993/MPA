@@ -25,15 +25,14 @@ function showTooltip(el){
 function hideTooltip(){ $('#tooltip').hide() }
 
 function tooltips(){
-    if(!smallDevice()){
-        $('[data-tooltip]').unbind('mouseenter').unbind('mouseout');
-        $('[data-tooltip]').mouseover(function(){ showTooltip($(this)) });
-        $('[data-tooltip]').mouseout(function(){ hideTooltip() });
-    }
+    if(smallDevice()){ return }
+    $('[data-tooltip]').unbind('mouseenter').unbind('mouseout');
+    $('[data-tooltip]').mouseover(function(){ showTooltip($(this)) });
+    $('[data-tooltip]').mouseout(function(){ hideTooltip() });
 }
 
 
 $(document).ready(function(){
-    $('body').append('<div id="tooltip" class="tooltip" style="display: none;"></div>');
+    $('body').append('<div id="tooltip" class="tooltip" style="display:none;"></div>');
     tooltips();
 });
