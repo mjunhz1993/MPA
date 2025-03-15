@@ -8,9 +8,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 function izvoz($SQL){
-    if(!isset($_GET['id']) || $_GET['id'] != ''){ return ['error' => 'No_ID']; }
+    if(!isset($_GET['id']) || $_GET['id'] == ''){ return ['error' => 'No_ID']; }
     $_POST['id'] = $_GET['id'];
-    
+
     $query = get_table_query($SQL);
     if(!$query){ return ['error' => 'No_query_found']; }
 
