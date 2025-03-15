@@ -3,6 +3,9 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 include(loadPHP('export/extra'));
 
 function izvoz($SQL){
+    if(!isset($_GET['id']) || $_GET['id'] == ''){ return ['error' => 'No_ID']; }
+    $_POST['id'] = $_GET['id'];
+    
     $query = get_table_query($SQL);
     if(!$query){ return ['error' => 'No_query_found']; }
 

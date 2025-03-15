@@ -54,7 +54,7 @@ function izvoz($SQL){
 }
 
 function addTopRow($sheet, $row, $i = 1){
-    foreach($row as $r){
+    foreach($row as $r=>$v){
         $sheet->setCellValue([$i, 1], $r);
         $sheet->getColumnDimension($sheet->getHighestColumn())->setAutoSize(true);
         $i++;

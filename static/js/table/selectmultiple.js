@@ -7,9 +7,8 @@ function openSelectMultiple(el){
 	html += '<div class="DropdownMenuContent">';
 	html += '<p>' + slovar('Export') + '</p>';
 	html += '<a onClick="table2csv()">' + getSVG('download') + ' <span>' + slovar('CSV') + '</span></a>';
-	html += '<a onClick="table2excel()">' + getSVG('download') + ' <span>' + slovar('Excel') + '</span></a>';
 	html += '<a onClick="table2pdf()">' + getSVG('download') + ' <span>' + slovar('PDF') + '</span></a>';
-	html += '<a onClick="table2campaign()">' + getSVG('download') + ' <span>' + slovar('Campaign') + '</span></a>';
+	// html += '<a onClick="table2campaign()">' + getSVG('download') + ' <span>' + slovar('Campaign') + '</span></a>';
 	html += '<hr>';
 	html += '<a onClick="deleteSelectMultiple($(\'#selectmultipleBox\'))">' + getSVG('delete') + ' <span>' + slovar('Delete') + '</span></a>';
 	html += '</div>';
@@ -71,8 +70,6 @@ function table2csv(){
 		hideDropdownMenu();
 	})
 }
-
-function table2excel(){loadJS('export/php2excel', function(){ php2excel($('#main_table').attr('data-module')) })}
 
 function table2pdf(){
 	if(!selectMultipleNotEmpty()){ return }
