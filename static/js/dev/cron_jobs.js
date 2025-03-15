@@ -1,17 +1,26 @@
 function config_cronjob_app(){
 	$('#Main').append('<div class="box col80 cronjobBox"></div><div class="box col80 cronjobInfoBox"></div>');
 	var box = $('.cronjobBox');
-	var html = '';
-	html += '<table class="tableTop"><tr>';
-	html += '<td><button class="button buttonGreen" onclick="add_cronjob()">' + slovar('Add_new') + '</button></td>';
-	html += '<td></td>';
-	html += '</tr></table>';
-	html += '<table class="table cronjobTable"><thead><tr><th></th>';
-	html += '<th>' + slovar('Name') + '</th>';
-	html += '<th>' + slovar('Url') + '</th>';
-	html += '<th>' + slovar('Time') + '</th>';
-	html += '</thead><tbody></tbody></table>';
-	box.html(html);
+	box.html(`
+	<table class="tableTop">
+		<tr>
+			<td>
+				<button class="button buttonGreen" onclick="add_cronjob()">${slovar('Add_new')}</button>
+			</td>
+			<td></td>
+		</tr>
+	</table>
+	<table class="table cronjobTable">
+		<thead>
+			<tr>
+			<th></th>
+			<th>${slovar('Name')}</th>
+			<th>${slovar('Url')}</th>
+			<th>${slovar('Time')}</th>
+		</thead>
+		<tbody></tbody>
+	</table>
+	`);
 	cronJobInfoBox($('.cronjobInfoBox'));
 	$.get('/crm/php/cron_jobs/cron_jobs_config.php?test_cron_jobs_table=1', function(){ load_cronjob_table() })
 }
@@ -30,12 +39,32 @@ function load_cronjob_table(){
         	if(d.extra != ''){ html += '<b>$CJvalue =</b> ' + d.extra; }
         	html += '</td>';
         	html += '<td>' + d.url + '</td>';
-        	html += '<td><b>' + slovar('Next_schedule') + ':</b> ' + getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(d.tstamp, 'UTC'));
+        	html += '<td><b>' + slovar('Next_schedule') + ':</b> ' + getTimeDifference(d.tstamp);
         	html += '<hr><b>Interval:</b> ' + d.wait_for + 's</td>';
         	html += '</tr>';
         }
         $('.cronjobTable tbody').html(html);
     })
+}
+
+function getTimeDifference(unixTimestamp) {
+    let now = new Date();
+    let inputDate = new Date(unixTimestamp * 1000);
+    let diffMs = now - inputDate;
+    let isPast = diffMs > 0;
+    diffMs = Math.abs(diffMs);
+
+    let hours = Math.floor(diffMs / (1000 * 60 * 60));
+    let minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+    let seconds = Math.floor((diffMs % (1000 * 60)) / 1000);
+    let sign = isPast ? " -" : "";
+
+    let resultParts = [];
+    if (hours > 0) resultParts.push(`${hours}h`);
+    if (minutes > 0) resultParts.push(`${minutes}m`);
+    if (seconds > 0) resultParts.push(`${seconds}s`);
+
+    return resultParts.length > 0 ? `${sign}${resultParts.join(" ")}` : "Now";
 }
 
 function add_cronjob(){

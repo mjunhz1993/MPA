@@ -54,7 +54,7 @@ function get_cron_jobs($SQL, $data = array()){
         $data[$st]['extra'] = $B[1];
         $data[$st]['url'] = $B[2];
         $data[$st]['wait_for'] = $B[3];
-        $data[$st]['tstamp'] = date('Y-m-d H:i:s', $B[4]);
+        $data[$st]['tstamp'] = $B[4];
         $st++;
     }
     return $data;
