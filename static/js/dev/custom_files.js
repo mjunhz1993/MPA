@@ -32,7 +32,7 @@ function getCustomFiles(table, callback){
 				html += 'value="' + d.path + '" readonly>';
 				html += '</td>';
 				html += '<td>' + d.project + '</td>';
-				html += '<td>' + getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(d.tstamp, 'UTC')) + '</td>';
+				html += '<td>' + displayLocalDate(d.tstamp) + '</td>';
 				html += '<td>';
 				html += '<a class="linksvg" target="_blank" href="'+d.path+'"';
 				html += '>'+getSVG('link')+'</a> ';
@@ -193,18 +193,22 @@ function save_editCustomFile(popupBox, close = false){
 }
 
 function deleteCustomFile(el){
-	POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
-		var box = el.closest('.boxInner');
-		var name = el.attr('data-name');
-		$.post('/crm/php/admin/custom_files.php?delete_custom_file=1', {
-			csrf_token:$('input[name=csrf_token]').val(),
-			file_name: name
-		}, function(data){
-	        data = JSON.parse(data);
-	        if(data.error){ createAlert(box, 'Red', data.error); }
-	        else{ getCustomFiles($('#FileTable')); removePOPUPbox(); }
-	    })
-	});
+	var name = el.attr('data-name');
+	POPUPconfirm(
+		slovar('Confirm_event'), 
+		`${slovar('Confirm_delete')}<br> datoteka: <b>${name}</b>`, 
+		function(){
+			var box = el.closest('.boxInner');
+			$.post('/crm/php/admin/custom_files.php?delete_custom_file=1', {
+				csrf_token:$('input[name=csrf_token]').val(),
+				file_name: name
+			}, function(data){
+		        data = JSON.parse(data);
+		        if(data.error){ createAlert(box, 'Red', data.error); }
+		        else{ getCustomFiles($('#FileTable')); removePOPUPbox(); }
+		    })
+		}
+	);
 }
 
 if($('#FileTableExtFilter').length == 1){

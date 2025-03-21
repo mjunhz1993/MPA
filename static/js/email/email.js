@@ -99,7 +99,7 @@ function showEmails(box, type, data){
             var uid = email.uid;
             var from = email.mail_from;
             var subject = email.subject;
-            var time = getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(email.udate, 'UTC'));
+            var time = displayLocalDate(email.udate);
             var attachments = [];
             if(email.attachments){ attachments = email.attachments.split('|'); }
 
@@ -156,7 +156,7 @@ function openEmail(box, uid, extra = []){loadJS('email/slovar/' + slovar(), func
             html += '<h2>' + data.subject + '</h2>';
             if(extra.close){ html += '<div class="ehClose">' + getSVG('x')+ '</div>' }
             html += '</div>';
-            html += '<div class="ehDate">' + getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(data.udate, 'UTC')) + '</div>';
+            html += '<div class="ehDate">' + displayLocalDate(data.udate) + '</div>';
             html += '<div class="ehflex">';
             html += '<div class="ehFrom">' + slovar('From');
             html += ': <a onclick="click_on_email(\''+data.mail_from+'\')" data-tooltip="' + slovar('Create_new_mail') + '">' + data.mail_from + '</a></div>';

@@ -5,7 +5,7 @@
 </style>
 
 <form method="post" class="editForm" id="configBox">
-<input type="hidden" name="csrf_token" id="csrf_token" value="<?php echo $_SESSION['token']; ?>">
+<input type="hidden" name="csrf_token" id="csrf_token" value="<?= $_SESSION['token']; ?>">
 
 <div class="box col80"><div class="boxInner">
     <h2 data-slovar="Default_values" onclick="toggle_configMenu($(this))"></h2>
@@ -25,11 +25,11 @@
         </select>
     </div><div class="col col50">
         <label for="currency" data-slovar="Currency"></label>
-        <input type="text" name="currency" id="currency" value="<?php echo $GLOBALS["config"]["currency"]; ?>">
+        <input type="text" name="currency" id="currency" value="<?= $GLOBALS["config"]["currency"]; ?>">
     </div><div class="col col50">
         <label for="phonezipcode" data-slovar="Phone_zip_code"></label>
         <div onclick="loadJS('form/countries', function(el){ get_countries(el, 'CONFIG'); }, $(this))">
-            <input type="text" name="phonezipcode" id="phonezipcode" value="<?php echo $GLOBALS["config"]["phonezipcode"]; ?>">
+            <input type="text" name="phonezipcode" id="phonezipcode" value="<?= $GLOBALS["config"]["phonezipcode"]; ?>">
         </div>
     </div><div class="col col50">
         <label for="defaultLanguage" data-slovar="Default_app_language"></label>
@@ -40,7 +40,7 @@
     </div><div class="col col50">
         <label for="max_file_size" data-slovar="max_file_size"></label>
         <b>10000000 = 10Mb</b>
-        <input type="text" name="max_file_size" id="max_file_size" value="<?php echo $GLOBALS["config"]["max_file_size"]; ?>">
+        <input type="text" name="max_file_size" id="max_file_size" value="<?= $GLOBALS["config"]["max_file_size"]; ?>">
     </div>
     </div>
 </div></div>
@@ -55,14 +55,14 @@
         <select name="crm_email" id="crm_email">
             <option></option>
             <?php while ($B = $A->fetch_row()): ?>
-            <option <?php if($GLOBALS["config"]["crm_email"] == $B[0]){echo 'selected';} ?> value="<?php echo $B[0]; ?>"><?php echo $B[1]; ?></option>
+            <option <?php if($GLOBALS["config"]["crm_email"] == $B[0]){echo 'selected';} ?> value="<?= $B[0]; ?>"><?= $B[1]; ?></option>
             <?php endwhile; ?>
         </select>
     </div>
     
     <div class="col col100">
         <label for="SENDGRID">SENDGRID ID</label>
-        <input type="text" name="SENDGRID" id="SENDGRID" value="<?php echo $GLOBALS["config"]["SENDGRID"] ?? ''; ?>">
+        <input type="text" name="SENDGRID" id="SENDGRID" value="<?= $GLOBALS["config"]["SENDGRID"] ?? ''; ?>">
     </div>
 
     <span class="button button100 buttonBlue" onclick="testEmail($(this))">Test MPA E-mail</span>
@@ -75,15 +75,15 @@
     <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="twilioID">twilio SID</label>
-        <input type="text" name="twilioID" id="twilioID" value="<?php echo $GLOBALS["config"]["twilioID"] ?? ''; ?>">
+        <input type="text" name="twilioID" id="twilioID" value="<?= $GLOBALS["config"]["twilioID"] ?? ''; ?>">
     </div>
     <div class="col col100">
         <label for="twilioToken">twilio Token</label>
-        <input type="text" name="twilioToken" id="twilioToken" value="<?php echo $GLOBALS["config"]["twilioToken"] ?? ''; ?>">
+        <input type="text" name="twilioToken" id="twilioToken" value="<?= $GLOBALS["config"]["twilioToken"] ?? ''; ?>">
     </div>
     <div class="col col100">
         <label for="twilioPhone">twilio Phone number</label>
-        <input type="text" name="twilioPhone" id="twilioPhone" value="<?php echo $GLOBALS["config"]["twilioPhone"] ?? ''; ?>">
+        <input type="text" name="twilioPhone" id="twilioPhone" value="<?= $GLOBALS["config"]["twilioPhone"] ?? ''; ?>">
     </div>
     </div>
 </div></div>
@@ -94,15 +94,15 @@
     <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="jitsipuk">JITSI Public key</label>
-        <input type="text" name="jitsipuk" id="jitsipuk" value="<?php echo $GLOBALS["config"]["jitsipuk"] ?? ''; ?>">
+        <input type="text" name="jitsipuk" id="jitsipuk" value="<?= $GLOBALS["config"]["jitsipuk"] ?? ''; ?>">
     </div>
     <div class="col col100">
         <label for="jitsiprk">JITSI Private key</label>
-        <input type="text" name="jitsiprk" id="jitsiprk" value="<?php echo $GLOBALS["config"]["jitsiprk"] ?? ''; ?>">
+        <input type="text" name="jitsiprk" id="jitsiprk" value="<?= $GLOBALS["config"]["jitsiprk"] ?? ''; ?>">
     </div>
     <div class="col col100">
         <label for="jitsiid">JITSI app ID</label>
-        <input type="text" name="jitsiid" id="jitsiid" value="<?php echo $GLOBALS["config"]["jitsiid"] ?? ''; ?>">
+        <input type="text" name="jitsiid" id="jitsiid" value="<?= $GLOBALS["config"]["jitsiid"] ?? ''; ?>">
     </div>
     </div>
 </div></div>
@@ -113,11 +113,11 @@
     <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="stripePK">STRIPE Publish key</label>
-        <input type="text" name="stripePK" id="stripePK" value="<?php echo $GLOBALS["config"]["stripePK"] ?? ''; ?>">
+        <input type="text" name="stripePK" id="stripePK" value="<?= $GLOBALS["config"]["stripePK"] ?? ''; ?>">
     </div>
     <div class="col col100">
         <label for="stripeSK">STRIPE Secret key</label>
-        <input type="text" name="stripeSK" id="stripeSK" value="<?php echo $GLOBALS["config"]["stripeSK"] ?? ''; ?>">
+        <input type="text" name="stripeSK" id="stripeSK" value="<?= $GLOBALS["config"]["stripeSK"] ?? ''; ?>">
     </div>
     </div>
 </div></div>
@@ -128,15 +128,15 @@
     <div class="toggleConfigMenu">
     <div class="col col100">
         <label for="stripePK">Gemini</label>
-        <input type="text" name="AI" id="AI" value="<?php echo $GLOBALS["config"]["AI"] ?? ''; ?>">
+        <input type="text" name="AI" id="AI" value="<?= $GLOBALS["config"]["AI"] ?? ''; ?>">
     </div>
     <div class="col col100">
         <label for="stripeSK">GOOGLE CLOUD ID</label>
-        <input type="text" name="gcID" id="gcID" value="<?php echo $GLOBALS["config"]["gcID"] ?? ''; ?>">
+        <input type="text" name="gcID" id="gcID" value="<?= $GLOBALS["config"]["gcID"] ?? ''; ?>">
     </div>
     <div class="col col100">
         <label for="stripeSK">GOOGLE CLOUD API</label>
-        <input type="text" name="gcAPI" id="gcAPI" value="<?php echo $GLOBALS["config"]["gcAPI"] ?? ''; ?>">
+        <input type="text" name="gcAPI" id="gcAPI" value="<?= $GLOBALS["config"]["gcAPI"] ?? ''; ?>">
     </div>
     </div>
 </div></div>
@@ -148,14 +148,14 @@
     <div class="fileArea">
         <?php if(isset($GLOBALS['config']['company_logo'])): ?>
         <?php $company_logo = '/crm/php/user_data/'. $GLOBALS['config']['company_logo']; ?>
-        <div class="file"><div class="img" style="background-image:url('<?php echo $company_logo; ?>')"></div><div class="fileDesc">Logo</div></div>
+        <div class="file"><div class="img" style="background-image:url('<?= $company_logo; ?>')"></div><div class="fileDesc">Logo</div></div>
         <script>
             $('.fileArea .file').append(getSVG('x'));
             $('.fileArea .file svg').click(function(){ deleteCompanyLogo(); });
         </script>
         <?php endif; ?>
     </div>
-    <input type="hidden" name="company_logo_hidden" value="<?php echo $GLOBALS["config"]["company_logo"] ?? ''; ?>">
+    <input type="hidden" name="company_logo_hidden" value="<?= $GLOBALS["config"]["company_logo"] ?? ''; ?>">
     <div class="col col100 formField">
         <div class="fileArea"></div>
         <label for="company_logo" class="button button100 buttonBlue" data-slovar="Change_company_logo"></label>

@@ -3,7 +3,7 @@
 <body>
     <?php if($_SESSION['user_id'] == 1): ?>
     
-    <input type="hidden" name="csrf_token" id="csrf_token" value="<?php echo $_SESSION['token']; ?>">
+    <input type="hidden" name="csrf_token" id="csrf_token" value="<?= $_SESSION['token']; ?>">
 
     <div id="Main">
         <h1 data-slovar="Custom_module"></h1>
@@ -13,7 +13,7 @@
         </div>
     </div>
 
-    <script src="/crm/static/js/dev/custom_files.js?<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
+    <script src="/crm/static/js/dev/custom_files.js?<?= $GLOBALS['APP_VERSION']; ?>"></script>
     <script>
         getCustomFiles($('#FileTable'));
     </script>

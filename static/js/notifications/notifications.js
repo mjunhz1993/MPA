@@ -54,7 +54,7 @@ function get_HTML_notifications(note, html = ''){
 	note.desc += '<b onclick="showMore_notifications($(this))">' + slovar('Show_more') + '</b>';
 	html += '<div class="notificationBox" data-type="' + note.type + '" data-time="' + note.time + '">';
 	html += '<h2 class="nTitle">' + slovar(note.title) + '</h2>';
-	html += '<span class="nTime">' + getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(note.time, 'UTC')) + '</span>';
+	html += '<span class="nTime">' + displayLocalDate(note.time) + '</span>';
 	html += '<div class="nDesc">' + note.desc + '</div><hr>';
 	html += '<div>'+get_notifications_buttons(note.list)+'</div>';
 	html += '</div>';

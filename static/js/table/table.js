@@ -133,51 +133,45 @@ function tableDisplayButtons(box, module, html = '') {
     });
 }
 
-function tableDisplayColumns(tableBox, data, callback){
-    var box = tableBox.closest('.tableBox');
-    tableBox.text('');
-    var html = '';
-    if(data){
-        html += '<table class="table"><thead><tr>';
-        if(valEmpty(box.data('simplify'))){
-            html += '<th class="no-sort toolColumn">';
-            html += '<button class="linksvg" data-tooltip="'+slovar('Refresh_data')+'" onClick="tableLoad($(this))">';
-            html += getSVG('refresh')+'</button></th>';
-        }
-        for(var c = 0; c < Object.keys(data).length; c++){
-            var col = data[c];
-            if(col == undefined){ continue }
-            html += tableCreateColumn(col);
-        }
-        html += '</tr></thead><tbody></tbody></table>';
-        tableBox.html(html);
-        tooltips();
-        tableCreateFilters(tableBox);
-        tableLoad(tableBox, 0, callback);
+function tableDisplayColumns(tableBox, data, callback) {
+    if (!data) return console.log('ERROR: no data for columns');
+
+    let box = tableBox.closest('.tableBox');
+    let html = `<table class="table"><thead><tr>`;
+
+    if (valEmpty(box.data('simplify'))) {
+        html += `<th class="no-sort toolColumn">
+                    <button class="linksvg" data-tooltip="${slovar('Refresh_data')}" onClick="tableLoad($(this))">
+                        ${getSVG('refresh')}
+                    </button>
+                 </th>`;
     }
-    else{console.log('ERROR: no data for columns')}
+
+    html += Object.values(data).map(col => col ? tableCreateColumn(col) : '').join('');
+
+    tableBox.html(html + '</tr></thead><tbody></tbody></table>');
+    tooltips();
+    tableCreateFilters(tableBox);
+    tableLoad(tableBox, 0, callback);
 }
 
-function tableCreateColumn(col, html = ''){
-    if(!col.active){ return '' }
+function tableCreateColumn(col) {
+    if (!col.active) return '';
 
-    html += '<th data-module="' + col.module + '" data-column="' + col.column + '" data-type="' + col.type + '" ';
-    if(col.columnWidth != 0){ html += 'data-width="' + col.columnWidth + '" ' }
-    if(!valEmpty(col.list)){ html += 'data-list="' + col.list + '" ' }
-    if(col.type == 'JOIN_GET'){ html += 'data-preselected_option="' + col.preselected_option + '" ' }
+    const attrs = [
+        `data-module="${col.module}"`,
+        `data-column="${col.column}"`,
+        `data-type="${col.type}"`,
+        col.columnWidth != 0 ? `data-width="${col.columnWidth}"` : '',
+        !valEmpty(col.list) ? `data-list="${col.list}"` : '',
+        col.type === 'JOIN_GET' ? `data-preselected_option="${col.preselected_option}"` : '',
+    ].filter(Boolean).join(' ');
 
-    if(!table_FakeColumns.includes(col.type))
-    {
-        html += 'data-tooltip="' + slovar('Sort_by') + slovar(col.name) + '" ';
-        html += 'onclick="sortByColumn($(this))" ';
-    }
+    const sortable = !table_FakeColumns.includes(col.type);
+    const tooltip = sortable ? `data-tooltip="${slovar('Sort_by')}${slovar(col.name)}" onclick="sortByColumn($(this))"` : '';
+    const classes = `column ${sortable ? '' : 'no-sort'}`;
 
-    html += 'class="column ';
-    if(table_FakeColumns.includes(col.type)){ html += 'no-sort ' }
-    html += '" ';
-
-    html += '>' + slovar(col.name) + '</th>';
-    return html;
+    return `<th ${attrs} ${tooltip} class="${classes}">${slovar(col.name)}</th>`;
 }
 
 function tableCreateFilters(tableBox){
@@ -438,13 +432,13 @@ function table_addFooter(box){
     box.append(`
         <div class="tableFooter">
             <div>
-                `+slovar('Showing')+`
+                ${slovar('Showing')}
                 <b class="tableRowCount"></b>
-                `+slovar('Entries')+`
+                ${slovar('Entries')}
             </div>
             <button class="button buttonBlue tableLoadMoreButton" onclick="tableLoadMoreButton($(this))">
-                `+getSVG('show_more')+`
-                <span>`+slovar('Show_more')+`</span>
+                ${getSVG('show_more')}
+                <span>${slovar('Show_more')}</span>
             </button>
         </div>
     `);

@@ -89,7 +89,7 @@ function insertRow_readBoxMini(box, col, row, html = ''){
     	html += 'onclick="clickJOIN_ADD_readBoxMini($(this),\''+list[1]+'\','+data+')" data-list="'+col.list+'" class="link placeholder"></a>';
     	return html
     }
-	if(col.type == 'DATETIME'){ return getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(data, 'UTC')) }
+	if(col.type == 'DATETIME'){ return displayLocalDate(data) }
     if(col.type == 'SELECT'){
         var list = col.list.split('|');
         for(var l=0; l<list.length; l++){if(list[l].split(',')[0] == data){ return slovar(list[l].split(',')[1]) }}

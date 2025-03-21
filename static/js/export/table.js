@@ -47,25 +47,34 @@ function addExportTableToBox(d, data){
 	})
 }
 
-function HTML_exportTable(data, html = '', rowCount = 1){
-	data.forEach((item) => {
-		if(rowCount == 1){ html += HTML_exportTableTopRow(item) }
-		html += HTML_exportTableRows(item);
-		rowCount++;
-	});
-	return '<table class="table">'+html+'</table>';
+function HTML_exportTable(data) {
+    if (!Array.isArray(data) || data.length === 0) {
+        return console.log('no_MYSQL_data');
+    }
+
+    let head = body = '';
+    data.forEach((item, index) => {
+        if (index === 0){ head = HTML_exportTableTopRow(item) }
+        body += HTML_exportTableRows(item);
+    });
+    
+    return `<table class="table">${head}<tbody>${body}</tbody></table>`;
 }
+
 
 function HTML_exportTableTopRow(item, html = ''){
 	const keys = Object.keys(item);
 	keys.forEach(key => { html += '<th>'+key+'</th>' });
-	return '<tr>'+html+'</tr>'
+	return '<thead><tr class="headRow">'+html+'</tr></thead>'
 }
 
-function HTML_exportTableRows(item, html = ''){
-	const values = Object.values(item);
-	values.forEach((value) => { html += '<td>'+value+'</td>' });
-	return '<tr>'+html+'</tr>'
+function HTML_exportTableRows(item, html = '') {
+    const values = Object.values(item);
+    values.forEach((value) => {
+        if (typeof value === 'string' && isDate(value)){ value = displayLocalDate(value) }
+        html += '<td>' + value + '</td>';
+    });
+    return '<tr class="newRow">' + html + '</tr>';
 }
 
 function exportTableTo(type, d){

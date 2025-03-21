@@ -19,12 +19,11 @@ function getConversations(box, data, html = ''){
 }
 
 function getConversationsHTML(conv, html = ''){
-    var localTime = getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(conv.time, 'UTC'));
     conv.class = 'conversationBoxItem';
     html += '<div class="'+conv.class+'" ';
     html += 'onclick="clickConversation('+conv.id+')"><div class="conversationBoxItemContent">'+getSVG('chat')+'</div>';
     html += '<div class="conversationBoxItemContent"><div class="conversationBoxItemName">'+conv.subject+'</div>';
-    html += slovar('Last_update')+'<br>'+localTime+'</div></div>';
+    html += slovar('Last_update')+'<br>'+displayLocalDate(conv.time)+'</div></div>';
     return html;
 }
 

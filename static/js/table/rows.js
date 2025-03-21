@@ -140,7 +140,7 @@ function tableAddLoadedRows_CHECKBOX(value, th, id, c, html = ''){
 }
 function tableAddLoadedRows_DATE(type, value, html = ''){
     html += '<td>'
-    if(type == 'DATETIME'){ html += getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(value, 'UTC')) }
+    if(type == 'DATETIME'){ html += displayLocalDate(value) }
     else if(type == 'DATE'){ html += getDate(defaultDateFormat, value) }
     else if(type == 'TIME'){ html += getDate(defaultTimeFormat, value) }
     return html+'</td>';

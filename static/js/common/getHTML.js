@@ -4,27 +4,24 @@ function HTML_h1_table(data, html = ''){
     return html
 }
 
-function HTML_tableTop(data, html = ''){
-    html += '<table class="tableTop"><tr><td>';
-    if(data.left){
-        if(data.left.title){ html += '<h2>' + data.left.title + '</h2>'; }
-        if(data.left.button == 'add'){
-            html += '<button class="button buttonGreen" onClick="loadJS(\'main/add-box\', function(){openAddBox()})">';
-            html += getSVG('plus_circle') + '<span class="SVGdesc">' + slovar('Add_new') + '</span></button>';
-        }
-    }
-    html += '</td>';
-    if(data.center){ html += '<td class="center"></td>'; }
-    html += '<td>';
-    if(data.right){
-        if(data.right.table == 'Options_table'){
-            html += '<div class="button buttonBlue options_table" onclick="showDropdownMenu($(this), true)">';
-            html += getSVG('settings') + '<span class="SVGdesc">' + slovar('Show_more_options') + '</span>';
-            html += '<div class="DropdownMenuContent"></div></div>';
-        }
-    }
-    html += '</td></tr></table>';
-    return html;
+function HTML_tableTop(data) {
+    return `<table class="tableTop"><tr>
+        <td>
+            ${data.left?.title ? `<h2>${data.left.title}</h2>` : ''}
+            ${data.left?.button === 'add' ? `
+                <button class="button buttonGreen" onClick="loadJS('main/add-box', () => openAddBox())">
+                    ${getSVG('plus_circle')}<span class="SVGdesc">${slovar('Add_new')}</span>
+                </button>` : ''}
+        </td>
+        ${data.center ? '<td class="center"></td>' : ''}
+        <td>
+            ${data.right?.table === 'Options_table' ? `
+                <div class="button buttonBlue options_table" onclick="showDropdownMenu($(this), true)">
+                    ${getSVG('settings')}<span class="SVGdesc">${slovar('Show_more_options')}</span>
+                    <div class="DropdownMenuContent"></div>
+                </div>` : ''}
+        </td>
+    </tr></table>`;
 }
 
 function HTML_verticalToggleButtons(data, html = ''){

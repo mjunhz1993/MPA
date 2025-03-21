@@ -24,20 +24,34 @@ function check_for_presets($SQL, $query){
         $preset = intval($_POST['data']['user'] ?? $_SESSION['user_id']);
         $query = str_replace('{USER}', $preset, $query);
     }
-    if (strpos($query, '{ORDER_BY}') !== false) {
+
+    if (strpos($query, '{WHERE}') !== false) {
+        $preset = implode(' AND ', $_POST['data']['filter'] ?? []);
+        if (!empty($preset)) {
+            if (substr_count($query, 'WHERE') === 1) { $preset = 'WHERE ' . $preset; }
+            elseif (substr_count($query, 'WHERE') === 2) { $preset = 'AND ' . $preset; }
+        }
+        $query = str_replace('{WHERE}', $preset, $query);
+    }
+
+    if (strpos($query, '{ORDER BY}') !== false) {
         $orderBy = SafeInput($SQL, $_POST['data']['orderBy'] ?? '');
         if(empty($orderBy)){ $orderBy = get_first_select_column($query); }
-        $query = str_replace('{ORDER_BY}', $orderBy, $query);
+        $query = str_replace('{ORDER BY}', $orderBy, $query);
     }
     if (strpos($query, '{OFFSET}') !== false) {
         $preset = intval($_POST['data']['offset'] ?? 0);
         $query = str_replace('{OFFSET}', $preset, $query);
     }
+    if (strpos($query, '{LIMIT}') !== false) {
+        $preset = intval($_POST['data']['limit'] ?? 100);
+        $query = str_replace('{LIMIT}', $preset, $query);
+    }
     return $query;
 }
 
 function get_first_select_column($query) {
-    preg_match('/SELECT\s+([^,\s]+)/i', $query, $matches);
-    return isset($matches[1]) ? $matches[1] : '';
+    preg_match('/SELECT\s+.*?\bAS\s+([^\s,]+)/is', $query, $matches);
+    return isset($matches[1]) ? trim($matches[1]) : '';
 }
 ?>

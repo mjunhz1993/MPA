@@ -1,7 +1,7 @@
 <?php include($_SERVER['DOCUMENT_ROOT']. '/crm/templates/common/head_tags.php'); ?>
 
 <body>
-    <script src="/crm/static/js/dev/slovar/<?php echo $_SESSION['user_language']; ?>.js?<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
+    <script src="/crm/static/js/dev/slovar/<?= $_SESSION['user_language']; ?>.js?<?= $GLOBALS['APP_VERSION']; ?>"></script>
     <div id="Main">
         <h1><span data-slovar="APP_info"></span></h1>
         <?php include($_SERVER['DOCUMENT_ROOT']. '/crm/templates/modules/admin/config/html/nav.php'); ?>
@@ -14,10 +14,10 @@
 
                     <div class="col col50">
                         <label data-slovar="APP_version"></label>
-                        <input type="text" value="<?php echo $GLOBALS['APP_VERSION']; ?>" disabled>
+                        <input type="text" value="<?= $GLOBALS['APP_VERSION']; ?>" disabled>
                     </div><div class="col col50">
                         <label data-slovar="Private_IP_address"></label>
-                        <input type="text" value="<?php echo $_SERVER['SERVER_ADDR']; ?>" disabled>
+                        <input type="text" value="<?= $_SERVER['SERVER_ADDR']; ?>" disabled>
                     </div>
 
                     <div class="col col50">
@@ -34,10 +34,10 @@
 
                     <div class="col col50">
                         <label data-slovar="Max_disk_space"></label>
-                        <input type="text" value="<?php echo number_format((((disk_total_space("/") * 0.001) * 0.001) * 0.001), 2, ',', ''). ' Gb'; ?>" disabled>
+                        <input type="text" value="<?= number_format((((disk_total_space("/") * 0.001) * 0.001) * 0.001), 2, ',', ''). ' Gb'; ?>" disabled>
                     </div><div class="col col50">
                         <label data-slovar="Disk_free_space"></label>
-                        <input type="text" value="<?php echo number_format((((disk_free_space("/") * 0.001) * 0.001) * 0.001), 2, ',', ''). ' Gb'; ?>" style="color:green" disabled>
+                        <input type="text" value="<?= number_format((((disk_free_space("/") * 0.001) * 0.001) * 0.001), 2, ',', ''). ' Gb'; ?>" style="color:green" disabled>
                     </div><hr>
 
                     <span class="button button100 buttonBlue" onclick="showMoreSpaceInfo($(this))" data-slovar="Show_more"></span>
@@ -51,7 +51,7 @@
                     <div class="col col100">
                         <?php $ALLOWED_FILE_SIZE = number_format(((intval($GLOBALS["config"]["max_file_size"]) * 0.001) * 0.001), 2, ',', ''). ' Mb'; ?>
                         <label data-slovar="Allowed_file_size"></label>
-                        <input type="text" value="<?php echo $ALLOWED_FILE_SIZE; ?>" disabled>
+                        <input type="text" value="<?= $ALLOWED_FILE_SIZE; ?>" disabled>
                     </div>
                 </div>
             </div>
@@ -64,13 +64,13 @@
                     <?php $CPU = sys_getloadavg(); ?>
                     <div class="col col40">
                         <label data-slovar="min1_ago"></label>
-                        <input type="text" value="<?php echo $CPU[0]; ?>%" disabled>
+                        <input type="text" value="<?= $CPU[0]; ?>%" disabled>
                     </div><div class="col col30">
                         <label data-slovar="min5_ago"></label>
-                        <input type="text" value="<?php echo $CPU[1]; ?>%" disabled>
+                        <input type="text" value="<?= $CPU[1]; ?>%" disabled>
                     </div><div class="col col30">
                         <label data-slovar="min15_ago"></label>
-                        <input type="text" value="<?php echo $CPU[2]; ?>%" disabled>
+                        <input type="text" value="<?= $CPU[2]; ?>%" disabled>
                     </div>
                 </div>
             </div>

@@ -30,7 +30,7 @@ function displayAllNotifications(data, tbody){if(data){
 		var d = data[i];
 		html += '<tr>';
 		html += '<td><button class="button buttonRed" onclick="deleteThisNotification($(this), ' + d.user + ', \'' + d.time + '\')">' + slovar('Delete') + '</button></td>';
-		html += '<td>' + getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(d.time, 'UTC')) + '</td>';
+		html += '<td>' + displayLocalDate(d.time) + '</td>';
 		html += '<td>' + d.username + '</td>';
 		html += '<td>' + d.type + '</td>';
 		html += '<td><b>' + slovar(d.title) + '</b><hr>';

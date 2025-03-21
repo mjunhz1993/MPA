@@ -49,7 +49,7 @@
 }
 
 .analbox .top .resizeAnalBox{
-	cursor: move;
+	cursor: col-resize;
 	width: 10px;
 	height: 20px;
 	border: 2px dotted;

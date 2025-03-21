@@ -23,36 +23,36 @@
             while ($B = $A->fetch_row()): $st++;
             ?>
                 <tr 
-                data-module="<?php echo $B[0]; ?>" 
-                data-name="<?php echo $B[4]; ?>"
-                data-category="<?php echo $B[5]; ?>"
-                data-archive="<?php echo $B[6]; ?>" 
-                data-notification="<?php echo $B[7]; ?>" 
-                data-accessories="<?php echo $B[8]; ?>"
-                data-url="<?php echo $B[9]; ?>"
+                data-module="<?= $B[0]; ?>" 
+                data-name="<?= $B[4]; ?>"
+                data-category="<?= $B[5]; ?>"
+                data-archive="<?= $B[6]; ?>" 
+                data-notification="<?= $B[7]; ?>" 
+                data-accessories="<?= $B[8]; ?>"
+                data-url="<?= $B[9]; ?>"
                 >
                     <td data-svg="move" style="cursor:move"></td>
                     <td class="no-drag">
-                        <input type="checkbox" id="moduleAct<?php echo $st; ?>" onchange="toggleModule($(this))" <?php if($B[2] == 1): ?> checked <?php endif; ?> />
-                        <label for="moduleAct<?php echo $st; ?>" class="chekboxLabel" data-slovar="Active"></label>
+                        <input type="checkbox" id="moduleAct<?= $st; ?>" onchange="toggleModule($(this))" <?php if($B[2] == 1): ?> checked <?php endif; ?> />
+                        <label for="moduleAct<?= $st; ?>" class="chekboxLabel" data-slovar="Active"></label>
                     </td>
-                    <td class="no-drag Micon" data-svg="<?php echo $B[3]; ?>"></td>
-                    <td class="no-drag" data-slovar="<?php echo $B[4]; ?>"></td>
-                    <td class="no-drag" data-slovar="<?php echo $B[5]; ?>"></td>
+                    <td class="no-drag Micon" data-svg="<?= $B[3]; ?>"></td>
+                    <td class="no-drag" data-slovar="<?= $B[4]; ?>"></td>
+                    <td class="no-drag" data-slovar="<?= $B[5]; ?>"></td>
                     <td class="no-drag">
                         <div class="linksvg more" data-svg="settings" onClick="showDropdownMenu($(this))">
                             <div class="DropdownMenuContent">
-                                <a onclick="openEditModule('<?php echo $B[0]; ?>')" data-slovar="Edit_module"></a>
-                                <a onclick="loadJS('dev/addons', function(){openEditAddons('<?php echo $B[0]; ?>')})" data-slovar="Edit_addons"></a>
+                                <a onclick="openEditModule('<?= $B[0]; ?>')" data-slovar="Edit_module"></a>
+                                <a onclick="loadJS('dev/addons', function(){openEditAddons('<?= $B[0]; ?>')})" data-slovar="Edit_addons"></a>
                                 <?php if($B[9] == ''): ?>
-                                <a onclick="openEditNotifications('<?php echo $B[0]; ?>')" data-slovar="Edit_notifications"></a>
-                                <a onclick="loadJS('dev/presets', function(){openPreset('<?php echo $B[0]; ?>')})" data-slovar="Edit_presets"></a>
-                                <a onclick="loadJS('dev/automations', function(){openEditAutomations('<?php echo $B[0]; ?>')})" data-slovar="Edit_automations"></a>
-                                <a onclick="openColumns('<?php echo $B[0]; ?>')" data-slovar="Edit_columns"></a>
+                                <a onclick="openEditNotifications('<?= $B[0]; ?>')" data-slovar="Edit_notifications"></a>
+                                <a onclick="loadJS('dev/presets', function(){openPreset('<?= $B[0]; ?>')})" data-slovar="Edit_presets"></a>
+                                <a onclick="loadJS('dev/automations', function(){openEditAutomations('<?= $B[0]; ?>')})" data-slovar="Edit_automations"></a>
+                                <a onclick="openColumns('<?= $B[0]; ?>')" data-slovar="Edit_columns"></a>
                                 <?php endif; ?>
                                 <?php if($B[1] == 1): ?>
                                 <hr>
-                                <a onclick="deleteModule('<?php echo $B[0]; ?>')" data-slovar="Delete"></a>
+                                <a onclick="deleteModule('<?= $B[0]; ?>')" data-slovar="Delete"></a>
                                 <?php endif; ?>
                             </div>
                         </div>

@@ -44,7 +44,7 @@ function getMessages(box, data, id, type, html = ''){
     if(chatBox.length != 0){ currentUserMSG = chatBox.last().attr('data-user') }
     for(var m = 0; m < data.length; m++){
         var msg = data[m];
-        msg.localTime = getDate(defaultDateFormat + ' ' + defaultTimeFormat, stringToDate(msg.time, 'UTC'));
+        msg.localTime = displayLocalDate(msg.time);
         msg.avatar = getMessages_avatar(msg);
         msg.attachment = getMessages_attachment(msg, id);
         if(user_id == msg.user){ html += createMyMessage(msg, currentUserMSG) }

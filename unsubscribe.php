@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <link rel="shortcut icon" href="/crm/static/img/OKTAGON-IT.ico">
 <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<title><?php echo $CRM_name; ?> MPA</title>
+<title><?= $CRM_name; ?> MPA</title>
 <style type="text/css">
     body{
         font-family: Roboto,RobotoDraft,Helvetica,Arial,sans-serif;
@@ -56,11 +56,11 @@
                 <td>
                     <div id="box">
                         <?php if(isset($GLOBALS["config"]['company_logo'])): ?>
-                            <div class="logo" style="background-image:url('/crm/php/user_data/<?php echo $GLOBALS["config"]['company_logo']; ?>');"></div>
+                            <div class="logo" style="background-image:url('/crm/php/user_data/<?= $GLOBALS["config"]['company_logo']; ?>');"></div>
                             <hr>
                         <?php endif; ?>
-                        <h1><?php echo slovar('Unsub_title'); ?></h1>
-                        <p><?php echo slovar('Unsub_p_start'); ?> (<b><?php echo $email; ?></b>) <?php echo slovar('Unsub_p_end'); ?>.</p>
+                        <h1><?= slovar('Unsub_title'); ?></h1>
+                        <p><?= slovar('Unsub_p_start'); ?> (<b><?= $email; ?></b>) <?= slovar('Unsub_p_end'); ?>.</p>
                     </div>
                 </td>
             </tr>

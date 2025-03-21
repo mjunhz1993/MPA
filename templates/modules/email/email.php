@@ -1,9 +1,9 @@
 <?php include($_SERVER['DOCUMENT_ROOT']. '/crm/templates/common/head_tags.php'); ?>
 <body>
-    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['token']; ?>">
     <div id="Main"><div class="email_main_box"></div></div>
 
-    <script src="/crm/static/js/email/email.js?<?php echo $GLOBALS['APP_VERSION']; ?>"></script>
+    <script src="/crm/static/js/email/email.js?<?= $GLOBALS['APP_VERSION']; ?>"></script>
     <script>
         $(document).ready(function(){
             $(window).resize(function(){ resize_email_box(); });

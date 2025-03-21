@@ -22,9 +22,9 @@ function createAlertPOPUP(text, html = ''){
 function createPOPUPbox(num = ''){
     hideTooltip();
     hideDropdownMenu();
-    if($('#popup').length == 1){ num = $('.popup').length }
-    $('#Main').append('<div class="popup" id="popup'+num+'" style="display:none"><div class="popupBox" id="popupBox'+num+'"></div></div>');
-    return $('.popup').last();
+    if ($('#popup').length) num = $('.popup').length;
+    return $('#Main').append(`<div class="popup" id="popup${num}" style="display:none"><div class="popupBox" id="popupBox${num}"></div></div>`)
+    .children('.popup').last();
 }
 
 function removePOPUPbox(callback){$('.popup').last().fadeOut('fast', function(){

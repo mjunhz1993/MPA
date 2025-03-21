@@ -61,7 +61,7 @@ function homepage_getEvent(dashboard, box = $('#upcomingevent'), html = ''){load
 			html += '<div class="notificationBox">';
 			html += '<div class="eventColorStatus" style="background-color:'+event.color+'"></div><b>'+event.subject+'</b><div class="nTime">';
 			html += slovar('From')+': '+startDate+'<br>';
-			html += slovar('To')+': '+getDate(defaultDateFormat+' '+defaultTimeFormat, stringToDate(event.end_date, 'UTC'));
+			html += slovar('To')+': '+displayLocalDate(event.end_date);
 			html += '</div><a class="buttonSquare button100 buttonBlue" ';
 			html += 'onclick="loadJS(\'main/read-box-mini\', function(el){open_readBoxMini(el,\'row\',\'event\','+event.id+')}, $(this))">';
 			html += slovar('View') + '</a></div>';
@@ -84,7 +84,7 @@ function homepage_getConversation(dashboard, box = $('#lastconversation'), html 
 				}
 				con = con[0];
 				html += '<div class="notificationBox"><b>' + con.subject + '</b>';
-				html += '<span class="nTime">'+getDate(defaultDateFormat+' '+defaultTimeFormat, stringToDate(con.time, 'UTC'))+'</span>';
+				html += '<span class="nTime">'+displayLocalDate(con.time)+'</span>';
 				html += '<button class="buttonSquare button100 buttonBlue" ';
 				html += 'onclick="loadJS(\'chat/chat\', function(){chat(function(){chat_box('+con.id+')})})">'+slovar('View')+'</button>';
 				html += '</div>';

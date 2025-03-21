@@ -1,4 +1,4 @@
-<div id="main_table" class="tableBox box col100" data-module="<?php echo $module; ?>" data-filteraccess="<?php echo $_SESSION['role_module_filter_access']; ?>"><div class="horizontalTable"></div></div>
+<div id="main_table" class="tableBox box col100" data-module="<?= $module; ?>" data-filteraccess="<?= $_SESSION['role_module_filter_access']; ?>"><div class="horizontalTable"></div></div>
 
 <script>
     var data = {

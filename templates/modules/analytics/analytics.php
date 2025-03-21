@@ -1,6 +1,6 @@
 <?php include($_SERVER['DOCUMENT_ROOT']. '/crm/templates/common/head_tags.php'); ?>
 <body>
-    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['token']; ?>">
     <div id="Main"></div>
     <script>
     loadJS('analytics/analytics', function(){

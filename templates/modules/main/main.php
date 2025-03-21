@@ -10,7 +10,7 @@ if($A->num_rows == 1){while ($B = $A->fetch_row()){
 ?>
 
 <body>
-    <input type="hidden" name="csrf_token" value="<?php echo $_SESSION['token']; ?>">
+    <input type="hidden" name="csrf_token" value="<?= $_SESSION['token']; ?>">
 
     <div id="Main">
         <?php include($_SERVER['DOCUMENT_ROOT']. '/crm/templates/modules/main/html/table.php'); ?>
@@ -19,7 +19,7 @@ if($A->num_rows == 1){while ($B = $A->fetch_row()){
     </div>
 
     <script type="text/javascript">
-        $('#Main').prepend(HTML_h1_table("<?php echo $moduleName; ?>"))
+        $('#Main').prepend(HTML_h1_table("<?= $moduleName; ?>"))
         loadJS('table/table', function(){
             tableLoadColumns($('#main_table'), function(){
                 var h = getRowFromURL();
