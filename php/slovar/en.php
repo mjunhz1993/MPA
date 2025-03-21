@@ -2,8 +2,6 @@
 function slovar($word = 'en'){
 	$trans = [
 		// LOG-IN PAGE
-		"Welcome_to" => "Welcome to",
-		"Welcome_to_desc" => "App version",
 		"Log_in" => "Log in",
 		"Username" => "Username",
 		"Password" => "Password",

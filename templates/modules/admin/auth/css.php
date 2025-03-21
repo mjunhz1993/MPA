@@ -34,6 +34,15 @@
     border-bottom: 1px solid #8bbcef;
     padding: 10px 30px;
 }
+.loginTable .loginTdLeft a{
+    display: inline-block;
+    padding: 10px 30px;
+    border: 1px solid black;
+    outline: 2px solid white;
+    border-radius: 50px;
+    background-color: white;
+    color: black;
+}
    
     
 .loginTable .loginTdRight{

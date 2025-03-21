@@ -9,6 +9,11 @@ function slovarLocal($word){
 
 function slovarLocal_sl($word){
 	$trans = [
+		"Welcome_to" => "Dobrodošli na",
+		"Welcome_to_desc" => "<a target='_blank' href='https://oktagon-it.si//index.php/mpa'>
+			Odkrij več
+		</a>",
+
 		"unknown_username" => "Uporabniško ime ne obstaja ali je blokirano",
 		"wrong_credentials" => "Nepravilno uporabniško ime ali geslo",
 		"illegal_device" => "Neprimerna naprava",
@@ -31,6 +36,11 @@ function slovarLocal_sl($word){
 
 function slovarLocal_en($word){
 	$trans = [
+		"Welcome_to" => "Welcome to",
+		"Welcome_to_desc" => "<a target='_blank' href='https://oktagon-it.si//index.php/mpa'>
+			Discover more
+		</a>",
+
 		"unknown_username" => "Username does not exist or is blocked",
 		"wrong_credentials" => "Incorrect username or password",
 		"illegal_device" => "Illegal device",

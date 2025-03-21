@@ -2,8 +2,6 @@
 function slovar($word = 'sl'){
 	$trans = [
 		// LOG-IN PAGE
-		"Welcome_to" => "Dobrodošli na",
-		"Welcome_to_desc" => "Različica aplikacije",
 		"Log_in" => "Prijavi se",
 		"Username" => "Uporabniško ime",
 		"Password" => "Geslo",

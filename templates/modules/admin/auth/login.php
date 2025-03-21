@@ -7,8 +7,8 @@
     <table class="loginTable">
         <tr>
             <td class="loginTdLeft">
-                <h2><?= slovar('Welcome_to'), ' ', $CRM_name; ?> MPA</h2>
-                <div><?= slovar('Welcome_to_desc'), ' ', $GLOBALS['APP_VERSION']; ?></div>
+                <h2><?= slovarLocal('Welcome_to'), ' ', $CRM_name; ?> MPA</h2>
+                <div><?= slovarLocal('Welcome_to_desc'); ?></div>
             </td>
             <td class="loginTdRight">
                 <div class="loginlogo" style="background-image:url('<?= $CRM_logo; ?>');"></div>
