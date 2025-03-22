@@ -107,7 +107,7 @@ function load_new_table_analytic(thisBox){setTimeout(function(){
 }, 100)}
 
 function get_filter_values_table_analytic(thisBox, arr = []){
-	thisBox.find('.tableFilterRow input').each(function(){
+	thisBox.find('.tableFilterRow input, .tableFilterRow select').each(function(){
 		if(valEmpty($(this).val())){ return }
 		var where = $(this).data('where');
 	    if(typeof where !== 'string'){ return }
