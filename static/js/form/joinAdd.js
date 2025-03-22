@@ -208,11 +208,11 @@ function JOINADD_refreshFormData(form){
     GET_column({
         module:module,
         done:function(col){GET_row({
-            module:module, id:input.val(),
-            done:function(data){ console.log(data);
+            module:module, id:input.val(), readonly:true,
+            done:function(data){
                 if(data.error){ return JOINADD_errorLoading(form, placeholder) }
                 col = col.filter(function(el){return el.list == 'PRIMARY'})
-                .map(function(el){ return data[el.column] }); console.log(col);
+                .map(function(el){ return data[el.column] });
                 if(col.length == 0){ return JOINADD_errorLoading(form, placeholder) }
                 placeholder.text(col.join(' - '));
                 setTimeout(function(){ JOINADD_refreshFormData(form) }, 250);
