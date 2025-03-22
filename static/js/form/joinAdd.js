@@ -209,13 +209,13 @@ function JOINADD_refreshFormData(form){
         module:module,
         done:function(col){GET_row({
             module:module, id:input.val(),
-            done:function(data){
+            done:function(data){ console.log(data);
                 if(data.error){ return JOINADD_errorLoading(form, placeholder) }
                 col = col.filter(function(el){return el.list == 'PRIMARY'})
-                .map(function(el){ return data[el.column] });
+                .map(function(el){ return data[el.column] }); console.log(col);
                 if(col.length == 0){ return JOINADD_errorLoading(form, placeholder) }
                 placeholder.text(col.join(' - '));
-                setTimeout(function(){ JOINADD_refreshFormData(form) }, 500);
+                setTimeout(function(){ JOINADD_refreshFormData(form) }, 250);
             }
         })}
     })
