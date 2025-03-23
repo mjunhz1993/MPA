@@ -11,7 +11,8 @@
 					<option value="css">CSS</option>
 					<option value="sql">SQL</option>
 				</select>
-				<input type="text" id="FileTableProjectFilter" placeholder="Search Project">
+				<input type="text" id="FileTableProjectFilter" placeholder="Search by name">
+				<input type="text" id="FileContentProjectFilter" placeholder="Search by content">
 			</td>
 		</tr>
 	</table>

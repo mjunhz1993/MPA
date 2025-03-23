@@ -3,10 +3,12 @@ function getCustomFiles(table, callback){
 	if($('#FileTableExtFilter').length == 1){ ProjectExt = $('#FileTableExtFilter').val() }
 	var ProjectFilter = '';
 	if($('#FileTableProjectFilter').length == 1){ ProjectFilter = $('#FileTableProjectFilter').val() }
+	if($('#FileContentProjectFilter').length == 1){ ContentFilter = $('#FileContentProjectFilter').val() }
 	
 	loadCustomFiles({
 		ext:ProjectExt,
 		filter:ProjectFilter,
+		content:ContentFilter,
 		done:function(data){
 			var nextProject = '';
 			var html = '';
@@ -49,7 +51,8 @@ function getCustomFiles(table, callback){
 function loadCustomFiles(d){
 	$.post('/crm/php/admin/custom_files.php?get_custom_files=1', {
 		ProjectExt: d.ext,
-		ProjectFilter: d.filter
+		ProjectFilter: d.filter,
+		ContentFilter: d.content
 	}, function(data){ d.done(JSON.parse(data)) })
 }
 
@@ -215,5 +218,5 @@ if($('#FileTableExtFilter').length == 1){
 	$('#FileTableExtFilter').change(function(){ getCustomFiles($('#FileTable')) });
 }
 if($('#FileTableProjectFilter').length == 1){
-	$('#FileTableProjectFilter').keyup(function(e){if(e.which == '13'){ getCustomFiles($('#FileTable')) }});
+	$('#FileTableProjectFilter, #FileContentProjectFilter').keyup(function(e){if(e.which == '13'){ getCustomFiles($('#FileTable')) }});
 }

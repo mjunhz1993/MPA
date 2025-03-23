@@ -1,25 +1,68 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
-if(isset($_SESSION['user_id'])){
 
-    // CUSTOM FILE
-    if(isset($_GET['get_custom_files'])){
-        $data = array();
-        $ProjectExt = '%';
-        if(isset($_POST['ProjectExt'])){if($_POST['ProjectExt'] != ''){ $ProjectExt = '%.'.$_POST['ProjectExt']; }}
-        $ProjectFilter = '%'.$SQL->real_escape_string($_POST['ProjectFilter'] ?? '').'%';
-        $A = $SQL->query("SELECT name,path,project,tstamp FROM downloads 
-        WHERE path LIKE '$ProjectExt' AND name LIKE '$ProjectFilter' ORDER BY project, tstamp DESC");
-        $st = 0;
-        while ($B = $A->fetch_row()){
-            $data[$st]['name'] = $B[0];
-            $data[$st]['path'] = $_SERVER['DOCUMENT_ROOT'].$B[1];
-            $data[$st]['project'] = $B[2];
-            $data[$st]['tstamp'] = date('Y-m-d H:i:s', $B[3]);
-            $st++;
-        }
-        echo json_encode($data);
+function get_custom_files($SQL){
+    $WHERE = [];
+    if(isset($_POST['ProjectExt']) && $_POST['ProjectExt'] != ''){
+        $WHERE[] = "path LIKE '%.".$_POST['ProjectExt']."'";
     }
+    if(isset($_POST['ProjectFilter']) && $_POST['ProjectFilter'] != ''){
+        $WHERE[] = "name LIKE '%".$_POST['ProjectFilter']."%'";
+    }
+    if(isset($_POST['ContentFilter']) && $_POST['ContentFilter'] != ''){
+        $arr = searchFilesForPhrase($SQL, $_POST['ContentFilter']);
+        if(count($arr)){
+            $WHERE[] = "path IN ('".implode("','", $arr)."')";
+        }
+    }
+
+    $WHERE = implode(' AND ', $WHERE);
+    if($WHERE != ''){ $WHERE = 'WHERE '.$WHERE; }
+    $query = "SELECT name, path, project, tstamp FROM downloads 
+              $WHERE
+              ORDER BY project, tstamp DESC";
+    
+    $result = $SQL->query($query);
+    $data = [];
+    
+    while ($row = $result->fetch_assoc()) {
+        $data[] = [
+            'name' => $row['name'],
+            'path' => $_SERVER['DOCUMENT_ROOT'].$row['path'],
+            'project' => $row['project'],
+            'tstamp' => date('Y-m-d H:i:s', $row['tstamp'])
+        ];
+    }
+    
+    return $data;
+}
+
+function searchFilesForPhrase($SQL, $phrase){
+    $allowedExtensions = ['php', 'sql', 'js'];
+    $directory = $_SERVER['DOCUMENT_ROOT'].'/crm/php/downloads/';
+    $files = new RecursiveIteratorIterator(new RecursiveDirectoryIterator($directory));
+    foreach ($files as $file) {
+        if ($file->isFile()) {
+            $extension = pathinfo($file->getFilename(), PATHINFO_EXTENSION);
+            if (in_array($extension, $allowedExtensions)) {
+                $content = file_get_contents($file->getPathname());
+                if (strpos($content, $phrase) !== false) {
+                    $arr[] = "/crm/php/downloads/".$file->getFilename();
+                }
+            }
+        }
+    }
+    return $arr ?? ['empty'];
+}
+
+if(isset($_GET['test'])){
+echo 'dela<hr>';
+$phrase = 'test';
+searchFilesForPhrase($SQL, $phrase);
+}
+
+if(isset($_SESSION['user_id'])){
+    if(isset($_GET['get_custom_files'])){ echo json_encode(get_custom_files($SQL)); }
 
     if(isset($_GET['get_custom_file'])){
         $file_name = $_POST['file_name'];
