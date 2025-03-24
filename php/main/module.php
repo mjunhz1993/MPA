@@ -39,7 +39,7 @@ if(isset($_SESSION['user_id'])){
                 $list = $B[2];
                 $keepHTML = false;
                 if($type == 'TEXTAREA'){ $keepHTML = true; }
-                $temp2 = checkInput($SQL, $_POST, $temp1, SafeInput($SQL, $_POST[$B[0]], $keepHTML), $type);
+                $temp2 = checkInput($SQL, $_POST, $temp1, SafeInput($SQL, $_POST[$B[0]] ?? '', $keepHTML), $type);
                 if(!is_array($temp2)){
                     if($temp2 != ''){
                         array_push($col, $temp1);
