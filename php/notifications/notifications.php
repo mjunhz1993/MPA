@@ -29,7 +29,7 @@ function checkForNotificationEvent($SQL, $inputs, $module, $notification_config,
 }
 
 function addToNotifications($SQL, $type, $title, $desc, $userType, $userID, $list = ''){
-    $user_id = $_SESSION['user_id'];
+    $user_id = $_SESSION['user_id'] ?? 0;
     if($title == ''){ return false; }
     date_default_timezone_set("UTC");
     $time = date('Y-m-d H:i:s', time());

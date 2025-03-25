@@ -8,7 +8,7 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         $data = array();
         $module = SafeInput($SQL, $_GET['module']);
         $filter_id = SafeInput($SQL, $_POST['filter_id']);
-        if(is_array($_POST['assignuser'])){for($i=0; $i<count($_POST['assignuser']); $i++){
+        if(isset($_POST['assignuser']) && is_array($_POST['assignuser'])){for($i=0; $i<count($_POST['assignuser']); $i++){
             $assignuser = SafeInput($SQL, $_POST['assignuser'][$i]);
             if($filter_id != 0){
                 $A = $SQL->query("SELECT * FROM filter_users WHERE module = '$module' AND user_id = '$assignuser' LIMIT 1");
