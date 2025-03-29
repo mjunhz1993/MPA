@@ -39,6 +39,14 @@ function API_rateLimit($SQL, $thisUser, $header){
     return true;
 }
 
+function API_parsePostData(){
+    $rawPostData = file_get_contents('php://input');
+    if (!empty($rawPostData)) {
+        $decodedData = json_decode($rawPostData, true);
+        if (json_last_error() === JSON_ERROR_NONE) { $_POST = $decodedData; }
+    }
+}
+
 function API_event($file){
     if(!isset($file)){ return false; }
     $file = $_SERVER['DOCUMENT_ROOT'].'/crm/php/downloads/api_'.$file.'.php';
@@ -61,9 +69,7 @@ function API($SQL){
 
     if(!API_rateLimit($SQL, $thisUser, $header)){ return API_err('Rate limit exceeded'); }
 
-    $_POST = file_get_contents('php://input');
-    if($_POST == ''){ return API_err('No POST data'); }
-    $_POST = json_decode($_POST);
+    API_parsePostData();
 
     if(!API_event($header['event'])){ return API_err('Event does not exist'); }
     if(!function_exists('API_run')){ return API_err('No run function'); }
