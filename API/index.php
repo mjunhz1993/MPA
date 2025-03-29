@@ -59,12 +59,6 @@ function API($SQL){
     $thisUser = API_authorization($SQL, $Authorization, $header);
     if(!$thisUser){ return API_err('Invalid Authorization for: '.$header['ip']); }
 
-    
-    if(isset($thisUser['domainname']) && $thisUser['domainname'] != ''){ header("Access-Control-Allow-Origin: ".$thisUser['domainname']); }
-    header("Access-Control-Allow-Methods: POST");
-    header("Access-Control-Allow-Headers: Content-Type, Authorization");
-    
-
     if(!API_rateLimit($SQL, $thisUser, $header)){ return API_err('Rate limit exceeded'); }
 
     $_POST = file_get_contents('php://input');
