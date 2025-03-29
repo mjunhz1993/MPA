@@ -10,6 +10,7 @@ function load_API_table(html = ''){
 	html += '</tr></table>';
 	html += '<table class="table apiTable"><thead><tr><th></th>';
 	html += '<th>' + slovar('IP') + '</th>';
+	html += '<th>' + slovar('domainname') + '</th>';
 	html += '<th>' + slovar('Username') + '</th>';
 	html += '<th>' + slovar('Password') + '</th>';
 	html += '<th>' + slovar('Rate_limit') + '</th>';
@@ -26,10 +27,12 @@ function load_API_rows(){
         	var d = data[i];
         	html += '<tr>';
         	html += '<td class="toolRow">';
-        	html += '<a class="linksvg" onclick="edit_API(\''+d.IP+'\',\''+d.username+'\',\''+d.password+'\', '+d.ratelimit+')">'+getSVG('edit')+'</a>';
+        	html += '<a class="linksvg" ';
+        	html += 'onclick="edit_API(\''+d.IP+'\',\''+d.domainname+'\',\''+d.username+'\',\''+d.password+'\', '+d.ratelimit+')">'+getSVG('edit')+'</a>';
         	html += '<a class="linksvg" onclick="delete_API(\''+d.IP+'\')">'+getSVG('delete')+'</a>';
         	html += '</td>';
         	html += '<td>' + d.IP + '</td>';
+        	html += '<td>' + d.domainname + '</td>';
         	html += '<td>' + d.username + '</td>';
         	html += '<td>' + d.password + '</td>';
         	html += '<td>' + d.ratelimit + '</td>';
@@ -52,6 +55,7 @@ function add_API(){
 		e.preventDefault();
 		$.post('/crm/php/admin/API.php?add_API=1', {
 			IP: popup.find('[name=IP]').val(),
+			domainname: popup.find('[name=domainname]').val(),
 			username: popup.find('[name=username]').val(),
 			password: popup.find('[name=password]').val(),
 			ratelimit: popup.find('[name=ratelimit]').val()
@@ -65,11 +69,12 @@ function add_API(){
 	popup.fadeIn('fast');
 }
 
-function edit_API(IP, username, password, ratelimit){
+function edit_API(IP, domainname, username, password, ratelimit){
 	var popup = createPOPUPbox();
 	var popupBox = popup.find('.popupBox');
 	popupBox.html('<h2>'+slovar('Edit_row')+'</h2>'+HTML_API());
 	popupBox.find('[name=IP]').val(IP).parent().hide();
+	popupBox.find('[name=domainname]').val(domainname);
 	popupBox.find('[name=username]').val(username);
 	popupBox.find('[name=password]').val(password);
 	popupBox.find('[name=ratelimit]').val(ratelimit);
@@ -77,6 +82,7 @@ function edit_API(IP, username, password, ratelimit){
 		e.preventDefault();
 		$.post('/crm/php/admin/API.php?edit_API=1', {
 			IP: popup.find('[name=IP]').val(),
+			domainname: popup.find('[name=domainname]').val(),
 			username: popup.find('[name=username]').val(),
 			password: popup.find('[name=password]').val(),
 			ratelimit: popup.find('[name=ratelimit]').val()
@@ -106,6 +112,8 @@ function HTML_API(html = ''){
 	html += '<form>';
 	html += '<div><label>IP</label>';
 	html += '<input type="text" name="IP" required></div>';
+	html += '<div><label>'+slovar('domainname')+'</label>';
+	html += '<input type="text" name="domainname"></div>';
 	html += '<div><label>'+slovar('Username')+'</label>';
 	html += '<input type="text" name="username" required></div>';
 	html += '<div><label>'+slovar('Password')+'</label>';

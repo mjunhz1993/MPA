@@ -7,6 +7,7 @@ function test_API_table($SQL, $SQL_db){
         $A = $SQL->query("CREATE TABLE api
         (
             IP VARCHAR(255) PRIMARY KEY,
+            domainname VARCHAR(255),
             username VARCHAR(255),
             password VARCHAR(255),
             ratelimit INT(100),
@@ -19,13 +20,14 @@ function test_API_table($SQL, $SQL_db){
 
 function load_API_rows($SQL, $data = array()){
     $st = 0;
-    $A = $SQL->query("SELECT IP,username,password,ratelimit,currentrate FROM api");
-    while ($B = $A->fetch_row()){
-        $data[$st]['IP'] = $B[0];
-        $data[$st]['username'] = $B[1];
-        $data[$st]['password'] = $B[2];
-        $data[$st]['ratelimit'] = $B[3];
-        $data[$st]['currentrate'] = time() - ($B[4] + $B[3]) ;
+    $A = $SQL->query("SELECT * FROM api");
+    while ($B = $A->fetch_assoc()){
+        $data[$st]['IP'] = $B['IP'];
+        $data[$st]['domainname'] = $B['domainname'];
+        $data[$st]['username'] = $B['username'];
+        $data[$st]['password'] = $B['password'];
+        $data[$st]['ratelimit'] = $B['ratelimit'];
+        $data[$st]['currentrate'] = time() - ($B['currentrate'] + $B['ratelimit']) ;
         $st++;
     }
     return $data;
@@ -33,22 +35,26 @@ function load_API_rows($SQL, $data = array()){
 
 function add_API($SQL){
     $IP = SafeInput($SQL, $_POST['IP']);
+    $domainname = SafeInput($SQL, $_POST['domainname']);
     $username = SafeInput($SQL, $_POST['username']);
     $password = SafeInput($SQL, $_POST['password']);
     $ratelimit = SafeInput($SQL, $_POST['ratelimit']);
     $currentrate = time();
-    $A = $SQL->query("INSERT INTO api (IP,username,password,ratelimit,currentrate) VALUES 
-    ('$IP','$username','$password','$ratelimit','$currentrate')");
+    $A = $SQL->query("INSERT INTO api (IP,domainname,username,password,ratelimit,currentrate) VALUES 
+    ('$IP','$domainname','$username','$password','$ratelimit','$currentrate')");
     if(!$A){ return ['error' => $SQL->error]; }
     return true;
 }
 
 function edit_API($SQL){
     $IP = SafeInput($SQL, $_POST['IP']);
+    $domainname = SafeInput($SQL, $_POST['domainname']);
     $username = SafeInput($SQL, $_POST['username']);
     $password = SafeInput($SQL, $_POST['password']);
     $ratelimit = SafeInput($SQL, $_POST['ratelimit']);
-    $A = $SQL->query("UPDATE api SET username = '$username', password = '$password', ratelimit = '$ratelimit'
+    $A = $SQL->query("UPDATE api SET 
+    domainname = '$domainname',
+    username = '$username', password = '$password', ratelimit = '$ratelimit'
     WHERE IP = '$IP' LIMIT 1");
     if(!$A){ return ['error' => $SQL->error]; }
     return true;

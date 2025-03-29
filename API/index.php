@@ -18,30 +18,25 @@ function API_getClientIP($ip = 'UNKNOWN') {
     return $ip;
 }
 
-function API_grabToken($header){
+function API_grabAuthorization($header){
     if(!isset($header['Authorization'])){ return false; }
     if(preg_match('/Basic\s+(.*)$/i', $header['Authorization'], $matches)){ return $matches[1]; }
     return false;
 }
 
-function API_validToken($SQL, $token, $header){
-    $A = $SQL->query("SELECT username,password FROM api WHERE ip = '".$header['ip']."' LIMIT 1");
+function API_authorization($SQL, $Authorization, $header){
+    $A = $SQL->query("SELECT * FROM api WHERE ip = '".$header['ip']."' LIMIT 1");
     if(!$A){ return false; }
-    while($B = $A->fetch_row()){
-        if($token == base64_encode($B[0].':'.$B[1])){ return true; }
+    while($B = $A->fetch_assoc()){
+        if($Authorization == base64_encode($B['username'].':'.$B['password'])){ return $B; }
     }
     return false;
 }
 
-function API_rateLimit($SQL, $token, $header){
-    $A = $SQL->query("SELECT ratelimit,currentrate FROM api WHERE ip = '".$header['ip']."' LIMIT 1");
-    if(!$A){ return false; }
-    while($B = $A->fetch_row()){
-        if(time() < $B[0] + $B[1]){ return false; }
-        $SQL->query("UPDATE api SET currentrate = '".time()."' WHERE ip = '".$header['ip']."' LIMIT 1");
-        return true;
-    }
-    return false;
+function API_rateLimit($SQL, $thisUser, $header){
+    if(time() < $thisUser['currentrate'] + $thisUser['ratelimit']){ return false; }
+    $SQL->query("UPDATE api SET currentrate = '".time()."' WHERE ip = '".$header['ip']."' LIMIT 1");
+    return true;
 }
 
 function API_event($file){
@@ -57,12 +52,20 @@ function API($SQL){
 
     $header = getallheaders();
     $header['ip'] = safeInput($SQL, API_getClientIP());
-    $token = API_grabToken($header);
-    if(!$token){ return API_err('No token'); }
+    $Authorization = API_grabAuthorization($header);
+    if(!$Authorization){ return API_err('No Authorization data'); }
     if(!isset($header['event'])){ return API_err('No event selected'); }
 
-    if(!API_validToken($SQL, $token, $header)){ return API_err('Invalid token for: '.$header['ip']); }
-    if(!API_rateLimit($SQL, $token, $header)){ return API_err('Rate limit exceeded'); }
+    $thisUser = API_authorization($SQL, $Authorization, $header);
+    if(!$thisUser){ return API_err('Invalid Authorization for: '.$header['ip']); }
+
+    
+    if(isset($thisUser['domainname']) && $thisUser['domainname'] != ''){ header("Access-Control-Allow-Origin: ".$thisUser['domainname']); }
+    header("Access-Control-Allow-Methods: POST");
+    header("Access-Control-Allow-Headers: Content-Type, Authorization");
+    
+
+    if(!API_rateLimit($SQL, $thisUser, $header)){ return API_err('Rate limit exceeded'); }
 
     $_POST = file_get_contents('php://input');
     if($_POST == ''){ return API_err('No POST data'); }
