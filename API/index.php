@@ -55,14 +55,15 @@ function API_event($file){
 }
 
 function API($SQL){
-    if($_SERVER['REQUEST_METHOD'] !== 'POST'){ return API_err('No POST request'); }
+    if($_SERVER['REQUEST_METHOD'] !== 'POST'){ return API_err('Wrong request method | POST != '.$_SERVER['REQUEST_METHOD']); }
     if(!API_contentLength()){ return API_err('Payload size exceeds 10 MB limit'); }
 
     $header = getallheaders();
     $header['ip'] = safeInput($SQL, API_getClientIP());
     $Authorization = API_grabAuthorization($header);
-    if(!$Authorization){ return API_err('No Authorization data'); }
+
     if(!isset($header['event'])){ return API_err('No event selected'); }
+    if(!$Authorization){ return API_err('No Authorization data'); }
 
     $thisUser = API_authorization($SQL, $Authorization, $header);
     if(!$thisUser){ return API_err('Invalid Authorization for: '.$header['ip']); }

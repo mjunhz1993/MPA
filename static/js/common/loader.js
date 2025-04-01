@@ -5,7 +5,7 @@ const loadedJS = loadedCSS = new Set();
 
 function loadJS(js, callback, el = '') {
     let url = `/crm/static/js/${js}.js?v=${APP_VERSION}`;
-    if(js.startsWith('https://') || js.startsWith('http://')){ url = js }
+    if(js.startsWith('https://') || js.startsWith('http://')){ url = `${js}?v=${APP_VERSION}` }
 
     if(!loadedJS.has(url)){
         $.cachedScript(url).done(function(script, textStatus){
@@ -18,7 +18,7 @@ function loadJS(js, callback, el = '') {
 
 function loadCSS(css) {
     let url = `/crm/static/css/${css}.css?v=${APP_VERSION}`;
-    if(css.startsWith('https://') || css.startsWith('http://')){ url = css }
+    if(css.startsWith('https://') || css.startsWith('http://')){ url = `${css}?v=${APP_VERSION}` }
 
     if(!loadedCSS.has(url)){
         $('head').append(`<link rel="stylesheet" type="text/css" href="${url}">`);

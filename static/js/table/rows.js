@@ -43,8 +43,8 @@ function tableAddLoadedTools(module, box, id, data, html = ''){
 }
 
 function tableAddLoadedRows(module, id, value, c, table){
-    var th = table.find('thead th:nth-child(' + (c + 1) + ')');
-    if(table.find('thead .toolColumn').length == 0){ th = table.find('thead th:nth-child(' + c + ')'); }
+    var th = table.find(`thead ${colChild('th',c+1)}`);
+    if(table.find('thead .toolColumn').length == 0){ th = table.find(`thead ${colChild('th',c)}`); }
     var type = th.attr('data-type');
     var list = th.attr('data-list');
     var archive = th.closest('.tableBox').find('.archiveSelect').val();

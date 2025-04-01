@@ -484,7 +484,7 @@ function displayEventsOnTopOfCalendar(box, mode){
     else if(mode == 'WEEK' || mode == 'DAY'){
         for(var i=1; i<=7; i++){
             var arr = [];
-            box.find('.calendarBoxMain tbody tr td:nth-child('+(i+1)+') .calendarEvent').each(function(){
+            box.find(`.calendarBoxMain tbody tr ${colChild('td',i+1)} .calendarEvent`).each(function(){
                 var id = $(this).attr('data-id');
                 var color = $(this).attr('data-color');
                 var type = $(this).attr('data-type');

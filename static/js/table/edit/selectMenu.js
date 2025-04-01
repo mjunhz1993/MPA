@@ -1,6 +1,6 @@
 function editTableSelectMenu(name, selected){
     var el = $('[data-name='+name+']');
-    var data = el.closest('table').find('thead th:nth-child(' + (el.closest('td').index() + 1) + ')').data();
+    var data = el.closest('table').find(`thead ${colChild('th',el.closest('td').index()+1)}`).data();
     $.post('/crm/php/main/edit_in_table.php?change_selectmenu_in_table=1&module='+data.module, {
         csrf_token:$('[name=csrf_token]').val(),
         module:data.module,

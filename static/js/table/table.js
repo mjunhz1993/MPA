@@ -41,7 +41,7 @@ function checkIfMainTable(box, tableBox, moduleData, html = ''){
     }
     // ADD DATA TO OPTIONS BUTTON
     var tableTop = box.find('.tableTop').first();
-    tableTop.find('td:nth-child(2)').html(HTML_toggleTableView(moduleData.accessories));
+    tableTop.find(colChild('td',2)).html(HTML_toggleTableView(moduleData.accessories));
 
 
     var options_button = tableTop.find('.options_table .DropdownMenuContent');

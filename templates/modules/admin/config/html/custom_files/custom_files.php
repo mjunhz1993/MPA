@@ -3,8 +3,6 @@
 <body>
     <?php if($_SESSION['user_id'] == 1): ?>
     
-    <input type="hidden" name="csrf_token" id="csrf_token" value="<?= $_SESSION['token']; ?>">
-
     <div id="Main">
         <h1 data-slovar="Custom_module"></h1>
         <div>

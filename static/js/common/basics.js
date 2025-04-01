@@ -1,6 +1,7 @@
 function getMainBoxFreeHaight(){ return $(window).height() - $('#Main').height() - $('#TopNav').height() }
 function smallDevice(){ return $(window).width() <= 800 }
 function valEmpty(v){ return ['',null,undefined].includes(v) }
+function colChild(v,i){ return `${v}:nth-child(${i})` }
 
 function Price(p, raw = false) {
     let e = Intl.NumberFormat('de-DE', { style: 'currency', currency: defaultCurrency, currencyDisplay: 'code' });

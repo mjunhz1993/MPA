@@ -2,7 +2,7 @@ function getColumnSum(el, type){
     var box = el.closest('.tableBox');
     var module = box.attr('data-module');
     var F = getFilterData(box, module);
-    var th = box.find(`.table thead th:nth-child(${el.parent().index() + 1})`);
+    var th = box.find(`.table thead ${colChild('th', el.parent().index()+1)}`);
     el.hide();
     $.getJSON('/crm/php/main/sum.php', {
         get_column_sum: true,

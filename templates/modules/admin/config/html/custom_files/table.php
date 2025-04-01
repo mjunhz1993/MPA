@@ -32,6 +32,13 @@
 					<th>Last update time stamp</th>
 					<th data-slovar="Tools"></th>
 				</tr>
+				<tr>
+					<td colspan="2"></td>
+					<td>
+						<select id="selectProjectName" onchange="filterProjectName($(this))"></select>
+					</td>
+					<td colspan="2"></td>
+				</tr>
 			</thead>
 			<tbody></tbody>
 		</table>

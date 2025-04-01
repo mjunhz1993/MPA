@@ -1,10 +1,13 @@
 function getCustomFiles(table, callback){
-	var ProjectExt = '';
+	let ProjectExt = '';
 	if($('#FileTableExtFilter').length == 1){ ProjectExt = $('#FileTableExtFilter').val() }
-	var ProjectFilter = '';
+	let ProjectFilter = '';
 	if($('#FileTableProjectFilter').length == 1){ ProjectFilter = $('#FileTableProjectFilter').val() }
 	if($('#FileContentProjectFilter').length == 1){ ContentFilter = $('#FileContentProjectFilter').val() }
 	
+	let selectProjectName = $('#selectProjectName');
+	selectProjectName.html(`<option value="">${slovar('Select')}</option>`);
+
 	loadCustomFiles({
 		ext:ProjectExt,
 		filter:ProjectFilter,
@@ -14,10 +17,11 @@ function getCustomFiles(table, callback){
 			var html = '';
 			for(var i=0; i<data.length; i++){
 				var d = data[i];
-				if(nextProject == ''){ nextProject = d.project }
+				// if(nextProject == ''){ nextProject = d.project }
 				if(nextProject != d.project){
 					nextProject = d.project;
 					html += '<tr><td colspan="4"></td></tr>';
+					selectProjectName.append(`<option>${nextProject}</option>`)
 				}
 				var ext = d.path.split('.').pop();
 				d.path = '/crm/'+d.path.split('/crm/')[1];
@@ -89,7 +93,6 @@ function openCreateCustomFile(){
 			file_ext = 'php';
 		}
 		$.post('/crm/php/admin/custom_files.php?create_custom_file=1', {
-			csrf_token:$('input[name=csrf_token]').val(),
 			file_name: file_name,
 			file_project: popup.find('[name=file_project]').val(),
 			file_ext: file_ext,
@@ -119,7 +122,7 @@ function toggleAddTamplate(){
 			data += "include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');\n";
 			data += "include(loadPHP('file/path'));\n\n";
 			data += "function "+name+"(){\n\n}\n\n";
-			data += "if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POST['csrf_token']){\n";
+			data += "if(isset($_SESSION['user_id'])){\n";
 			data += "\tif(isset($_POST['"+name+"'])){ echo json_encode("+name+"()); }\n";
 			data += "}\n";
 			data += "?>";
@@ -142,14 +145,12 @@ function toggleAddTamplate(){
 
 function editCustomFile(el){
 	$.post('/crm/php/admin/custom_files.php?get_custom_file=1', {
-		csrf_token:$('input[name=csrf_token]').val(),
 		file_name: el.attr('data-name'),
 	}, function(data){
 		data = JSON.parse(data);
 		var popup = createPOPUPbox();
 		var popupBox = popup.find('.popupBox');
 		var html = '<form>';
-		html += '<input type="hidden" name="csrf_token" value="' + $('input[name=csrf_token]').val() + '">';
 		html += '<input type="hidden" name="update" value="1">';
 		html += '<input type="hidden" name="file_name" value="' + el.attr('data-name') + '">';
 		html += '<h2>' + slovar('Update') + '</h2>';
@@ -169,7 +170,7 @@ function editCustomFile(el){
 			loadJS('form/codeEditor', function(el){ 
 				openCodeEditor({
 					box: el,
-					name: data[1],
+					name: getFileName(data[0]),
 					type: data[0].split('.').pop(),
 					callback: function(){ save_editCustomFile(popupBox) }
 				})
@@ -203,7 +204,6 @@ function deleteCustomFile(el){
 		function(){
 			var box = el.closest('.boxInner');
 			$.post('/crm/php/admin/custom_files.php?delete_custom_file=1', {
-				csrf_token:$('input[name=csrf_token]').val(),
 				file_name: name
 			}, function(data){
 		        data = JSON.parse(data);
@@ -212,6 +212,30 @@ function deleteCustomFile(el){
 		    })
 		}
 	);
+}
+
+// EXTRA
+
+function getFileName(url){
+	if(!url){ return "" }
+
+	try {
+		const pathname = new URL(url).pathname;
+		const filename = pathname.substring(pathname.lastIndexOf('/') + 1);
+		const filenameWithoutExtension = filename.substring(0, filename.lastIndexOf('.'));
+		return filenameWithoutExtension || filename;
+	} catch (e) {
+		return ""
+	}
+}
+
+function filterProjectName(el){
+	let tr = el.closest('table').find('tbody tr');
+	if(valEmpty(el.val())){ return tr.show() }
+	tr.each(function(){
+		if($(this).find(colChild('td',3)).text() == el.val()){ return $(this).show() }
+		$(this).hide()
+	})
 }
 
 if($('#FileTableExtFilter').length == 1){

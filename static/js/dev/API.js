@@ -148,8 +148,8 @@ function generatePassword(el, length = 20) {
 function apiInfoBox(box, html = ''){
 	html += '<div class="boxInner">';
 	html += '<label>header</label>';
-	val = "Array(\n\t[Type] => POST\n\t[Accept] => application/json\n";
-	val += "\t[Authorization] => Basic base64(username:password)\n\t[event] => api_[event_name]\n)";
+	val = "Header(\n\t[Request_Method] => POST\n\t[Accept] => application/json\n";
+	val += "\t[Authorization] => Basic base64(username:password)\n\t[event] => [event_name]\n)";
 	html += '<pre><code>'+val+'</code></pre>';
 
 	html += '<label>Url</label>';
