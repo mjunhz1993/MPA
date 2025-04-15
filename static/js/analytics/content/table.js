@@ -43,7 +43,7 @@ function debug_ANAL_table(content, extra){
 	let laoder = extra.find(item => item.startsWith('load[') && item.endsWith(']'));
 	if(laoder){
 	    let word = laoder.match(/^load\[(.*?)\]$/)[1].split(',');
-	    loadJS(`${window.location.origin}/crm/php/downloads/${word[0]}.js`, function(el){ eval(`${word[1]}(el)`) }, content);
+	    loadJS(`${APP.customDir}/${word[0]}.js`, function(el){ eval(`${word[1]}(el)`) }, content);
 	}
 
 }

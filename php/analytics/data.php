@@ -34,10 +34,8 @@ function check_for_presets($SQL, $query){
         $query = str_replace('{WHERE}', $preset, $query);
     }
 
-    if (strpos($query, '{ORDER BY}') !== false) {
-        $orderBy = SafeInput($SQL, $_POST['data']['orderBy'] ?? '');
-        if(empty($orderBy)){ $orderBy = get_first_select_column($query); }
-        $query = str_replace('{ORDER BY}', $orderBy, $query);
+    if (strpos($query, '{ORDER BY') !== false) {
+        $query = preset_orderBy_value($SQL, $query);
     }
     if (strpos($query, '{OFFSET}') !== false) {
         $preset = intval($_POST['data']['offset'] ?? 0);
@@ -47,6 +45,27 @@ function check_for_presets($SQL, $query){
         $preset = intval($_POST['data']['limit'] ?? 100);
         $query = str_replace('{LIMIT}', $preset, $query);
     }
+    return $query;
+}
+
+function preset_orderBy_value($SQL, $query, $orderBy = ''){
+    if (strpos($query, '{ORDER BY|') !== false) {
+        preg_match('/\{ORDER BY\|([^}]+)\}/', $query, $matches);
+        if (isset($matches[1]) && !empty($matches[1])) {
+            $orderBy = $matches[1];
+            $query = str_replace('{ORDER BY|' . $matches[1] . '}', '{ORDER BY}', $query);
+        }
+    }
+
+    $userOrderBy = SafeInput($SQL, $_POST['data']['orderBy'] ?? '');
+
+    if (!empty($userOrderBy)) {
+        $orderBy = $userOrderBy;
+    } elseif (empty($orderBy)) {
+        $orderBy = get_first_select_column($query);
+    }
+
+    $query = str_replace('{ORDER BY}', $orderBy, $query);
     return $query;
 }
 

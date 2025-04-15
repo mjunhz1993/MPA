@@ -293,7 +293,7 @@ function clickCustomButton(url, module, id, el, callback){GET_module({
             if(!moduleData.can_edit.includes(user_role_id) && row.added != user_id){
                 return createAlertPOPUP(slovar('Access_denied'));
             }
-            loadJS(window.location.origin+'/crm/php/downloads/'+url+'.js', function(){ callback(row,el) })
+            loadJS(APP.customDir+'/'+url+'.js', function(){ callback(row,el) })
         }
     })}
 })}

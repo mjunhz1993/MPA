@@ -7,7 +7,7 @@ function tableAddLoadedTools(module, box, id, data, html = ''){
     var archive = box.find('.archiveSelect').val();
     if(valEmpty(archive)){ archive = '' }
 
-    html += '<a class="linksvg" href="/crm/templates/modules/main/main.php?module=' + module.module + '#' + id + '-READ-' + archive + '" ';
+    html += '<a class="linksvg" href="/crm/templates/modules/main/main?module=' + module.module + '#' + id + '-READ-' + archive + '" ';
     html += 'data-tooltip="' + slovar('View') + '">' + getSVG('list') + '</a>';
 
     if(archive == '' && String(module.edit).split(',').includes(user_role_id)){
@@ -77,7 +77,7 @@ function tableAddLoadedRows_VARCHAR(list, value, th, id, module, archive, html =
         const simplify = th.closest('.tableBox').data('simplify');
         const link = !valEmpty(simplify)
             ? `onClick="loadJS('main/read-box-mini', el => open_readBoxMini(el, 'row', '${module.module}', ${id}), $(this))"`
-            : `href="/crm/templates/modules/main/main.php?module=${module.module}#${id}-READ-${archive}"`;
+            : `href="/crm/templates/modules/main/main?module=${module.module}#${id}-READ-${archive}"`;
         const edit = isMainTable
             ? `onClick="loadJS('main/edit-box', () => clickEditButton(${id}, 'READ', ${archive}))"`
             : '';
@@ -149,7 +149,7 @@ function tableAddLoadedRows_FILE(list, value, module, id, th, html = ''){
     if(list == 'IMG,1'){
         html += '<td><div class="avatarSmall" ';
         var valueSplit = value.split('.');
-        html += 'style="background-image:url(/crm/static/uploads/' + module.module + '/' + valueSplit[0] + '_small.' + valueSplit.pop() + ')"';
+        html += 'style="background-image:url('+APP.uploadDir+'/'+module.module+'/'+valueSplit[0]+'_small.'+valueSplit.pop()+')"';
         html += '></div></td>';
         return html;
     }
@@ -193,7 +193,7 @@ function tableClickOnShowMoreButtonFile(el, module, column, id){
             if(data.file){for(var i=0; i<data.file.name.length; i++){
                 if(column != data.file.column[i]){ continue }
                 html = '<div class="file" data-file="'+data.file.name[i]+'"><div class="img" ';
-                if(data.file.type[i].includes('image/')){ html += 'style="background-image:url(\'/crm/static/uploads/'+module+'/'+data.file.name[i]+'\')"' }
+                if(data.file.type[i].includes('image/')){ html += 'style="background-image:url(\''+APP.uploadDir+'/'+module+'/'+data.file.name[i]+'\')"' }
                 html += '></div>';
                 html += '<div class="fileDesc">'+data.file.oldName[i]+'</div></div>';
                 fileArea.append(html);

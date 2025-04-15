@@ -351,7 +351,7 @@ function copyInputValue(el){ el.select() }
 function ETE_hideMainButton(){ $('#etemainbutton').hide(); hideDropdownMenu(); }
 function ETE_createNewTemplate(){
 	var html = '<div id="etebox1" class="eteboxunsub" style="background-color:#edf1f3;padding:10px 0px;text-align:center;min-width:600px;">';
-	html +=  '<span>' + slovar('To_unsubscribe') + '</span> <a href="' + window.location.origin + '/crm/unsubscribe.php?email={{user_id}}">' + slovar('Click_here') + '</a>';
+	html +=  '<span>' + slovar('To_unsubscribe') + '</span> <a href="' + window.location.origin + '/crm/unsubscribe?email={{user_id}}">' + slovar('Click_here') + '</a>';
 	html += '</div>';
 	$('#etebodybox').append(html);
 	ETE_addBox();
@@ -385,7 +385,7 @@ function ETE_save(el){
 	});
 }
 function ETE_save_template(id, name, popupBox){
-	$.post('/crm/php/campaign/campaign.php?save_template=1', {
+	$.post('/crm/php/campaign/campaign?save_template=1', {
 		id: id,
 		name: name,
 		csrf_token: $('input[name=csrf_token]').val()
@@ -401,20 +401,20 @@ function ETE_save_template(id, name, popupBox){
 function ETE_save_template_images(id, popupBox){
 	if($('#etebodybox').find('.eteLoading').length == 0){ return ETE_save_template_body(id, popupBox) }
 	var img = $('#etebodybox').find('.eteLoading').first();
-	$.post('/crm/php/campaign/campaign.php?save_template_img=1', {
+	$.post('/crm/php/campaign/campaign?save_template_img=1', {
 		id: id,
 		img: img.attr('src'),
 		width: img.width(),
 		csrf_token: $('input[name=csrf_token]').val()
 	}, function(data){
 		data = JSON.parse(data);
-		img.attr('src', window.location.origin + '/crm/static/uploads/campaign/campaign' + id + '/' + data.name);
+		img.attr('src', APP.uploadDir + '/campaign/campaign' + id + '/' + data.name);
 		img.removeClass('eteLoading');
 	    setTimeout(function(){ ETE_save_template_images(id, popupBox) }, 1000);
 	})
 }
 function ETE_save_template_body(id, popupBox){
-	$.post('/crm/php/campaign/campaign.php?save_template_body=1', {
+	$.post('/crm/php/campaign/campaign?save_template_body=1', {
 		id: id,
 		body: $('#etebodybox').html(),
 		csrf_token: $('input[name=csrf_token]').val()

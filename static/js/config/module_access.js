@@ -32,70 +32,74 @@ function loadModulesAccess(html = ''){loadJS('GET/module', function(){
 // EDIT MODULE
 function openEditAccess(el, type){
     hideDropdownMenu();
-    var popup = createPOPUPbox();
-    popup.find('.popupBox').html('<form></form>');
-    var form = popup.find('form');
     
-    form.prepend($('input[name=csrf_token]').first().clone());
-    if(type == 'MODULE'){ form.append('<input type="hidden" name="module" value="' + el.attr('data-module') + '">'); }
-    else if(type == 'COLUMN'){ form.append('<input type="hidden" name="column" value="' + el.attr('data-column') + '">'); }
+    GET_roles({
+        done:function(data){
+            var popup = createPOPUPbox();
+            popup.find('.popupBox').html('<form></form>');
+            var form = popup.find('form');
+            
+            form.prepend($('input[name=csrf_token]').first().clone());
+            if(type == 'MODULE'){ form.append('<input type="hidden" name="module" value="' + el.attr('data-module') + '">'); }
+            else if(type == 'COLUMN'){ form.append('<input type="hidden" name="column" value="' + el.attr('data-column') + '">'); }
+            
+            form.append('<h2>' + el.attr('data-name') + '</h2><hr>');
+            form.append('<h2>' + slovar('View') + '</h2><div class="edit_view_box"></dov>');
+            if(type == 'MODULE'){ form.append('<h2>' + slovar('Add_new') + '</h2><div class="edit_add_box"></dov>'); }
+            form.append('<h2>' + slovar('Edit') + '</h2><dov class="edit_edit_box"></dov>');
+            if(type == 'MODULE'){ form.append('<h2>' + slovar('Delete') + '</h2><dov class="edit_delete_box"></dov>'); }
     
-    form.append('<h2>' + el.attr('data-name') + '</h2><hr>');
-    form.append('<h2>' + slovar('View') + '</h2><div class="edit_view_box"></dov>');
-    if(type == 'MODULE'){ form.append('<h2>' + slovar('Add_new') + '</h2><div class="edit_add_box"></dov>'); }
-    form.append('<h2>' + slovar('Edit') + '</h2><dov class="edit_edit_box"></dov>');
-    if(type == 'MODULE'){ form.append('<h2>' + slovar('Delete') + '</h2><dov class="edit_delete_box"></dov>'); }
     
-    $.getJSON('/crm/php/main/module.php?get_all_roles=1', function(data){
-        for(var i=0; i<data.length; i++){
-            form.find('.edit_view_box').append(checkboxInput({
-                name:'view[]',
-                id:'view_'+i,
-                value:data[i].role_id,
-                label:data[i].role_name
-            }));
-            if(type == 'MODULE'){
-                form.find('.edit_add_box').append(checkboxInput({
-                    name:'add[]',
-                    id:'add_'+i,
+            for(var i=0; i<data.length; i++){
+                form.find('.edit_view_box').append(checkboxInput({
+                    name:'view[]',
+                    id:'view_'+i,
                     value:data[i].role_id,
                     label:data[i].role_name
                 }));
-            }
-            form.find('.edit_edit_box').append(checkboxInput({
-                name:'edit[]',
-                id:'edit_'+i,
-                value:data[i].role_id,
-                label:data[i].role_name
-            }));
-            if(type == 'MODULE'){
-                form.find('.edit_delete_box').append(checkboxInput({
-                    name:'delete[]',
-                    id:'delete_'+i,
+                if(type == 'MODULE'){
+                    form.find('.edit_add_box').append(checkboxInput({
+                        name:'add[]',
+                        id:'add_'+i,
+                        value:data[i].role_id,
+                        label:data[i].role_name
+                    }));
+                }
+                form.find('.edit_edit_box').append(checkboxInput({
+                    name:'edit[]',
+                    id:'edit_'+i,
                     value:data[i].role_id,
                     label:data[i].role_name
                 }));
-            }
+                if(type == 'MODULE'){
+                    form.find('.edit_delete_box').append(checkboxInput({
+                        name:'delete[]',
+                        id:'delete_'+i,
+                        value:data[i].role_id,
+                        label:data[i].role_name
+                    }));
+                }
 
-            form.find('.edit_view_box, .edit_add_box, .edit_edit_box, .edit_delete_box').css({
-                'display':'flex',
-                'flex-wrap':'wrap',
-                'gap':'5px',
-                'padding':'0 5px'
-            });
+                form.find('.edit_view_box, .edit_add_box, .edit_edit_box, .edit_delete_box').css({
+                    'display':'flex',
+                    'flex-wrap':'wrap',
+                    'gap':'5px',
+                    'padding':'0 5px'
+                });
+            }
+            
+            if(type == 'MODULE'){
+                form.append('<h2>' + slovar('Extra') + '</h2><button class="button buttonBlue" data-button="full">' + slovar('Set_columns') + '</button>');
+            }
+            
+            checkAccessFields(el, form, type);
+            popup.find('#popupBox').append('<hr><button class="button buttonBlue">' + slovar('Save_changes') + '</button>');
+            popup.find('#popupBox').append('<span class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Cancel') + '</span>');
+            
+            popup.find('.buttonBlue').click(function(){ submitEditAccess(form, popup, type, $(this).attr('data-button')) })
+            
+            popup.fadeIn('fast');
         }
-        
-        if(type == 'MODULE'){
-            form.append('<h2>' + slovar('Extra') + '</h2><button class="button buttonBlue" data-button="full">' + slovar('Set_columns') + '</button>');
-        }
-        
-        checkAccessFields(el, form, type);
-        popup.find('#popupBox').append('<hr><button class="button buttonBlue">' + slovar('Save_changes') + '</button>');
-        popup.find('#popupBox').append('<span class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Cancel') + '</span>');
-        
-        popup.find('.buttonBlue').click(function(){ submitEditAccess(form, popup, type, $(this).attr('data-button')) })
-        
-        popup.fadeIn('fast');
     })
 }
 

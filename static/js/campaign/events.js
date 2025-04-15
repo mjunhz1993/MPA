@@ -28,7 +28,7 @@ function campaign_loadEvents(){
 		var year = box.parent().find('.calendarYear').text();
 		var month = box.parent().find('.statsdate select').val();
 		box.html(HTML_loader());
-		$.getJSON('/crm/php/campaign/campaign.php?get_all_events=1', {year:year,month:month}, function(data){
+		$.getJSON('/crm/php/campaign/campaign?get_all_events=1', {year:year,month:month}, function(data){
 			var html = '<table class="table"><thead><tr>';
 			html += '<th>' + slovar('Events') + '</th>';
 			html += '<th>' + slovar('Progress') + '</th>';
@@ -64,8 +64,8 @@ function restart_event_form(box){ remove_HTML_loader(box); box.find('form').show
 function campaign_createEvent(){
 	hideDropdownMenu();
 	var popup = createPOPUPbox();
-	$.getJSON('/crm/php/campaign/campaign.php?get_all_templates=1', function(templates){
-		$.getJSON('/crm/php/campaign/campaign.php?get_all_lists=1', function(data){
+	$.getJSON('/crm/php/campaign/campaign?get_all_templates=1', function(templates){
+		$.getJSON('/crm/php/campaign/campaign?get_all_lists=1', function(data){
 			campaign_displaEventForm(popup, templates, data);
 		})
 	})
@@ -120,7 +120,7 @@ function campaign_displaEventForm(popup, templates, lists){
 		send_at = getDate('Y-m-d H:i:s', send_at, 'UTC');
 		campaign_addEvent('', send_at, popupBox);
 		/*  BATCH_ID ERROR !!!
-		$.post('/crm/php/campaign/campaign.php?create_batch_id=1', {
+		$.post('/crm/php/campaign/campaign?create_batch_id=1', {
 			csrf_token: $('input[name=csrf_token]').val()
 		}, function(data){ data = JSON.parse(data); console.log(data);
 			if(data.error){ createAlert(popupBox, 'Red', data.error); restart_event_form(popupBox); }
@@ -137,7 +137,7 @@ function campaign_addEvent(batch_id, send_at, popupBox){
 	var template = popupBox.find('#event_tamplate').val();
 	var list = popupBox.find('#event_list').val();
 
-	$.post('/crm/php/campaign/campaign.php?add_event=1', {
+	$.post('/crm/php/campaign/campaign?add_event=1', {
 		csrf_token: $('input[name=csrf_token]').val(),
 		batch_id: batch_id,
 		name: subject,
@@ -155,7 +155,7 @@ function campaign_sendEvent(batch_id, send_at, OFFSET, popupBox){
 	var template = popupBox.find('#event_tamplate').val();
 	var list = popupBox.find('#event_list').val();
 
-	$.post('/crm/php/campaign/campaign.php?send=1', {
+	$.post('/crm/php/campaign/campaign?send=1', {
 		csrf_token: $('input[name=csrf_token]').val(),
 		batch_id: batch_id,
 		subject: subject,

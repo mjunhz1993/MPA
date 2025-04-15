@@ -1,5 +1,5 @@
 function GET_event(d){
-	$.getJSON('/crm/php/calendar/calendar.php?get_events=1', {
+	$.getJSON('/crm/php/calendar/calendar?get_events=1', {
 		module:d.module,
 		startCol:d.startCol,
 		endCol:d.endCol,

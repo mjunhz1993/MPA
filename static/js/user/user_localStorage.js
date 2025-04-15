@@ -1,5 +1,5 @@
-function showUserConfig_cookie(box, html = ''){
-	var c = getAllCookies();
+function showUserConfig_localStorage(box, html = ''){
+	var c = getAllLocalStorage();
 	html += '<table class="table"><thead><tr>';
 	html += '<th></th>';
 	html += '<th>'+slovar('Name')+'</th>';
@@ -8,9 +8,9 @@ function showUserConfig_cookie(box, html = ''){
 		html += '<tr>';
 		html += '<td>';
 		html += '<b class="linksvg" data-tooltip="' + slovar('Delete') + '" ';
-		html += 'onclick="showUserConfig_cookieDelete(\'' + c[i][0] + '\');">' + getSVG('delete') + '</b>'
+		html += 'onclick="showUserConfig_localStorageDelete(\'' + c[i][0] + '\');">' + getSVG('delete') + '</b>'
 		html += '</td>';
-		html += '<td><a onclick="consoleLog_C(\''+c[i][0]+'\')">' + c[i][0] + '</a></td>';
+		html += '<td><a onclick="consoleLog_LS(\''+c[i][0]+'\')">' + c[i][0] + '</a></td>';
 		html += '</tr>';
 	}
 	html += '</tbody></table>';
@@ -18,13 +18,13 @@ function showUserConfig_cookie(box, html = ''){
 	tooltips();
 }
 
-function consoleLog_C(c){
-	console.log(getCookie(c))
+function consoleLog_LS(c){
+	console.log(getLocalStorage(c))
 }
 
-function showUserConfig_cookieDelete(c){
+function showUserConfig_localStorageDelete(c){
 	POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
-		deleteCookie(c);
-		showUserConfig_cookie($('#userconfigbox'));
+		deleteLocalStorage(c);
+		showUserConfig_localStorage($('#userconfigbox'));
 	});
 }

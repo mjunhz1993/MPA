@@ -98,7 +98,7 @@ function MoveRowFilesToFormFields(data, module, form){
             fileArea.append(html);
             fileArea.find('.file').last().attr('data-tooltip',fileOldName);
             if(fileType.includes('image')){
-                fileArea.find('.file').last().find('.img').css('background-image', 'url("/crm/static/uploads/' + module + '/' + fileName + '")');
+                fileArea.find('.file').last().find('.img').css('background-image', 'url("'+APP.uploadDir+'/'+module+'/'+fileName+'")');
             }
             fileInput.prop('required', false);
         }

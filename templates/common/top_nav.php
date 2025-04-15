@@ -32,7 +32,7 @@ $avatar = ($avatar && $avatar != '0') ? preg_replace('/\.(\w+)$/', '_small.$1', 
                     <span data-slovar="Configurations"></span>
                 </a>
                 <hr>
-                <a class="red" href="/crm/php/auth/auth.php?logout=1">
+                <a class="red" href="/crm/php/auth/auth?logout=1">
                     <?php include($_SERVER['DOCUMENT_ROOT'].'/crm/templates/svg/logout.svg'); ?>
                     <span data-slovar="Sign_out"></span>
                 </a>

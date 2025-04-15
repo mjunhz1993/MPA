@@ -3,7 +3,7 @@ function open_AI_config(){
 	popupBox = popup.find('.popupBox');
 	popupBox.html(HTML_loader());
 	popup.fadeIn('fast');
-	$.getJSON('/crm/php/AI/AI_config.php', {
+	$.getJSON('/crm/php/AI/AI_config', {
 		check_for_AI_table:true
 	}, function(data){
 		if(data.error){ removePOPUPbox(); return createAlertPOPUP(data.error) }
@@ -18,7 +18,7 @@ function open_AI_config(){
 }
 
 function load_AI_models(box){
-	$.getJSON('/crm/php/AI/AI_config.php', {
+	$.getJSON('/crm/php/AI/AI_config', {
 		load_AI_models: true
 	}, function(data){
 		if(data.error){ return createAlertPOPUP(data.error) }
@@ -103,7 +103,7 @@ function HTML_share_AI_users(data, html = ''){
     return html;
 }
 function add_data_to_form(form, id){
-	$.getJSON('/crm/php/AI/AI_config.php', {
+	$.getJSON('/crm/php/AI/AI_config', {
 		load_AI_models: true,
 		id:id
 	}, function(data){
@@ -114,7 +114,7 @@ function add_data_to_form(form, id){
 	})
 }
 function save_AI_model(el, form){
-	$.post('/crm/php/AI/AI_config.php?save_AI_model', form.serialize(), function(data){
+	$.post('/crm/php/AI/AI_config?save_AI_model', form.serialize(), function(data){
 		data = JSON.parse(data);
 		if(data.error){ return createAlertPOPUP(data.error) }
 		removePOPUPbox();
@@ -123,7 +123,7 @@ function save_AI_model(el, form){
 }
 
 function delete_AI_model(el, id){POPUPconfirm('Delete this AI ?','', function(){
-	$.getJSON('/crm/php/AI/AI_config.php', {
+	$.getJSON('/crm/php/AI/AI_config', {
 		delete_AI_model:id
 	}, function(data){
 		if(data.error){ return createAlertPOPUP(data.error) }

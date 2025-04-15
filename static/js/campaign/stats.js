@@ -47,7 +47,7 @@ function stats_loadData(){
 	var labels = [];
 	for(var i=1; i<=day; i++){ labels.push(slovar('Day') + ':' + i); }
 
-	$.getJSON('/crm/php/campaign/stats.php?get_stats=1', {
+	$.getJSON('/crm/php/campaign/stats?get_stats=1', {
 		type: type,
 		year: year,
 		month: month

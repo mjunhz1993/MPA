@@ -50,7 +50,7 @@ function postNewMessage(id){
     
     var formData = new FormData(form[0]);
     $.ajax({ 
-        url: '/crm/php/chat/chat.php?post_message=1&id=' + id, 
+        url: '/crm/php/chat/chat?post_message=1&id=' + id, 
         type: 'post', data: formData, contentType: false, processData: false,
         success: function(data){ data = JSON.parse(data);
             setTimeout(function(){ form.removeClass('loading') }, 600);
@@ -99,7 +99,7 @@ function saveClipboardData(e, blob, ext, fileArea, fileInput){
     formData.append('csrf_token', $('input[name=csrf_token]').val());
     formData.append('clipboard', blob);
     $.ajax({ 
-        url: '/crm/php/chat/chat.php?save_clipboard=1&id=' + id, 
+        url: '/crm/php/chat/chat?save_clipboard=1&id=' + id, 
         type: 'post', data: formData, contentType: false, processData: false,
         success: function(data){
             data = JSON.parse(data);

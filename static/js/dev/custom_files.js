@@ -129,7 +129,7 @@ function toggleAddTamplate(){
 		}
 		else if(ext == 'js'){
 			data += "function "+name+"(){\n";
-			data += "\tloadCSS('"+window.location.origin+"/crm/php/downloads/CustomCSS.css');\n";
+			data += "\tloadCSS('"+APP.customDir+"/CustomCSS.css');\n";
 			data += "}\n\n$(document).ready(function(){ "+name+"() });";
 		}
 		else if(ext == 'api'){
@@ -187,7 +187,6 @@ function editCustomFile(el){
 }
 
 function save_editCustomFile(popupBox, close = false){
-
 	$.post('/crm/php/admin/custom_files.php?create_custom_file=1', popupBox.find('form').serialize(), function(data){
         data = JSON.parse(data);
         if(data.error){ return createAlert(popupBox, 'Red', data.error) }
@@ -218,7 +217,6 @@ function deleteCustomFile(el){
 
 function getFileName(url){
 	if(!url){ return "" }
-
 	try {
 		const pathname = new URL(url).pathname;
 		const filename = pathname.substring(pathname.lastIndexOf('/') + 1);

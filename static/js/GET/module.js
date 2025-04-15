@@ -1,11 +1,11 @@
 function GET_globals(d){
-	$.getJSON('/crm/php/main/GET_globals.php', function(data){
+	$.getJSON('/crm/php/main/GET_globals', function(data){
 		if(d.done){ d.done(data) }
 	})
 }
 
 function GET_module(d){ console.log({loading_module:d.module});
-	$.getJSON('/crm/php/main/GET_module.php?get_modules=1', {module:d.module}, function(data){
+	$.getJSON('/crm/php/main/GET_module?get_modules=1', {module:d.module}, function(data){
 		if(d.error && data.error){ return d.error(data.error) }
 		if(d.each){for(var i=0; i<data.length; i++){ d.each(data[i]) }}
 		if(d.done){ d.done(data) }
@@ -13,7 +13,7 @@ function GET_module(d){ console.log({loading_module:d.module});
 }
 
 function GET_column(d){ console.log({loading_column:d.module});
-	$.getJSON('/crm/php/main/GET_column.php?get_columns=1', {
+	$.getJSON('/crm/php/main/GET_column?get_columns=1', {
 		module:d.module,
 		column:d.column,
 		archive:d.archive,
@@ -27,7 +27,7 @@ function GET_column(d){ console.log({loading_column:d.module});
 }
 
 function GET_row(d){ console.log({loading_row:d.module});
-	$.getJSON('/crm/php/main/GET_row.php?get_row=1', {
+	$.getJSON('/crm/php/main/GET_row?get_row=1', {
 		readonly:d.readonly,
 		module:d.module,
 		id:d.id,

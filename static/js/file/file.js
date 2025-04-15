@@ -104,7 +104,7 @@ function removeFile(el){
 function clickOnFile(path, el, fileName = '', fakeFileName = '', extra = ''){
     if(fileName == ''){ fileName = el.closest('.file').attr('data-file') }
     if(fakeFileName == ''){ fakeFileName = fileName }
-    var url = '/crm/static/uploads/'+path+'/'+fileName;
+    var url = APP.uploadDir+'/'+path+'/'+fileName;
     var ext = url.split('.').pop().toUpperCase();
     if(['JPG','JPEG','PNG','GIF'].includes(ext)){ return openImgFile(url, fakeFileName, extra) }
     if(ext == 'PDF'){ return openPdfFile(url, fakeFileName, extra) }

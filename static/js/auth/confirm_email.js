@@ -1,5 +1,5 @@
 function sendConfirmEmail(box){
-    $.getJSON("/crm/php/auth/confirm_email.php", function(data){
+    $.getJSON("/crm/php/auth/confirm_email", function(data){
         if(data){ displayConfirmEmailForm(box) }
         else{ box.find('.result').text('Error') }
     });
@@ -24,7 +24,7 @@ function displayConfirmEmailForm(box){
 
         form.submit(function(e){
             e.preventDefault();
-            $.post("/crm/php/auth/auth.php?rand_code=1", {
+            $.post("/crm/php/auth/auth?rand_code=1", {
                 token: box.find('[name=token]').val(),
                 username: box.find('[name=username]').val(),
                 code: form.find('[name=code]').val()
@@ -32,7 +32,7 @@ function displayConfirmEmailForm(box){
                 data = JSON.parse(data);
                 if(!data){ return createAlert(form, 'Red', slovar('Wrong_code')) }
                 if(data.error == 'PASSKEY'){ return loadJS('auth/passkey', function(){ login_passkey(box) })}
-                window.location.href = "templates/home.php"
+                window.location.href = "templates/home"
             });
         });
     });

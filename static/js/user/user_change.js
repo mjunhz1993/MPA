@@ -9,7 +9,7 @@ function HTML_changeUser(box, data, html = ''){
 	html += '<th>'+slovar('Users')+'</th><th></th></tr>';
 	for(var i=0; i<data.length; i++){
 		var d = data[i];
-		html += '<tr><td>'+d.user_username+' <b>('+d.user_role+')</b></td><td>';
+		html += '<tr><td>'+d.user_username+' <b>('+d.role_name+')</b></td><td>';
 		html += '<button class="button buttonBlue" onclick="changeToUser(\''+d.user_username+'\', $(this))">'+slovar('Select')+'</button>';
 		html += '</td></tr>';
 	}

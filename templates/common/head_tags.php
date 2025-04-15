@@ -35,6 +35,7 @@ include($_SERVER['DOCUMENT_ROOT'].'/crm/php/SQL/check_user.php');
 <script src="/crm/static/js/common/basics.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/trigger.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/cookie.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
+<script src="/crm/static/js/common/localStorage.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/converter.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/date.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/url.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>

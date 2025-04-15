@@ -592,7 +592,7 @@ function stopMouseTextSelect(e){
 
 function saveNewStartDate(box, eventItem, date){
     boxMain = box.find('.calendarBoxMain');
-    $.post('/crm/php/calendar/drag_event.php?change_start_date=1', {
+    $.post('/crm/php/calendar/drag_event?change_start_date=1', {
         csrf_token:$('[name=csrf_token]').val(),
         module:boxMain.attr('data-module'),
         id:eventItem.el.attr('data-id'),

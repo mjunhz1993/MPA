@@ -71,9 +71,9 @@ function loadLeftNav(callback){
             ){ return }
 
             var url = '';
-            if(['',null].includes(d.url)){ url = '/crm/templates/modules/main/main.php?module='+d.module }
+            if(['',null].includes(d.url)){ url = '/crm/templates/modules/main/main?module='+d.module }
             else if(d.url.charAt(0) == '/'){ url = d.url }
-            else{ url = '/crm/templates/' + d.url + '.php' }
+            else{ url = '/crm/templates/' + d.url }
 
             html = '<a href="'+url+'" data-pid="'+d.category+'" title="'+slovar(d.name)+'">';
             html += getSVG(d.icon)+'<span>'+slovar(d.name)+'</span></a>';
@@ -101,7 +101,7 @@ function MakeLeftNavLinks(){
 
     var url = window.location.pathname + window.location.search;
     pid = '';
-    if(url == ''){ url = '/crm/templates/home.php' }
+    if(url == ''){ url = '/crm/templates/home' }
     var ActiveLink = leftNav.find('a[href="' + url + '"]');
     if(LeftNavOpen()){ pid = ActiveLink.data('pid') }
     ActiveLink.addClass('act');

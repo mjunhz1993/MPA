@@ -8,7 +8,7 @@ function checkForModuleAddons(module, box, type = '', row = null){
             }
             else if(addon[0] == 'loadJS'){
                 if(addon[1] != type){ continue }
-                loadJS(window.location.origin+'/crm/php/downloads/'+addon[2]+'.js',function(){ eval(addon[2]+'(row,box)') })
+                loadJS(APP.customDir+'/'+addon[2]+'.js',function(){ eval(addon[2]+'(row,box)') })
             }
             else{ RUN_addon(module, box, type, addon, i) }
         }}

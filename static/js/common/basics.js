@@ -11,3 +11,8 @@ function Price(p, raw = false) {
 function Percent(p, raw = false) {
     return raw ? `${p} %` : `<span style="color:${p < 0 ? 'red' : 'green'}">${p} %</span>`;
 }
+
+const APP = {
+    customDir: `${window.location.origin}/crm/php/downloads`,
+    uploadDir: `${window.location.origin}/crm/static/uploads`,
+};

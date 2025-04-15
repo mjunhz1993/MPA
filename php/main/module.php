@@ -295,35 +295,6 @@ if(isset($_SESSION['user_id'])){
 
         echo json_encode($data);
     }
-
-    if(isset($_GET['get_all_users'])){
-        $data = array();
-        $st = 0;
-        $A = $SQL->query("SELECT user_id,user_username,user_email,role_name FROM user LEFT JOIN role ON role_id = user_role_id WHERE user_active = 1");
-        while ($B = $A->fetch_row()){
-            $data[$st]['user_id'] = $B[0];
-            $data[$st]['user_username'] = $B[1];
-            $data[$st]['user_email'] = $B[2];
-            $data[$st]['user_role'] = $B[3];
-            if($user_id == $B[0]){ $data[$st]['me'] = 1; }else{ $data[$st]['me'] = 0; }
-            $st++;
-        }
-        echo json_encode($data);
-    }
-    
-    
-    if(isset($_GET['get_all_roles'])){
-        $data = array();
-        $st = 0;
-        $A = $SQL->query("SELECT role_id,role_name FROM role");
-        while ($B = $A->fetch_row()){
-            $data[$st]['role_id'] = $B[0];
-            $data[$st]['role_name'] = $B[1];
-            if($user_role_id == $B[0]){ $data[$st]['me'] = 1; }else{ $data[$st]['me'] = 0; }
-            $st++;
-        }
-        echo json_encode($data);
-    }
         
 }
 ?>

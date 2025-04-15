@@ -22,7 +22,7 @@ function openAddConversation(module = '', row = ''){loadJS('chat/chat', function
 
 function find_conversation(module, row, callback){
     if(valEmpty(module) || valEmpty(row)){ return callback() }
-    $.getJSON('/crm/php/chat/chat.php?find_conversation=1', {module:module,row:row}, function(data){
+    $.getJSON('/crm/php/chat/chat?find_conversation=1', {module:module,row:row}, function(data){
         if(!data){ return callback() }
         return chat(function(){ chat_box(data) })
     })
@@ -58,7 +58,7 @@ function displayAddConversation(form, module, row, html = ''){
 }
 
 function addConversation(form){
-    $.post('/crm/php/chat/chat.php?add_conversation=1', form.serialize(), function(data){
+    $.post('/crm/php/chat/chat?add_conversation=1', form.serialize(), function(data){
         data = JSON.parse(data);
         if(data.error){ return createAlert(form, 'Red', data.error) }
         removePOPUPbox(function(){chat(function(){

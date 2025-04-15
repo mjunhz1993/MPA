@@ -5,5 +5,6 @@ $GLOBALS['ALLOWED_IMG_TYPES'] = 'JPG,JPEG,PNG,GIF,TIF';
 $GLOBALS['ALLOWED_TABLE_SIZE'] = 50;
 $GLOBALS['ARCHIVE_NAME_START'] = 'crm_archive';
 $GLOBALS['MAP']['HOME'] = '/home/oktagon/';
+$GLOBALS['MAP']['DOWNLOADS'] = '/crm/php/downloads/';
 $GLOBALS['MAP']['UPLOADS'] = '/crm/static/uploads/';
 ?>

@@ -29,6 +29,13 @@
 	text-align: center;
 }
 
+#anal_box .col{
+	resize: horizontal;
+	overflow: hidden;
+	min-width: 20%;
+	max-width: 90%;
+}
+
 .analbox{
 	background-color: white;
 	margin: 5px;
@@ -46,14 +53,6 @@
 	display: flex;
 	gap: 10px;
 	align-items: center;
-}
-
-.analbox .top .resizeAnalBox{
-	cursor: col-resize;
-	width: 10px;
-	height: 20px;
-	border: 2px dotted;
-	color: var(--light-blue);
 }
 
 .analcontent{ overflow:auto; }

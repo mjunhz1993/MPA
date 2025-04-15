@@ -11,7 +11,7 @@ function campaign_checkEnvironment(mainBox){
 		        	GLOBAL_edit = data.can_edit;
 		        	GLOBAL_delete = data.can_delete;
 	        		if(data.can_view.includes(user_role_id)){
-	        			$.get('/crm/php/campaign/campaign.php?check_environment=1', function(){
+	        			$.get('/crm/php/campaign/campaign?check_environment=1', function(){
 			        		campaign_createEnvironment(mainBox, data);
 			        	})
 			        }
@@ -55,7 +55,7 @@ function campaign_createEnvironment(mainBox, data){
 
 function toggle_stats(el){
 	if(el.attr('data-stats') == 'show'){ el.attr('data-stats','hide') }else{ el.attr('data-stats','show') }
-	$.get('/crm/php/campaign/stats.php', { toggle_stats:el.attr('data-stats') }, function(data){ location.reload() })
+	$.get('/crm/php/campaign/stats', { toggle_stats:el.attr('data-stats') }, function(data){ location.reload() })
 }
 
 function campaign_createTable(box){
@@ -73,7 +73,7 @@ function campaign_createTable(box){
 }
 
 function campaign_loadTableList(tbody, callback){
-	$.getJSON('/crm/php/campaign/campaign.php?get_all_lists=1', function(data){
+	$.getJSON('/crm/php/campaign/campaign?get_all_lists=1', function(data){
 		campaign_displayTableList(tbody, data);
 		if(typeof callback === 'function'){ callback(); }
 	})
@@ -122,7 +122,7 @@ function campaign_openAddEmailList(id = ''){
 		e.preventDefault();
 		var name = form.find('#list_name').val();
 		if(name != ''){
-			$.post('/crm/php/campaign/campaign.php?add_email_list=1', {
+			$.post('/crm/php/campaign/campaign?add_email_list=1', {
 				csrf_token: $('input[name=csrf_token]').val(),
 				id:id,
 				name: form.find('#list_name').val()
@@ -141,7 +141,7 @@ function campaign_deleteEmailList(id){
 	POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
 		var box = $('.horizontalTable');
 		if(GLOBAL_delete.includes(user_role_id)){
-			$.post('/crm/php/campaign/campaign.php?delete_email_list=1', {
+			$.post('/crm/php/campaign/campaign?delete_email_list=1', {
 				id: id,
 				csrf_token: $('input[name=csrf_token]').val()
 			}, function(data){

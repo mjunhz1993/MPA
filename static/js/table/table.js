@@ -158,6 +158,10 @@ function tableDisplayColumns(tableBox, data, callback) {
 function tableCreateColumn(col) {
     if (!col.active) return '';
 
+    const localStorageName = 'resizeTable_' + col.module;
+    const thisLocalStorage = checkLocalStorage(localStorageName) ? getLocalStorage(localStorageName) : {};
+    if (thisLocalStorage[col.column]) col.columnWidth = thisLocalStorage[col.column];
+ 
     const attrs = [
         `data-module="${col.module}"`,
         `data-column="${col.column}"`,
@@ -415,7 +419,8 @@ function tableCreateLoadedRows(box, table, data, newRow = ''){
 }
 
 function tableResetFixedWidthColumns(box){ box.css('table-layout',''); tableCreateFixedWidthColumns(box); }
-function tableCreateFixedWidthColumns(box){
+
+function tableCreateFixedWidthColumns(box){loadJS('API/resize', ()=>{
     if(box.css('table-layout') != 'fixed' && box.find('thead th').first().width() != 0){
         var w = 0;
         box.find('thead th').each(function(){
@@ -423,9 +428,21 @@ function tableCreateFixedWidthColumns(box){
             else{ w = $(this).width() }
             $(this).css('width', w);
         });
+
         box.css('table-layout','fixed');
+
+        resizeBox({
+            box: box.find('th[data-module][data-column]'),
+            callback: (el,w)=>{
+                const localStorageName = 'resizeTable_'+el.data('module');
+                if(!checkLocalStorage(localStorageName)){ setLocalStorage(localStorageName, {}) }
+                const thisLocalStorage = getLocalStorage(localStorageName);
+                thisLocalStorage[el.data('column')] = w;
+                setLocalStorage(localStorageName, thisLocalStorage);
+            }
+        })
     }
-}
+})}
 
 function table_addFooter(box){
     if(box.find('.tableFooter').length != 0){ return }

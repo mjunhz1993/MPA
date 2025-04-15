@@ -66,7 +66,7 @@ function insertData_readBoxMini_ROW(box, module, id, col, row, callback, html = 
 	}
 	html += '</table></div><div class="readBoxTools">';
 	html += '<a class="buttonSquare buttonBlue" ';
-	html += 'href="/crm/templates/modules/main/main.php?module='+module+'#'+id+'-READ-">'+getSVG('list')+' '+slovar('View')+'</a>';
+	html += 'href="/crm/templates/modules/main/main?module='+module+'#'+id+'-READ-">'+getSVG('list')+' '+slovar('View')+'</a>';
 	html += '<button class="buttonSquare buttonBlue" ';
 	html += 'onclick="edit_readBoxMini($(this), \''+module+'\','+id+')">'+getSVG('edit')+' '+slovar('Edit_row')+'</button>';
 	html += '</div>';

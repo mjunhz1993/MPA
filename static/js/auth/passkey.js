@@ -4,11 +4,11 @@ function if_passkey_enabled(){
 }
 
 function generate_challenge(callback){
-    $.get('/crm/php/auth/passkey.php', {generate_challenge:true}, function(challenge){ callback(challenge) })
+    $.get('/crm/php/auth/passkey', {generate_challenge:true}, function(challenge){ callback(challenge) })
 }
 
 function get_user_passkey(callback){
-    $.get('/crm/php/auth/auth.php', {get_user_passkey:true}, function(passkey){ callback(passkey) })
+    $.get('/crm/php/auth/auth', {get_user_passkey:true}, function(passkey){ callback(passkey) })
 }
 
 function arrayBufferToHex(arrayBuffer) {
@@ -48,12 +48,12 @@ function login_passkey(box){
             navigator.credentials.get({ "publicKey": passkey_login_publicKey(passkey, challenge) })
             .then(function(assertion){
                 if(passkey != arrayBufferToHex(assertion.rawId)){ return login_passkey_err(box, slovar('Wrong_passkey')) }
-                $.post('/crm/php/auth/auth.php?compare_passkey=1', {
+                $.post('/crm/php/auth/auth?compare_passkey=1', {
                     token:box.find('[name=token]').val(),
                     passkey:arrayBufferToHex(assertion.rawId)
                 }, function(data){ data = JSON.parse(data);
                     if(data.error){ return login_passkey_err(box, slovar(data.error)) }
-                    return window.location.href = "templates/home.php"
+                    return window.location.href = "templates/home"
                 })
             }).catch(function(err){ return login_passkey_err(box, err) });
         })
@@ -93,7 +93,7 @@ function register_passkey(d){
         publicKey = passkey_register_publicKey(challenge);
         navigator.credentials.create({ publicKey })
         .then(function (newCredentialInfo) {
-            $.get('/crm/php/auth/user_config.php', {
+            $.get('/crm/php/auth/user_config', {
                 save_passkey:arrayBufferToHex(newCredentialInfo.rawId)
             }, function(){ return d.done() })
         }).catch(function(err){ return d.error(err) });

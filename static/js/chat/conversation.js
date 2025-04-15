@@ -30,7 +30,7 @@ function getConversationsHTML(conv, html = ''){
 function clickConversation(id){removePOPUPbox(function(){ chat_box(id) })}
 
 function showConversation(id){
-    $.getJSON('/crm/php/chat/chat.php?load_conversation=1&id=' + id, function(data){
+    $.getJSON('/crm/php/chat/chat?load_conversation=1&id=' + id, function(data){
         if(valEmpty(data.id)){ return clearConversationArea() }
         loadConversationHEAD(data, data.id);
         $('#chatForm').css('opacity', 1);
@@ -62,7 +62,7 @@ function createConversationHEAD(data, G, moduleData, html = ''){
         var href = 'module='+data.module;
         if(data.row != 0){ href += '#'+data.row+'-READ' }
         html += '<b>' + slovar('Category') + '</b> ';
-        html += '<a href="/crm/templates/modules/main/main.php?'+href+'">';
+        html += '<a href="/crm/templates/modules/main/main?'+href+'">';
         html += slovar(data.module_name);
         if(!valEmpty(data.row_data)){ html += ' (' + data.row_data + ')' }
         html += '</a><br/>';
@@ -89,7 +89,7 @@ function createConversationHEAD(data, G, moduleData, html = ''){
 
 function changeConversationSubject(e, el){if(e.which == 13){
     var id = el.closest('#chatInfo').attr('data-id');
-    $.post('/crm/php/chat/chat.php?change_conversation_subject=1', {
+    $.post('/crm/php/chat/chat?change_conversation_subject=1', {
         csrf_token:$('[name=csrf_token]').val(),
         id:id,
         subject:el.val()
@@ -106,7 +106,7 @@ function call_conversation(el, users = []){
         users.push($(this).attr('data-userid'))
     });
 
-    $.post('/crm/php/chat/videocall.php?call_users=1', {
+    $.post('/crm/php/chat/videocall?call_users=1', {
         room:id,
         users:users
     }, function(data){ data = JSON.parse(data);
@@ -118,7 +118,7 @@ function call_conversation(el, users = []){
 function deleteConversation(el){
     POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
         var id = el.closest('#chatInfo').attr('data-id');
-        $.post('/crm/php/chat/chat.php?delete_conversation=1', {csrf_token:$('[name=csrf_token]').val(), id: id}, function(data){
+        $.post('/crm/php/chat/chat?delete_conversation=1', {csrf_token:$('[name=csrf_token]').val(), id: id}, function(data){
             data = JSON.parse(data);
             if(data.error){ return console.log(data.error) }
             clearConversationArea()

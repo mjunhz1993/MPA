@@ -18,9 +18,9 @@ function TestLogin(box){
     box.prepend(HTML_loader());
     form.hide();
     
-    $.post("/crm/php/auth/auth.php?login=1", form.serialize(), function(data){
+    $.post("/crm/php/auth/auth?login=1", form.serialize(), function(data){
         data = JSON.parse(data);
-        if(!data.error){ return window.location.href = "templates/home.php" }
+        if(!data.error){ return window.location.href = "templates/home" }
         if(data.error == 'TFA'){ return loadJS('auth/confirm_email', function(){ sendConfirmEmail(box) })}
         if(data.error == 'PASSKEY'){ return loadJS('auth/passkey', function(){ login_passkey(box) })}
         

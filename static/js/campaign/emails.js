@@ -44,7 +44,7 @@ function campaign_loadEmails(id, offset = 0){
 	if(offset == 0){ table.text(''); }
 
 	box.append(HTML_loader());
-	$.getJSON('/crm/php/campaign/campaign.php?get_emails=1', {
+	$.getJSON('/crm/php/campaign/campaign?get_emails=1', {
 		id: id,
 		search: search,
 		orderBy: sortColumnName,
@@ -107,7 +107,7 @@ function campaign_openAddEmail(listID, el = ''){
 		var email = form.find('#email_email').val();
 		var name = form.find('#email_name').val();
 		if(name != '' && email != ''){
-			$.post('/crm/php/campaign/campaign.php?add_email=1', {
+			$.post('/crm/php/campaign/campaign?add_email=1', {
 				csrf_token: $('input[name=csrf_token]').val(),
 				campaign_list: listID,
 				old_email: old_email,
@@ -128,7 +128,7 @@ function campaign_deleteEmail(listID, el){
 	POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
 		var popupBox = $('.popupBox').last();
 		if(GLOBAL_delete.includes(user_role_id)){
-			$.post('/crm/php/campaign/campaign.php?delete_email=1', {
+			$.post('/crm/php/campaign/campaign?delete_email=1', {
 				campaign_list: listID,
 				email: el.closest('tr').find('td:eq(1)').text(),
 				csrf_token: $('input[name=csrf_token]').val()

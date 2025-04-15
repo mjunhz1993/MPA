@@ -1,5 +1,5 @@
 function GET_conversation(d){
-	$.getJSON('/crm/php/chat/chat.php?get_all_conversations=1', {
+	$.getJSON('/crm/php/chat/chat?get_all_conversations=1', {
 		subject:d.subject,
 		limit:d.limit
 	}, function(data){

@@ -111,7 +111,7 @@ function HTML_UserTopLeft(dashboard, u, html = ''){
 
 function HTML_UserAvatar(u){
 	if(valEmpty(u.user_avatar)){ return '' }
-	return '<div class="homeUserImgBox"><div class="homeUserImg" style="background-image:url(/crm/static/uploads/user/' + u.user_avatar + ')"></div></div>'
+	return '<div class="homeUserImgBox"><div class="homeUserImg" style="background-image:url('+APP.uploadDir+'/user/' + u.user_avatar + ')"></div></div>'
 }
 
 function HTML_UserTopright(html = ''){

@@ -1,5 +1,5 @@
 ANALobj = {
-	'post' : '/crm/php/analytics/exec.php',
+	'post' : '/crm/php/analytics/exec',
 	'select': '#anal_select',
 	'main': '#anal_main',
 	'box': '.analbox',
@@ -92,7 +92,7 @@ function get_analytic_tables(mainBox, id, d = {}){
 		mainBox.append('<div id="anal_box"></div>');
 		mainBox = $('#anal_box');
 		for(var i=0; i<data.length; i++){ HTML_ANAL_tables(mainBox, id, data[i], d) }
-		resize_analytic_box();
+		setTimeout(()=>{ resize_analytic_box() }, 1500);
 		resetDropdownMenuConfig();
 		find_loading_analytic_tables(mainBox);
 	}, id)
@@ -140,7 +140,6 @@ function HTML_ANAL_tables(el, id, data, d = {}) {
                 <h2>${data.name}</h2>
                 <div class="settings">
                 	${HTML_ANAL_dropdown(id, data, d)}
-    				<div class="resizeAnalBox"></div>
                 </div>
             </div>
             <div class="${ANALobj.content}"></div>
@@ -231,52 +230,22 @@ function delete_analytic(pid, id, type = ''){
 
 // EXTRA
 
-function resize_analytic_box() {
-    let isResizing = false;
-    let startX, startWidth, parentWidth, newWidthPercent;
-
-    $('.resizeAnalBox').off('mousedown').on('mousedown', function (e) {
-        isResizing = true;
-        startX = e.pageX;
-        const $col = $(this).closest('.col');
-        $col.addClass('isResizing');
-        startWidth = $col.width();
-        parentWidth = $col.parent().width();
-        e.preventDefault();
-    });
-
-    $(document).off('mousemove.resizeAnalBox').on('mousemove.resizeAnalBox', function (e) {
-        if (isResizing) {
-            const $col = $('.isResizing');
-            const newWidthPx = startWidth + (e.pageX - startX);
-            newWidthPercent = (newWidthPx / parentWidth) * 100;
-            newWidthPercent = Math.max(20, Math.min(100, newWidthPercent));
-            $col.css({
-                width: newWidthPercent + '%'
-            });
-        }
-    });
-
-    $(document).off('mouseup.resizeAnalBox').on('mouseup.resizeAnalBox', function () {
-        const $thisBox = $('.isResizing');
-        if ($thisBox.length !== 1 || newWidthPercent == undefined) return;
-
-        const boxID = $thisBox.find(ANALobj.box).data('id');
-        const analyticsID = $thisBox.closest(ANALobj.main).data('id');
-        $thisBox.removeClass('isResizing');
-        isResizing = false;
-
-        $.post(ANALobj.post, {
-            update_width_of_analytic_table: true,
-            width: newWidthPercent,
-            id: boxID,
-            pid: analyticsID
-        }, function(thisData){
-        	thisData = JSON.parse(thisData);
-        	if(thisData.error){
-        		createAlertPOPUP(slovar(thisData.error));
-        		$thisBox.width(startWidth);
-        	}
-        });
-    });
-}
+function resize_analytic_box(){loadJS('API/resize', function(){
+	resizeBox({
+		box: $('#anal_box .col'),
+		percentage: true,
+		callback: function(el, w){
+			$.post(ANALobj.post, {
+	            update_width_of_analytic_table: true,
+	            width: w,
+	            id: el.find(ANALobj.box).data('id'),
+	            pid: el.closest(ANALobj.main).data('id')
+	        }, function(thisData){
+	        	thisData = JSON.parse(thisData);
+	        	if(thisData.error){
+	        		console.log(thisData.error);
+	        	}
+	        });
+		}
+	})
+})}

@@ -29,7 +29,7 @@ function AI_window_HTML(){
 }
 
 function loadIn_AI_models(){
-	$.getJSON('/crm/php/AI/AI.php', {loadIn_AI_models:true}, function(data){
+	$.getJSON('/crm/php/AI/AI', {loadIn_AI_models:true}, function(data){
 		if(data.length == 0){ return add_conversation_bubble(slovar('I_cant_help_you'), 'au') }
 		data.forEach(m => {
 			$('#AI select').append(`
@@ -42,7 +42,7 @@ function loadIn_AI_models(){
 function select_AI_model(el){
 	input = $('#AI .input');
 	input.hide();
-	$.getJSON('/crm/php/AI/AI.php', {loadIn_AI_models:true, id:el.val()}, function(data){
+	$.getJSON('/crm/php/AI/AI', {loadIn_AI_models:true, id:el.val()}, function(data){
 		if(!data[0]){ return }
 		input.show();
 		add_AI_instructions(data[0].instructions);
@@ -126,7 +126,7 @@ function default_answer(el, d){
 // SQL SELECT
 
 function foundSelectStatement(statement, text){
-	$.post('/crm/php/export/table.php', {
+	$.post('/crm/php/export/table', {
 		exportTable: true,
 		stringQuery: statement
 	}, function(data){

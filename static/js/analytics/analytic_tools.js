@@ -158,9 +158,12 @@ function FORM_analytic_content(pid, html = ''){loadJS('dev/custom_files', functi
 	form.append('<input type="hidden" name="analytic_content_create">');
 	form.append('<input type="hidden" name="pid" value="'+pid+'">');
 	form.append(`
-		<label>Url</label>
+		<label>Url <b data-tooltip="SQL files with 'analytics_' name">(?)</b></label>
 		<select name="href"></select>
-		<label>Extra</label>
+		<label>
+			Extra
+			<b data-tooltip="limit | sort | offset | filter | load[file,func]">(?)</b>
+		</label>
 		<input type="text" name="extra">
 	`);
 
@@ -186,7 +189,7 @@ function FORM_analytic_content(pid, html = ''){loadJS('dev/custom_files', functi
 		})
 	});
 
-	popup.fadeIn('fast');
+	popup.fadeIn('fast', function(){ tooltips() });
 })}
 
 function add_analytic_content_to_form(form, data){

@@ -12,6 +12,7 @@ function openUserConfig(){loadJS('user/slovar/'+slovar(), function(){
 		html += '<button class="buttonSquare buttonGrey" data-type="security" onclick="showUserConfig($(this))">'+slovar('Security')+'</button>';
 		html += '<button class="buttonSquare buttonGrey" data-type="extra" onclick="showUserConfig($(this))">'+slovar('Extra')+'</button>';
 		html += '<button class="buttonSquare buttonGrey" data-type="cookie" onclick="showUserConfig($(this))">'+slovar('Cookies')+'</button>';
+		html += '<button class="buttonSquare buttonGrey" data-type="localStorage" onclick="showUserConfig($(this))">'+slovar('localStorage')+'</button>';
 		html += '<button class="buttonSquare buttonGrey" data-type="google" onclick="showUserConfig($(this))">'+slovar('Google')+'</button>';
 		html += '</div><hr><div id="userconfigbox"></div><hr>';
 		html += '<button class="button buttonGrey" onclick="removePOPUPbox()">'+slovar('Close')+'</button>';
@@ -28,6 +29,7 @@ function showUserConfig(el){
 	if(el.attr('data-type') == 'security'){ return loadJS('user/user_security', function(){ showUserConfig_security(box) }) }
 	if(el.attr('data-type') == 'extra'){ return loadJS('user/user_extra', function(){ showUserConfig_extra(box) }) }
 	if(el.attr('data-type') == 'cookie'){ return loadJS('user/user_cookie', function(){ showUserConfig_cookie(box) }) }
+	if(el.attr('data-type') == 'localStorage'){ return loadJS('user/user_localStorage', function(){ showUserConfig_localStorage(box) }) }
 	if(el.attr('data-type') == 'google'){ return loadJS('user/user_google', function(){ showUserConfig_google(box) }) }
 }
 

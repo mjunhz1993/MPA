@@ -1,7 +1,7 @@
 loadCSS('AI');
 
 function ask_AI(d){
-	$.post('/crm/php/AI/AI.php', {
+	$.post('/crm/php/AI/AI', {
 		AI: true,
 		instruction: d.instruction,
 		history: d.history,
