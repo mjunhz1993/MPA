@@ -1,5 +1,8 @@
 function checkForModuleAddons(module, box, type = '', row = null){
-	$.getJSON('/crm/php/admin/module.php?get_module_addons=1&module=' + module, function(data){
+	$.getJSON('/crm/php/admin/module.php', {
+        get_module_addons: true,
+        module: module
+    }, function(data){
         if(data){for(var i=0; i<data.length; i++){
         	var addon = data[i].addon.split('|');
             if(addon[0] == 'JSCommand'){
@@ -8,7 +11,7 @@ function checkForModuleAddons(module, box, type = '', row = null){
             }
             else if(addon[0] == 'loadJS'){
                 if(addon[1] != type){ continue }
-                loadJS(APP.customDir+'/'+addon[2]+'.js',function(){ eval(addon[2]+'(row,box)') })
+                loadJS(APP.customDir+'/'+addon[2]+'.js',function(f){ eval(f+'(row,box)') }, addon[2])
             }
             else{ RUN_addon(module, box, type, addon, i) }
         }}
