@@ -40,9 +40,9 @@ function HTML_verticalToggleButtons(data, html = ''){
     return html;
 }
 
-function HTML_loader(text = '', html = ''){
-    html = '<span class="loading20"></span>';
-    if(!valEmpty(text)){ html += '<span class="loadingText">'+text+'</span>' }
-    return html; 
+function HTML_loader(text = '', extra = {}) {
+    let html = '<span class="loading20"></span>' + (!valEmpty(text) ? `<span class="loadingText">${text}</span>` : '');
+    if (extra.popup) createPOPUPbox().find('.popupBox').html(html).end().fadeIn('fast');
+    return html;
 }
 function remove_HTML_loader(box){ box.find('.loading20,.loadingText').remove() }
