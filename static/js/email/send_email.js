@@ -179,7 +179,10 @@ function send_email(form, callback){
             if(typeof callback === 'function'){ callback() }
             removePOPUPbox()
         }
-    }).fail(function(data){ console.log(data); });
+    }).fail(function(data){
+        createAlertPOPUP('Error - check console for more information');
+        console.log(data);
+    });
 }
 
 loadCSS('email');

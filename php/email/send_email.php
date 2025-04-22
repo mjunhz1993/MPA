@@ -74,16 +74,20 @@ class emailSendObj{
 function debugSendEmailData($data){
     $mailData = new emailSendObj();
     $mailData->err = false;
-    if(isset($data['addAddress'])){ $mailData->addAddress = $data['addAddress']; }else{ $mailData->err = true; }
-    if(isset($data['addAddressType'])){ $mailData->addAddressType = $data['addAddressType']; }else{ $mailData->err = true; }
+    if(isset($data['addAddress'])){ $mailData->addAddress = $data['addAddress']; }
+    else{ $mailData->err = 'No_Recipient'; }
+    if(isset($data['addAddressType'])){ $mailData->addAddressType = $data['addAddressType']; }
+    else{ $mailData->err = 'No_Recipient_type'; }
 
     $mailData->forwardFile = array();
     if(isset($data['forwardFile'])){ $mailData->forwardFile = $data['forwardFile']; }
     $mailData->forwardFileName = array();
     if(isset($data['forwardFileName'])){ $mailData->forwardFileName = $data['forwardFileName']; }
 
-    if(isset($data['subject'])){ $mailData->subject = $data['subject']; }else{ $mailData->err = true; }
-    if(isset($data['body'])){ $mailData->body = $data['body']; }else{ $mailData->err = true; }
+    if(isset($data['subject'])){ $mailData->subject = $data['subject']; }
+    else{ $mailData->err = 'No_subject'; }
+    if(isset($data['body'])){ $mailData->body = $data['body']; }
+    else{ $mailData->err = 'No_body'; }
     return $mailData;
 }
 
@@ -213,7 +217,7 @@ function send_email($SQL, $mailSQL, $user_id){
     if(!$uploadAttachmentSuccess){ return ['error' => slovar('File_error')]; }
 
     $mailData = debugSendEmailData($_POST);
-    if($mailData->err){ return ['error' => slovar('data_error')]; }
+    if($mailData->err){ return ['error' => $mailData->err]; }
     
     $PHPMailerStatus = runPHPMailer($SQL, $smtp, $mailData, $addAttachment, $addAttachmentName);
     if($PHPMailerStatus == 'OK'){
