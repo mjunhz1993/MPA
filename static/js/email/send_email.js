@@ -160,10 +160,8 @@ function change_sender_to_crm(form){
 }
 
 function send_email(form, callback){
-    form.find('.alert, input[name=csrf_token]').remove();
     form.hide();
     form.before(HTML_loader());
-    form.prepend($('input[name=csrf_token]').clone());
     var formData = new FormData(form[0]);
     $.ajax({ 
         url: '/crm/php/email/send_email_exec.php?send_email=1', 

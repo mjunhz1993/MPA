@@ -3,7 +3,7 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 include(loadPHP('email/send_email'));
 include(loadPHP('email/SQL'));
 
-if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POST['csrf_token']){
+if(isset($_SESSION['user_id'])){
 
 	$user_id = $_SESSION['user_id'];
 

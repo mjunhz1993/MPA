@@ -74,10 +74,18 @@ class emailSendObj{
 function debugSendEmailData($data){
     $mailData = new emailSendObj();
     $mailData->err = false;
-    if(isset($data['addAddress'])){ $mailData->addAddress = $data['addAddress']; }
-    else{ $mailData->err = 'No_Recipient'; }
-    if(isset($data['addAddressType'])){ $mailData->addAddressType = $data['addAddressType']; }
-    else{ $mailData->err = 'No_Recipient_type'; }
+    
+    if (isset($data['addAddress'])) {
+        $mailData->addAddress = is_string($data['addAddress']) ? [$data['addAddress']] : $data['addAddress'];
+    } else {
+        $mailData->err = 'No_Recipient';
+    }
+
+    if (isset($data['addAddressType'])) {
+        $mailData->addAddressType = is_string($data['addAddressType']) ? [$data['addAddressType']] : $data['addAddressType'];
+    } else {
+        $mailData->err = 'No_Recipient_type';
+    }
 
     $mailData->forwardFile = array();
     if(isset($data['forwardFile'])){ $mailData->forwardFile = $data['forwardFile']; }
