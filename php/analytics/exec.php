@@ -5,7 +5,7 @@ include(loadPHP('analytics/data'));
 include(loadPHP('export/extra'));
 
 if(isset($_SESSION['user_id'])){
-    if(isset($_POST['analytics_connect'])){ echo json_encode(analytics_connect($SQL, $SQL_db)); }
+    if(isset($_POST['analytics_connect'])){ echo json_encode(analytics_connect($SQL, $INIconf['SQL']['database'])); }
     if(isset($_POST['analytics_create'])){ echo json_encode(analytics_create($SQL)); }
     if(isset($_POST['analytics_get'])){ echo json_encode(analytics_get($SQL, $_SESSION['user_id'])); }
     if(isset($_POST['analytic_tables_create'])){ echo json_encode(analytic_tables_create($SQL)); }

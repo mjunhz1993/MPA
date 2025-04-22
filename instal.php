@@ -64,7 +64,10 @@ fclose($newFile);
 
 // --------------------- MODULE
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'module' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'module' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE module
     (
@@ -111,7 +114,10 @@ if($A->num_rows == 0){
 
 // --------------------- MODULE COLUMNS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'module_columns' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'module_columns' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE module_columns
     (
@@ -197,7 +203,10 @@ if($A->num_rows == 0){
 
 // --------------------- FILES
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'file' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'file' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE file
     (
@@ -214,7 +223,10 @@ if($A->num_rows == 0){
 
 // --------------------- DOWNLOADS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'downloads' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'downloads' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE downloads
     (
@@ -230,7 +242,10 @@ if($A->num_rows == 0){
 
 // --------------------- FILTER
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'filter' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'filter' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE filter
     (
@@ -250,7 +265,10 @@ if($A->num_rows == 0){
 
 // --------------------- FILTER CONDITIONS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'filter_conditions' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'filter_conditions' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE filter_conditions
     (
@@ -269,7 +287,10 @@ if($A->num_rows == 0){
 
 // --------------------- FILTER USERS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'filter_users' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'filter_users' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE filter_users
     (
@@ -285,7 +306,10 @@ if($A->num_rows == 0){
 
 // --------------------- ROLE
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'role' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'role' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE role
     (
@@ -311,7 +335,10 @@ if($A->num_rows == 0){
 
 // --------------------- USER
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'user' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'user' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE user
     (
@@ -344,7 +371,10 @@ if($A->num_rows == 0){
 
 // --------------------- E-MAIL ACCOUNTS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'email_accounts' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'email_accounts' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE email_accounts
     (
@@ -374,7 +404,10 @@ if($A->num_rows == 0){
 
 // --------------------- WIDGETS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'widget' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'widget' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE widget
     (
@@ -392,7 +425,10 @@ if($A->num_rows == 0){
 
 // --------------------- EVENT
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'event' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'event' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE event
     (
@@ -412,7 +448,10 @@ if($A->num_rows == 0){
 
 // --------------------- DIARY
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'diary' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'diary' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE diary
     (
@@ -433,7 +472,10 @@ if($A->num_rows == 0){
 
 // --------------------- CONVERSATION
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'conversation' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'conversation' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE conversation
     (
@@ -451,7 +493,10 @@ if($A->num_rows == 0){
 
 // --------------------- CONVERSATION USER
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'conversation_user' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'conversation_user' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE conversation_user
     (
@@ -467,7 +512,10 @@ if($A->num_rows == 0){
 
 // --------------------- NOTIFICATIONS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'notifications' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'notifications' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE notifications
     (
@@ -486,7 +534,10 @@ if($A->num_rows == 0){
 
 // --------------------- MODULE ADDONS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'module_addons' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'module_addons' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE module_addons
     (
@@ -511,7 +562,10 @@ if($A->num_rows == 0){
 
 // --------------------- MODULE AUTOMATIONS
 
-$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'module_automations' LIMIT 1");
+$A = $SQL->query("
+    SELECT * FROM information_schema.tables 
+    WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'module_automations' LIMIT 1
+");
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE module_automations
     (

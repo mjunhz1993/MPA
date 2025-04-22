@@ -18,7 +18,9 @@ if(isset($_SESSION['user_id'])){
     $user_email_table = 'mail_room_'.$user_id;
     if(isset($_GET['mail_room']) && $_GET['mail_room'] != ''){ $user_email_table = 'mail_room_'.SafeInput($SQL, $_GET['mail_room']); }
 
-    if(isset($_GET['check_if_email_room_exists'])){ echo json_encode(check_if_email_room_exists($SQL, $SQL_db, $user_id, $mailSQL, $user_email_table)); }
+    if(isset($_GET['check_if_email_room_exists'])){
+        echo json_encode(check_if_email_room_exists($SQL, $INIconf['SQL']['database'], $user_id, $mailSQL, $user_email_table));
+    }
     if(isset($_GET['get_new_emails'])){ echo json_encode(get_new_emails($SQL, $mailSQL, $user_id)); }
     if(isset($_GET['get_emails'])){ echo json_encode(get_emails($mailSQL, $user_email_table)); }
     if(isset($_GET['get_email'])){ echo json_encode(get_email($mailSQL, $user_email_table)); }

@@ -36,7 +36,7 @@ if(isset($_SESSION['user_id'])){
         }
     }
 
-    function get_columns($SQL, $SQL_db){
+    function get_columns($SQL, $db){
         $user_id = $_SESSION['user_id'];
         $data = array();
         $module = SafeInput($SQL, $_GET['module']);
@@ -45,7 +45,7 @@ if(isset($_SESSION['user_id'])){
         $FROM = $module;
 
         // FIRST - CHECK ARCHIVE SYSTEM
-        checkDiaryArchive($SQL, $SQL_db);
+        checkDiaryArchive($SQL, $db);
         
         // GET FILTERS
         $EXTRA_FILTER = '';
@@ -102,6 +102,6 @@ if(isset($_SESSION['user_id'])){
         return $data;
     }
 
-	if(isset($_GET['get_columns']) && isset($_GET['module'])){ echo json_encode(get_columns($SQL, $SQL_db)); }
+	if(isset($_GET['get_columns']) && isset($_GET['module'])){ echo json_encode(get_columns($SQL, $INIconf['SQL']['database'])); }
 }
 ?>

@@ -246,7 +246,7 @@ if(isset($_SESSION['user_id'])){
         $module = SafeInput($SQL, $_POST['module']);
         $col = SafeInput($SQL, $_POST['col']);
         $year = SafeInput($SQL, $_POST['year']);
-        echo json_encode(archive_module($SQL, $SQL_db, $module, $col, $year));
+        echo json_encode(archive_module($SQL, $INIconf['SQL']['database'], $module, $col, $year));
     }
     if(isset($_GET['resize_columns'])){
         $column_id = $_POST['column_id'];
@@ -269,7 +269,10 @@ if(isset($_SESSION['user_id'])){
         $module = SafeInput($SQL, $_GET['module']);
         $archiveName = $GLOBALS['ARCHIVE_NAME_START'].'_%_'.$module;
 
-        $A = $SQL->query("SELECT TABLE_NAME FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name LIKE '$archiveName'");
+        $A = $SQL->query("
+            SELECT TABLE_NAME FROM information_schema.tables 
+            WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name LIKE '$archiveName'
+        ");
         if($A->num_rows != 0){while ($B = $A->fetch_row()){
             $year = intval(explode('_', explode($GLOBALS['ARCHIVE_NAME_START'].'_', $B[0])[1])[0]);
             array_push($data, $year);

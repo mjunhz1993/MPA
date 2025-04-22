@@ -54,7 +54,7 @@ function getModuleData($SQL, $module){
     return $arr;
 }
 
-function getRows($SQL, $SQL_db){
+function getRows($SQL, $db){
     $data = array();
     $user_id = $_SESSION['user_id'];
     $user_role_id = $_SESSION['user_role_id'];
@@ -160,7 +160,7 @@ function getRows($SQL, $SQL_db){
         $A = $SQL->query("SELECT column_id, type, list, can_view, preselected_option
         FROM information_schema.columns 
         LEFT JOIN module_columns ON COLUMN_NAME = column_id
-        WHERE TABLE_SCHEMA = '$SQL_db' AND TABLE_NAME='$FROM' AND active = 1 $VARCHAR_only $EXTRA_FILTER ORDER BY order_num");
+        WHERE TABLE_SCHEMA = '$db' AND TABLE_NAME='$FROM' AND active = 1 $VARCHAR_only $EXTRA_FILTER ORDER BY order_num");
     }
     if(!$A){ return ['error' => SQLerror($SQL)]; }
 
@@ -230,7 +230,7 @@ function getRows($SQL, $SQL_db){
     return $data;
 }
 
-function getRow($SQL, $SQL_db){
+function getRow($SQL, $db){
     $data = array();
     $user_id = $_SESSION['user_id'];
     $user_role_id = $_SESSION['user_role_id'];
@@ -267,7 +267,7 @@ function getRow($SQL, $SQL_db){
         $A = $SQL->query("SELECT column_id, type, list, can_view
         FROM information_schema.columns
         LEFT JOIN module_columns ON COLUMN_NAME = column_id
-        WHERE TABLE_SCHEMA = '$SQL_db' AND TABLE_NAME='$FROM' AND type NOT IN ('$type') $editable ORDER BY order_num");
+        WHERE TABLE_SCHEMA = '$db' AND TABLE_NAME='$FROM' AND type NOT IN ('$type') $editable ORDER BY order_num");
     }
 
     while ($B = $A->fetch_row()){

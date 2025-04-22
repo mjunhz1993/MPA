@@ -31,7 +31,9 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
             $archive = date('Y', time());
         }
         
-        $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = '$module' LIMIT 1");
+        $A = $SQL->query("
+            SELECT * FROM information_schema.tables 
+            WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = '$module' LIMIT 1");
         if($A->num_rows == 0){
             if($_POST['custom_file'] == ''){
                 $A = $SQL->query("CREATE TABLE $module (
@@ -266,8 +268,10 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         $A = $SQL->query("SELECT * FROM module WHERE module = '$table_name' LIMIT 1");
 
         if($A->num_rows != 1){
-            $A = $SQL->query("SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE, COLUMN_KEY, COLUMN_DEFAULT, EXTRA FROM information_schema.columns 
-            WHERE TABLE_SCHEMA = '$SQL_db' AND TABLE_NAME = '$table_name' ORDER BY ORDINAL_POSITION");
+            $A = $SQL->query("
+                SELECT COLUMN_NAME, DATA_TYPE, COLUMN_TYPE, COLUMN_KEY, COLUMN_DEFAULT, EXTRA FROM information_schema.columns 
+                WHERE TABLE_SCHEMA = '".$INIconf['SQL']['database']."' AND TABLE_NAME = '$table_name' ORDER BY ORDINAL_POSITION
+            ");
             if($A->num_rows != 0){while ($B = $A->fetch_row()){
                 $data[$st]['COLUMN_NAME'] = $B[0];
                 $data[$st]['DATA_TYPE'] = $B[1];
@@ -585,8 +589,11 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
                 if(in_array($type, $FAKE_COLUMNS)){ $A = 1; }else{
 
                     if($type == 'JOIN_ADD'){ 
-                        $A = $SQL->query("SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
-                        WHERE REFERENCED_TABLE_SCHEMA = '$SQL_db' AND TABLE_NAME = '$module' AND COLUMN_NAME = '$column_id' LIMIT 1"); 
+                        $A = $SQL->query("
+                            SELECT CONSTRAINT_NAME FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE 
+                            WHERE REFERENCED_TABLE_SCHEMA = '".$INIconf['SQL']['database']."' AND 
+                            TABLE_NAME = '$module' AND COLUMN_NAME = '$column_id' LIMIT 1
+                        "); 
                         while ($B = $A->fetch_row()){ $CONSTRAINT_NAME = $B[0]; }
                         $A = $SQL->query("ALTER TABLE $module DROP FOREIGN KEY $CONSTRAINT_NAME");
                     }

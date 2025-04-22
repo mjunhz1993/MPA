@@ -1,5 +1,6 @@
 function showUserConfig_localStorage(box, html = ''){
 	var c = getAllLocalStorage();
+	html += '<p>'+slovar('localStorage_usage')+': <b>'+getLocalStorageUsage()+'</b></p>';
 	html += '<table class="table"><thead><tr>';
 	html += '<th></th>';
 	html += '<th>'+slovar('Name')+'</th>';

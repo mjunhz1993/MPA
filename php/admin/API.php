@@ -1,8 +1,8 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 
-function test_API_table($SQL, $SQL_db){
-    $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'api' LIMIT 1");
+function test_API_table($SQL, $db){
+    $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$db' AND table_name = 'api' LIMIT 1");
     if($A->num_rows == 0){
         $A = $SQL->query("CREATE TABLE api
         (
@@ -68,7 +68,7 @@ function delete_API($SQL){
 }
 
 if(isset($_SESSION['user_id'])){
-    if(isset($_GET['test_API_table'])){ echo json_encode(test_API_table($SQL, $SQL_db)); }
+    if(isset($_GET['test_API_table'])){ echo json_encode(test_API_table($SQL, $INIconf['SQL']['database'])); }
     if(isset($_GET['load_API_rows'])){ echo json_encode(load_API_rows($SQL)); }
     if(isset($_GET['add_API'])){ echo json_encode(add_API($SQL)); }
     if(isset($_GET['edit_API'])){ echo json_encode(edit_API($SQL)); }

@@ -43,6 +43,19 @@ function checkLocalStorage(cname) {
   return getLocalStorage(cname) !== "";
 }
 
+function getLocalStorageUsage() {
+  let total = 0;
+  for (let i = 0; i < localStorage.length; i++) {
+    const key = localStorage.key(i);
+    const value = localStorage.getItem(key);
+    total += key.length + value.length;
+  }
+
+  const bytes = total * 2;
+  const kilobytes = bytes / 1024;
+  return kilobytes.toFixed(2)+' Kb';
+}
+
 function deleteLocalStorage(cname) {
   localStorage.removeItem(cname);
 }

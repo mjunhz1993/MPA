@@ -4,8 +4,8 @@ if(isset($GLOBALS["config"]["SENDGRID"])):
 $SENDGRID = $GLOBALS["config"]["SENDGRID"];
 
 
-function check_campaign_stat_tables($SQL, $SQL_db){
-    $T = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'campaign_stats' LIMIT 1");
+function check_campaign_stat_tables($SQL, $db){
+    $T = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$db' AND table_name = 'campaign_stats' LIMIT 1");
     if($T->num_rows != 1){
         $A = $SQL->query("CREATE TABLE campaign_stats
         (
@@ -100,7 +100,7 @@ if(isset($_GET['get_stats'])){
 }
 
 if(isset($_GET['toggle_stats'])){
-    check_campaign_stat_tables($SQL, $SQL_db);
+    check_campaign_stat_tables($SQL, $INIconf['SQL']['database']);
     if($_GET['toggle_stats'] == 'hide'){ $acc = ''; }else{ $acc = 'STATS'; }
     $A = $SQL->query("UPDATE module SET accessories = '$acc' WHERE module = 'campaign' LIMIT 1");
 }

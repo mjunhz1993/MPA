@@ -54,8 +54,14 @@ function displayColumns(data, rows = ''){
         if(col.mandatory == 1){ rows += ' <span style="color:red">*</span>'; }
         if(col.type == 'VARCHAR' && col.list == 'PRIMARY'){ rows += ' <span style="color:blue">(PRIMARY)</span>'; }
         rows += '<br>'+col.column+'</td>';
-        rows += '<td class="no-drag">' + col.type + '</td>';
+        rows += `<td class="no-drag">${col.type} <b>[${col.length}]</b></td>`;
         rows += '<td class="no-drag Ccategory">' + slovar(col.category) + '</td>';
+        rows += `<td class="no-drag">
+            Vidno v tabeli: <b>${col.active}</b><hr>
+            Možno urejati: <b>${col.editable}</b><hr>
+            Prednastavljena vrednost: <b>${col.preselected_option}</b><hr>
+            Širina polja: <b>${col.width}</b>
+        </td>`;
         rows += '<td class="no-drag">';
         if(col.custom == 1){
             rows += '<a class="linksvg" onclick="openEditColumn(\'' + col.column + '\')">';

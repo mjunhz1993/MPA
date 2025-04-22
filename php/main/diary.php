@@ -60,7 +60,7 @@ function addToDiary($SQL, $module, $row, $desc, $type = ''){
     }
 }
 
-function checkDiaryArchive($SQL, $SQL_db, $module = 'diary'){
+function checkDiaryArchive($SQL, $db, $module = 'diary'){
     $currentYear = get_ModuleYear($SQL, $module);
     date_default_timezone_set("UTC");
     $newYear = date('Y', time());
@@ -69,7 +69,7 @@ function checkDiaryArchive($SQL, $SQL_db, $module = 'diary'){
     $temp_table = create_CopyOfModule($SQL, $module);
     if(!$temp_table){ return ['error' => SQLerror($SQL)]; }
     
-    copy_ForeignKeys($SQL, $SQL_db, $module, $temp_table, true);
+    copy_ForeignKeys($SQL, $db, $module, $temp_table, true);
 
     if(!rename_Module($SQL, $module, create_ArchiveModuleName($module, $currentYear))){ return ['error' => SQLerror($SQL)]; }
     if(!rename_Module($SQL, $temp_table, $module)){ return ['error' => SQLerror($SQL)]; }

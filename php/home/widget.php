@@ -9,7 +9,7 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
 		
 		if($_POST['type'] != ''){
 			$type = SafeInput($SQL, $_POST['type']);
-			$list = SafeInput($SQL, $_POST['list']);
+			$list = SafeInput($SQL, $_POST['list'] ?? '');
 
 			if($type == 'MODULE'){
 				$A = $SQL->query("SELECT name FROM module WHERE module = '$list' LIMIT 1");

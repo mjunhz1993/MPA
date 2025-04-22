@@ -82,6 +82,7 @@
                     <th class="no-sort" data-slovar="Name"></th>
                     <th class="no-sort" data-slovar="Type"></th>
                     <th class="no-sort" data-slovar="Group"></th>
+                    <th class="no-sort" data-slovar="Data"></th>
                     <th class="no-sort"></th>
                 </tr>
             </thead>

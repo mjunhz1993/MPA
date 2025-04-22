@@ -1,5 +1,5 @@
 <?php
-function check_if_email_room_exists($SQL, $SQL_db, $user_id, $mailSQL, $user_email_table){
+function check_if_email_room_exists($SQL, $db, $user_id, $mailSQL, $user_email_table){
     $A = $SQL->query("SELECT email_accounts_body FROM email_accounts WHERE email_accounts_user = '$user_id' LIMIT 1");
     if($A->num_rows == 0){ return ['error' => slovar('Access_denied')]; }
     while ($B = $A->fetch_row()){ $data['body'] = $B[0]; }
@@ -16,7 +16,7 @@ function check_if_email_room_exists($SQL, $SQL_db, $user_id, $mailSQL, $user_ema
     
     $mailSQL->query("CREATE TABLE $user_email_table
     (
-        email VARCHAR(120), FOREIGN KEY (email) REFERENCES $SQL_db.email_accounts(email_accounts_email),
+        email VARCHAR(120), FOREIGN KEY (email) REFERENCES $db.email_accounts(email_accounts_email),
         uid INT(255), INDEX(uid),
         udate INT(255),
         mail_from VARCHAR(255), INDEX(mail_from),

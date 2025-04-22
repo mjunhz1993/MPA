@@ -6,8 +6,8 @@ $GLOBALS['AI']['talk'] = [
     "contents" => array()
 ];
 
-function check_for_AI_table($SQL, $SQL_db){
-    $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'ai' LIMIT 1");
+function check_for_AI_table($SQL, $db){
+    $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$db' AND table_name = 'ai' LIMIT 1");
     if($A->num_rows == 0){
         $A = $SQL->multi_query("
         CREATE TABLE ai
@@ -58,7 +58,7 @@ function delete_AI_model($SQL){
 }
 
 if(isset($_SESSION['user_id'])){
-    if(isset($_GET['check_for_AI_table'])){ echo json_encode(check_for_AI_table($SQL, $SQL_db)); }
+    if(isset($_GET['check_for_AI_table'])){ echo json_encode(check_for_AI_table($SQL, $INIconf['SQL']['database'])); }
     if(isset($_GET['load_AI_models'])){ echo json_encode(load_AI_models($SQL)); }
     if(isset($_GET['save_AI_model'])){ echo json_encode(save_AI_model($SQL)); }
     if(isset($_GET['delete_AI_model'])){ echo json_encode(delete_AI_model($SQL)); }

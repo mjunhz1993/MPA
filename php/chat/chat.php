@@ -273,7 +273,7 @@ if(isset($_SESSION['user_id'])){
         (
             SELECT message_time,message_user,user_username,user_avatar,message,attachment 
             FROM ".$GLOBALS['CHAT']['DB'].".chat_room_$id
-            LEFT JOIN $SQL_db.user ON user_id = message_user
+            LEFT JOIN ".$INIconf['SQL']['database'].".user ON user_id = message_user
             WHERE message_time < '$time' ORDER BY message_time DESC LIMIT 20
         ) AS s
         ORDER BY s.message_time ASC");
@@ -299,7 +299,7 @@ if(isset($_SESSION['user_id'])){
         $A = $chatSQL->query("
         SELECT message_time,message_user,user_username,user_avatar,message,attachment 
         FROM ".$GLOBALS['CHAT']['DB'].".chat_room_$id
-        LEFT JOIN $SQL_db.user ON user_id = message_user
+        LEFT JOIN ".$INIconf['SQL']['database'].".user ON user_id = message_user
         WHERE message_time > '$time' 
         ORDER BY message_time ASC");
         if($A){while ($B = $A->fetch_row()){
@@ -316,7 +316,10 @@ if(isset($_SESSION['user_id'])){
     }
 
     if(isset($_GET['check_voicecall_sql'])){
-        $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'conversation_voicecall' LIMIT 1");
+        $A = $SQL->query("
+            SELECT * FROM information_schema.tables 
+            WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'conversation_voicecall' LIMIT 1
+        ");
         if($A->num_rows == 0){
             $A = $SQL->query("CREATE TABLE conversation_voicecall
             (

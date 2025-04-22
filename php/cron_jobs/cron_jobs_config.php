@@ -2,8 +2,8 @@
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 date_default_timezone_set("UTC");
 
-function test_cron_jobs_table($SQL, $SQL_db){
-    $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'cron_jobs' LIMIT 1");
+function test_cron_jobs_table($SQL, $db){
+    $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$db' AND table_name = 'cron_jobs' LIMIT 1");
     if($A->num_rows == 0){
         $A = $SQL->query("CREATE TABLE cron_jobs
         (
@@ -66,7 +66,7 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
     if(isset($_GET['delete_cron_job'])){ echo json_encode(delete_cron_job($SQL)); }
 }
 if(isset($_SESSION['user_id'])){
-	if(isset($_GET['test_cron_jobs_table'])){ test_cron_jobs_table($SQL, $SQL_db); }
+	if(isset($_GET['test_cron_jobs_table'])){ test_cron_jobs_table($SQL, $INIconf['SQL']['database']); }
 	if(isset($_GET['get_cron_jobs'])){ echo json_encode(get_cron_jobs($SQL)); }
 }
 ?>

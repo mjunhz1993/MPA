@@ -244,7 +244,10 @@ if(isset($_SESSION['user_id'])){
 
     if(isset($_GET['check_environment'])){
         $data = array();
-        $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'campaign_event' LIMIT 1");
+        $A = $SQL->query("
+            SELECT * FROM information_schema.tables 
+            WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'campaign_event' LIMIT 1
+        ");
         if($A->num_rows != 1){
             createFileUploadDIR('campaign');
 

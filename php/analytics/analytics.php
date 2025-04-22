@@ -1,6 +1,6 @@
 <?php
-function analytics_connect($SQL, $SQL_db){
-	$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'analytics' LIMIT 1");
+function analytics_connect($SQL, $db){
+	$A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$db' AND table_name = 'analytics' LIMIT 1");
     if($A->num_rows == 0){
         $A = $SQL->multi_query("
         CREATE TABLE analytics

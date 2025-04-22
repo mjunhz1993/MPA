@@ -1,7 +1,7 @@
 <?php
-function if_ModuleHasParentRestricts($SQL, $SQL_db, $module){
+function if_ModuleHasParentRestricts($SQL, $db, $module){
     $A = $SQL->query("SELECT * FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS A LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS B ON A.CONSTRAINT_NAME = B.CONSTRAINT_NAME
-    WHERE A.TABLE_SCHEMA = '$SQL_db' AND A.REFERENCED_TABLE_NAME = '$module' AND (B.UPDATE_RULE = 'RESTRICT' OR B.DELETE_RULE = 'RESTRICT')");
+    WHERE A.TABLE_SCHEMA = '$db' AND A.REFERENCED_TABLE_NAME = '$module' AND (B.UPDATE_RULE = 'RESTRICT' OR B.DELETE_RULE = 'RESTRICT')");
     if(!$A || $A->num_rows == 0){ return false; }
     return true;
 }
@@ -21,11 +21,11 @@ function create_CopyOfModule($SQL, $module, $name = false){
     return $name;
 }
 
-function copy_ForeignKeys($SQL, $SQL_db, $module, $temp_table, $removeKeysFromMainTable = false){
+function copy_ForeignKeys($SQL, $db, $module, $temp_table, $removeKeysFromMainTable = false){
     $A = $SQL->query("SELECT A.COLUMN_NAME, A.REFERENCED_TABLE_NAME, A.REFERENCED_COLUMN_NAME, B.DELETE_RULE, B.UPDATE_RULE, A.CONSTRAINT_NAME
     FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE AS A
     LEFT JOIN INFORMATION_SCHEMA.REFERENTIAL_CONSTRAINTS AS B ON A.CONSTRAINT_NAME = B.CONSTRAINT_NAME
-    WHERE A.TABLE_SCHEMA = '$SQL_db' AND A.TABLE_NAME = '$module' AND A.REFERENCED_TABLE_NAME IS NOT NULL");
+    WHERE A.TABLE_SCHEMA = '$db' AND A.TABLE_NAME = '$module' AND A.REFERENCED_TABLE_NAME IS NOT NULL");
     while ($B = $A->fetch_row()){
         $col_name = $B[0];
         $index_name = $module. '_'. date('Y'). '_'. $col_name;
@@ -66,8 +66,8 @@ function update_ModuleYear($SQL, $module, $year){
 
 // ----------- FILE
 
-function copy_fileDataToArchive($SQL, $SQL_db, $module, $col, $year){
-    if(!checkFileArchiveTable($SQL, $SQL_db)){ return false; }
+function copy_fileDataToArchive($SQL, $db, $module, $col, $year){
+    if(!checkFileArchiveTable($SQL, $db)){ return false; }
     $file_cols = get_ModuleFileColumns($SQL, $module);
     if(!$file_cols){ return true; }
     $module_id = $module.'_id';
@@ -84,8 +84,8 @@ function copy_fileDataToArchive($SQL, $SQL_db, $module, $col, $year){
     return true;
 }
 
-function checkFileArchiveTable($SQL, $SQL_db){
-    $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$SQL_db' AND table_name = 'file_archive' LIMIT 1");
+function checkFileArchiveTable($SQL, $db){
+    $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$db' AND table_name = 'file_archive' LIMIT 1");
     if($A->num_rows == 1){ return true; }
     $A = $SQL->query("CREATE TABLE file_archive
     (
@@ -103,12 +103,12 @@ function checkFileArchiveTable($SQL, $SQL_db){
 
 // ----------- MAIN
 
-function archive_module($SQL, $SQL_db, $module, $col, $year){
+function archive_module($SQL, $db, $module, $col, $year){
     if($year >= date('Y')){ return ['error' => 'Wrong_year']; }
-    if(if_ModuleHasParentRestricts($SQL, $SQL_db, $module)){ return ['error' => 'Module_parent_restrict']; }
+    if(if_ModuleHasParentRestricts($SQL, $db, $module)){ return ['error' => 'Module_parent_restrict']; }
     $archive_module = create_CopyOfModule($SQL, $module, create_ArchiveModuleName($module, $year));
     if(!$archive_module){ return ['error' => SQLerror($SQL)]; }
-    if(!copy_fileDataToArchive($SQL, $SQL_db, $module, $col, $year)){ return ['error' => 'File_copy_error']; }
+    if(!copy_fileDataToArchive($SQL, $db, $module, $col, $year)){ return ['error' => 'File_copy_error']; }
     if(!copy_ModuleData($SQL, $module, $col, $archive_module, $year, true)){ return ['error' => SQLerror($SQL)]; }
     if(!update_ModuleYear($SQL, $module, date('Y'))){ return ['error' => SQLerror($SQL)]; }
     return [];
