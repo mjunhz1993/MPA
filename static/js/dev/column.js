@@ -58,7 +58,8 @@ function displayColumns(data, rows = ''){
         rows += '<td class="no-drag Ccategory">' + slovar(col.category) + '</td>';
         rows += `<td class="no-drag">
             Vidno v tabeli: <b>${col.active}</b><hr>
-            Možno urejati: <b>${col.editable}</b><hr>
+            Možno urejati: <b>${col.editable}</b><br>
+            Urejanje med dodajanjem: <b>${col.show_in_create}</b><hr>
             Prednastavljena vrednost: <b>${col.preselected_option}</b><hr>
             Širina polja: <b>${col.width}</b>
         </td>`;
