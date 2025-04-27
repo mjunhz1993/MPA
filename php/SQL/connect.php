@@ -6,8 +6,8 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/loader.php');
 
 if(empty($_SESSION['token'])){ $_SESSION['token'] = bin2hex(random_bytes(32)); } $token = $_SESSION['token'];
 if(file_exists(loadPHP('user_data/config_file'))){ include(loadPHP('user_data/config_file')); }
-if(file_exists(loadPHP('user_data/app_version'))){ include(loadPHP('user_data/app_version')); }
 include(loadPHP('SQL/globals'));
+if(file_exists(loadPHP('user_data/app_version'))){ include(loadPHP('user_data/app_version')); }
 
 if(isset($_SESSION['user_language'])){ include(loadPHP('slovar/'.$_SESSION['user_language'])); }
 else if(isset($GLOBALS["config"]['defaultLanguage'])){ include(loadPHP('slovar/'.$GLOBALS["config"]['defaultLanguage'])); }
