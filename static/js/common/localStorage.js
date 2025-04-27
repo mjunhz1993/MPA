@@ -1,10 +1,5 @@
-function setLocalStorage(cname, cvalue = true, exdays = 30) {
-  const now = new Date();
-  const expireTime = now.getTime() + (exdays * 24 * 60 * 60 * 1000);
-  const item = {
-    value: cvalue,
-    expiry: expireTime
-  };
+function setLocalStorage(cname, cvalue = true) {
+  const item = { value: cvalue };
   localStorage.setItem(cname, JSON.stringify(item));
 }
 
@@ -14,11 +9,6 @@ function getLocalStorage(cname) {
   
   try {
     const item = JSON.parse(itemStr);
-    const now = new Date();
-    if (now.getTime() > item.expiry) {
-      localStorage.removeItem(cname);
-      return "";
-    }
     return item.value;
   } catch {
     return "";

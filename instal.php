@@ -192,7 +192,7 @@ if($A->num_rows == 0){
     ('diary_id','id','General','diary','0','0','ID','0','1','','','0','0','0','100','1'),
     ('diary_subject','Subject','General','diary','0','1','VARCHAR','100','0','','PRIMARY','1','0','1','50','1'),
     ('diary_user','Users','General','diary','0','2','JOIN_ADD','100','0','','diary_user,user,user_id|','1','0','1','100','1'),
-    ('diary_module','Module','General','diary','0','3','SELECT','255','0','','user,Users|role,Roles|event,Events|email_accounts,Email_accounts','1','0','1','50','1'),
+    ('diary_module','Module','General','diary','0','3','VARCHAR','255','0','','','1','0','1','50','1'),
     ('diary_row','Row','General','diary','0','4','ID','100','0','','','1','0','1','50','1'),
     ('diary_description','Description','General','diary','0','5','TEXTAREA','0','0','','','1','0','1','100','1'),
     ('diary_time','Time','General','diary','0','6','DATETIME','0','0','','','1','0','1','100','1')

@@ -4,15 +4,6 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
     
     // -------------------------------------------------------------------------------------------------------------------------------- MODULS
 
-    function resetDiaryModulSelector($SQL){
-        $diary_module = array();
-        $A = $SQL->query("SELECT module,name FROM module WHERE module != 'diary'");
-        while ($B = $A->fetch_row()){ array_push($diary_module, $B[0]. ','. $B[1]); }
-        $diary_module = implode('|', $diary_module);
-        $A = $SQL->query("UPDATE module_columns SET list = '$diary_module' WHERE column_id = 'diary_module' LIMIT 1");
-        if(!$A){ $data['error'] = $SQL->error; }
-    }
-    
     if(isset($_GET['add_module'])){
         $data = array();
         $module = $_POST['module'];
@@ -49,7 +40,7 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
                         VALUES 
                         ('$id_name','id','General','$module','0','0','ID','1','0')");
                         if(!$A){ $data['error'] = $SQL->error; }
-                        else{ resetDiaryModulSelector($SQL); }
+                        else{}
                     }
                 }
             }
@@ -132,7 +123,7 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
                 // BRISANJE Z module
                 $A = $SQL->query("DELETE FROM module WHERE module = '$module'");
                 if(!$A){ $data['error'] = $SQL->error; }
-                else{ resetDiaryModulSelector($SQL); }
+                else{}
             }
         }
         echo json_encode($data);
@@ -305,7 +296,6 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
                 $A = $SQL->query("INSERT INTO module (module,name,category) VALUES ('$module','$name','Imports')");
                 if(!$A){ $data['error'] = $SQL->error; }
                 else{
-                    resetDiaryModulSelector($SQL);
                     $order_num = 0;
                     for($i=0; $i<count($_POST['col_id']); $i++){
                         $col_id = $_POST['col_id'][$i];

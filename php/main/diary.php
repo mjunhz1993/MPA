@@ -1,4 +1,37 @@
 <?php
+function diaryLog($SQL, $d){
+    if(!is_object($d)){ return error_log('diaryLog: no object found'); }
+
+    foreach (['module', 'row', 'subject'] as $prop) {
+        if(!property_exists($d, $prop)){ return error_log("diaryLog: Missing property: $prop"); }
+    }
+
+    if($d->module == 'diary'){ return; }
+
+    date_default_timezone_set("UTC");
+    $d->time = date('Y-m-d H:i:s', time());
+    $d->user = $_SESSION['user_id'];
+
+    if(!property_exists($d, 'desc')){ $d->desc = ''; }
+    if(!property_exists($d, 'type')){ $d->type = ''; }
+
+    $SQL->query("INSERT INTO diary (added,diary_subject,diary_user,diary_module,diary_row,diary_description,diary_time,diarytype) 
+    VALUES 
+    ('$d->user','$d->subject','$d->user','$d->module','$d->row','$d->desc','$d->time','$d->type')");
+}
+
+function buildDiaryTable($headers, $rows) {
+    $table = '<table><tr>';
+    foreach ($headers as $header) $table .= "<th>$header</th>";
+    $table .= '</tr>';
+    foreach ($rows as $row) {
+        $table .= '<tr>';
+        foreach ($row as $cell) $table .= "<td>$cell</td>";
+        $table .= '</tr>';
+    }
+    return $table . '</table>';
+}
+
 function addToDiary($SQL, $module, $row, $desc, $type = ''){
     if($module != 'diary'){
     	$data = array();
@@ -10,33 +43,23 @@ function addToDiary($SQL, $module, $row, $desc, $type = ''){
 
         if($type == 'ADD'){
             $diary_subject = slovar('Added_row');
-            $Ddesc = '<table><tr>';
-            for($i=0; $i<count($desc[0]); $i++){ $Ddesc .= '<th>'. $desc[0][$i]. '</th>'; }
-            $Ddesc .= '</tr><tr>';
-            for($i=0; $i<count($desc[0]); $i++){ $Ddesc .= '<td>'. $desc[1][$i]. '</td>'; }
-            $Ddesc .= '</tr></table>';
-
+            $Ddesc = buildDiaryTable($desc[0], [$desc[1]]);
         }
         else if($type == 'EDIT'){
             $diary_subject = slovar('Edited_row');
-            $Ddesc = '<table><tr><th></th>';
-            for($i=0; $i<count($desc[0]); $i++){ $Ddesc .= '<th>'. $desc[0][$i]. '</th>'; }
-            $Ddesc .= '</tr><tr><th>'.slovar('To').'</th>';
-            for($i=0; $i<count($desc[0]); $i++){ $Ddesc .= '<td>'. $desc[1][$i]. '</td>'; }
-            $Ddesc .= '</tr><tr><th>'.slovar('From').'</th>';
-            for($i=0; $i<count($desc[0]); $i++){ $Ddesc .= '<td>'. $desc[2][$i]. '</td>'; }
-            $Ddesc .= '</tr></table>';
+            $headers = array_merge([''], $desc[0]);
+            $rows = [
+                array_merge([slovar('To')], $desc[1]),
+                array_merge([slovar('From')], $desc[2])
+            ];
+            $Ddesc = buildDiaryTable($headers, $rows);
         }
         else if($type == 'DELETE'){
             $diary_subject = slovar('Deleted_row');
-            while($B = $desc[1]->fetch_row()){
-                $Ddesc = '<table><tr>';
-                for($i=0; $i<count($desc[0]); $i++){ $Ddesc .= '<th>'. $desc[0][$i]. '</th>'; }
-                $Ddesc .= '</tr><tr>';
-                for($i=0; $i<count($desc[0]); $i++){ $Ddesc .= '<td>'. $B[$i+1]. '</td>'; }
-                $Ddesc .= '</tr></table>';
+            while ($B = $desc[1]->fetch_row()) {
+                $Ddesc = buildDiaryTable($desc[0], [array_slice($B, 1)]);
                 $thisRow = $B[0];
-                array_push($data, "('$user_id', '$diary_subject', '$user_id','$module','$thisRow','$Ddesc','$t','$type')");
+                $data[] = "('$user_id', '$diary_subject', '$user_id','$module','$thisRow','$Ddesc','$t','$type')";
             }
         }
         else if($type == 'DELETE_FILE'){
