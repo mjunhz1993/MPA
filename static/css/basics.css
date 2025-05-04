@@ -241,6 +241,10 @@ pre code{
 }
 
 /* NOTIFICATIONS */
+#DropdownMenu .popupNotif{
+    max-height: 80vh;
+    overflow: auto;
+}
 #DropdownMenu .notificationBox{
     width: 400px;
     max-width: 90vw;

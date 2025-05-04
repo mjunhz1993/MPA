@@ -21,7 +21,7 @@ function get_notifications(el, callback) {
 
 function popup_notifications(el, data){
     el.find('.DropdownMenuContent').remove();
-    el.append(`<div class="DropdownMenuContent" data-num="5">${display_notifications(data)}</div>`);
+    el.append(`<div class="DropdownMenuContent popupNotif" data-num="10">${display_notifications(data)}</div>`);
     showDropdownMenu(el);
     el.find('.DropdownMenuContent').remove();
 }

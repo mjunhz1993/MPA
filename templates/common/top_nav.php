@@ -17,7 +17,7 @@ $avatar = ($avatar && $avatar != '0') ? preg_replace('/\.(\w+)$/', '_small.$1', 
         <?php if(isset($GLOBALS['config']['AI'])): ?>
         <a class="ai_icon" onclick="loadJS('AI/AI-big', ()=>AI_window())" data-tooltip="Oktagon AI"></a>
         <?php endif; ?>
-        <div id="TopNavBell" onClick="get_notifications($(this), (el, data)=>popup_notifications(el, data))" data-svg="bell" data-num="5">
+        <div id="TopNavBell" onClick="get_notifications($(this), (el, data)=>popup_notifications(el, data))" data-svg="bell" data-num="10">
             <span>0</span>
         </div>
         <div id="TopNavUser" onClick="showDropdownMenu($(this))">
