@@ -14,7 +14,7 @@ function get_notifications($SQL){
 		$WHERE[] = "notifications_time = '". $time = SafeInput($SQL, $_GET['time']). "'";
 	}
 	$WHERE = implode(' AND ', $WHERE);
-	$LIMIT = SafeInput($SQL, $_GET['num']);
+	$LIMIT = SafeInput($SQL, $_GET['num'] ?? 1);
 
 	$data = [];
 	$A = $SQL->query("
