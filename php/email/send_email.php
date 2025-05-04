@@ -3,7 +3,6 @@ use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
-include($_SERVER['DOCUMENT_ROOT'].'/crm/php/SQL/globals.php');
 require $GLOBALS['MAP']['HOME'].'PHPMailer/src/Exception.php';
 require $GLOBALS['MAP']['HOME'].'PHPMailer/src/PHPMailer.php';
 require $GLOBALS['MAP']['HOME'].'PHPMailer/src/SMTP.php';
