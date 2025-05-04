@@ -1,57 +1,57 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
-if(isset($_SESSION['user_id'])){
 
-	$user_id = $_SESSION['user_id'];
+function get_notifications_COUNT($SQL){
+	$A = $SQL->query("SELECT COUNT(*) FROM notifications WHERE notifications_user = '{$_SESSION['user_id']}'");
+	if($A->num_rows == 0){ return array('0'); }
+	while ($B = $A->fetch_row()){ return array($B[0]); }
+}
 
-	function delete_notification($SQL, $user_id, $time){
-		$A = $SQL->query("DELETE FROM notifications WHERE notifications_user = '$user_id' AND notifications_time = '$time' LIMIT 1");
-		if(!$A){ return false; }
-		return true;
+function get_notifications($SQL){
+	$WHERE = ["notifications_user = '{$_SESSION['user_id']}'"];
+	if(isset($_GET['type']) && $_GET['time']){
+		$WHERE[] = "notifications_type ='". SafeInput($SQL, $_GET['type']). "' ";
+		$WHERE[] = "notifications_time = '". $time = SafeInput($SQL, $_GET['time']). "'";
 	}
+	$WHERE = implode(' AND ', $WHERE);
+	$LIMIT = SafeInput($SQL, $_GET['num']);
 
-	if(isset($_GET['get_notifications_COUNT'])){
-		$data = array('0');
-		$A = $SQL->query("SELECT COUNT(*) FROM notifications WHERE notifications_user = '$user_id'");
-		if($A->num_rows != 0){while ($B = $A->fetch_row()){ $data = array($B[0]); }}
-		echo json_encode($data);
-    }
+	$data = [];
+	$A = $SQL->query("
+	SELECT 
+		notifications_title AS subject,
+		notifications_desc AS description,
+		notifications_time AS time,
+		notifications_type AS type,
+		notifications_list AS buttons
+	FROM notifications 
+	WHERE $WHERE 
+	ORDER BY notifications_time DESC 
+	LIMIT $LIMIT
+	");
+	while ($B = $A->fetch_assoc()){
+		$data[] = [
+			'subject' => $B['subject'],
+			'desc' => $B['description'],
+			'descText' => trim(preg_replace('/\s+/', ' ', preg_replace('/<[^>]+>/', ' ', $B['description']))),
+			'time' => $B['time'],
+			'type' => $B['type'],
+			'buttons' => json_decode($B['buttons'])
+		];
+	}
+	return $data;
+}
 
-    if(isset($_GET['get_notifications'])){
-		$data = array();
-		$WHERE = '';
-		if(isset($_GET['type']) && $_GET['time']){
-			$WHERE = "AND notifications_type ='". SafeInput($SQL, $_GET['type']). "' ";
-			$WHERE .= "AND notifications_time = '". $time = SafeInput($SQL, $_GET['time']). "'";
-		}
-		$st = 0;
-		$A = $SQL->query("SELECT notifications_title, notifications_desc, notifications_time, notifications_type, notifications_list
-		FROM notifications WHERE notifications_user = '$user_id' $WHERE ORDER BY notifications_time DESC LIMIT 5");
-		while ($B = $A->fetch_row()){
-			$data[$st]['title'] = $B[0];
-			if($WHERE == ''){ $data[$st]['desc'] = strip_tags($B[1]); }else{ $data[$st]['desc'] = $B[1]; }
-			$data[$st]['time'] = $B[2];
-			$data[$st]['type'] = $B[3];
-			$data[$st]['list'] = explode('|',$B[4]);
-			$st++;
-		}
-		echo json_encode($data);
-    }
+function delete_notification($SQL){
+	$time = SafeInput($SQL, $_GET['time']);
+	$A = $SQL->query("DELETE FROM notifications WHERE notifications_user = '{$_SESSION['user_id']}' AND notifications_time = '$time' LIMIT 1");
+	if(!$A){ return ['error'=>$SQL->error]; }
+	return true;
+}
 
-    if(isset($_GET['confirm_notifications'])){
-		$data = array();
-		$type = SafeInput($SQL, $_GET['type']);
-		$time = SafeInput($SQL, $_GET['time']);
-		$value = SafeInput($SQL, $_GET['value'] ?? '');
-		if(!delete_notification($SQL, $user_id, $time)){ $data['error'] = SQLerror($SQL); }
-		echo json_encode($data);
-    }
-
-    if(isset($_GET['delete_notification'])){
-    	$data = array();
-    	if(!delete_notification($SQL, $user_id, SafeInput($SQL, $_GET['time']))){ $data['error'] = SQLerror($SQL); }
-    	echo json_encode($data);
-    }
-
+if(isset($_SESSION['user_id'])){
+	if(isset($_GET['get_notifications_COUNT'])){ echo json_encode(get_notifications_COUNT($SQL)); }
+	if(isset($_GET['get_notifications'])){ echo json_encode(get_notifications($SQL)); }
+	if(isset($_GET['delete_notification'])){ echo json_encode(delete_notification($SQL)); }
 }
 ?>

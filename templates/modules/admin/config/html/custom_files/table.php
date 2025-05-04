@@ -29,7 +29,7 @@
 					<th style="width:90px"></th>
 					<th data-slovar="Name"></th>
 					<th data-slovar="Project"></th>
-					<th>Last update time stamp</th>
+					<th>Last update</th>
 					<th data-slovar="Tools"></th>
 				</tr>
 				<tr>

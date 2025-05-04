@@ -89,7 +89,19 @@ function post_message($SQL, $chatSQL, $user_id){
 
     $A = $SQL->query("UPDATE conversation SET conversation_time = '$message_time' WHERE id = '$id' LIMIT 1");
     $A = $SQL->query("SELECT conversation_user FROM conversation_user WHERE conversation_id = '$id' AND conversation_user != '$user_id'");
-    while ($B = $A->fetch_row()){ addToNotifications($SQL, 'CHAT', 'Chat_message', $message, 'user', $B[0], 'LOOK|'.$id); }
+    while ($B = $A->fetch_row()){
+        sendNotification($SQL, (object)[
+            'subject' => 'Chat_message',
+            'desc' => $message,
+            'to' => $B[0],
+            'buttons' => [
+                'Show_conversation' => [
+                    'onclick' => 'loadJS(\'chat/chat\',()=>chat(()=>chat_box('.$id.')))'
+                ],
+                'Cancel' => ['color' => 'Grey']
+            ]
+        ]);
+    }
     return true;
 }
 function post_message_files($user_id, $path, $time, $attachment = array()){
@@ -186,7 +198,9 @@ if(isset($_SESSION['user_id'])){
         $limit = 5;
         if(isset($_GET['limit'])){ $limit = SafeInput($SQL, $_GET['limit']); }
 
-        $A = $SQL->query("SELECT conversation_id, subject, conversation_time FROM conversation_user
+        $A = $SQL->query("
+        SELECT conversation_id, subject, conversation_time
+        FROM conversation_user
         LEFT JOIN conversation ON id = conversation_id
         WHERE conversation_user = '$user_id' $subject ORDER BY conversation_time DESC LIMIT $limit");
         while ($B = $A->fetch_row()){
@@ -194,6 +208,15 @@ if(isset($_SESSION['user_id'])){
             $data[$st]['subject'] = $B[1];
             $data[$st]['time'] = $B[2];
             $st++;
+        }
+
+        if($limit == 1 && $A->num_rows != 0){
+            $st--;
+            $A = $chatSQL->query("
+            SELECT message
+            FROM chat_room_{$data[$st]['id']}
+            ORDER BY message_time DESC LIMIT 1");
+            while ($B = $A->fetch_row()){ $data[$st]['lastMessage'] = $B[0]; }
         }
 
         echo json_encode($data);

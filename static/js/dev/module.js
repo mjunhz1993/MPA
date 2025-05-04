@@ -82,64 +82,6 @@ $('.editModuleForm').on('submit', function(e){
 });
 
 
-// EDIT MODULE NOTIFICATIONS
-function openEditNotifications(module){
-    hideDropdownMenu();
-    var form = $('#EditNotificationsBox');
-    var tr = $('#modul_table').find('tr[data-module="' + module + '"]');
-
-    form.find('[name=module]').val(module);
-    form.find('#notification_column').html('');
-
-    GET_column({
-        module:module,
-        showAll:true,
-        done: function(data){
-            for(var i=0; i<data.length; i++){
-                var col = data[i];
-                if(col.type != 'JOIN_ADD'){ continue }
-                if(!['user','role'].includes(col.list.split(',')[1])){ continue }
-                form.find('#notification_column').append('<input type="checkbox" name="notification_column[]" id="nc' + i + '" value="' + col.column + '">');
-                form.find('#notification_column').append('<label class="checkboxLabel" for="nc' + i + '">' + slovar(col.name) + '</label>');
-            }
-
-            var note_config = tr.attr('data-notification').split('|');
-            var note_config_columns = note_config[0].split(',');
-            for(var i=0; i<note_config_columns.length; i++){
-                form.find('#notification_column input[value="' + note_config_columns[i] + '"]').prop('checked', true);
-            }
-            form.find('#notification_title').val(note_config[1]);
-            form.find('#notification_desc').val(note_config[2]);
-            form.find('.tag_info').text('{' + module + '_columnID}');
-
-            $('#modul_table').parent().fadeOut('fast', function(){ form.fadeIn('fast'); });
-        }
-    })
-}
-
-function changeNotificationType(el){
-    if(el.val() == 'CONFIRM'){ el.parent().find('.notificationBoxTypeConfirm').show(); }
-    else{ el.parent().find('.notificationBoxTypeConfirm').hide(); }
-}
-
-function closeEditNotifications(){
-    $('#EditNotificationsBox').fadeOut('fast', function(){
-        $('#modul_table').parent().fadeIn('fast');
-    });
-}
-
-$('.editNotificationsForm').on('submit', function(e){
-    e.preventDefault();
-    var form = $(this);
-    var token = $('#csrf_token');
-    form.prepend(token);
-    $.post('/crm/php/admin/module.php?edit_module_notifications=1', form.serialize(), function(data){ console.log(data);
-        data = JSON.parse(data);
-        if(!data.error){ location.reload(); }
-        else{ createAlert(form, 'Red', data.error); }
-    })
-});
-
 // TOGGLE MODULE
 function toggleModule(el){
     el.hide();

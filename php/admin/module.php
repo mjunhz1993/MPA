@@ -85,20 +85,6 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         echo json_encode($data);
     }
 
-
-    if(isset($_GET['edit_module_notifications'])){
-        $data = array();
-        $module = $_POST['module'];
-        $notification_config = '';
-        if(isset($_POST['notification_column'])){
-            $_POST['notification_column'] = implode(',', $_POST['notification_column']);
-            $notification_config = $_POST['notification_column'].'|'.$_POST['notification_title'].'|'.$_POST['notification_desc'];
-        }
-        $A = $SQL->query("UPDATE module SET notification_config='$notification_config' WHERE module='$module' LIMIT 1");
-        if(!$A){ $data['error'] = $SQL->error; }
-        echo json_encode($data);
-    }
-
     if(isset($_GET['toggle_module'])){
         $module = $_POST['module'];
         $active = $_POST['active'];

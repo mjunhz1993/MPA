@@ -13,7 +13,7 @@ function displayAddFilter(box, popup, data, role_module_filter_access){
     for(var i=0; i<data.length; i++){
         var checked = false;
         if(box.find('.activeFilters div[data-id=' + data[i]['user_id'] + ']').length == 1){ checked = true }
-        else if(checkCookie('calendarFilter')){if(getCookie('calendarFilter').split(',').includes(data[i]['user_id'])){ checked = true; }}
+        else if(checkLocalStorage('calendarFilter')){if(getLocalStorage('calendarFilter').includes(data[i]['user_id'])){ checked = true; }}
         html += checkboxInput({
             id:'filter_user_'+i,
             name:data[i].user_id,
@@ -53,9 +53,9 @@ function AddFilter(popup, box){
             activeFilters.append('<div data-id="' + $(this).attr('name') + '"></div>');
             arr.push($(this).attr('name'));
         });
-        setCookie('calendarFilter', arr);
+        setLocalStorage('calendarFilter', arr);
     }
-    else{ deleteCookie('calendarFilter'); }
+    else{ deleteLocalStorage('calendarFilter'); }
     createCalendar(box);
     removePOPUPbox();
 }

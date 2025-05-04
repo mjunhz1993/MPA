@@ -66,8 +66,6 @@ if(isset($_SESSION['user_id'])){
                 $new_id = $SQL->insert_id;
                 // ADD EVENT TO DIARY
                 addToDiary($SQL, $module, $new_id, $diary_description, 'ADD');
-                // ADD NOTIFICATION - IF CONFIGERTED
-                checkForNotificationEvent($SQL, $_POST, $module, $moduleData['notification_config'], $new_id);
                 if($_FILES){ uploadFiles($SQL, $module, $new_id, $_FILES); }
                 // EXECUTE AUTOMATION - IF CONFIGERTED
                 if(in_array('AUTOMATIONS', $moduleData['accessories'])){ execute_automation_ADD($SQL, $module, $data_auto ?? '', $new_id); }

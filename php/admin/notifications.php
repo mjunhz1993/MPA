@@ -22,26 +22,33 @@ if(isset($_SESSION['user_id'])){if($_SESSION['user_id'] == 1){
         echo json_encode($data);
 	}
 
-	if(isset($_GET['show_desc'])){
+	if(isset($_GET['show_nData'])){
 		$data = array();
 		$user = $_GET['user'];
 		$time = $_GET['time'];
-		$A = $SQL->query("SELECT notifications_desc FROM notifications WHERE notifications_user = '$user' AND notifications_time = '$time' LIMIT 1");
-        while ($B = $A->fetch_row()){ $data['desc'] = $B[0]; }
-        echo json_encode($data);
+		$A = $SQL->query("
+			SELECT notifications_desc AS 'desc', notifications_list AS buttons 
+			FROM notifications 
+			WHERE notifications_user = '$user' AND notifications_time = '$time' 
+			LIMIT 1
+		");
+        while ($B = $A->fetch_assoc()){
+        	$B['buttons'] = json_decode($B['buttons']);
+        	echo json_encode($B);
+        }
 	}
 
 	if(isset($_GET['add_notification']) && isset($_POST['user'])){
-		$data = array();
-		$title = $_POST['title'];
-		$desc = $_POST['desc'];
-		$url = '';
-		if($_POST['url'] != ''){ $url = 'LOOK|'.$_POST['url']; }
-		$user = $_POST['user'];
-    	for($i=0; $i<count($user); $i++){
-    		addToNotifications($SQL, 'ADMIN_NOTE', $title, $desc, 'user', $user[$i], $url);
+		foreach($_POST['user'] as $user){
+			$data = [
+			    'subject' => $_POST['title'],
+			    'desc'    => $_POST['desc'],
+			    'to'      => $user
+			];
+			if(isset($_POST['noButton'])){ $data['buttons'] = 'NONE'; }
+			sendNotification($SQL, (object)$data);
     	}
-        echo json_encode($data);
+        echo json_encode([]);
 	}
 
 	if(isset($_GET['delete_notification'])){

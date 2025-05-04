@@ -7,13 +7,21 @@ function call_users($SQL, $extra = ''){
     $room = $_POST['room'];
     $users = $_POST['users'];
     if(count($users) == 0){ return ['error' => 'No_user_selected']; }
-    $extra .= 'JSbutton|Answer|delete_notification($(this), function(){';
-    $extra .= 'loadJS(\'chat/videocall\', function(){';
-    $extra .= 'videocall('.$room.', false)';
-    $extra .= '})})';
     for($i=0; $i<count($users); $i++){
         $u = SafeInput($SQL, $users[$i]);
-        addToNotifications($SQL,'PHONE','Pickup_call_title','Pickup_call_desc','user',$u,$SQL->real_escape_string($extra));
+        sendNotification($SQL, (object)[
+            'subject' => 'Pickup_call_title',
+            'desc' => 'Pickup_call_desc',
+            'to' => $u,
+            'nType' => 'RED',
+            'buttons' => [
+                'Answer' => [
+                    'color' => 'Green',
+                    'onclick' => 'loadJS(\'chat/videocall\',()=>videocall('.$room.', false))'
+                ],
+                'Cancel' => ['color'=>'Grey']
+            ]
+        ]);
     }
     return '';
 }

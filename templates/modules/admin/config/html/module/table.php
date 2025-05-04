@@ -18,41 +18,43 @@
             <tbody>
             <?php
             $st = 0;
-            $A = $SQL->query("SELECT module, custom, active, icon, name, category, archive, notification_config, accessories, url 
+            $A = $SQL->query("SELECT module, custom, active, icon, name, category, archive, accessories, url 
             FROM module ORDER BY order_num");
-            while ($B = $A->fetch_row()): $st++;
+            while ($B = $A->fetch_assoc()): $st++;
             ?>
                 <tr 
-                data-module="<?= $B[0]; ?>" 
-                data-name="<?= $B[4]; ?>"
-                data-category="<?= $B[5]; ?>"
-                data-archive="<?= $B[6]; ?>" 
-                data-notification="<?= $B[7]; ?>" 
-                data-accessories="<?= $B[8]; ?>"
-                data-url="<?= $B[9]; ?>"
+                data-module="<?= $B['module']; ?>" 
+                data-name="<?= $B['name']; ?>"
+                data-category="<?= $B['category']; ?>"
+                data-archive="<?= $B['archive']; ?>" 
+                data-accessories="<?= $B['accessories']; ?>"
+                data-url="<?= $B['url']; ?>"
                 >
                     <td data-svg="move" style="cursor:move"></td>
                     <td class="no-drag">
-                        <input type="checkbox" id="moduleAct<?= $st; ?>" onchange="toggleModule($(this))" <?php if($B[2] == 1): ?> checked <?php endif; ?> />
+                        <input 
+                        type="checkbox" 
+                        id="moduleAct<?= $st; ?>" 
+                        onchange="toggleModule($(this))" 
+                        <?php if($B['active'] == 1): ?> checked <?php endif; ?> />
                         <label for="moduleAct<?= $st; ?>" class="chekboxLabel" data-slovar="Active"></label>
                     </td>
-                    <td class="no-drag Micon" data-svg="<?= $B[3]; ?>"></td>
-                    <td class="no-drag" data-slovar="<?= $B[4]; ?>"></td>
-                    <td class="no-drag" data-slovar="<?= $B[5]; ?>"></td>
+                    <td class="no-drag Micon" data-svg="<?= $B['icon']; ?>"></td>
+                    <td class="no-drag" data-slovar="<?= $B['name']; ?>"></td>
+                    <td class="no-drag" data-slovar="<?= $B['category']; ?>"></td>
                     <td class="no-drag">
                         <div class="linksvg more" data-svg="settings" onClick="showDropdownMenu($(this))">
                             <div class="DropdownMenuContent">
-                                <a onclick="openEditModule('<?= $B[0]; ?>')" data-slovar="Edit_module"></a>
-                                <a onclick="loadJS('dev/addons', function(){openEditAddons('<?= $B[0]; ?>')})" data-slovar="Edit_addons"></a>
-                                <?php if($B[9] == ''): ?>
-                                <a onclick="openEditNotifications('<?= $B[0]; ?>')" data-slovar="Edit_notifications"></a>
-                                <a onclick="loadJS('dev/presets', function(){openPreset('<?= $B[0]; ?>')})" data-slovar="Edit_presets"></a>
-                                <a onclick="loadJS('dev/automations', function(){openEditAutomations('<?= $B[0]; ?>')})" data-slovar="Edit_automations"></a>
-                                <a onclick="openColumns('<?= $B[0]; ?>')" data-slovar="Edit_columns"></a>
+                                <a onclick="openEditModule('<?= $B['module']; ?>')" data-slovar="Edit_module"></a>
+                                <a onclick="loadJS('dev/addons', function(){openEditAddons('<?= $B['module']; ?>')})" data-slovar="Edit_addons"></a>
+                                <?php if($B['url'] == ''): ?>
+                                <a onclick="loadJS('dev/presets', function(){openPreset('<?= $B['module']; ?>')})" data-slovar="Edit_presets"></a>
+                                <a onclick="loadJS('dev/automations', function(){openEditAutomations('<?= $B['module']; ?>')})" data-slovar="Edit_automations"></a>
+                                <a onclick="openColumns('<?= $B['module']; ?>')" data-slovar="Edit_columns"></a>
                                 <?php endif; ?>
-                                <?php if($B[1] == 1): ?>
+                                <?php if($B['custom'] == 1): ?>
                                 <hr>
-                                <a onclick="deleteModule('<?= $B[0]; ?>')" data-slovar="Delete"></a>
+                                <a onclick="deleteModule('<?= $B['module']; ?>')" data-slovar="Delete"></a>
                                 <?php endif; ?>
                             </div>
                         </div>

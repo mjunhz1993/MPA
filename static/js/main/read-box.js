@@ -213,8 +213,8 @@ function overwriteReadBoxTabs(EditBox, LeftNav, tool){
     var LeftNavBox = LeftNav.find('.verticalToggleButtons');
     var ReadBox = EditBox.find('#readOnlyBox');
     cookieName = EditBox.data('cookie');
-    if(checkCookie(cookieName)){
-        var cookie = getCookie(cookieName).split(',');
+    if(checkLocalStorage(cookieName)){
+        var cookie = getLocalStorage(cookieName);
         for(var i=0; i<cookie.length; i++){
             var tab = LeftNavBox.find('a[data-group="' + cookie[i] + '"]');
             tab.appendTo(LeftNavBox);
@@ -248,8 +248,8 @@ function lockReadBoxTab(tab, tool, LeftNav, EditBox){
 function setLockCookie(module, tabs, cookieName){
     var arr = [];
     tabs.each(function(){if($(this).hasClass('lock')){ arr.push($(this).attr('data-group')); }});
-    if(arr.length == 0){ deleteCookie(cookieName) }
-    else{ setCookie(cookieName, arr) }
+    if(arr.length == 0){ deleteLocalStorage(cookieName) }
+    else{ setLocalStorage(cookieName, arr) }
 }
 
 function configHoverGroupTools(tab, tool, sortTool){

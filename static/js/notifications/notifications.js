@@ -1,7 +1,7 @@
 function get_notifications_COUNT(){
     let counter = $('#TopNavBell span'), parent = counter.parent();
     parent.removeClass('shake');
-    $.getJSON('/crm/php/notifications/notifications_exec.php?get_notifications_COUNT=1', data => {
+    $.getJSON('/crm/php/notifications/notifications_exec?get_notifications_COUNT=1', data => {
         let count = data[0];
         counter.text(count).toggle(count != '0');
         if(count != '0') {
@@ -12,102 +12,95 @@ function get_notifications_COUNT(){
     });
 }
 
-function run_pushNotification(){loadJS('notifications/pushNotifications', function(){
-	if(check_pushNotification()){get_notifications('', function(el, data){
-		for(var i=0; i<data.length; i++){ d = data[i];
-			create_pushNotification({
-				title:slovar(d.title),
-				tag:d.title,
-				body:d.desc,
-				icon:'https://'+window.location.hostname+'/crm/static/img/OKTAGON-IT.jpg',
-				callback:function(){
-					get_notifications($('#TopNavBell'), function(el, notes){
-						display_notifications(el, notes)
-					})
-				}
-			})
-		}
-	})}
-})}
-
-function get_notifications(el, callback){
-	$.getJSON('/crm/php/notifications/notifications_exec.php?get_notifications=1', function(data){
-		if(typeof callback === 'function'){ callback(el, data) }
-	})
+function get_notifications(el, callback) {
+	let num = el?.data?.('num') || 1;
+	$.getJSON('/crm/php/notifications/notifications_exec', { get_notifications: true, num }, data => {
+		if (typeof callback === 'function') callback(el, data);
+	});
 }
 
-function display_notifications(el, data, html = ''){
-	el.find('.DropdownMenuContent').remove();
-	html += '<div class="DropdownMenuContent">';
-	if(data.length != 0){
-		for(var i=0; i<data.length; i++){ html += get_HTML_notifications(data[i]) }
+function popup_notifications(el, data){
+    el.find('.DropdownMenuContent').remove();
+    el.append(`<div class="DropdownMenuContent" data-num="5">${display_notifications(data)}</div>`);
+    showDropdownMenu(el);
+    el.find('.DropdownMenuContent').remove();
+}
+
+function run_pushNotification(){
+	loadJS('notifications/pushNotifications', function(){ init_pushNotification() })
+}
+
+function display_notifications(data){
+	return (data.length ? data.map(get_HTML_notifications).join('') : `<p class="noNotifications">${slovar('Is_empty')}</p>`)
+}
+
+function get_HTML_notifications(note){
+    let desc = note.descText;
+    if (desc.length > 100) {
+        desc = desc.substring(0, 100) + '... <b onclick="showMore_notifications($(this))">' + slovar('Show_more') + '</b>';
+    }
+    return `
+    <div class="notificationBox" data-type="${note.type}" data-time="${note.time}">
+        <div class="nTop">
+			<h2 class="nTitle">${slovar(note.subject)}</h2>
+			<span class="nTime">${getSVG('clock')} ${displayLocalDate(note.time)}</span>
+        </div>
+        <div class="nDesc">${desc}</div>
+        <div class="nButtons">${get_notifications_buttons(note.buttons)}</div>
+    </div>`;
+}
+
+function get_notifications_buttons(buttons){
+	if(buttons == 'NONE'){ return '' }
+	if(typeof buttons === 'object' && buttons !== null){ return get_HTML_notifications_buttons(buttons) }
+	return `
+	<button class="buttonSquare buttonBlue" onclick="delete_notification($(this))">${slovar('Got_it')}</button>
+	`;
+}
+
+function get_HTML_notifications_buttons(buttons) {
+	let html = '';
+	for (const key in buttons){
+		if(!buttons.hasOwnProperty(key)) continue;
+		let { color, onclick, delete: del } = buttons[key];
+		if(del !== false){ onclick = `delete_notification($(this), ()=>{ ${onclick} })` }
+
+		html += `
+		<button
+			class="buttonSquare button${color ?? 'Blue'}"
+			onclick="${onclick ?? ''}"
+		>
+			${slovar(key)}
+		</button>
+		`;
 	}
-	else{ html += '<p class="noNotifications">'+slovar('Empty')+'</p>' }
-	html += '</div>';
-
-	el.append(html);
-	showDropdownMenu(el);
+	return html;
 }
 
-function get_HTML_notifications(note, html = ''){
-	note.desc = note.desc.substring(0, 50)+'... ';
-	note.desc += '<b onclick="showMore_notifications($(this))">' + slovar('Show_more') + '</b>';
-	html += '<div class="notificationBox" data-type="' + note.type + '" data-time="' + note.time + '">';
-	html += '<h2 class="nTitle">' + slovar(note.title) + '</h2>';
-	html += '<span class="nTime">' + displayLocalDate(note.time) + '</span>';
-	html += '<div class="nDesc">' + note.desc + '</div><hr>';
-	html += '<div>'+get_notifications_buttons(note.list)+'</div>';
-	html += '</div>';
-	return html
-}
-
-function get_notifications_buttons(list, html = ''){
-	if(list[0] == 'LOOK'){ return '<button class="button buttonBlue" data-value="'+list[1]+'" onclick="confirm_notifications($(this))">'+slovar('View')+'</button>' }
-	if(list[0] == 'JSbutton'){ return '<button class="button buttonBlue" onclick="'+list[2]+'">'+slovar(list[1])+'</button>' }
-	return '<button class="button buttonBlue" onclick="confirm_notifications($(this))">'+slovar('Got_it')+'</button>'
-}
-
-function showMore_notifications(button, html = ''){
+function showMore_notifications(button){
 	hideDropdownMenu();
 	note = button.closest('.notificationBox')
-	$.getJSON('/crm/php/notifications/notifications_exec.php?get_notifications=1', {
+	$.getJSON('/crm/php/notifications/notifications_exec', {
+		get_notifications: true,
 		type: note.attr('data-type'),
 		time: note.attr('data-time')
 	}, function(data){
 		if(data.error){ return createAlert(note, 'Red', data.error) }
 		var popup = createPOPUPbox();
 		var popupBox = popup.find('.popupBox');
-		var note = button.closest('.notificationBox');
-		html = '<pre style="text-align:left;">' + data[0].desc + '</pre><hr><button class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Close') + '</button>';
-		popupBox.html(html);
+		popupBox.html(`
+			<pre style="text-align:left;">${data[0].desc}</pre>
+			<hr>
+			<button class="button buttonGrey" onclick="removePOPUPbox()">${slovar('Close')}</button>
+		`);
 		popup.fadeIn('fast');
 	})
 }
 
-function confirm_notifications(button){
-	var note = button.closest('.notificationBox');
-	var value = button.attr('data-value');
-	var type = note.attr('data-type');
-	$.getJSON('/crm/php/notifications/notifications_exec.php', {
-		confirm_notifications: true,
-		type: type,
-		time: note.attr('data-time'),
-		value: value,
-	}, function(data){
-		if(data.error){ return createAlert(note, 'Red', data.error) }
-		hide_notification(note, function(){
-			if(!valEmpty(value) && value.substring(0,8) == 'https://'){ return window.open(value, '_blank') }
-			if(type == 'CHAT'){ return open_chat_notification(value) }
-			if(!valEmpty(type) && !valEmpty(value)){ return window.location.href = '/crm/templates/modules/main/main.php?module='+type+'#'+value+'-READ' }
-		})
-	})
-}
-
-function open_chat_notification(id){loadJS('chat/chat', function(){chat(function(){chat_box(id)})})}
-
 function delete_notification(el, callback){
 	var note = el.closest('.notificationBox');
-	$.getJSON('/crm/php/notifications/notifications_exec.php', {
+
+	$.getJSON('/crm/php/notifications/notifications_exec', {
 		delete_notification: true,
 		time: note.attr('data-time'),
 	}, function(data){
@@ -120,13 +113,21 @@ function delete_notification(el, callback){
 function hide_notification(note, callback){
 	var bell = $('#TopNavBell');
 	var bell_num = parseInt(bell.find('span').first().text());
+	var allNotes = $(`.notificationBox[data-type="${note.attr('data-type')}"][data-time="${note.attr('data-time')}"]`);
 	var DropdownMenu = $('#DropdownMenu');
-	note.fadeOut('fast', function(){
-		note.remove();
-		if(bell_num > 0){ bell.find('span').first().text(bell_num - 1) }
-		if(DropdownMenu.find('.notificationBox').length == 0){get_notifications(bell, function(el, data){ display_notifications(el, data) })}
-		if(typeof callback === 'function'){ callback() }
-	});
+
+	if(bell_num > 0){ bell.find('span').first().text(bell_num - 1) }
+
+	allNotes.each(function(){
+		let thisNote = $(this);
+		thisNote.fadeOut('fast', function(){
+			let noteBox = thisNote.parent();
+			get_notifications(noteBox, function(el, data){ noteBox.html(display_notifications(data)) })
+			// thisNote.remove();
+			// if(DropdownMenu.find('.notificationBox').length == 0){}
+			if(typeof callback === 'function'){ callback() }
+		});
+	})
 }
 
 $(document).ready(function(){ get_notifications_COUNT() });

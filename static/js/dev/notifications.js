@@ -24,31 +24,35 @@ function loadAllNotifications(){
     })
 }
 
-function displayAllNotifications(data, tbody){if(data){
-	var html = '';
-	for(var i=0; i<data.length; i++){
-		var d = data[i];
-		html += '<tr>';
-		html += '<td><button class="button buttonRed" onclick="deleteThisNotification($(this), ' + d.user + ', \'' + d.time + '\')">' + slovar('Delete') + '</button></td>';
-		html += '<td>' + displayLocalDate(d.time) + '</td>';
-		html += '<td>' + d.username + '</td>';
-		html += '<td>' + d.type + '</td>';
-		html += '<td><b>' + slovar(d.title) + '</b><hr>';
-		html += '<button class="button buttonBlue" onclick="showDesc(' + d.user + ', \'' + d.time + '\')">' + slovar('Show_more') + '</button>';
-		html += '<hr><b>' + slovar('Action') + ':</b> ' + d.list + '</td>';
-		html += '</tr>';
-	}
-	tbody.html(html);
-}}
+function displayAllNotifications(data, tbody){
+	if (!data) return;
+	tbody.html(data.map(d => `
+	<tr>
+		<td><button class="button buttonRed" onclick="deleteThisNotification($(this), ${d.user}, '${d.time}')">${slovar('Delete')}</button></td>
+		<td>${displayLocalDate(d.time)}</td>
+		<td>${d.username}</td>
+		<td>${d.type}</td>
+		<td>
+			<b>${slovar(d.title)}</b><hr>
+			<button class="button buttonBlue" onclick="showDesc(${d.user}, '${d.time}')">Description</button>
+			<button class="button buttonBlue" onclick="showButtons(${d.user}, '${d.time}')">Buttons</button>
+		</td>
+	</tr>`).join(''));
+}
 
 function showDesc(user, time){
 	var popup = createPOPUPbox();
 	var popupBox = popup.find('.popupBox');
 	var html = '';
-	$.getJSON('/crm/php/admin/notifications.php?show_desc=1', {user:user, time:time}, function(data){
+	$.getJSON('/crm/php/admin/notifications.php?show_nData=1', {user:user, time:time}, function(data){
 		html = '<pre style="text-align:left;">' + data.desc + '</pre><hr><button class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Close') + '</button>';
 		popupBox.html(html);
 		popup.fadeIn('fast');
+	})
+}
+function showButtons(user, time){
+	$.getJSON('/crm/php/admin/notifications.php?show_nData=1', {user:user, time:time}, function(data){
+		console.log(data.buttons)
 	})
 }
 
@@ -63,8 +67,8 @@ function addNewNotification(){
 		html += '<input type="text" name="title" id="nTitle" required>';
 		html += '<label>' + slovar('Description') + '</label>';
 		html += '<textarea name="desc"></textarea><br>';
-		html += '<label for="nUrl">' + slovar('Url') + '</label>';
-		html += '<input type="text" name="url" id="nUrl" placeholder="https://...">';
+		html += '<input type="checkbox" id="noButton" name="noButton">';
+		html += '<label for="noButton">No buttons</label>'
 		html += '<label>' + slovar('Send_to') + '</label>';
 		html += '<span class="button buttonBlue" onclick="toggleAssigns()">'+slovar('Toggle_all')+'</span>';
 		html += '<br><div style="display:flex;flex-wrap:wrap;gap:5px;">';

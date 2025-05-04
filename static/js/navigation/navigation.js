@@ -13,7 +13,7 @@ function MakeLeftNav(){
     var t2 = document.getElementById('LeftNavScroll').clientWidth;
     var SCROLLBAR = t1 - t2;
     $('#LeftNavScroll').css('width', 230 + SCROLLBAR);
-    if(getCookie('LeftNav') == 'off' && LeftNavOpen()){ LeftNavToggle() }
+    if(getLocalStorage('LeftNav') == 'off' && LeftNavOpen()){ LeftNavToggle() }
 }
 
 function LeftNavOpen(){if($('#LeftNavToggleButton').data('mode') == 'on'){return true}return false}
@@ -41,7 +41,7 @@ function LeftNavToggle(){
         LeftNav.css('width','');
     }
 
-    setCookie('LeftNav', button.data('mode'));
+    setLocalStorage('LeftNav', button.data('mode'));
 
     setTimeout(function(){
         var lnow = LeftNav.outerWidth(true);

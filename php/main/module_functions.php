@@ -14,7 +14,7 @@ function getModuleData($SQL, $module){
     $A = $SQL->query("SELECT
     module,name,category,url,custom,
     can_view,can_add,can_edit,can_delete,
-    icon,active,accessories,notification_config,
+    icon,active,accessories,
     archive
     FROM module $WHERE");
     if($A->num_rows == 0){ return ['error' => 'No_module_found']; }
@@ -32,8 +32,7 @@ function getModuleData($SQL, $module){
         $arr['icon'] = $B[9];
         if($B[10] == 0){ $arr['active'] = false; }else{ $arr['active'] = true; }
         $arr['accessories'] = explode('|', $B[11]);
-        $arr['notification_config'] = $B[12];
-        $arr['archive'] = $B[13];
+        $arr['archive'] = $B[12];
     }}
     else{$st=0;while ($B = $A->fetch_row()){
         $arr[$st]['module'] = $B[0];
@@ -48,7 +47,6 @@ function getModuleData($SQL, $module){
         $arr[$st]['icon'] = $B[9];
         if($B[10] == 0){ $arr[$st]['active'] = false; }else{ $arr[$st]['active'] = true; }
         $arr[$st]['accessories'] = explode('|', $B[11]);
-        $arr[$st]['notification_config'] = $B[12];
         $st++;
     }}
     return $arr;

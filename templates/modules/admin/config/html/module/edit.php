@@ -54,31 +54,6 @@
     </div>
 </div>
 
-<div id="EditNotificationsBox" style="display: none;">
-    <div class="box col100">
-        <form method="post" class="boxInner editNotificationsForm">
-            <input type="hidden" name="module">
-
-            <label for="notification_column" data-slovar="Notification_connect"></label>
-            <div id="notification_column"></div>
-
-            <label for="notification_title" data-slovar="Notification_title"></label>
-            <input type="text" name="notification_title" id="notification_title">
-
-            <label for="notification_desc" data-slovar="Notification_desc"></label>
-            <input type="text" name="notification_desc" id="notification_desc">
-
-            <ul>
-                <li>You can use TAGS - <b>{user_username}</b> or <b class="tag_info"></b></li>
-            </ul>
-
-            <br>
-            <button class="button buttonBlue buttonSubmit" data-slovar="Edit"></button>
-            <span class="button buttonBlack" onClick="closeEditNotifications()" data-slovar="Cancel"></span>
-        </form>
-    </div>
-</div>
-
 <form method="post" class="toggleModuleForm" style="display: none;">
     <input type="hidden" name="module">
     <input type="hidden" name="active">

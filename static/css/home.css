@@ -51,9 +51,11 @@
 	justify-content: space-evenly;
 }
 .homeUserBubble{
+	flex-grow: 1;
+	min-width: 200px;
+	max-width: 400px;
 	text-align: left;
 	display: inline-block;
-	width: 200px;
 	margin: 0 20px 20px 20px;
 	vertical-align: top;
 }

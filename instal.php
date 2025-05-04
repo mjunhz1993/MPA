@@ -84,7 +84,6 @@ if($A->num_rows == 0){
         icon VARCHAR(100),
         active TINYINT DEFAULT 1,
         archive VARCHAR(100) DEFAULT '',
-        notification_config TEXT,
         accessories TEXT
 
     )
@@ -93,20 +92,20 @@ if($A->num_rows == 0){
     else{ echo "<p style='color: green;'>tabela <b>module</b> je uspešno naložena</p><br>"; }
     
     /* INSERT ROWS INTO MODULE */
-    $A = $SQL->query("INSERT INTO module (module,name,category,url,custom,order_num,icon,active,archive,notification_config) VALUES 
-    ('dashboard','Dashboard','Desktop','home','0','1','dashboard','1','',''),
-    ('calendar','Calendar','Desktop','modules/calendar/calendar','0','2','calendar','1','',''),
-    ('mail_rooms','Email','Desktop','modules/email/email','0','3','email','0','',''),
+    $A = $SQL->query("INSERT INTO module (module,name,category,url,custom,order_num,icon,active,archive) VALUES 
+    ('dashboard','Dashboard','Desktop','home','0','1','dashboard','1',''),
+    ('calendar','Calendar','Desktop','modules/calendar/calendar','0','2','calendar','1',''),
+    ('mail_rooms','Email','Desktop','modules/email/email','0','3','email','0',''),
     ('event','Events','Desktop','','0','4','calendar','1','',''),
-    ('analytics','Analytics','Desktop','modules/analytics/analytics','0','5','analytics','1','',''),
+    ('analytics','Analytics','Desktop','modules/analytics/analytics','0','5','analytics','1',''),
 
-    ('settings','Configurations','Administration','modules/admin/config/config','0','6','settings','1','',''),
-    ('user','Users','Administration','','0','7','user','1','',''),
-    ('email_accounts','Email_accounts','Administration','','0','8','email','0','',''),
-    ('role','Roles','Administration','','0','9','user','1','',''),
-    ('diary','Diary','Administration','','0','10','clock','1','$currentYear',''),
-    ('campaign','Campaigns','Desktop','modules/campaign/campaign','0','11','target','0','',''),
-    ('chat','Chat','Administration','modules/chat/chat','0','12','chat','0','','')
+    ('settings','Configurations','Administration','modules/admin/config/config','0','6','settings','1',''),
+    ('user','Users','Administration','','0','7','user','1',''),
+    ('email_accounts','Email_accounts','Administration','','0','8','email','0',''),
+    ('role','Roles','Administration','','0','9','user','1',''),
+    ('diary','Diary','Administration','','0','10','clock','1','$currentYear'),
+    ('campaign','Campaigns','Desktop','modules/campaign/campaign','0','11','target','0',''),
+    ('chat','Chat','Administration','modules/chat/chat','0','12','chat','0','')
     ");
     if(!$A){ echo $SQL->error.'<br>'; }
     else{ echo "<p style='color: green;'>vrstice so bile naložene v <b>module</b></p><br>"; }

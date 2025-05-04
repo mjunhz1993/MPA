@@ -31,13 +31,10 @@ function homepage_getNotepad(dashboard, box){
     })
 }
 
-function homepage_getNotification(dashboard, box = $('#lastnotification')){
-	get_notifications('', function(el, note){
+function homepage_getNotification(dashboard, box = $('#lastnotification .lastnotification')){
+	get_notifications(box, function(el, note){
 		homepage_getEvent(dashboard);
-		if(note.length == 0){ return box.append(slovar('Is_empty')) }
-		box.append(get_HTML_notifications(note[0]));
-		box.find('h2').replaceWith('<div><b>' + box.find('h2').text() + '</b></div>');
-		// box.find('button,hr').remove();
+		box.html(display_notifications(note));
 	})
 }
 
@@ -52,43 +49,59 @@ function homepage_getEvent(dashboard, box = $('#upcomingevent'), html = ''){load
 		limit:1,
 		done:function(event){
 			homepage_getConversation(dashboard);
-			if(event.length == 0){ return box.append(slovar('Is_empty')) }
-			event = event[0];
-			var currentDate = stringToDate(getCurrentDate('UTC'),'UTC');
-			var startDate = stringToDate(event.start_date, 'UTC');
-			if(currentDate.getTime() > startDate.getTime()){ startDate = '<b style="color:#2d70b6">'+slovar('Is_happening')+'</b>' }
-			else{ startDate = getDate(defaultDateFormat + ' ' + defaultTimeFormat, startDate) }
-			html += '<div class="notificationBox">';
-			html += '<div class="eventColorStatus" style="background-color:'+event.color+'"></div><b>'+event.subject+'</b><div class="nTime">';
-			html += slovar('From')+': '+startDate+'<br>';
-			html += slovar('To')+': '+displayLocalDate(event.end_date);
-			html += '</div><a class="buttonSquare button100 buttonBlue" ';
-			html += 'onclick="loadJS(\'main/read-box-mini\', function(el){open_readBoxMini(el,\'row\',\'event\','+event.id+')}, $(this))">';
-			html += slovar('View') + '</a></div>';
-			box.append(html);
+			if (!event.length) return box.append(slovar('Is_empty'));
+
+			let e = event[0],
+				from = stringToDate(getCurrentDate('UTC'), 'UTC') > stringToDate(e.start_date, 'UTC') 
+					? `<b style="color:#2d70b6">${slovar('Is_happening')}</b>` 
+					: `${slovar('From')}: ${displayLocalDate(e.start_date)}`;
+
+			box.append(`
+				<div class="notificationBox">
+					<div class="eventColorStatus" style="background-color:${e.color}"></div>
+					<b>${e.subject}</b>
+					<div class="nDesc">
+						${from} - ${slovar('To')}: ${displayLocalDate(e.end_date)}
+					</div>
+					<a class="buttonSquare button100 buttonBlue"
+						onclick="loadJS('main/read-box-mini', el => open_readBoxMini(el, 'row', 'event', ${e.id}), $(this))">
+						${slovar('View')}
+					</a>
+				</div>
+			`);
 		}
 	})
 })}
 
-function homepage_getConversation(dashboard, box = $('#lastconversation'), html = ''){
+function homepage_getConversation(dashboard, box = $('#lastconversation')){
 	loadJS('GET/chat', function(){
 		GET_conversation({
 			limit:1,
 			done:function(con){
-				loadJS('home/widgets', function(){ loadWidgets(dashboard) })
+				loadJS('home/widgets',()=>loadWidgets(dashboard));
 				if(con.error){ return createAlert(box, 'Red', con.error) }
 				if(con.length == 0){
-					html += '<button class="buttonSquare button100 buttonGreen" ';
-					html += 'onclick="loadJS(\'chat/conversation_create\', function(){openAddConversation()})">'+slovar('Add_new')+'</button>';
-					return box.append(html)
+					return box.append(`
+					<button class="buttonSquare button100 buttonGreen"
+					onclick="loadJS(\'chat/conversation_create\', ()=>openAddConversation())">${slovar('Add_new')}</button>
+					`)
 				}
 				con = con[0];
-				html += '<div class="notificationBox"><b>' + con.subject + '</b>';
-				html += '<span class="nTime">'+displayLocalDate(con.time)+'</span>';
-				html += '<button class="buttonSquare button100 buttonBlue" ';
-				html += 'onclick="loadJS(\'chat/chat\', function(){chat(function(){chat_box('+con.id+')})})">'+slovar('View')+'</button>';
-				html += '</div>';
-				return box.append(html)
+				let lastMessage = con.lastMessage;
+			    if(lastMessage.length > 100){ lastMessage = lastMessage.substring(0, 100) + '...' }
+				return box.append(`
+				<div class="notificationBox">
+					<div class="nTop">
+						<h2 class="nTitle">${con.subject}</h2>
+						<span class="nTime">${getSVG('clock')} ${displayLocalDate(con.time)}</span>
+					</div>
+					<div class="nDesc">${lastMessage}</div>
+					<button 
+						class="buttonSquare button100 buttonBlue"
+						onclick="loadJS(\'chat/chat\', ()=>chat(()=>chat_box(${con.id})))"
+					>${slovar('View')}</button>
+				</div>
+				`)
 			}
 		})
 	})
@@ -114,23 +127,23 @@ function HTML_UserAvatar(u){
 	return '<div class="homeUserImgBox"><div class="homeUserImg" style="background-image:url('+APP.uploadDir+'/user/' + u.user_avatar + ')"></div></div>'
 }
 
-function HTML_UserTopright(html = ''){
-	html += '<div class="homeUserRight">';
-	html += '<div class="homeUserBubbleBox">';
-
-	html += '<div class="homeUserBubble" id="lastnotification">';
-	html += '<h3>' + getSVG('bell') + slovar('Latest_notification') + '</h3>';
-	html += '</div>';
-	html += '<div class="homeUserBubble" id="upcomingevent">';
-	html += '<h3>' + getSVG('calendar') + slovar('Upcoming_event') + '</h3>';
-	html += '</div>';
-	html += '<div class="homeUserBubble" id="lastconversation">';
-	html += '<h3>' + getSVG('chat') + slovar('Last_conversation') + '</h3>';
-	html += '</div>';
-
-	html += '</div>';
-	html += '</div>';
-	return html
+function HTML_UserTopright(){
+	return `
+	<div class="homeUserRight">
+		<div class="homeUserBubbleBox">
+			<div class="homeUserBubble" id="lastnotification">
+				<h3>${getSVG('bell')} ${slovar('Latest_notification')}</h3>
+				<div class="lastnotification"></div>
+			</div>
+			<div class="homeUserBubble" id="upcomingevent">
+				<h3>${getSVG('calendar')} ${slovar('Upcoming_event')}</h3>
+			</div>
+			<div class="homeUserBubble" id="lastconversation">
+				<h3>${getSVG('chat')} ${slovar('Last_conversation')}</h3>
+			</div>
+		</div>
+	</div>
+	`
 }
 
 function showSaveNotes(el){ el.next().show() }
