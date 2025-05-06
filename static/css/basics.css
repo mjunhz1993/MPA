@@ -255,6 +255,7 @@ pre code{
 #DropdownMenu .notificationBox[data-type=RED]{ border-left: 2px solid red; }
 #DropdownMenu .notificationBox[data-type=ORANGE]{ border-left: 2px solid orange; }
 #DropdownMenu .notificationBox[data-type=GREEN]{ border-left: 2px solid lightgreen; }
+#DropdownMenu .notificationBox[data-type=READ]{ border-left: 2px solid grey; }
 #DropdownMenu .notificationBox:hover{
     background-color: #eff3f6;
 }

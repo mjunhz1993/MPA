@@ -193,25 +193,28 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
      if(isset($_GET['add_module_automation'])){
         $data = array();
         $order_num = time();
-        $action = $_POST['action'];
+        $action = $_POST['action'] ?? '';
         $module = $_POST['module'];
-        $command = str_replace('<?php', '', $_POST['command']);
-        $command = str_replace('?>', '', $command);
-        $command = $SQL->real_escape_string($command);
+        $command = $_POST['file'].'|'.$_POST['function'];
         
-        $A = $SQL->query("INSERT INTO module_automations
-        (order_num,module,auto_command,action) VALUES ('$order_num','$module','$command','$action')");
-
-        if(!$A){ $data['error'] = $SQL->error; }
-        else{
-            $A = $SQL->query("SELECT accessories FROM module WHERE module = '$module' LIMIT 1");
-            while ($B = $A->fetch_row()){ $acc = explode('|', $B[0]); }
-            if(!in_array('AUTOMATIONS', $acc)){
-                array_push($acc, 'AUTOMATIONS');
-                $acc = implode('|', $acc);
-                $A = $SQL->query("UPDATE module SET accessories = '$acc' WHERE module = '$module' LIMIT 1");
-            }
+        if(isset($_POST['order_num'])){
+            $SQL->query("UPDATE module_automations
+            SET auto_command = '$command'
+            WHERE order_num = {$_POST['order_num']}");
         }
+        else{
+            $SQL->query("INSERT INTO module_automations
+            (order_num,module,auto_command,action) VALUES ('$order_num','$module','$command','$action')");
+        }
+        
+        $A = $SQL->query("SELECT accessories FROM module WHERE module = '$module' LIMIT 1");
+        while ($B = $A->fetch_row()){ $acc = explode('|', $B[0]); }
+        if(!in_array('AUTOMATIONS', $acc)){
+            array_push($acc, 'AUTOMATIONS');
+            $acc = implode('|', $acc);
+            $A = $SQL->query("UPDATE module SET accessories = '$acc' WHERE module = '$module' LIMIT 1");
+        }
+
         echo json_encode($data);
     }
 

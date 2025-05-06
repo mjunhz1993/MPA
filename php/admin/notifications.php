@@ -41,6 +41,7 @@ if(isset($_SESSION['user_id'])){if($_SESSION['user_id'] == 1){
 	if(isset($_GET['add_notification']) && isset($_POST['user'])){
 		foreach($_POST['user'] as $user){
 			$data = [
+				'nType' => $_POST['type'],
 			    'subject' => $_POST['title'],
 			    'desc'    => $_POST['desc'],
 			    'to'      => $user

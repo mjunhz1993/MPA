@@ -2,13 +2,16 @@
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 
 function get_notifications_COUNT($SQL){
-	$A = $SQL->query("SELECT COUNT(*) FROM notifications WHERE notifications_user = '{$_SESSION['user_id']}'");
+	$A = $SQL->query("
+		SELECT COUNT(*) FROM notifications 
+		WHERE notifications_user = '{$_SESSION['user_id']}' AND notifications_type != 'READ'
+	");
 	if($A->num_rows == 0){ return array('0'); }
 	while ($B = $A->fetch_row()){ return array($B[0]); }
 }
 
 function get_notifications($SQL){
-	$WHERE = ["notifications_user = '{$_SESSION['user_id']}'"];
+	$WHERE = ["notifications_user = {$_SESSION['user_id']}"];
 	if(isset($_GET['type']) && $_GET['time']){
 		$WHERE[] = "notifications_type ='". SafeInput($SQL, $_GET['type']). "' ";
 		$WHERE[] = "notifications_time = '". $time = SafeInput($SQL, $_GET['time']). "'";
@@ -26,10 +29,11 @@ function get_notifications($SQL){
 		notifications_list AS buttons
 	FROM notifications 
 	WHERE $WHERE 
-	ORDER BY notifications_time DESC 
+	ORDER BY (notifications_type = 'READ') ASC, notifications_time DESC 
 	LIMIT $LIMIT
 	");
 	while ($B = $A->fetch_assoc()){
+		tag_as_read_notification($SQL, $B);
 		$data[] = [
 			'subject' => $B['subject'],
 			'desc' => $B['description'],
@@ -40,6 +44,18 @@ function get_notifications($SQL){
 		];
 	}
 	return $data;
+}
+
+function tag_as_read_notification($SQL, $B){
+	$SQL->query("
+		UPDATE notifications
+		SET notifications_type = 'READ'
+		WHERE notifications_user = {$_SESSION['user_id']} AND
+		notifications_type = '{$B['type']}' AND
+		notifications_type != 'READ' AND
+		notifications_list = '{$SQL->real_escape_string($B['buttons'])}'
+		LIMIT 1
+	");
 }
 
 function delete_notification($SQL){

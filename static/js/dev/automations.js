@@ -29,12 +29,15 @@ function displayModuleAutomations(module, form, callback){
     		html += '</tr>';
     		for(var i=0; i<data.length; i++){
     			var conn = data[i];
-        		html += '<tr data-module="' + conn.module + '" data-ordernum="' + conn.order_num + '">';
+        		html += '<tr data-module="'+conn.module+'" data-action="'+conn.action+'" data-ordernum="'+conn.order_num+'">';
         		html += '<td>' + (i+1) + '</td>';
         		html += '<td>' + conn.action + '</td>';
         		html += '<td>' + conn.module + '</td>';
-        		html += '<td><pre><code>' + conn.command + '</code></pre></td>';
-        		html += '<td><span onclick="deleteModuleAutomation($(this))">' + getSVG('x') + '</span></td>';
+        		html += '<td>' + conn.command + '</td>';
+        		html += '<td>';
+        		html += '<span class="buttonSquare buttonBlue" onclick="editThisAutomation($(this))">'+slovar('Edit_row')+'</span>';
+        		html += '<span class="buttonSquare buttonRed" onclick="deleteModuleAutomation($(this))">'+slovar('Delete')+'</span>';
+        		html += '</td>';
         		html += '</tr>';
         	}
     		html += '</table>';
@@ -45,6 +48,18 @@ function displayModuleAutomations(module, form, callback){
         form.find('.buttonGreen').click(function(){ selectAutomationAction(module, form); });
         if(typeof callback === 'function'){ callback(); }
     })
+}
+
+function editThisAutomation(el){
+	let action = el.closest('tr').data('action');
+	let module = el.closest('tr').data('module');
+	let ordernum = el.closest('tr').data('ordernum');
+	let form = el.closest('form');
+	form.empty();
+	loadJS(
+		'dev/custom_files',
+		()=>createModuleAutomation(action, module, form, ordernum)
+	)
 }
 
 function selectAutomationAction(module, form){
@@ -58,52 +73,46 @@ function selectAutomationAction(module, form){
 	html += '<option value="DELETE">' + slovar('Delete_row') + '</option>';
 	html += '</select>';
 	form.html(html);
-	form.find('select').change(function(){ createModuleAutomation($(this), module, form); });
+	form.find('select').change(function(){
+		loadJS('dev/custom_files', ()=>createModuleAutomation($(this).val(), module, form))
+	});
 }
 
-function createModuleAutomation(el, module, form){
-	var eventType = el.val();
+function createModuleAutomation(eventType, module, form, order_num = false){ 
 	form.find('.getAutomationModuleType').remove();
-	GET_column({
-		module:module,
-		showAll:true,
-		done: function(data){
-			var html = '<div class="getAutomationModuleType">';
 
-			html += '<input type="hidden" name="module" value="' + module + '">';
+	var html = '<div class="getAutomationModuleType">';
 
-			html += '<label>' + slovar('Custom_command') + '</label><br>';
-			html += '<div class="openCodeEditor">';
-			html += '<pre><code></code></pre>';
-			html += '<textarea name="command" style="display:none" required></textarea>';
-			html += '</div><div>';
-			html += '<ul>';
-			if(['ADD_CHECK','EDIT_CHECK'].includes(eventType)){
-				html += '<li>return \'\' - success</li>';
-				html += '<li>return \'some text\' - fail + error message</li>';
-			}
-			else if(eventType == 'ADD'){ html += '<li><b>$newRowID</b> - ID of user added row</li>' }
-			else if(eventType == 'EDIT'){ html += '<li><b>$EditedRowID</b> - ID of user edited row</li>' }
-			else if(eventType == 'DELETE'){ html += '<li><b>$DeletedRowID</b> - ID or IDs of user deleted row</li>' }
-			html += '</ul>';
-			html += '</div>';
+	html += '<input type="hidden" name="module" value="'+module+'">';
+	if(order_num){ html += '<input type="hidden" name="order_num" value="'+order_num+'">' }
 
-			html += '<hr><button class="button buttonGreen">' + slovar('Save_changes') + '</button>';
-		    html += '<span class="button buttonGrey">' + slovar('Cancel') + '</span></div>';
-			form.append(html);
+	html += '<label>' + slovar('File') + '</label>';
+	html += '<select name="file" required><option value="">'+slovar('Select')+'</option></select>';
+	html += '<label>' + slovar('Function') + '</label>';
+	html += '<input type="text" name="function" required>';
 
-			form.find('.openCodeEditor').click(function(){
-				loadJS('form/codeEditor', function(el){
-					openCodeEditor({
-						box: el,
-						type: 'php'
-					}) 
-				}, $(this))
+	html += '<ul>';
+	if(eventType == 'ADD_CHECK'){ html += '<li>function($SQL, $module)</li><li>ERROR = return "error msg"</li>' }
+	else if(eventType == 'ADD'){ html += '<li>function($SQL, $module, $id)</li>' }
+	else if(eventType == 'EDIT_CHECK'){ html += '<li>function($SQL, $module, $id)</li><li>ERROR = return "error msg"</li>' }
+	else if(eventType == 'EDIT'){ html += '<li>function($SQL, $module, $id)</li>' }
+	else if(eventType == 'DELETE'){ html += '<li>function($SQL, $module, $id, $rowData)</li>' }
+	html += '</ul>';
+
+	html += '<hr><button class="button buttonGreen">' + slovar('Save_changes') + '</button>';
+    html += '<span class="button buttonGrey">' + slovar('Cancel') + '</span></div>';
+	form.append(html);
+
+	form.find('.buttonGrey').click(function(){ displayModuleAutomations(module, form) });
+
+	loadCustomFiles({
+		ext:'php',
+		done:function(files){
+			files.forEach(file => {
+				form.find('[name=file]').append(`<option>${file.name}</option>`)
 			});
-
-			form.find('.buttonGrey').click(function(){ displayModuleAutomations(module, form); });
 		}
-	})
+	});
 }
 
 function deleteModuleAutomation(el){

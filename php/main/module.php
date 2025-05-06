@@ -54,7 +54,9 @@ if(isset($_SESSION['user_id'])){
 
         // CHECK AUTOMATION LIMITS
         $add_check = '';
-        if(!isset($data['error']) && in_array('AUTOMATIONS', $moduleData['accessories'])){ $add_check = execute_automation_ADD_CHECK($SQL, $module, $col, $col_value); }
+        if(!isset($data['error']) && in_array('AUTOMATIONS', $moduleData['accessories'])){
+            $add_check = execute_automation_ADD_CHECK($SQL, $module);
+        }
         if($add_check != ''){ $data['error'] = $add_check; }
 
         if(!isset($data['error'])){
@@ -68,7 +70,7 @@ if(isset($_SESSION['user_id'])){
                 addToDiary($SQL, $module, $new_id, $diary_description, 'ADD');
                 if($_FILES){ uploadFiles($SQL, $module, $new_id, $_FILES); }
                 // EXECUTE AUTOMATION - IF CONFIGERTED
-                if(in_array('AUTOMATIONS', $moduleData['accessories'])){ execute_automation_ADD($SQL, $module, $data_auto ?? '', $new_id); }
+                if(in_array('AUTOMATIONS', $moduleData['accessories'])){ execute_automation_ADD($SQL, $module, $new_id); }
             }
         }
         
@@ -84,8 +86,6 @@ if(isset($_SESSION['user_id'])){
         $diary_description[1] = array();
         $diary_description[2] = array();
         $SET = array();
-        $automationData['column'] = array();
-        $automationData['value'] = array();
         
         // LOCK ADMIN USER AND ROLE
         if(($module == 'user' || $module == 'role') && $id == 1 && $user_id != 1){ return ['error' => slovar('Access_denied')]; }
@@ -125,8 +125,6 @@ if(isset($_SESSION['user_id'])){
                         array_push($diary_description[1], $temp2);
                         array_push($diary_description[2], $temp2_old);
                         array_push($SET, $temp);
-                        array_push($automationData['column'], $temp1);
-                        array_push($automationData['value'], $temp2);
                     }
                 }
                 else{ return ['error' => $temp2['error']]; }
@@ -135,7 +133,7 @@ if(isset($_SESSION['user_id'])){
 
         // CHECK AUTOMATION LIMITS
         $edit_check = '';
-        if(in_array('AUTOMATIONS', $moduleData['accessories'])){ $edit_check = execute_automation_EDIT_CHECK($SQL, $module); }
+        if(in_array('AUTOMATIONS', $moduleData['accessories'])){ $edit_check = execute_automation_EDIT_CHECK($SQL, $module, $id); }
         if($edit_check != ''){ return ['error' => $edit_check]; }
         
         // UPDATE ROW
@@ -146,7 +144,7 @@ if(isset($_SESSION['user_id'])){
         }
 
         if($_FILES){ uploadFiles($SQL, $module, $id, $_FILES); }
-        if(in_array('AUTOMATIONS', $moduleData['accessories'])){ execute_automation_EDIT($SQL, $module, $id, $automationData); }
+        if(in_array('AUTOMATIONS', $moduleData['accessories'])){ execute_automation_EDIT($SQL, $module, $id); }
         if(!is_array($SET)){ addToDiary($SQL, $module, $id, $diary_description, 'EDIT'); }
         return ['message' => slovar('Successfully_edited')];
     }

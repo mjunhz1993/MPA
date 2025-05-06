@@ -65,6 +65,8 @@ function addNewNotification(){
         html += '<h2>' + slovar('Add_notification') + '</h2><form>';
 		html += '<label for="nTitle">' + slovar('Title') + '</label>';
 		html += '<input type="text" name="title" id="nTitle" required>';
+		html += '<label for="nType">' + slovar('Type') + '</label>';
+		html += '<input type="text" name="type" id="nType" required>';
 		html += '<label>' + slovar('Description') + '</label>';
 		html += '<textarea name="desc"></textarea><br>';
 		html += '<input type="checkbox" id="noButton" name="noButton">';
