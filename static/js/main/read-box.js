@@ -150,7 +150,10 @@ function displayReadForm(data, EditBox, breadcrumb, module, id, boxYear){
             });
             if(extraTitleData.length > 0){ breadcrumb.find('span:last-child').append(' / '+extraTitleData.join(', ')) }
             turnEditInputsToReadInputs(ReadBox);
-            EditBox.fadeIn('fast', function(){ loadJS('main/addons', function(){ checkForModuleAddons(module, EditBox, 'READ', data) }) });
+            EditBox.fadeIn('fast', function(){ loadJS('main/addons', function(){
+                data.id = id;
+                checkForModuleAddons(module, EditBox, 'READ', data) 
+            })});
         },
         error: function(error){
             EditBox.find('.readOnlyFormBox').text('');
