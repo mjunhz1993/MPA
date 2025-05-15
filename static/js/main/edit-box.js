@@ -93,7 +93,10 @@ function displayEditForm(data, EditBox, breadcrumb, module, id, boxYear){
             if(EditBox.find('.datepickerinput,.timepickerinput,.datetimepickerinput').length > 0){loadJS('form/datepicker', function(){ checkForDatePickerInputs(EditBoxInner) })}
             if(EditBoxInner.find('textarea').length > 0){loadJS('form/cleditor', function(){ checkForTextAreaInputs(EditBoxInner.find('form').first()) })}
             if(EditBox.find('.colorpicker').length > 0){loadJS('form/colorpicker', function(){ createColorPickers(EditBoxInner) })}
-            loadJS('main/addons', function(){ checkForModuleAddons(module, EditBox, 'EDIT', data) });
+            loadJS('main/addons', function(){
+                data.id = id;
+                checkForModuleAddons(module, EditBox, 'EDIT', data);
+            });
             EditBox.fadeIn('fast', function(){ });
         },
         error: function(error){

@@ -240,66 +240,6 @@ pre code{
     vertical-align: -5px;
 }
 
-/* NOTIFICATIONS */
-#DropdownMenu .popupNotif{
-    max-height: 80vh;
-    overflow: auto;
-}
-#DropdownMenu .notificationBox{
-    width: 400px;
-    max-width: 90vw;
-    padding: 5px;
-    border-bottom: 1px solid grey;
-}
-#DropdownMenu .notificationBox[data-type=BLUE]{ border-left: 2px solid var(--blue); }
-#DropdownMenu .notificationBox[data-type=RED]{ border-left: 2px solid red; }
-#DropdownMenu .notificationBox[data-type=ORANGE]{ border-left: 2px solid orange; }
-#DropdownMenu .notificationBox[data-type=GREEN]{ border-left: 2px solid lightgreen; }
-#DropdownMenu .notificationBox[data-type=READ]{ border-left: 2px solid grey; }
-#DropdownMenu .notificationBox:hover{
-    background-color: #eff3f6;
-}
-.notificationBox .nTop{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-}
-.notificationBox .nTitle{
-    font-size: 15px !important;
-    margin:  0 !important;
-    padding: 0 !important;
-    color: var(--light-blue) !important;
-}
-.notificationBox .nTime{
-    display: flex;
-    align-items: center;
-    gap: 5px;
-}
-.notificationBox .nTime svg{ width: 18px; height:18px; }
-.notificationBox .nDesc{
-    margin: 0;
-    padding: 5px 0 10px 0;
-}
-.notificationBox .nDesc b{
-    cursor: pointer;
-    color: rgb(45 112 182);
-}
-.notificationBox .nButtons{
-    display: flex;
-    justify-content: space-evenly;
-    flex-wrap: wrap;
-}
-.notificationBox .nButtons button{ flex-grow:1; }
-.notificationBox .gtnm{
-    cursor: pointer;
-    border-bottom: 2px dotted;
-    color: var(--blue);
-}
-#DropdownMenu .noNotifications{
-    display: block;
-    padding: 5px 10px;
-}
-
 /* DROPDOWN MENU - JOIN_ADD */
 #DropdownMenu .loading20{margin: 5px;}
 #DropdownMenu .rightBox{

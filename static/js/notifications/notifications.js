@@ -19,12 +19,13 @@ function get_notifications(el, callback) {
 	});
 }
 
-function popup_notifications(el, data){
+function popup_notifications(el, data){loadJS(`notifications/slovar/${slovar()}`, function(){
     el.find('.DropdownMenuContent').remove();
     el.append(`<div class="DropdownMenuContent popupNotif" data-num="${el.data('num')}">${display_notifications(data)}</div>`);
+    el.find('.notificationBox[data-type=READ]').first().before(`<div class="seenNotificationTitle">${slovar('Seen_notifications')}</div>`);
     showDropdownMenu(el);
     el.find('.DropdownMenuContent').remove();
-}
+})}
 
 function run_pushNotification(){
 	loadJS('notifications/pushNotifications', function(){ init_pushNotification() })
@@ -59,23 +60,18 @@ function get_notifications_buttons(buttons){
 }
 
 function get_HTML_notifications_buttons(buttons) {
-	let html = '';
-	for (const key in buttons){
-		if(!buttons.hasOwnProperty(key)) continue;
-		let { color, onclick, delete: del } = buttons[key];
-		if(del !== false){ onclick = `delete_notification($(this), ()=>{ ${onclick} })` }
-
-		html += `
+	return Object.entries(buttons).map(([key, { color = 'Blue', onclick = '', delete: del }]) => {
+		const action = del === false ? 'tag_as_read_notification' : 'delete_notification';
+		return `
 		<button
-			class="buttonSquare button${color ?? 'Blue'}"
-			onclick="${onclick ?? ''}"
+			class="buttonSquare button${color}"
+			onclick="${action}($(this), ()=>{ ${onclick} })"
 		>
 			${slovar(key)}
-		</button>
-		`;
-	}
-	return html;
+		</button>`;
+	}).join('');
 }
+
 
 function showMore_notifications(button){
 	hideDropdownMenu();
@@ -94,6 +90,19 @@ function showMore_notifications(button){
 			<button class="button buttonGrey" onclick="removePOPUPbox()">${slovar('Close')}</button>
 		`);
 		popup.fadeIn('fast');
+	})
+}
+
+function tag_as_read_notification(el, callback){
+	var note = el.closest('.notificationBox');
+
+	$.getJSON('/crm/php/notifications/notifications_exec', {
+		tag_as_read_notification: true,
+		time: note.attr('data-time'),
+	}, function(data){
+		if(data.error){ return createAlert(note, 'Red', data.error) }
+		hide_notification(note);
+		if(typeof callback === 'function'){ callback() }
 	})
 }
 
@@ -130,4 +139,4 @@ function hide_notification(note, callback){
 	})
 }
 
-$(document).ready(function(){ get_notifications_COUNT() });
+$(document).ready(function(){ loadCSS('notifications'); get_notifications_COUNT() });

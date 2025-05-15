@@ -33,7 +33,6 @@ function get_notifications($SQL){
 	LIMIT $LIMIT
 	");
 	while ($B = $A->fetch_assoc()){
-		tag_as_read_notification($SQL, $B);
 		$data[] = [
 			'subject' => $B['subject'],
 			'desc' => $B['description'],
@@ -46,16 +45,18 @@ function get_notifications($SQL){
 	return $data;
 }
 
-function tag_as_read_notification($SQL, $B){
-	$SQL->query("
+function tag_as_read_notification($SQL){
+	$time = SafeInput($SQL, $_GET['time']);
+	$A = $SQL->query("
 		UPDATE notifications
 		SET notifications_type = 'READ'
 		WHERE notifications_user = {$_SESSION['user_id']} AND
-		notifications_type = '{$B['type']}' AND
-		notifications_type != 'READ' AND
-		notifications_list = '{$SQL->real_escape_string($B['buttons'])}'
+		notifications_time = '$time' AND
+		notifications_type != 'READ'
 		LIMIT 1
 	");
+	if(!$A){ return ['error'=>$SQL->error]; }
+	return true;
 }
 
 function delete_notification($SQL){
@@ -68,6 +69,7 @@ function delete_notification($SQL){
 if(isset($_SESSION['user_id'])){
 	if(isset($_GET['get_notifications_COUNT'])){ echo json_encode(get_notifications_COUNT($SQL)); }
 	if(isset($_GET['get_notifications'])){ echo json_encode(get_notifications($SQL)); }
+	if(isset($_GET['tag_as_read_notification'])){ echo json_encode(tag_as_read_notification($SQL)); }
 	if(isset($_GET['delete_notification'])){ echo json_encode(delete_notification($SQL)); }
 }
 ?>
