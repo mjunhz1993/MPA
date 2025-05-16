@@ -3,13 +3,7 @@ function createFormField(data, formType = 'ADD', html = ''){
     if(valEmpty(data.preselected_option)){ data.preselected_option = '' }
     if(data.preselected_option != ''){ data.preselected_option = checkPreselectedOption(data) }
     
-    data.id = 'ffa';
-    if(formType == 'EDIT'){ data.id = 'ffe' }
-    if(formType == 'READ'){ data.id = 'ffr' }
-    if($('.popup').length > 0){ data.id = 'ffaq'+$('.popup').length }
-
-    if(valEmpty(data.order_num)){ data.order_num = $('.formField').length }
-    data.id += data.order_num;
+    data = generateFormFieldID(data);
     
     if(valEmpty(data.width)){ data.width = 100 }
     html += '<div class="formField col col'+data.width+'" data-group="'+data.category+'" ';
@@ -21,6 +15,20 @@ function createFormField(data, formType = 'ADD', html = ''){
     html += createFormFieldInput(data, formType);
     html += '</div>';
     return html;
+}
+
+function generateFormFieldID(data){
+    data.id = 'ffa';
+    if(formType == 'EDIT'){ data.id = 'ffe' }
+    if(formType == 'READ'){ data.id = 'ffr' }
+    if($('.popup').length > 0){ data.id = 'ffaq'+$('.popup').length }
+
+    if(valEmpty(data.order_num)){ data.order_num = $('.formField').length }
+    data.id += data.order_num;
+
+    if($(`#${data.id}`).length == 1){ data.id += '_'+Math.floor(Math.random() * 1000) }
+
+    return data;
 }
 
 function createFormFieldInput(data, formType = 'ADD', html = ''){
