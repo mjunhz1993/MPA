@@ -136,7 +136,7 @@ function tableAddLoadedRows_CHECKBOX(value, th, id, c, html = ''){
     html += '<input type="checkbox" id="'+thisID+'" ';
     html += 'onchange="loadJS(\'table/edit/checkbox\', function(el){ editTableCheckbox(el) },$(this))" '
     if(value == 1){ html += 'checked' }
-    html += '><label for="tcb'+id+c+'">';
+    html += '><label for="'+thisID+'">';
     html += th.text()+'</label></td>';
     return html;
 }
