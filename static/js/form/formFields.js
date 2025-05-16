@@ -26,7 +26,7 @@ function generateFormFieldID(formType, data){
     if(valEmpty(data.order_num)){ data.order_num = $('.formField').length }
     data.id += data.order_num;
 
-    if($(`#${data.id}`).length == 1){ data.id += '_'+Math.floor(Math.random() * 1000) }
+    if($(`#${data.id}`).length == 1){ data.id += '_'+randNumber() }
 
     return data;
 }

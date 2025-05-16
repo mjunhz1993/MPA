@@ -130,8 +130,10 @@ function tableAddLoadedRows_CURRENCY(type, value, html = ''){
     return html;
 }
 function tableAddLoadedRows_CHECKBOX(value, th, id, c, html = ''){
+    let thisID = 'tcb'+id+c;
+    if($(`#${thisID}`).length == 1){ thisID += '_'+randNumber() }
     html += '<td>'
-    html += '<input type="checkbox" id="tcb'+id+c+'" ';
+    html += '<input type="checkbox" id="'+thisID+'" ';
     html += 'onchange="loadJS(\'table/edit/checkbox\', function(el){ editTableCheckbox(el) },$(this))" '
     if(value == 1){ html += 'checked' }
     html += '><label for="tcb'+id+c+'">';

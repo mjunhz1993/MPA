@@ -2,6 +2,7 @@ function getMainBoxFreeHaight(){ return $(window).height() - $('#Main').height()
 function smallDevice(){ return $(window).width() <= 800 }
 function valEmpty(v){ return ['',null,undefined].includes(v) }
 function colChild(v,i){ return `${v}:nth-child(${i})` }
+function randNumber(){ return Math.floor(Math.random() * 1000) }
 
 function Price(p, raw = false) {
     let e = Intl.NumberFormat('de-DE', { style: 'currency', currency: defaultCurrency, currencyDisplay: 'code' });
