@@ -3,7 +3,7 @@ function createFormField(data, formType = 'ADD', html = ''){
     if(valEmpty(data.preselected_option)){ data.preselected_option = '' }
     if(data.preselected_option != ''){ data.preselected_option = checkPreselectedOption(data) }
     
-    data = generateFormFieldID(data);
+    data = generateFormFieldID(formType, data);
     
     if(valEmpty(data.width)){ data.width = 100 }
     html += '<div class="formField col col'+data.width+'" data-group="'+data.category+'" ';
@@ -17,7 +17,7 @@ function createFormField(data, formType = 'ADD', html = ''){
     return html;
 }
 
-function generateFormFieldID(data){
+function generateFormFieldID(formType, data){
     data.id = 'ffa';
     if(formType == 'EDIT'){ data.id = 'ffe' }
     if(formType == 'READ'){ data.id = 'ffr' }
