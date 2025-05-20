@@ -22,8 +22,9 @@ function get_RowFiles($SQL, $module, $col = array(), $id, $archive = false){
     $i = 0;
     while ($B = $A->fetch_row()){
         $fileinfo = pathinfo($B[4]);
+        $extension = isset($fileinfo['extension']) ? $fileinfo['extension'] : '';
         $path = getFileDIR($module);
-        $name = $B[0].'_'.$B[1].'_'.$B[2].'.'.$fileinfo['extension'];
+        $name = $B[0].'_'.$B[1].'_'.$B[2].'.'.$extension;
         if(!file_exists($path.$name)){ $name = date('Y',$B[2]).'/'.$name; }
         $data['column'][$i] = $B[1];
         $data['name'][$i] = $name;
