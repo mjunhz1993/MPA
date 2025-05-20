@@ -29,7 +29,7 @@ var trans = {
     Archive: "Archive",
     Analytics: "Analytics",
     Toggle_all: "Toggle all",
-    Parent_module: "Parent Module",
+    Last_visited_module: "Last Visited Module",
 
     // CHAT
     Add_conversation: "Create conversation",

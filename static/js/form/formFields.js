@@ -263,7 +263,8 @@ function checkPreselectedOption(data){
                 var id = getRowFromURL().id;
                 var placeholder = $('#EditBox [data-list=PRIMARY]').first();
                 if(data.list.split(',')[1] == parent && id != '' && placeholder.length > 0){ return [id, placeholder.val()] }
-                if(data.list.split(',')[0] == APP.lastVisit.column && APP.lastVisit.row != ''){ return [APP.lastVisit.row, slovar('Parent_module')] }
+                console.log(APP.lastVisit);
+                if(data.list.split(',')[0] == APP.lastVisit.column && APP.lastVisit.row != ''){ return [APP.lastVisit.row, slovar('Last_visited_module')] }
                 return ''
             }
         }
