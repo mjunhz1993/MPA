@@ -29,6 +29,7 @@ var trans = {
     Archive: "Arhiv",
     Analytics: "Analitika",
     Toggle_all: "Preklopi vse",
+    Parent_module: "Nadrejeni modul",
 
     // CHAT
     Add_conversation: "Ustvari pogovor",

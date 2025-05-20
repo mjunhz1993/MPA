@@ -16,4 +16,5 @@ function Percent(p, raw = false) {
 const APP = {
     customDir: `${window.location.origin}/crm/php/downloads`,
     uploadDir: `${window.location.origin}/crm/static/uploads`,
+    lastVisit: {},
 };

@@ -29,6 +29,7 @@ var trans = {
     Archive: "Archive",
     Analytics: "Analytics",
     Toggle_all: "Toggle all",
+    Parent_module: "Parent Module",
 
     // CHAT
     Add_conversation: "Create conversation",

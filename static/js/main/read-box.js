@@ -1,4 +1,9 @@
 function displayReadForm(data, EditBox, breadcrumb, module, id, boxYear){
+    APP.lastVisit = {
+        module:module,
+        column:'',
+        row:id
+    };
     // ADD BREADCRUMBS
     updateEdtiBoxBreadCrumbs(breadcrumb, module, id);
     // ELEMENTS

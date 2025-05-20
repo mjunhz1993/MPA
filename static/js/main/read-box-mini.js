@@ -125,6 +125,11 @@ function getData_readBoxMini_TABLE(box, module, col, row, callback){
 	GET_module({
 		module:module,
 		done:function(m){
+			APP.lastVisit = {
+				module:module,
+				column:col,
+				row:row
+			};
 			box.find('.readBoxMiniBox').html(`
 				<div class="tableBox" data-button="add" data-module="${module}" data-simplify="1" data-filter="${col}" data-filtervalue="${row}">
 					<div class="horizontalTable" style="max-height:40vh"></div>
