@@ -8,15 +8,24 @@ include(loadPHP('notifications/notifications'));
 
 function getModuleData($SQL, $module){
     $arr = array();
-    $WHERE = 'ORDER BY order_num';
-    if($module != ''){ $WHERE = "WHERE module = '$module' LIMIT 1"; }
+    $WHERE = array();
+    $LIMIT = '';
+    if(isset($_GET['hideHidden'])){ $WHERE[] = "category != 'HIDDEN'"; }
+    if($module != ''){
+        $WHERE[] = "module = '$module'";
+        $LIMIT = "LIMIT 1";
+    }
+
+    if(count($WHERE) != 0){ $WHERE = 'WHERE '.implode(' AND ', $WHERE); }
+    else{ $WHERE = ''; }
 
     $A = $SQL->query("SELECT
     module,name,category,url,custom,
     can_view,can_add,can_edit,can_delete,
     icon,active,accessories,
     archive
-    FROM module $WHERE");
+    FROM module $WHERE
+    ORDER BY order_num $LIMIT");
     if($A->num_rows == 0){ return ['error' => 'No_module_found']; }
 
     if($module != ''){while ($B = $A->fetch_row()){

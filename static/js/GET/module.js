@@ -5,7 +5,10 @@ function GET_globals(d){
 }
 
 function GET_module(d){ console.log({loading_module:d.module});
-	$.getJSON('/crm/php/main/GET_module?get_modules=1', {module:d.module}, function(data){
+	$.getJSON('/crm/php/main/GET_module?get_modules=1', {
+		module:d.module,
+		hideHidden:d.hideHidden
+	}, function(data){
 		if(d.error && data.error){ return d.error(data.error) }
 		if(d.each){for(var i=0; i<data.length; i++){ d.each(data[i]) }}
 		if(d.done){ d.done(data) }

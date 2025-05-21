@@ -59,6 +59,7 @@ function loadLeftNav(callback){
     var navBar = $('#LeftNav');
     navBar.append(HTML_loader());
     GET_module({
+        hideHidden: true,
         each: function(d){
             if(
                 !d.active ||

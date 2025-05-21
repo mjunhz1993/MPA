@@ -128,7 +128,8 @@ function getData_readBoxMini_TABLE(box, module, col, row, callback){
 			APP.lastVisit = {
 				module:module,
 				column:col,
-				row:row
+				row:row,
+				label: box.find('.title').text()
 			};
 			box.find('.readBoxMiniBox').html(`
 				<div class="tableBox" data-button="add" data-module="${module}" data-simplify="1" data-filter="${col}" data-filtervalue="${row}">

@@ -259,12 +259,14 @@ function checkPreselectedOption(data){
             if(v[0] == 'USER'){ return [user_id,user_username] }
             if(v[0] == 'ROLE'){ return [user_role_id,role_name] }
             if(v[0] == 'PARENT'){
-                var parent = $('#main_table').attr('data-module');
-                var id = getRowFromURL().id;
-                var placeholder = $('#EditBox [data-list=PRIMARY]').first();
-                if(data.list.split(',')[1] == parent && id != '' && placeholder.length > 0){ return [id, placeholder.val()] }
-                console.log(APP.lastVisit);
-                if(data.list.split(',')[0] == APP.lastVisit.column && APP.lastVisit.row != ''){ return [APP.lastVisit.row, slovar('Last_visited_module')] }
+                const parent = $('#main_table').data('module');
+                const id = getRowFromURL().id;
+                const placeholder = $('#EditBox [data-list=PRIMARY]').first();
+                const [dataCol, dataModule] = data.list.split(',');
+                if(dataModule == parent && id != '' && placeholder.length){ return [id, placeholder.val()] }
+                if(dataCol == APP.lastVisit.column && APP.lastVisit.row != ''){
+                    return [APP.lastVisit.row, APP.lastVisit.label ?? slovar('Last_visited_module')];
+                }
                 return ''
             }
         }
