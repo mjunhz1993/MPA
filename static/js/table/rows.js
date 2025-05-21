@@ -1,23 +1,28 @@
 function tableAddLoadedTools(module, box, id, data, html = ''){
     if(
-        !valEmpty(box.data('simplify')) ||
-        valEmpty(module)
+        !valEmpty(box.data('simplify')) || valEmpty(module)
     ){ return '' }
     html += '<td class="toolRow">';
     var archive = box.find('.archiveSelect').val();
     if(valEmpty(archive)){ archive = '' }
 
-    html += '<a class="linksvg" href="/crm/templates/modules/main/main?module=' + module.module + '#' + id + '-READ-' + archive + '" ';
+    html += '<a class="linksvg" ';
+    if(box.attr('id') == 'main_table'){
+        html += 'href="/crm/templates/modules/main/main?module=' + module.module + '#' + id + '-READ-' + archive + '" ';
+    }
+    else{
+        html += 'onclick="loadJS(\'main/read-box-mini\', ()=>open_readBoxMini($(this), \'row\', \''+module.module+'\', '+id+'))"';
+    }
     html += 'data-tooltip="' + slovar('View') + '">' + getSVG('list') + '</a>';
 
     if(archive == '' && String(module.edit).split(',').includes(user_role_id)){
         if(box.attr('id') == 'main_table'){
-            html += '<a class="linksvg" onClick="loadJS(\'main/edit-box\', function(){clickEditButton(' + id + ')})" ';
+            html += '<a class="linksvg" onClick="loadJS(\'main/edit-box\', ()=>clickEditButton(' + id + '))" ';
             html += 'data-tooltip="'+slovar('Edit_row') + '">' + getSVG('edit') + '</a>';
         }
         else{
-            html += '<a class="linksvg" onClick="loadJS(\'main/edit-box\', function(){openEditBoxQuick(\'' + module.module + '\', ' + id + ', \'' + archive + '\')})" data-tooltip="';
-            html += slovar('Edit_row') + '">' + getSVG('edit') + '</a>';
+            html += '<a class="linksvg" onClick="loadJS(\'main/edit-box\', ()=>openEditBoxQuick(\'' + module.module + '\', ' + id + ', \'' + archive + '\'))" ';
+            html += 'data-tooltip="'+ slovar('Edit_row') + '">' + getSVG('edit') + '</a>';
         }
     }
 
