@@ -69,7 +69,12 @@ function renderTableFilterData($type, $value, $column_id){
         }
         return $column_id." > '".$value."'";
     }
-    if(in_array($type, array('ID','SELECT','JOIN_ADD'))){ return $column_id." = '".$value."'"; }
+    if(
+        in_array($type, array('ID','SELECT','JOIN_ADD')) ||
+        $column_id == 'diary.diary_module'
+    ){
+        return $column_id." = '".$value."'";
+    }
     if($value[0] === '*'){ return renderWildcardFilterData($value, $column_id); }
     return $column_id." LIKE '%".$value."%'";
 }
