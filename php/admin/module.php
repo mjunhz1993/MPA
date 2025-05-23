@@ -412,8 +412,8 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
             $ref_module = $_POST['ref_table'];
             $ref_column = $_POST['ref_table']. '_id';
             $temp = array();
-            $select_option_1 = $_POST['select_option_1'];
-            $select_option_2 = $_POST['select_option_2'];
+            $select_option_1 = $_POST['select_option_1'] ?? '';
+            $select_option_2 = $_POST['select_option_2'] ?? '';
             if(is_array($select_option_1)){for($i=0; $i<count($select_option_1); $i++){
                 if($select_option_1[$i] != ''){ array_push($temp, $select_option_1[$i].','.$select_option_2[$i]); }
             }}

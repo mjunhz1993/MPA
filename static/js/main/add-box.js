@@ -65,7 +65,10 @@ function displayAddForm(data, module, AddBox, AddBoxInner, show_in_create = 1){
     // CHECK FOR MODULE ADDONS
     loadJS('main/addons', function(){ checkForModuleAddons(module, AddBoxInner, 'ADD'); });
     // DISPLAY ADD FORM
-    AddBox.fadeIn('fast', function(){ focusInput(AddBox.find('.formField:visible').first()) });
+    AddBox.fadeIn('fast', function(){
+        var input = AddBox.find('input:visible').filter((_, el) => !el.value)[0];
+        input?.closest('.formField') && focusInput($(input).closest('.formField'));
+    });
 }
 
 function submitAddBox(){
