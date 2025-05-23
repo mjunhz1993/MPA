@@ -29,6 +29,7 @@ function tableLoadColumns(box, callback){
 
 function addTableAccessRules(data, table){
     table.attr({
+        'data-add':data.can_add,
         'data-edit':data.can_edit,
         'data-delete':data.can_delete
     })
@@ -118,7 +119,7 @@ function tableDisplayButtons(box, module, html = '') {
     const buttons = box.attr('data-button').split(',');
 
     buttons.forEach(button => {
-        if (button === 'add') {
+        if (button === 'add' && box.attr('data-add').split(',').includes(user_role_id)) {
             tableTop.find('td').first().append(`
                 <button 
                     class="button buttonGreen"

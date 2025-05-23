@@ -136,7 +136,7 @@ function getData_readBoxMini_TABLE(box, module, col, row, callback){
 					<div class="horizontalTable" style="max-height:40vh"></div>
 				</div>
 			`);
-			return loadJS('table/table', function(){ tableLoadColumns(box.find('.tableBox')) });
+			return loadJS('table/table', () => tableLoadColumns(box.find('.tableBox')) );
 		}
     })
 }
@@ -229,8 +229,9 @@ function dragable_readBoxMini(box){
 	})
 }
 
-function focus_readBoxMini(box){
+function focus_readBoxMini(box = ''){
 	$('.readBoxMini').css('z-index','');
-	box.css('z-index',999);
+	if(box === ''){ return }
+	box.css('z-index',998);
 }
 function close_readBoxMini(box){ box.remove() }
