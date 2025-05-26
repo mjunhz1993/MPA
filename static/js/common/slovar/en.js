@@ -57,6 +57,7 @@ var trans = {
     Wrong_date: "Wrong date",
     Calendar: "Calendar",
     Show_today: "Show today",
+    Today: "Today",
     Start_date: "Start date",
     End_date: "End date",
     Time: "Time",

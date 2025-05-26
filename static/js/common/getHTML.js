@@ -42,7 +42,10 @@ function HTML_verticalToggleButtons(data, html = ''){
 
 function HTML_loader(text = '', extra = {}) {
     let html = '<span class="loading20"></span>' + (!valEmpty(text) ? `<span class="loadingText">${text}</span>` : '');
-    if (extra.popup) createPOPUPbox().find('.popupBox').html(html).end().fadeIn('fast');
+    if(extra.popup){
+        const popup = $('.loaderPopup').first().length ? $('.loaderPopup').first() : createPOPUPbox().addClass('loaderPopup');
+        popup.find('.popupBox').html(html).end().fadeIn('fast');
+    }
     return html;
 }
 function remove_HTML_loader(box){ box.find('.loading20,.loadingText').remove() }

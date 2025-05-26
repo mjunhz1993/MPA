@@ -26,17 +26,12 @@ function tableAddLoadedTools(module, box, id, data, html = ''){
         }
     }
 
-    html += '<div class="linksvg" onClick="showDropdownMenu($(this),true)" data-tooltip="'+slovar('Show_more')+'">'
-    html += getSVG('more');
-    html += '<div class="DropdownMenuContent">';
-    html += '<a onClick="loadJS(\'main/extra/copy\',function(){copy_row({module:\''+module.module+'\',id:'+id+'})})">';
-    html += getSVG('plus_circle')+' '+slovar('Copy_row')+'</a>';
-    if(archive == '' && String(module.delete).split(',').includes(user_role_id)){
-        html += '<hr><a class="red" onClick="tableClickDeleteButton($(this), \''+module.module+'\', '+id+')">';
-        html += getSVG('delete')+' '+slovar('Delete_row')+'</a>';
+    if(
+        String(module.add).split(',').includes(user_role_id) ||
+        String(module.delete).split(',').includes(user_role_id)
+    ){
+        html += tableAddLoadedToolsMore(module, id, archive);
     }
-    html += '</div>';
-    html += '</div>';
 
     if(box.attr('data-filter') == 'trash' && box.attr('data-filtervalue', 1) && box.attr('id') == 'main_table'){
         html += '<a class="linksvg" onClick="loadJS(\'table/table_trash\', function(){ clickRecoverFromTrash(' + id + ') })"';
@@ -44,6 +39,22 @@ function tableAddLoadedTools(module, box, id, data, html = ''){
     }
 
     html += '</td>';
+    return html;
+}
+function tableAddLoadedToolsMore(module, id, archive, html = ''){
+    html += '<div class="linksvg" onClick="showDropdownMenu($(this),true)" data-tooltip="'+slovar('Show_more')+'">'
+    html += getSVG('more');
+    html += '<div class="DropdownMenuContent">';
+    if(String(module.add).split(',').includes(user_role_id)){
+        html += '<a onClick="loadJS(\'main/extra/copy\',function(){copy_row({module:\''+module.module+'\',id:'+id+'})})">';
+        html += getSVG('plus_circle')+' '+slovar('Copy_row')+'</a>';
+    }
+    if(archive == '' && String(module.delete).split(',').includes(user_role_id)){
+        html += '<hr><a class="red" onClick="tableClickDeleteButton($(this), \''+module.module+'\', '+id+')">';
+        html += getSVG('delete')+' '+slovar('Delete_row')+'</a>';
+    }
+    html += '</div>';
+    html += '</div>';
     return html;
 }
 

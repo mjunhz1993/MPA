@@ -9,12 +9,12 @@ function createAlert(box, color, text, more = []){
     box.append(alert);
 }
 
-function createAlertPOPUP(text, html = ''){
-    var popup = createPOPUPbox();
-    var popupBox = popup.find('.popupBox');
-    html += '<div></div>';
-    html += '<button class="button buttonGrey" onclick="removePOPUPbox()">'+slovar('Got_it')+'</button>';
-    popupBox.html(html);
+function createAlertPOPUP(text){
+    const popup = $('.alertPopup').first().length ? $('.alertPopup').first() : createPOPUPbox().addClass('alertPopup');
+    const popupBox = popup.find('.popupBox').html(`
+        <div></div>
+        <button class="button buttonGrey" onclick="removePOPUPbox()">${slovar('Got_it')}</button>
+    `);
     createAlert(popupBox.find('div'), 'Red', text);
     popup.fadeIn('fast');
 }

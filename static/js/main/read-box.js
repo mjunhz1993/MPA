@@ -28,9 +28,14 @@ function displayReadForm(data, EditBox, breadcrumb, module, id, boxYear){
     // CREATE NAVIGATION + FORMS
     LeftNav.html('<div class="verticalToggleButtons"></div>').show();
     var LeftNavBox = LeftNav.find('.verticalToggleButtons');
-    if(boxYear == ''){
+
+    if(
+        $('#main_table').attr('data-edit').includes(user_role_id) &&
+        boxYear == ''
+    ){
         LeftNavBox.append('<a class="buttonBlue" onclick="clickEditButton(' + id + ')">' + getSVG('edit') + '<span>' + slovar('Edit') + '</span></a>');
     }
+    
     EditBoxInner.find('.formField').each(function(){
         var group = $(this).data('group');
         if(LeftNavBox.find('a[data-group="' + group + '"]').length != 1){
@@ -376,3 +381,7 @@ function turnEditInputsToReadInputs(EditBox){
     // REMOVE FLAGS
     EditBox.find('.fileArea svg').remove();
 }
+
+// EXTRA
+
+function readBoxAlert(msg){ createAlert($('#EditBox .EditBoxNav'), 'Red', msg) }

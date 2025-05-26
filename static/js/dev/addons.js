@@ -62,7 +62,6 @@ function createModuleAddon(module, form){
 	html += '<option value="checkbox_group">' + slovar('Checkbox_group') + ' (CHECKBOX)</option>';
 	html += '<option value="varchar_multiselect">' + slovar('Varchar_multiselect') + '</option>';
 	html += '<option value="select_to_progress">' + slovar('Select_to_progress') + '</option>';
-	html += '<option value="add_multiple">' + slovar('add_multiple') + '</option>';
 	html += '<option value="loadJS">' + slovar('loadJS') + '</option>';
 	html += '<option value="JSCommand">' + slovar('JavaScript_Command') + '</option>';
 	html += '</optgroup>';
@@ -308,7 +307,6 @@ function changeAddonSelect1(module, el){
 			}
 		})
 	}
-	else if(el.val() == 'add_multiple'){}
 	else if(el.val() == 'loadJS'){
 		html += '<label>' + slovar('Type') + '</label>';
 		html += '<select name="custom_data_type" required>';

@@ -35,45 +35,61 @@ function getData_readBoxMini(box, back){
 }
 
 function getData_readBoxMini_ROW(box, module, id, callback){
-	GET_column({
-        module:module,
-        showAll:true,
-        done: function(col){
-            GET_row({
-            	readonly:true,
-                module:module,
-                id:id,
-                done: function(row){ insertData_readBoxMini_ROW(box, module, id, col, row, callback) }
-            })
-        }
-    })
+	GET_module({
+		module:module,
+		done:function(m){
+			GET_column({
+		        module:module,
+		        showAll:true,
+		        done: function(col){
+		            GET_row({
+		            	readonly:true,
+		                module:module,
+		                id:id,
+		                done: function(row){
+			                insertData_readBoxMini_ROW({
+			                	box:box,
+			                	module:m,
+			                	id:id,
+			                	col:col,
+			                	row:row,
+			                	callback:callback
+			                })
+			            }
+		            })
+		        }
+		    })
+		}
+	})
 }
-function insertData_readBoxMini_ROW(box, module, id, col, row, callback, html = ''){
+function insertData_readBoxMini_ROW(d){
 	var thisCategory = '';
 	var thisTitle = [];
-	html += '<div class="readBoxMiniTableBox">';
+	html = '<div class="readBoxMiniTableBox">';
 	html += '<table class="readBoxMiniTable">';
-	for(var i=0; i<col.length; i++){
-        var c = col[i];
+	for(var i=0; i<d.col.length; i++){
+        var c = d.col[i];
         if(['ID','PASSWORD','JOIN_ADD_SELECT','BUTTON'].includes(c.type)){ continue }
-        if(c.list == 'PRIMARY'){ thisTitle.push(row[c.column]) }
+        if(c.list == 'PRIMARY'){ thisTitle.push(d.row[c.column]) }
         if(thisCategory != c.category){
         	html += insertCategory_readBoxMini(c.category);
         	thisCategory = c.category;
         }
         html += '<tr><th>'+slovar(c.name)+'</th>';
-		html += '<td>'+insertRow_readBoxMini(box, c, row)+'</td></tr>';
+		html += '<td>'+insertRow_readBoxMini(d.box, c, d.row)+'</td></tr>';
 	}
 	html += '</table></div><div class="readBoxTools">';
 	html += '<a class="buttonSquare buttonBlue" ';
-	html += 'href="/crm/templates/modules/main/main?module='+module+'#'+id+'-READ-">'+getSVG('list')+' '+slovar('View')+'</a>';
-	html += '<button class="buttonSquare buttonBlue" ';
-	html += 'onclick="edit_readBoxMini($(this), \''+module+'\','+id+')">'+getSVG('edit')+' '+slovar('Edit_row')+'</button>';
+	html += 'href="/crm/templates/modules/main/main?module='+d.module.module+'#'+d.id+'-READ-">'+getSVG('list')+' '+slovar('View')+'</a>';
+	if(d.module.can_edit.includes(user_role_id)){
+		html += '<button class="buttonSquare buttonBlue" ';
+		html += 'onclick="edit_readBoxMini($(this), \''+d.module.module+'\','+d.id+')">'+getSVG('edit')+' '+slovar('Edit_row')+'</button>';
+	}
 	html += '</div>';
-	if(thisTitle.length > 0){ box.find('.dragTop .title').html(thisTitle.join(', ')) }
-	box.find('.readBoxMiniBox').html(html);
-	readBoxMini_joinadds(box.find('.placeholder'), row, [module]);
-	if(typeof callback === 'function'){ callback() }
+	if(thisTitle.length > 0){ d.box.find('.dragTop .title').html(thisTitle.join(', ')) }
+	d.box.find('.readBoxMiniBox').html(html);
+	readBoxMini_joinadds(d.box.find('.placeholder'), d.row, [d.module.module]);
+	if(typeof d.callback === 'function'){ d.callback() }
 }
 function insertCategory_readBoxMini(c){ return '<tr><th colspan="2">'+slovar(c)+'</th></tr>' }
 function insertRow_readBoxMini(box, col, row, html = ''){

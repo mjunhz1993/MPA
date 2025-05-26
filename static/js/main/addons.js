@@ -11,7 +11,8 @@ function checkForModuleAddons(module, box, type = '', row = null){
             }
             else if(addon[0] == 'loadJS'){
                 if(addon[1] != type){ continue }
-                loadJS(APP.customDir+'/'+addon[2]+'.js',function(f){ eval(f+'(row,box)') }, addon[2])
+                const thisFunc = addon[3] ?? addon[2];
+                loadJS(APP.customDir+'/'+addon[2]+'.js',function(f){ eval(f+'(row,box)') }, thisFunc)
             }
             else{ RUN_addon(module, box, type, addon, i) }
         }}

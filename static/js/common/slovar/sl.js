@@ -57,6 +57,7 @@ var trans = {
     Wrong_date: "Napačen datum",
     Calendar: "Koledar",
     Show_today: "Pokaži danes",
+    Today: "Danes",
     Start_date: "Začetni datum",
     End_date: "Končni datum",
     Time: "Čas",

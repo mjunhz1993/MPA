@@ -37,12 +37,15 @@ function checkDatePickerTypeInput(el, input, dropdownMenu, today){
 	}
 	else if(input.hasClass('datepickerinput')){
 		displayDatePickerInputDate(el, input, dropdownMenu, today)
-		dropdownMenu.append('<button class="buttonSquare button100 buttonBlue">' + slovar('Save_changes') + '</button>');
+		dropdownMenu.append('<button class="buttonSquare button100 buttonBlue setTime">' + slovar('Save_changes') + '</button>');
 	}
 	else if(input.hasClass('timepickerinput')){ displayDatePickerInputTime(el, input, dropdownMenu, today) }
 	dropdownMenu.prepend('<input type="hidden" value="' + input.attr('id') + '">');
 	if(input.attr('data-list') != undefined){ dropdownMenu.find('input[type="hidden"]').attr('data-list', input.attr('data-list')) }
-	dropdownMenu.find('.buttonBlue').click(function(){ submitDatePickerInput(el, dropdownMenu) });
+	
+	dropdownMenu.find('.setTime').click(function(){ submitDatePickerInput(el, dropdownMenu) });
+	dropdownMenu.find('.setToNow').click(function(){ setDatePickerToNow(el, dropdownMenu) });
+
 	alignDropdownMenu(el, dropdownMenu);
 }
 
@@ -168,7 +171,10 @@ function displayDatePickerInputTime(el, input, dropdownMenu, today){
 	    }
 	    html += '</select>';
 	}
-	html += '</div><button class="button buttonBlue">' + slovar('Save_changes') + '</button></div>';
+	html += '</div>';
+	html += '<button class="button buttonBlue setToNow">'+slovar('Today')+'</button>';
+	html += '<button class="button buttonBlue setTime">' + slovar('Save_changes') + '</button>';
+	html += '</div>';
 	dropdownMenu.append(html);
 }
 
@@ -190,6 +196,16 @@ function submitDatePickerInput(el, box){
 	value = value.join(' ');
 	if(hidden.attr('data-list') != undefined){if(!checkOtherDatePickerValue(el, hidden, value)){ return }}
 	input.val(value);
+	resetDatePickerInput(input);
+	hideDropdownMenu();
+	input.closest('.formField').next().find('input').focus();
+}
+
+function setDatePickerToNow(el, box){
+	var hidden = box.find('input[type="hidden"]');
+	var input = $('#'+hidden.val());
+
+	input.val(getCurrentDate());
 	resetDatePickerInput(input);
 	hideDropdownMenu();
 	input.closest('.formField').next().find('input').focus();
