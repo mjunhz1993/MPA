@@ -19,7 +19,7 @@ function openEditBox(id, boxType, boxYear = ''){
     })
 }
 
-function openEditBoxQuick(module, id, boxYear = ''){loadJS('GET/module', function(){
+function openEditBoxQuick(module, id, boxYear = ''){
     GET_module({
         module:module,
         done: function(data){
@@ -34,7 +34,7 @@ function openEditBoxQuick(module, id, boxYear = ''){loadJS('GET/module', functio
             })
         }
     })
-})}
+}
 
 function displayEditForm(data, EditBox, breadcrumb, module, id, boxYear){
     // CHECK IF EDIT IS IN POPUP
@@ -97,7 +97,7 @@ function displayEditForm(data, EditBox, breadcrumb, module, id, boxYear){
                 data.id = id;
                 checkForModuleAddons(module, EditBox, 'EDIT', data);
             });
-            EditBox.fadeIn('fast', function(){ });
+            EditBox.fadeIn('fast', function(){ focusInput(EditBox) });
         },
         error: function(error){
             EditBoxInner.text('');

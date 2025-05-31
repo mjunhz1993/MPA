@@ -71,17 +71,24 @@ function loadLeftNav(callback){
                 )
             ){ return }
 
-            var url = '';
-            if(['',null].includes(d.url)){ url = '/crm/templates/modules/main/main?module='+d.module }
-            else if(d.url.charAt(0) == '/'){ url = d.url }
-            else{ url = '/crm/templates/' + d.url }
+            let url = 
+                ['', null].includes(d.url) ? `href="/crm/templates/modules/main/main?module=${d.module}"` :
+                d.url.startsWith('/')       ? `href="${d.url}"` :
+                d.url.includes('|')         ? (() => {
+                    const [jsFile, callback] = d.url.split('|');
+                    return `onclick="loadJS('${APP.customDir}/${jsFile}.js', ()=>${callback}($(this)))"`;
+                })() :
+                `href="/crm/templates/${d.url}"`;
 
-            html = '<a href="'+url+'" data-pid="'+d.category+'" title="'+slovar(d.name)+'">';
-            html += getSVG(d.icon)+'<span>'+slovar(d.name)+'</span></a>';
-            remove_HTML_loader(navBar);
-            navBar.append(html);
+
+            navBar.append(`
+                <a ${url} data-pid="${d.category}" title="${slovar(d.name)}">
+                    ${getSVG(d.icon)}<span>${slovar(d.name)}</span>
+                </a>
+            `);
+
         },
-        done: function(){if(typeof callback === 'function'){ callback() }}
+        done: function(){if(typeof callback === 'function'){ remove_HTML_loader(navBar); callback() }}
     })
 }
 
@@ -145,10 +152,10 @@ function LeftNavCloseAllGroups(){
 MakeLeftNav();
 $(window).resize(function(){ MakeLeftNav() });
 
-$(document).ready(function(){loadJS('GET/module', function(){
+$(document).ready(function(){
     if(smallDevice() && LeftNavOpen()){ LeftNavToggle() }
     loadLeftNav(function(){ MakeLeftNavLinks() });
     $('.verticalToggleButtons a').each(function(){
         if($(this).attr('href') == window.location.pathname.substring(1)){ $(this).addClass('act') }
     });
-})});
+});

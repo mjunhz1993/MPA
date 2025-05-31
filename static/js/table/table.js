@@ -4,7 +4,7 @@ function tableLoadColumns(box, callback){
     if(box.find('.horizontalTable').length == 0){ box.append('<div class="horizontalTable"></div>') }
     var tableBox = box.find('.horizontalTable');
     table_addFooter(box);
-    loadJS('form/form', function(){loadJS('GET/module', function(){
+    loadJS('form/form', function(){
         GET_module({
             module:module,
             done: function(moduleData){
@@ -24,7 +24,7 @@ function tableLoadColumns(box, callback){
             },
             error: function(error){ createAlert(box,'Red',error) }
         })
-    })})
+    })
 }
 
 function addTableAccessRules(data, table){
@@ -52,10 +52,9 @@ function checkIfMainTable(box, tableBox, moduleData, html = ''){
     html += '<a onclick="loadJS(\'filter/filter\', function(){openFilterTable(\''+moduleData.module+'\','+access+')})">';
     html += getSVG('filter')+' <span>'+slovar('Filter_table')+'</span></a>';
 
-    if(access == 1){
-        html += '<a onclick="loadJS(\'table/resize_columns\', function(){resize_columns()})">';
-        html += getSVG('move')+' </span>'+slovar('Resize_columns')+'</span></a>';
-    }
+    html += '<a onclick="deleteLocalStorage(\'resizeTable_'+moduleData.module+'\'); tableLoadColumns($(\'#main_table\'));">';
+    html += getSVG('move')+' </span>'+slovar('Reset_column_size')+'</span></a>';
+    
     if(user_id == 1){
         html += '<a onclick="loadJS(\'table/archive\', function(){open_archiveMaker()})">';
         html += slovar('Archive_data')+'<sup>admin</sup></a>';

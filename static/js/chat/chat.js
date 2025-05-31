@@ -7,9 +7,7 @@ function chat(callback){
 			loadJS('chat/messages', function(){
 				loadJS('chat/form', function(){
 					loadJS('file/file', function(){
-						loadJS('GET/module', function(){
-							if(typeof callback === 'function'){ callback() }
-						})
+						if(typeof callback === 'function'){ callback() }
 					})
 				})
 			})

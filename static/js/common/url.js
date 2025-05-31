@@ -33,12 +33,12 @@ function isValidHttpUrl(string){
     return url.protocol === "http:" || url.protocol === "https:";
 }
 
-function clickTelLink(num){loadJS('GET/module', function(){
+function clickTelLink(num){
     GET_globals({done:function(data){
         if(valEmpty(data.twilioID) || valEmpty(data.twilioToken) || valEmpty(data.twilioPhone)){ return location.href = 'tel:'+num }
         loadJS('SMS/SMS', function(){ write_SMS(num) })
     }})
-})}
+}
 
 function clickMailToLink(email){
     loadJS('email/send_email', function(){

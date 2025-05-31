@@ -5,7 +5,7 @@ function setupCalendar(box, d = {}){
     loadJS('calendar/extras', function(){
     loadJS('GET/calendar', function(){
     loadJS('form/form', function(){
-    loadJS('GET/module', function(){ loadInCalendarData(box, d) })
+        loadInCalendarData(box, d)
     })})})})
 }
 

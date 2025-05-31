@@ -155,13 +155,13 @@ function openDateStartEndPicker(el, mode = 'date'){
     });
 }
 
-function refreshFormData(form){loadJS('GET/module', function(){
+function refreshFormData(form){
     if(form.find('.selectMenu').length > 0){loadJS('form/selectMenu',function(){selectMenuRefreshPlaceholders(form)})}
     if(form.find('.datepickerinput,.timepickerinput,.datetimepickerinput').length > 0){loadJS('form/datepicker',function(){resetDatePickerInputs(form)})}
     // if(form.find('textarea').length > 0){loadJS('form/cleditor',function(){checkForTextAreaInputs(form.find('form').first())})}
     if(form.find('.colorpicker').length > 0){loadJS('form/colorpicker',function(){resetColorPickerInputs(form)})}
     if(form.find('[data-type=JOIN_ADD]').length > 0){ JOINADD_refreshAllFormData(form) }
-})}
+}
 
 // ----------------------- SUBMIT
 

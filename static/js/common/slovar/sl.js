@@ -120,7 +120,7 @@ var trans = {
     Column: "Stolpec",
     Columns: "Stolpci",
     Refresh_data: "Osveži podatke",
-    Resize_columns: "Spremenite Širino stolpcev",
+    Reset_column_size: "Ponastavi Širino stolpcev",
     Edit_columns: "Uredi stolpce",
     Edit_column: "Uredi stolpec",
     Set_columns: "Nastavite tudi vse stolpce",

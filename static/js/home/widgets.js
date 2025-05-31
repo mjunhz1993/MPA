@@ -125,7 +125,7 @@ function openWidgets_admin(form){
 function changeWidget(el){
 	var box = $('#widgetExtra');
 	var html = '';
-	if(el.val() == 'MODULE'){loadJS('GET/module', function(){
+	if(el.val() == 'MODULE'){
 		GET_module({
 			each: function(module){
 				var v = module.can_view;
@@ -138,7 +138,7 @@ function changeWidget(el){
 			},
 			done: function(){ box.html('<select name="list">' + html + '</select>') }
 		})
-	})}
+	}
 	else{ box.html('') }
 }
 

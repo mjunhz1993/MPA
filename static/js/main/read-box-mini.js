@@ -3,10 +3,8 @@ function open_readBoxMini(el, type = 'row', module, id, callback){loadJS('form/f
 	var box = HTML_readBoxMini(el, module, id);
 	box.find('.dragTop svg').first().click(function(){ clickBack_readBoxMini($(this)) });
 	box.find('.dragTop svg').last().click(function(){ close_readBoxMini(box) });
-	loadJS('GET/module', function(){
-		clickIn_readBoxMini(box, type, module, id, callback);
-		setTimeout(function(){ animation_readBoxMini(el, box) }, 100);
-	})
+	clickIn_readBoxMini(box, type, module, id, callback);
+	setTimeout(function(){ animation_readBoxMini(el, box) }, 100);
 })}
 
 function HTML_readBoxMini(el, module, id, html = ''){

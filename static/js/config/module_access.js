@@ -1,4 +1,4 @@
-function loadModulesAccess(html = ''){loadJS('GET/module', function(){
+function loadModulesAccess(html = ''){
     GET_module({
         each: function(d){
             if(d.active == 0){ return }
@@ -27,7 +27,7 @@ function loadModulesAccess(html = ''){loadJS('GET/module', function(){
             $('.DropdownMenuContent').parent().unbind().click(function(e){ e.stopPropagation() });
         }
     })
-})}
+}
 
 // EDIT MODULE
 function openEditAccess(el, type){

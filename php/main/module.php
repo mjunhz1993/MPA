@@ -244,11 +244,6 @@ if(isset($_SESSION['user_id'])){
         $year = SafeInput($SQL, $_POST['year']);
         echo json_encode(archive_module($SQL, $INIconf['SQL']['database'], $module, $col, $year));
     }
-    if(isset($_GET['resize_columns'])){
-        $column_id = $_POST['column_id'];
-        $size = $_POST['size'];
-        $A = $SQL->query("UPDATE module_columns SET columnWidth = '$size' WHERE column_id='$column_id' LIMIT 1");
-    }
 }
 
 // ---------------- GET

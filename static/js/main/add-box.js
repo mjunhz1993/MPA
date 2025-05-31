@@ -8,7 +8,7 @@ function openAddBox(){
     tableBox.fadeOut('fast', function(){ loadInColumnsForAddBox(module, AddBox, AddBoxInner) })
 }
 
-function openAddBoxQuick(module, callback){loadJS('GET/module', function(){
+function openAddBoxQuick(module, callback){
     GET_module({
         module:module,
         done: function(data){
@@ -24,7 +24,7 @@ function openAddBoxQuick(module, callback){loadJS('GET/module', function(){
             loadInColumnsForAddBox(module, popup, form.find('.addFormInner'), 2, callback)
         }
     })
-})}
+}
 
 function loadInColumnsForAddBox(module, AddBox, AddBoxInner, show_in_create = 1, callback = ''){
     GET_column({
@@ -65,10 +65,7 @@ function displayAddForm(data, module, AddBox, AddBoxInner, show_in_create = 1){
     // CHECK FOR MODULE ADDONS
     loadJS('main/addons', function(){ checkForModuleAddons(module, AddBoxInner, 'ADD'); });
     // DISPLAY ADD FORM
-    AddBox.fadeIn('fast', function(){
-        var input = AddBox.find('input:visible').filter((_, el) => !el.value)[0];
-        input?.closest('.formField') && focusInput($(input).closest('.formField'));
-    });
+    AddBox.fadeIn('fast', function(){ focusInput(AddBox) });
 }
 
 function submitAddBox(){

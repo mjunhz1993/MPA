@@ -133,7 +133,7 @@ function JOINADD_search(el, placeholder, searchInput, DropdownMenu, callback = '
     var filter = JOINADD_filters(el, list);
 
     DropdownMenuTable.html(HTML_loader());
-    dropdownMenuDelay(function(){loadJS('GET/module', function(){
+    dropdownMenuDelay(function(){
         GET_row({
             module:module,
             dropdownMenu:true,
@@ -160,7 +160,7 @@ function JOINADD_search(el, placeholder, searchInput, DropdownMenu, callback = '
                 });
             }
         })
-    })}, 600);
+    }, 600);
 }
 
 function JOINADD_filters(el, list){

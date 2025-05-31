@@ -7,12 +7,12 @@ include($_SERVER['DOCUMENT_ROOT'].'/crm/php/SQL/check_user.php');
 <html lang="<?= slovar(); ?>">
 <head>
 
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 
 <link rel="shortcut icon" href="/crm/static/img/OKTAGON-IT.ico">
 <link rel="manifest" href="/crm/static/PWA/manifest.json">
+<meta name="theme-color" content="#ffffff">
 
 <link rel="stylesheet" href="/crm/static/css/variables.css?v=<?= $GLOBALS['APP_VERSION']; ?>">
 <link rel="stylesheet" href="/crm/static/css/basics.css?v=<?= $GLOBALS['APP_VERSION']; ?>">
@@ -42,6 +42,7 @@ include($_SERVER['DOCUMENT_ROOT'].'/crm/php/SQL/check_user.php');
 <script src="/crm/static/js/common/getSVG.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/getHTML.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/tooltip.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
+<script src="/crm/static/js/GET/module.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/dropdown-menu.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/common/alert.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>
 <script src="/crm/static/js/form/joinAdd.js?v=<?= $GLOBALS['APP_VERSION']; ?>"></script>

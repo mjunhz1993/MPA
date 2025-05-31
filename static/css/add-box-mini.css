@@ -1,0 +1,18 @@
+.add-box-mini-form{
+    border: 2px dashed var(--blue);
+}
+.add-box-mini{
+    display:flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items:center;
+    border-bottom: 1px solid;
+    padding: 5px 0;
+    margin: 5px 0;
+}
+.add-box-mini .formField{
+    flex-grow: 1;
+}
+.add-box-mini svg{
+    cursor: pointer;
+}

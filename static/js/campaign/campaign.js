@@ -2,7 +2,7 @@ var GLOBAL_view, GLOBAL_edit, GLOBAL_delete;
 
 function campaign_checkEnvironment(mainBox){
 	loadCSS('campaign');
-	loadJS('campaign/slovar/' + slovar(), function(){loadJS('GET/module', function(){
+	loadJS('campaign/slovar/' + slovar(), function(){
 		GET_module({
 			module:'campaign',
 			done: function(data){
@@ -18,7 +18,7 @@ function campaign_checkEnvironment(mainBox){
 				}
 			}
 		})
-	})})
+	})
 }
 
 function campaign_createEnvironment(mainBox, data){

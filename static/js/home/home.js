@@ -1,4 +1,4 @@
-function config_homepage(){loadJS('GET/module', function(){
+function config_homepage(){
 	$('#Main').append(HTML_h1_table('Dashboard')+'<div id="homeTop"></div>');
 	var box = $('#homeTop');
 	GET_module({
@@ -8,7 +8,7 @@ function config_homepage(){loadJS('GET/module', function(){
 			homepage_getUser(dashboard, box)
 		}
 	})
-})}
+}
 
 function homepage_getUser(dashboard, box, html = ''){
 	GET_myself({

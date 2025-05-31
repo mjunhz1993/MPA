@@ -152,7 +152,7 @@ function runPHPMailer($SQL, $smtp, $mailData, $addAttachment = array(), $addAtta
         for($i=0; $i<count($mailData->addAddress); $i++){
             $addAddress = SafeInput($SQL, $mailData->addAddress[$i]);
             if($addAddress != ''){
-                $addAddressType = $mailData->addAddressType[$i];
+                $addAddressType = $mailData->addAddressType[$i] ?? '';
                 if($addAddressType == 'CC'){ $mail->addCC($addAddress); }
                 else if($addAddressType == 'BCC'){ $mail->addBCC($addAddress); }
                 else{ $mail->addAddress($addAddress); }

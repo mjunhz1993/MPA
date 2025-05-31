@@ -100,7 +100,7 @@ var trans = {
     Column: "Column",
     Columns: "Columns",
     Refresh_data: "Refresh Data",
-    Resize_columns: "Resize columns",
+    Reset_column_size: "Reset Column size",
     Edit_columns: "Edit Columns",
     Edit_column: "Edit column",
     Set_columns: "Also set all columns",
