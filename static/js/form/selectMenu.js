@@ -66,7 +66,7 @@ function selectMenuChoose(name, el, callback){
     input.val(el.attr('data-value')).next().text(t);
     hideDropdownMenu();
     if(!valEmpty(callback)){ eval(callback) }
-    input.closest('.formField').next().find('input').focus();
+    focusInput(input.closest('form'));
 }
 
 function selectMenuRefreshPlaceholders(box){box.find('.selectMenu input').each(function(){selectMenuRefreshPlaceholder($(this))})}

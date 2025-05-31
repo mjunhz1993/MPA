@@ -198,7 +198,7 @@ function submitDatePickerInput(el, box){
 	input.val(value);
 	resetDatePickerInput(input);
 	hideDropdownMenu();
-	input.closest('.formField').next().find('input').focus();
+	focusInput(input.closest('form'));
 }
 
 function setDatePickerToNow(el, box){

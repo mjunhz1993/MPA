@@ -28,7 +28,7 @@ function focusOutJOIN_ADDInput(input){
         })
     }
     if(placeholder.data('callback')){ eval(placeholder.data('callback')) }
-    input.closest('.formField').next().find('input').focus();
+    focusInput(input.closest('form'));
 }
 
 function JOINADD_showDropdownMenu(el, html = ''){setTimeout(function(){
