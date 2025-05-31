@@ -63,14 +63,14 @@ function grabDataForAddBoxMini(d){
 
 // EVENTS
 
-function addBoxMini_joinInputGrabData(d, input){
+function addBoxMini_joinInputSelectEvent(d, input){
     d.box.find(`[name="${input}[]"]`).each(function(){
         $(this).next().attr({
-            'data-callback': `addBoxMini_joinInputDisplayData('${$(this).data('list').split(',')[1]}', '${d.module.module}', input)`
+            'data-callback': `addBoxMini_joinInputGrabData('${$(this).data('list').split(',')[1]}', '${d.module.module}', input)`
         })
     });
 }
-function addBoxMini_joinInputDisplayData(moduleFrom, moduleTo, input){
+function addBoxMini_joinInputGrabData(moduleFrom, moduleTo, input){
     GET_row({
         module: moduleFrom,
         id: input.val(),
@@ -84,6 +84,7 @@ function addBoxMini_joinInputDisplayData(moduleFrom, moduleTo, input){
 }
 
 function addBoxMini_add(el){
+    if(el.closest('form').find('.add-box-mini').length >= 100){ return createAlertPOPUP(slovar('Too_many_inputs')) }
     el.before(el.prev().clone());
     el.prev().find('input, select').val('');
     el.prev().find('.inputPlaceholder').text(slovar('Search'));
