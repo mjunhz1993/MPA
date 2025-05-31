@@ -79,7 +79,8 @@ function addBoxMini_joinInputGrabData(moduleFrom, moduleTo, input){
             addBoxMini_joinData(input.closest('.add-box-mini'), {
                 [i.replace(moduleFrom, moduleTo)]: v
             });
-        }
+        },
+        done:function(){ focusInput(input.closest('.add-box-mini')) }
     })
 }
 
