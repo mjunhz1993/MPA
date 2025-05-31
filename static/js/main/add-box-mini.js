@@ -27,8 +27,10 @@ function displayAddBoxMini(d){
     <fieldset class="add-box-mini-form">
         <legend>${slovar(d.module.name)}</legend>
         <div class="add-box-mini">
-            ${d.column ? d.column.map(col => createFormField(col, 'ADD')).join('') : ''}
-            <div class="linksvg" onclick="addBoxMini_remove($(this))">${getSVG('x')}</div>
+            <div class="add-box-mini-inner">
+                ${d.column ? d.column.map(col => createFormField(col, 'ADD')).join('') : ''}
+            </div>
+            <div class="buttonSquare buttonRed" onclick="addBoxMini_remove($(this))">${slovar('Delete')}</div>
         </div>
         <span class="button buttonBlue" onclick="addBoxMini_add($(this))">${slovar('Add_new')}</span>
     </fieldset>
@@ -87,8 +89,12 @@ function addBoxMini_joinInputGrabData(moduleFrom, moduleTo, input){
 function addBoxMini_add(el){
     if(el.closest('form').find('.add-box-mini').length >= 100){ return createAlertPOPUP(slovar('Too_many_inputs')) }
     el.before(el.prev().clone());
-    el.prev().find('input, select').val('');
-    el.prev().find('.inputPlaceholder').text(slovar('Search'));
+    addBoxMini_clear(el.prev());
+}
+
+function addBoxMini_clear(box){
+    box.find('input, select').val('');
+    box.find('.inputPlaceholder').text(slovar('Search'));
 }
 
 function addBoxMini_joinData(box, data){
@@ -98,6 +104,7 @@ function addBoxMini_joinData(box, data){
 }
 
 function addBoxMini_remove(el){
-    if(el.closest('form').find('.add-box-mini').length == 1){ return }
+    const box = el.closest('form').find('.add-box-mini');
+    if(box.length == 1){ return addBoxMini_clear(box) }
     el.parent().remove();
 }
