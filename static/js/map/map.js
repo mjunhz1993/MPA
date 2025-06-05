@@ -100,7 +100,7 @@ function map_generateLoadedMarker(d, module, marker){
 		$(m.getElement()).css('filter', `hue-rotate(${marker.color}deg)`);
 	};
 	d.markerClick = function(m,e){
-		if(typeof d.markerClickEvent === 'function'){ d.markerClickEvent(module,m,e) }
+		if(typeof d.markerClickEvent === 'function'){ d.markerClickEvent(module,m,e,marker) }
 		else{ map_openReadBox(module,m,e) }
 	};
 	map_addMarker(d,marker);
