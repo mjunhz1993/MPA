@@ -96,11 +96,14 @@ function map_generateLoadedMarker(d, module, marker){
 	if(map_findMarker(d, marker.id)){ return }
 	d.markerLoad = function(m){
 		m.id = marker.id;
-		if(!valEmpty(marker.title)){ m.bindPopup(marker.title) }
+		if(!valEmpty(marker.title)){
+			m.title = marker.title;
+			m.bindPopup(marker.title);
+		}
 		$(m.getElement()).css('filter', `hue-rotate(${marker.color}deg)`);
 	};
 	d.markerClick = function(m,e){
-		if(typeof d.markerClickEvent === 'function'){ d.markerClickEvent(module,m,e,marker) }
+		if(typeof d.markerClickEvent === 'function'){ d.markerClickEvent(module,m,e) }
 		else{ map_openReadBox(module,m,e) }
 	};
 	map_addMarker(d,marker);
