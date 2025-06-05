@@ -62,37 +62,48 @@ function map_selectXY(d, e, elLat, elLng){
 // LOCATION
 
 function map_getLocation(l, callback){
-	$.post('/crm/php/map/map.php', {find_location:l}, function(data){
+	$.get('/crm/php/map/map', {find_location:l}, function(data){
 		if(typeof callback === 'function'){ callback(JSON.parse(data)) }
 	})
 }
 
 // LOAD
 
-function map_loadMarkers(d, module, latCol, lngCol){
+function map_loadMarkers(d, m){
 	var ne = d.map.getBounds()['_northEast'];
 	var sw = d.map.getBounds()['_southWest'];
-	$.post('/crm/php/map/map.php?get_markers=1', {
-		module:module,
-		latCol:latCol,
-		lngCol:lngCol,
+	$.getJSON('/crm/php/map/map?get_markers=1', {
+		module:m.module,
+		titleCol:m.title,
+		latCol:m.lat,
+		lngCol:m.lng,
+		colorCol:m.color,
+		join:m.join,
+		filter:m.filter,
 		latMin:sw.lat,
 		latMax:ne.lat,
 		lngMin:sw.lng,
 		lngMax:ne.lng
-	}, function(data){
-		data = JSON.parse(data);
-		for(var i=0; i<data.length; i++){map_generateLoadedMarker(d, module, data[i]) }
+	}, function(markers){
+		map_removeHiddenMarkers(d);
+		if(!markers){ return }
+		markers.forEach(marker => {
+			map_generateLoadedMarker(d, m.module, marker)
+		});
 	})
 }
-function map_generateLoadedMarker(d, module, data){
-	if(map_findMarker(d, data.id)){ return }
+function map_generateLoadedMarker(d, module, marker){
+	if(map_findMarker(d, marker.id)){ return }
 	d.markerLoad = function(m){
-		m.id = data.id;
-		if(!valEmpty(data.title)){ m.bindPopup(data.title) }
+		m.id = marker.id;
+		if(!valEmpty(marker.title)){ m.bindPopup(marker.title) }
+		$(m.getElement()).css('filter', `hue-rotate(${marker.color}deg)`);
 	};
-	d.markerClick = function(m,e){ map_openReadBox(module,m,e) };
-	map_addMarker(d,data);
+	d.markerClick = function(m,e){
+		if(typeof d.markerClickEvent === 'function'){ d.markerClickEvent(module,m,e) }
+		else{ map_openReadBox(module,m,e) }
+	};
+	map_addMarker(d,marker);
 }
 
 // BASIC
@@ -111,7 +122,7 @@ function map_findMarker(d, id, found = false){
 	return found;
 }
 
-function map_removeHiddenMarkers(d, e){
+function map_removeHiddenMarkers(d){
 	var ne = d.map.getBounds()['_northEast'];
 	var sw = d.map.getBounds()['_southWest'];
 	var latMin = sw.lat;

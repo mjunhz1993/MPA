@@ -1,7 +1,7 @@
 <?php
 function find_location($data){
 	if(is_array($data)){ $data = implode(', ', $data); }
-	if(count($data) == 0){ return ['error' => 'No_location']; }
+	if(strlen($data) == 0){ return ['error' => 'No_location']; }
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_URL, "https://nominatim.openstreetmap.org/search?format=json&q=".urlencode($data));
