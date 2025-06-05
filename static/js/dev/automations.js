@@ -63,8 +63,8 @@ function editThisAutomation(el){
 }
 
 function selectAutomationAction(module, form){
-	html += '<label>' + slovar('Action') + '</label>';
-	html = '<select name="action" required>';
+	html = '<label>' + slovar('Action') + '</label>';
+	html += '<select name="action" required>';
 	html += '<option></option>';
 	html += '<option value="ADD_CHECK">' + slovar('Check_add_row') + '</option>';
 	html += '<option value="ADD">' + slovar('Add_row') + '</option>';
