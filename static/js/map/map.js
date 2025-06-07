@@ -1,7 +1,7 @@
 loadCSS('map');
 
 function map_open(callback){loadJS(`map/slovar/${slovar()}`, function(){
-	var popup = createPOPUPbox();
+	var popup = createPOPUPbox().css('z-index',997);
 	var popupBox = popup.find('.popupBox');
 	var id = 'map'+$('.map').length;
 	map_popupHTML(popupBox, id);
