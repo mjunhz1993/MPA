@@ -9,6 +9,7 @@ function get_markers($SQL){
     $latCol = $_GET['latCol'];
     $lngCol = $_GET['lngCol'];
     $colorCol = $_GET['colorCol'] ?? 0;
+    $groupCol = $_GET['groupCol'] ?? '""';
     $id = $module.'_id';
     $latMin = $_GET['latMin'];
     $latMax = $_GET['latMax'];
@@ -23,7 +24,7 @@ function get_markers($SQL){
     if($filter != ''){ $filter = 'AND '.$filter; }
 
     $A = $SQL->query("
-    SELECT $id, $latCol, $lngCol, $colorCol, $titleCol
+    SELECT $id, $latCol, $lngCol, $colorCol, $titleCol, $groupCol
     FROM $module
     $JOIN
     WHERE 
@@ -38,7 +39,8 @@ function get_markers($SQL){
             'id'=>$B[0],
             'latlng'=>['lat'=>$B[1],'lng'=>$B[2]],
             'color'=>$B[3],
-            'title'=>$B[4]
+            'title'=>$B[4],
+            'group'=>$B[5]
         ]);
     }
     return $data;

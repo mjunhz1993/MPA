@@ -1,12 +1,12 @@
 loadCSS('map');
 
-function map_open(callback){
+function map_open(callback){loadJS(`map/slovar/${slovar()}`, function(){
 	var popup = createPOPUPbox();
 	var popupBox = popup.find('.popupBox');
 	var id = 'map'+$('.map').length;
 	map_popupHTML(popupBox, id);
 	popup.fadeIn('fast',function(){ callback(id) });
-}
+})}
 
 function map_popupHTML(popupBox, id, html = ''){
 	html += '<div class="map" id="'+id+'"></div>';
@@ -20,27 +20,38 @@ function map_create(d){loadJS('map/leaflet', function(){
 	if(valEmpty(d.lat)){ d.lat = 46.06 }
 	if(valEmpty(d.lng)){ d.lng = 15.01 }
 	if(valEmpty(d.zoom)){ d.zoom = 8 }
-	d.map = L.map(d.id).setView([d.lat, d.lng], d.zoom);
-	map_layer(d);
+
+	let mapLayer = map_layer();
+
+	d.map = L.map(d.id, {
+		center: [d.lat, d.lng],
+		zoom: d.zoom,
+		layers: [mapLayer[0]]
+	});
+
+	d.layerControl = L.control.layers({
+		[slovar('Classic_view')]: mapLayer[0],
+		[slovar('Satellite_image')]: mapLayer[1]
+	}).addTo(d.map);
+
 	d.markers = L.layerGroup().addTo(d.map);
 	map_events(d);
 })}
 
-function map_layer(d){setTimeout(function(){
-	if(d.layer == 'none'){ return }
-	if(d.layer == 'satellite'){
-		return L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+function map_layer(){
+	return [
+		L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			noWrap: true,
+			maxZoom: 19,
+			attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+		}),
+		L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
 			noWrap: true,
 			maxZoom: 19,
 			attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-		}).addTo(d.map);
-	}
-	return L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-		noWrap: true,
-		maxZoom: 19,
-		attribution: '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-	}).addTo(d.map);
-}, 200)}
+		})
+	];
+}
 
 function map_events(d){
 	if(typeof d.mapLoad === 'function'){ setTimeout(function(){ d.mapLoad(d) }, 1000) }
@@ -52,13 +63,6 @@ function map_events(d){
 	if(typeof d.mapClick === 'function'){d.map.on('click', function(e){ d.mapClick(d,e) })}
 }
 
-function map_selectXY(d, e, elLat, elLng){
-	map_removeAllMarkers(d);
-	map_addMarker(d, e);
-	if(!valEmpty(elLat)){ elLat.val(e.latlng.lat) }
-	if(!valEmpty(elLng)){ elLng.val(e.latlng.lng) }
-}
-
 // LOCATION
 
 function map_getLocation(l, callback){
@@ -67,7 +71,7 @@ function map_getLocation(l, callback){
 	})
 }
 
-// LOAD
+// MARKERS
 
 function map_loadMarkers(d, m){
 	var ne = d.map.getBounds()['_northEast'];
@@ -78,6 +82,7 @@ function map_loadMarkers(d, m){
 		latCol:m.lat,
 		lngCol:m.lng,
 		colorCol:m.color,
+		groupCol:m.group,
 		join:m.join,
 		filter:m.filter,
 		latMin:sw.lat,
@@ -88,10 +93,11 @@ function map_loadMarkers(d, m){
 		map_removeHiddenMarkers(d);
 		if(!markers){ return }
 		markers.forEach(marker => {
-			map_generateLoadedMarker(d, m.module, marker)
+			map_generateLoadedMarker(d, m.module, marker);
 		});
 	})
 }
+
 function map_generateLoadedMarker(d, module, marker){
 	if(map_findMarker(d, marker.id)){ return }
 	d.markerLoad = function(m){
@@ -109,20 +115,49 @@ function map_generateLoadedMarker(d, module, marker){
 	map_addMarker(d,marker);
 }
 
-// BASIC
+function map_addMarker(d, m){
+	if (!d.groups) d.groups = {};
 
-function map_addMarker(d, e){
-	var marker = L.marker(e.latlng);
-	d.markers.addLayer(marker);
+	var marker = L.marker(m.latlng);
+
+	if (m.group) {
+		let groupLayer = map_getOrCreateGroupLayer(d, m.group);
+		groupLayer.addLayer(marker);
+	} else {
+		d.markers.addLayer(marker);
+	}
+
 	marker.on('mouseover', function(){ marker.openPopup() });
 	marker.on('mouseout', function(){ marker.closePopup() });
 	if(typeof d.markerLoad === 'function'){ d.markerLoad(marker) }
 	if(typeof d.markerClick === 'function'){ marker.on('click', function(e){ d.markerClick(marker,e) }) }
+
+	marker.on('add', () => {
+		$(marker.getElement()).css('filter', `hue-rotate(${m.color}deg)`);
+	});
 }
 
-function map_findMarker(d, id, found = false){
-	d.markers.eachLayer(function(m){if(m.id == id){ found = true }});
-	return found;
+function map_findMarker(d, id){
+	let found = false;
+	d.markers.eachLayer(function(m){
+		if (m.id == id) {
+			found = true;
+		}
+	});
+	if (found) return true;
+
+	if (d.groups) {
+		for (let group of Object.values(d.groups)) {
+			group.eachLayer(function(m){
+				if (m.id == id) {
+					found = true;
+				}
+			});
+			if (found) return true;
+		}
+	}
+
+	return false;
 }
 
 function map_removeHiddenMarkers(d){
@@ -132,16 +167,59 @@ function map_removeHiddenMarkers(d){
 	var latMax = ne.lat;
 	var lngMin = sw.lng;
 	var lngMax = ne.lng;
-	d.markers.eachLayer(function(m){
-		var del = false;
-        if(m['_latlng'].lat < latMin || m['_latlng'].lat > latMax){ del = true }
-        if(m['_latlng'].lng < lngMin || m['_latlng'].lng > lngMax){ del = true }
-        if(del){ d.markers.removeLayer(m) }
-    });
+
+    d.markers.eachLayer(function(m){
+		var lat = m.getLatLng().lat;
+		var lng = m.getLatLng().lng;
+		if(lat < latMin || lat > latMax || lng < lngMin || lng > lngMax){
+			d.markers.removeLayer(m);
+		}
+	});
+
+    if (d.groups) {
+		for (let [groupName, groupLayer] of Object.entries(d.groups)) {
+			// Remove out-of-bounds markers
+			groupLayer.eachLayer(function(m){
+				var lat = m.getLatLng().lat;
+				var lng = m.getLatLng().lng;
+				if(lat < latMin || lat > latMax || lng < lngMin || lng > lngMax){
+					groupLayer.removeLayer(m);
+				}
+			});
+
+			/*
+			if (groupLayer.getLayers().length === 0) {
+				if (d.layerControl) {
+					d.layerControl.removeLayer(groupLayer);
+				}
+				d.map.removeLayer(groupLayer);
+				delete d.groups[groupName];
+			}
+			*/
+		}
+	}
 }
 function map_removeAllMarkers(d){ d.markers.clearLayers() }
 
-// OTHER
+// GROUPS
+
+function map_getOrCreateGroupLayer(d, groupName) {
+	if (!d.groups[groupName]) {
+		const groupLayer = L.layerGroup().addTo(d.map);
+		d.groups[groupName] = groupLayer;
+		d.layerControl.addOverlay(groupLayer, groupName);
+	}
+	return d.groups[groupName];
+}
+
+// EVENTS
+
+function map_selectXY(d, e, elLat, elLng){
+	map_removeAllMarkers(d);
+	map_addMarker(d, e);
+	if(!valEmpty(elLat)){ elLat.val(e.latlng.lat) }
+	if(!valEmpty(elLng)){ elLng.val(e.latlng.lng) }
+}
 
 function map_openReadBox(module, d, e){
 	loadJS('main/read-box-mini',function(){
