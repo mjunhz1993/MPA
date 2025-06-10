@@ -96,7 +96,7 @@ if($A->num_rows == 0){
     ('dashboard','Dashboard','Desktop','home','0','1','dashboard','1',''),
     ('calendar','Calendar','Desktop','modules/calendar/calendar','0','2','calendar','1',''),
     ('mail_rooms','Email','Desktop','modules/email/email','0','3','email','0',''),
-    ('event','Events','Desktop','','0','4','calendar','1','',''),
+    ('event','Events','Desktop','','0','4','calendar','1',''),
     ('analytics','Analytics','Desktop','modules/analytics/analytics','0','5','analytics','1',''),
 
     ('settings','Configurations','Administration','modules/admin/config/config','0','6','settings','1',''),

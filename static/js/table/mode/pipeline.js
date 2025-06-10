@@ -83,6 +83,7 @@ function pipeline_displayColumn(box, data, thisCol, callback, rows){
 }
 
 function pipeline_displayRow(box, thisCol, data, rows){
+	data.edit = box.closest('.tableBox').attr('data-edit').split(',');
 	rows.forEach(row => {
 		thisCol.append(pipeline_HTMLrow(data, row));
 		pipeline_dragEvent(box, thisCol, data)
@@ -166,7 +167,7 @@ function pipeline_HTMLrow(data, r){
 	<div class="pipelineBox" data-id="${r.id}" data-status="${r.status}">
 		<div class="top">
 			<div class="title">${r.subject}</div>
-			<div class="drag"></div>
+			${data.edit.includes(user_role_id) ? '<div class="drag"></div>' : ''}
 		</div>
 		${pipeline_HTMLextraText(r)}
 		<div class="middle">

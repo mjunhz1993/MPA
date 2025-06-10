@@ -3,27 +3,23 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 include(loadPHP('main/module_functions'));
 
 function get_pipeline_sum($SQL){
-	$module = getModuleData($SQL, SafeInput($SQL, $_GET['data']['module']));
+	$module = getModuleData($SQL, $_GET['data']['module']);
 	$F = getFilterData($SQL, $module['module'], $_SESSION['user_id']);
-	$assigned = $module['module'].'.'.SafeInput($SQL, $_GET['data']['assigned']);
+	$assigned = $_GET['data']['assigned'];
 
 	if(count($F[3]) != 0){ $WHERE[] = '('. implode(' AND ', $F[3]). ')'; }
-    $WHERE[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['status'])." = '".SafeInput($SQL, $_GET['statusValue'])."'";
+    $WHERE[] = $_GET['data']['status']." = '".SafeInput($SQL, $_GET['statusValue'])."'";
     if(!in_array($_SESSION['user_role_id'], $module['can_view'])){
     	$WHERE[] = $module['module'].'.added = '.$_SESSION['user_role_id'];
     }
-    $WHERE = implode(' AND ', $WHERE);
 
     $SELECT[] = "COUNT(*) AS countItems";
-
-    if($_GET['data']['price'] != ''){
-		$SELECT[] = 'SUM('.SafeInput($SQL, $_GET['data']['price']).') AS price';
-	}
+    if($_GET['data']['price'] != ''){ $SELECT[] = 'SUM('.$_GET['data']['price'].') AS price'; }
 
     $A = $SQL->query("
 		SELECT ".implode(',', $SELECT)."
 		FROM ".$module['module']."
-		WHERE $WHERE
+		WHERE ".implode(' AND ', $WHERE)."
 	");
 
 	if($A->num_rows == 0){ return []; }
@@ -31,32 +27,31 @@ function get_pipeline_sum($SQL){
 }
 
 function get_pipeline($SQL){
-	$module = getModuleData($SQL, SafeInput($SQL, $_GET['data']['module']));
-	$F = getFilterData($SQL, $module['module'], $_SESSION['user_id']);
-	$assigned = $module['module'].'.'.SafeInput($SQL, $_GET['data']['assigned']);
+	$module = getModuleData($SQL, $_GET['data']['module']);
 
+	$F = getFilterData($SQL, $module['module'], $_SESSION['user_id']);
     if(count($F[3]) != 0){ $WHERE[] = '('. implode(' AND ', $F[3]). ')'; }
-    $WHERE[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['status'])." = '".SafeInput($SQL, $_GET['statusValue'])."'";
+    $WHERE[] = $_GET['data']['status']." = '".SafeInput($SQL, $_GET['statusValue'])."'";
     if(!in_array($_SESSION['user_role_id'], $module['can_view'])){
     	$WHERE[] = $module['module'].'.added = '.$_SESSION['user_role_id'];
     }
-    $WHERE = implode(' AND ', $WHERE);
 
-	$SELECT[] = $module['module'].'.'.$module['module'].'_id AS id';
-	$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['status']).' AS status';
-	$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['subject']).' AS subject';
+	$SELECT[] = $module['module'].'_id AS id';
+	$SELECT[] = $_GET['data']['status'].' AS status';
+	$SELECT[] = $_GET['data']['subject'].' AS subject';
+	$assigned = $_GET['data']['assigned'];
 	$SELECT[] = $assigned.' AS assigned';
 	$SELECT[] = 'user_username AS assignedName';
-	$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['date']).' AS date';
+	$SELECT[] = $_GET['data']['date'].' AS date';
 
 	if($_GET['data']['text'] != ''){
-		$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['text']).' AS extraText';
+		$SELECT[] = $_GET['data']['text'].' AS extraText';
 	}
 	if($_GET['data']['price'] != ''){
-		$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['price']).' AS price';
+		$SELECT[] = $_GET['data']['price'].' AS price';
 	}
 	if($_GET['data']['share'] != ''){
-		$SELECT[] = $module['module'].'.'.SafeInput($SQL, $_GET['data']['share']).' AS share';
+		$SELECT[] = $_GET['data']['share'].' AS share';
 	}
 
 	$LIMIT = 10;
@@ -66,7 +61,7 @@ function get_pipeline($SQL){
 		SELECT ".implode(',', $SELECT)." 
 		FROM ".$module['module']."
 		LEFT JOIN user ON user_id = $assigned
-		WHERE $WHERE
+		WHERE ".implode(' AND ', $WHERE)."
 		LIMIT $LIMIT OFFSET $OFFSET
 	");
 
