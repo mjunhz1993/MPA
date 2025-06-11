@@ -121,7 +121,7 @@ function showEmails(box, type, data){
         if(type == 'NEW' || type == 'SEARCH'){ emailArea.find('#newEmailButton').parent().after(html); }
         else if(type == 'OLD'){ emailArea.find('#oldEmailButton').parent().before(html); }
 
-        emailArea.find('.email_item_box .email_item').first().unbind('click').click(function(){
+        emailArea.find('.email_item_box .email_item').unbind('click').click(function(){
             openEmail($(this), {
                 uid: $(this).parent().data('uid'),
                 udate: $(this).parent().data('udate'),
