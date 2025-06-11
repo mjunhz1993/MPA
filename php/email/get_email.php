@@ -28,64 +28,65 @@ function connect_to_imap($SQL, $user_id){
     return $imap;
 }
 
-function SearchForEmailsByDateTillToday($imap_conn, $udate){
+function SearchForEmailsByDateTillToday($imap, $udate){
     $since = date('d F Y', ($udate - 86400));
     $before = date('d F Y', (time() + 86400));
-    return imap_search($imap_conn, 'SINCE "'. $since. '" BEFORE "'. $before. '"', SE_UID);
+    return imap_search($imap->conn, 'SINCE "'. $since. '" BEFORE "'. $before. '"', SE_UID);
 }
 
-function SearchForEmailsByDate($imap_conn, $udate){
-    return imap_search($imap_conn, 'ON "'. date('d F Y', $udate). '"', SE_UID);
+function SearchForEmailsByDate($imap, $udate){
+    return imap_search($imap->conn, 'ON "'. date('d F Y', $udate). '"', SE_UID);
 }
 
 function SearchForNewEmails($imap_conn){
     return imap_search($imap_conn, 'UNSEEN', SE_UID);
 }
 
-function GetEmailByUID($imap_conn, $uid){
-    return imap_fetch_overview($imap_conn, $uid, FT_UID)[0];
+function GetEmailByUID($imap, $uid){
+    return imap_fetch_overview($imap->conn, $uid, FT_UID)[0];
 }
 
 function GetLastEmail($imap_conn){
     return imap_fetch_overview($imap_conn, imap_check($imap_conn)->Nmsgs)[0];
 }
 
-function saveEmailData($mailSQL, $user_email_table, $email, $uid){
+function saveEmailData($mailSQL, $user_email_table, $imap, $mail){
     global $htmlmsg,$udate,$subject,$mail_from,$mail_to;
     // SAVE EMAIL
     $A = $mailSQL->query("INSERT INTO $user_email_table (email,uid,udate,mail_from,mail_to,subject,msg,attachments) 
-    VALUES ('$email','$uid','$udate','$mail_from','$mail_to','$subject','$htmlmsg','')");
+    VALUES ('$imap->account','$mail->uid','$udate','$mail_from','$mail_to','$subject','$htmlmsg','')");
     if(!$A){
         // IF E-MAIL ERROR - TRY UTF-8 ENCODING
         $subject = utf8_encode($subject);
         $htmlmsg = utf8_encode($htmlmsg);
         $A = $mailSQL->query("INSERT INTO $user_email_table (email,uid,udate,mail_from,mail_to,subject,msg,attachments) 
-        VALUES ('$email','$uid','$udate','$mail_from','$mail_to','$subject','$htmlmsg','')");
+        VALUES ('$imap->account','$mail->uid','$udate','$mail_from','$mail_to','$subject','$htmlmsg','')");
     }
     if(!$A){
         // IF E-MAIL ERROR - SQL ENCODE
         $htmlmsg = SafeInput($mailSQL, $htmlmsg);
         $A = $mailSQL->query("INSERT INTO $user_email_table (email,uid,udate,mail_from,mail_to,subject,msg,attachments) 
-        VALUES ('$email','$uid','$udate','$mail_from','$mail_to','$subject','$htmlmsg','')");
+        VALUES ('$imap->account','$mail->uid','$udate','$mail_from','$mail_to','$subject','$htmlmsg','')");
     }
     if(!$A){ return false; }else{ return true; }
 }
 
-function updateLastEmailUID($SQL, $user_id, $uid){
-    global $udate;
-    $A = $SQL->query("UPDATE email_accounts SET email_accounts_udate = '$udate', email_accounts_uid = '$uid' WHERE email_accounts_user = '$user_id' LIMIT 1");
+function updateLastEmailUID($SQL, $user_id, $mail){
+    $A = $SQL->query("UPDATE email_accounts 
+    SET email_accounts_udate = '$mail->udate', email_accounts_uid = '$mail->uid' 
+    WHERE email_accounts_user = '$user_id' LIMIT 1");
 }
 
-function debugEmailData($SQL,$mbox,$mid) {
-    // input $mbox = IMAP stream, $mid = message id
+function debugEmailData($SQL,$imap,$mail) {
+    // input $imap = IMAP stream, $$mail->msgno = message id
     // output all the following:
     global $charset,$htmlmsg,$plainmsg,$attachments,$udate,$subject,$mail_from,$mail_to;
     $htmlmsg = $plainmsg = $charset = '';
     $attachments = array();
 
     // HEADER
-    // $h = imap_header($mbox,$mid);
-    $h = imap_headerinfo($mbox,$mid);
+    // $h = imap_header($imap->conn,$mail->msgno);
+    $h = imap_headerinfo($imap->conn,$mail->msgno);
     $udate = $h->udate;
     $mail_from = $h->from[0]->mailbox. '@'. $h->from[0]->host;
     $mail_to = array();
@@ -95,12 +96,12 @@ function debugEmailData($SQL,$mbox,$mid) {
 	$subject = SafeInput($SQL, mb_decode_mimeheader($h->subject));
 
     // BODY
-    $s = imap_fetchstructure($mbox,$mid);
+    $s = imap_fetchstructure($imap->conn,$mail->msgno);
     if (!$s->parts)  // simple
-        getpart($mbox,$mid,$s,0);  // pass 0 as part-number
+        getpart($imap->conn,$mail->msgno,$s,0);  // pass 0 as part-number
     else {  // multipart: cycle through each part
         foreach ($s->parts as $partno0=>$p)
-            getpart($mbox,$mid,$p,$partno0+1);
+            getpart($imap->conn,$mail->msgno,$p,$partno0+1);
     }
 
     $htmlmsg = SafeInput($SQL, $htmlmsg, true);
@@ -208,27 +209,27 @@ function get_new_emails($SQL, $mailSQL, $user_id){
     if($imap->current_udate != 0 && $imap->current_uid != 0){
         $lastEmail_uid = 0;
         $max_emails_per_cycle = 4;
-        $inbox = SearchForEmailsByDateTillToday($imap->conn, $imap->current_udate);
+        $inbox = SearchForEmailsByDateTillToday($imap, $imap->current_udate);
         foreach($inbox as $uid){
             if($uid <= $imap->current_uid){ continue; }
             if($max_emails_per_cycle == 0){ continue; }
             $lastEmail_uid = $uid;
             $max_emails_per_cycle--;
-            $mail = GetEmailByUID($imap->conn, $uid);
-            debugEmailData($SQL, $imap->conn, $mail->msgno);
-            if(!saveEmailData($mailSQL, $user_email_table, $imap->account, $mail->uid)){ $error_emails++; }
+            $mail = GetEmailByUID($imap, $uid);
+            debugEmailData($SQL, $imap, $mail);
+            if(!saveEmailData($mailSQL, $user_email_table, $imap, $mail)){ $error_emails++; }
             else{ saveAttachments($mailSQL, $user_id, $mail); }
         }
-        if($lastEmail_uid != 0){ updateLastEmailUID($SQL, $user_id, $mail->uid); }
+        if($lastEmail_uid != 0){ updateLastEmailUID($SQL, $user_id, $mail); }
         if($max_emails_per_cycle == 0){ $data['GO_AGAIN'] = 1; }
     }
     else{
         $mail = GetLastEmail($imap->conn);
-        debugEmailData($SQL, $imap->conn, $mail->msgno);
-        if(!saveEmailData($mailSQL, $user_email_table, $imap->account, $mail->uid)){ $error_emails++; }
+        debugEmailData($SQL, $imap, $mail);
+        if(!saveEmailData($mailSQL, $user_email_table, $imap, $mail)){ $error_emails++; }
         else{
             saveAttachments($mailSQL, $user_id, $mail);
-            updateLastEmailUID($SQL, $user_id, $mail->uid);
+            updateLastEmailUID($SQL, $user_id, $mail);
         }
     }
 
