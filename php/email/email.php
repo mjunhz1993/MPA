@@ -11,9 +11,9 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         echo json_encode(delete_email(
             $mailSQL,
             $user_email_table,
-            intval(SafeInput($SQL, $_POST['uid'],
+            intval(SafeInput($SQL, $_POST['uid'])),
             SafeInput($SQL, $_POST['udate'])
-        ))));
+        ));
     }
 
 }

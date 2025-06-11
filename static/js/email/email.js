@@ -283,7 +283,11 @@ function closeEmail(el){
 function delete_email(el, uid, udate){
     POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
         var box = el.closest('.email_item_box');
-        $.post('/crm/php/email/email.php?delete_email=1', {uid:uid, udate:udate, csrf_token:$('input[name=csrf_token]').val()}, function(data){
+        $.post('/crm/php/email/email.php?delete_email=1', {
+            uid:uid, 
+            udate:udate, 
+            csrf_token:$('input[name=csrf_token]').val()
+        }, function(data){
             data = JSON.parse(data);
             if(!data.error){
                 box.fadeOut('fast', function(){ box.remove(); });
