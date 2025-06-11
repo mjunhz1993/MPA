@@ -97,13 +97,14 @@ function showEmails(box, type, data){
         for(var i=0; i<data.length; i++){
             var email = data[i];
             var uid = email.uid;
+            var udate = email.udate;
             var from = email.mail_from;
             var subject = email.subject;
             var time = displayLocalDate(email.udate);
             var attachments = [];
             if(email.attachments){ attachments = email.attachments.split('|'); }
 
-            html += '<div class="email_item_box" data-uid="'+uid+'">';
+            html += '<div class="email_item_box" data-uid="'+uid+'" data-udate="'+udate+'">';
             html += '<div class="email_item">';
             html += '<div class="email_item_sender">'+from+'</div>';
             html += '<div class="email_item_subject">'+subject+'</div>';
@@ -112,7 +113,7 @@ function showEmails(box, type, data){
             html += '</div>';
             if(attachments[0] != ''){ html += '<div><b>'+attachments.length+'</b> '+slovar('Attachments')+'</div>'; }
             html += '</div>';
-            html += '<div class="email_item" onclick="delete_email($(this), '+uid+')" data-tooltip="'+slovar('Delete')+'">';
+            html += '<div class="email_item" onclick="delete_email($(this), '+uid+', '+udate+')" data-tooltip="'+slovar('Delete')+'">';
             html += getSVG('delete')+ '</div>';
             html += '</div>';
 
@@ -121,7 +122,9 @@ function showEmails(box, type, data){
         else if(type == 'OLD'){ emailArea.find('#oldEmailButton').parent().before(html); }
 
         emailArea.find('.email_item_box .email_item').first().unbind('click').click(function(){
-            openEmail($(this), $(this).parent().data('uid'), {
+            openEmail($(this), {
+                uid: $(this).parent().data('uid'),
+                udate: $(this).parent().data('udate'),
                 responseBar: true,
                 close: true
             });
@@ -130,7 +133,7 @@ function showEmails(box, type, data){
     }
 }
 
-function openEmail(box, uid, extra = []){loadJS('email/slovar/' + slovar(), function(){
+function openEmail(box, d = []){loadJS('email/slovar/' + slovar(), function(){
     if(box.closest('.email_main_box').length == 0){ return createAlertPOPUP(slovar('No_main_box')) }
     box = box.closest('.email_main_box');
     if(box.find('.email_inner_box').length == 0){
@@ -141,20 +144,21 @@ function openEmail(box, uid, extra = []){loadJS('email/slovar/' + slovar(), func
 
     rightBox.find('.emailHeader, .emailFrame').remove();
     leftBox.find('.email_item').removeClass('act');
-    leftBox.find('.email_item_box[data-uid=' + uid + '] .email_item').first().addClass('act').find('.email_item_new').remove();
+    leftBox.find('.email_item_box[data-uid=' + d.uid + '] .email_item').first().addClass('act').find('.email_item_new').remove();
 
     $.getJSON('/crm/php/email/email.php?get_email=1', {
-        uid:uid,
-        mail_room:extra.mail_room
+        uid:d.uid,
+        udate:d.udate,
+        mail_room:d.mail_room
     }, function(data){
         if(data.error){ createAlert(rightBox, 'Red', data.error); }
         else{if(data){
             // CREATE HEADER
             var html = '';
-            html += '<div class="emailHeader" data-uid="' + data.uid + '">';
+            html += '<div class="emailHeader" data-uid="'+data.uid+'" data-udate="'+data.udate+'">';
             html += '<div class="ehflex">';
             html += '<h2>' + data.subject + '</h2>';
-            if(extra.close){ html += '<div class="ehClose">' + getSVG('x')+ '</div>' }
+            if(d.close){ html += '<div class="ehClose">' + getSVG('x')+ '</div>' }
             html += '</div>';
             html += '<div class="ehDate">' + displayLocalDate(data.udate) + '</div>';
             html += '<div class="ehflex">';
@@ -215,7 +219,7 @@ function openEmail(box, uid, extra = []){loadJS('email/slovar/' + slovar(), func
             }
             else{ rightBox.find('.emailFrame').height(box.height() - rightBox.find('.emailHeader').outerHeight() - 10) }
 
-            if(!extra.responseBar){ return }
+            if(!d.responseBar){ return }
             html = '<div id="email_response_bar">';
             html += '<button class="button buttonBlue">' + slovar('forward') + '</button>';
             html += '<button class="button buttonGreen">' + slovar('Answer') + '</button>';
@@ -241,7 +245,7 @@ function openEmail(box, uid, extra = []){loadJS('email/slovar/' + slovar(), func
     })
 })}
 
-function openEmailPOPUP(mail_room, uid){
+function openEmailPOPUP(mail_room, uid, udate){
     var popup = createPOPUPbox();
     var popupBox = popup.find('.popupBox');
     popupBox.addClass('email_main_box').css({
@@ -251,7 +255,9 @@ function openEmailPOPUP(mail_room, uid){
     });
     popupBox.html('<div></div>');
     popup.fadeIn(function(){
-        openEmail(popupBox.find('div'), uid, {
+        openEmail(popupBox.find('div'), {
+            uid: uid,
+            udate: udate,
             mail_room: mail_room,
             close: true,
         })
@@ -274,10 +280,10 @@ function closeEmail(el){
 }
 
 
-function delete_email(el, uid){
+function delete_email(el, uid, udate){
     POPUPconfirm(slovar('Confirm_event'), slovar('Confirm_delete'), function(){
         var box = el.closest('.email_item_box');
-        $.post('/crm/php/email/email.php?delete_email=1', {uid:uid, csrf_token:$('input[name=csrf_token]').val()}, function(data){
+        $.post('/crm/php/email/email.php?delete_email=1', {uid:uid, udate:udate, csrf_token:$('input[name=csrf_token]').val()}, function(data){
             data = JSON.parse(data);
             if(!data.error){
                 box.fadeOut('fast', function(){ box.remove(); });

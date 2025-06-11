@@ -54,7 +54,8 @@ function get_emails($mailSQL, $user_email_table){
     $data = array();
     while ($B = $A->fetch_row()){
         $data[$st]['uid'] = $B[0];
-        $data[$st]['udate'] = date('Y-m-d H:i:s', $B[1]);
+        $data[$st]['udate'] = $B[1];
+        $data[$st]['date'] = date('Y-m-d H:i:s', $B[1]);
         if($B[2] != '0'){ $data[$st]['mail_from'] = $B[2]; }else{ $data[$st]['mail_from'] = $B[7]; }
         $data[$st]['mail_to'] = $B[3];
         $data[$st]['subject'] = $B[4];
@@ -67,7 +68,13 @@ function get_emails($mailSQL, $user_email_table){
 
 function get_email($mailSQL, $user_email_table){
     $uid = intval(SafeInput($mailSQL, $_GET['uid'] ?? ''));
-    $A = $mailSQL->query("SELECT udate,mail_from,mail_to,subject,msg,attachments,new,email FROM $user_email_table WHERE uid='$uid' LIMIT 1");
+    $udate = intval(SafeInput($mailSQL, $_GET['udate'] ?? ''));
+    $A = $mailSQL->query("
+        SELECT udate,mail_from,mail_to,subject,msg,attachments,new,email 
+        FROM $user_email_table 
+        WHERE uid = '$uid' AND udate = '$udate'
+        LIMIT 1
+    ");
     $data = array();
     if($A->num_rows == 0){ return ['error' => slovar('Access_denied')]; }
     while ($B = $A->fetch_row()){
@@ -78,13 +85,18 @@ function get_email($mailSQL, $user_email_table){
         $data['subject'] = $B[3];
         $data['msg'] = $B[4];
         $data['attachments'] = $B[5];
-        if($B[6] == 1){ $mailSQL->query("UPDATE $user_email_table SET new=0 WHERE uid='$uid' LIMIT 1"); }
+        if($B[6] == 1){ $mailSQL->query("
+            UPDATE $user_email_table 
+            SET new=0 
+            WHERE uid = '$uid' AND udate = '$udate' 
+            LIMIT 1
+        "); }
     }
     return $data;
 }
 
-function delete_email($mailSQL, $user_email_table, $uid){
-	$A = $mailSQL->query("SELECT attachments FROM $user_email_table WHERE uid = '$uid' LIMIT 1");
+function delete_email($mailSQL, $user_email_table, $uid, $udate){
+	$A = $mailSQL->query("SELECT attachments FROM $user_email_table WHERE uid = '$uid' AND udate = '$udate' LIMIT 1");
     while ($B = $A->fetch_row()){
         $path = $_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads/mail_rooms/'.$user_email_table.'/';
         $attachments = explode('|', $B[0]);
@@ -92,7 +104,7 @@ function delete_email($mailSQL, $user_email_table, $uid){
             $att = explode(',', $attachments[$i]);
             if($att[0] != ''){ unlink($path. $att[0]); }
         }
-        if($mailSQL->query("DELETE FROM $user_email_table WHERE uid = '$uid' LIMIT 1")){ return true; }
+        if($mailSQL->query("DELETE FROM $user_email_table WHERE uid = '$uid' AND udate = '$udate' LIMIT 1")){ return true; }
     }
     return false;
 }

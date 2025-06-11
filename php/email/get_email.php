@@ -162,7 +162,7 @@ function getpart($mbox,$mid,$p,$partno) {
     }
 }
 
-function saveAttachments($mailSQL, $user_id, $uid){
+function saveAttachments($mailSQL, $user_id, $mail){
     global $attachments;
     $path = $_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads/mail_rooms/mail_room_'. $user_id. '/';
     $tstamp = time();
@@ -172,7 +172,7 @@ function saveAttachments($mailSQL, $user_id, $uid){
 	foreach($attachments as $key => $value){
         $key = mb_decode_mimeheader($key);
         $fileinfo = pathinfo($key);
-        $newFileName = $uid. '_'. $tstamp. '.'. $fileinfo['extension'];
+        $newFileName = $mail->uid. '_'. $tstamp. '.'. $fileinfo['extension'];
         $fp = fopen($path. $newFileName, "w");
         fwrite($fp,$value);
         fclose($fp);
@@ -183,7 +183,11 @@ function saveAttachments($mailSQL, $user_id, $uid){
     }
     if($fileCount != 0){
         $SQLdata = implode('|', $SQLdata);
-        $A = $mailSQL->query("UPDATE mail_room_$user_id SET attachments='$SQLdata' WHERE uid='$uid' LIMIT 1");
+        $A = $mailSQL->query("
+            UPDATE mail_room_$user_id 
+            SET attachments='$SQLdata' 
+            WHERE uid = '$mail->uid' AND udate = '$mail->udate'
+            LIMIT 1");
         return $SQLdata;
     }
     else{ return false; }
@@ -213,7 +217,7 @@ function get_new_emails($SQL, $mailSQL, $user_id){
             $mail = GetEmailByUID($imap->conn, $uid);
             debugEmailData($SQL, $imap->conn, $mail->msgno);
             if(!saveEmailData($mailSQL, $user_email_table, $imap->account, $mail->uid)){ $error_emails++; }
-            else{ saveAttachments($mailSQL, $user_id, $mail->uid); }
+            else{ saveAttachments($mailSQL, $user_id, $mail); }
         }
         if($lastEmail_uid != 0){ updateLastEmailUID($SQL, $user_id, $mail->uid); }
         if($max_emails_per_cycle == 0){ $data['GO_AGAIN'] = 1; }
@@ -223,7 +227,7 @@ function get_new_emails($SQL, $mailSQL, $user_id){
         debugEmailData($SQL, $imap->conn, $mail->msgno);
         if(!saveEmailData($mailSQL, $user_email_table, $imap->account, $mail->uid)){ $error_emails++; }
         else{
-            saveAttachments($mailSQL, $user_id, $mail->uid);
+            saveAttachments($mailSQL, $user_id, $mail);
             updateLastEmailUID($SQL, $user_id, $mail->uid);
         }
     }

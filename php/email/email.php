@@ -8,7 +8,12 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
     $user_id = $_SESSION['user_id'];
     $user_email_table = 'mail_room_'. $user_id;
     if(isset($_GET['delete_email'])){ 
-        echo json_encode(delete_email($mailSQL, $user_email_table, intval(SafeInput($SQL, $_POST['uid']))));
+        echo json_encode(delete_email(
+            $mailSQL,
+            $user_email_table,
+            intval(SafeInput($SQL, $_POST['uid'],
+            SafeInput($SQL, $_POST['udate'])
+        ))));
     }
 
 }
