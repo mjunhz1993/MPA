@@ -229,7 +229,7 @@ function openEmail(box, d = []){loadJS('email/slovar/' + slovar(), function(){
             rightBox.find('#email_response_bar .buttonBlue').click(function(){
                 open_send_email({
                     subject:'FW:'+data.subject,
-                    body:rightBox.find('.emailFrame').find('body'),
+                    body:iframeDoc.find('body'),
                     attachments:data.attachments
                 })
             });
@@ -238,7 +238,7 @@ function openEmail(box, d = []){loadJS('email/slovar/' + slovar(), function(){
                 open_send_email({
                     for:data.mail_from,
                     subject:'RE:'+data.subject,
-                    body:rightBox.find('.emailFrame').find('body')
+                    body:iframeDoc.find('body')
                 })
             });
         }}
