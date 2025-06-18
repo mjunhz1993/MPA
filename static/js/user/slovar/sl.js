@@ -1,6 +1,6 @@
 add_to_slovar({
     Security: "Varnost",
-    Cookies: "Piškoti",
+    Cookie: "Piškoti",
     Two_factor_auth: "Dvofaktorska avtorizacija",
     Basic_security: "Osnovna varnost",
     Tfa_desc: "Po uspešni prijavi, bo program od vas zahteval vpis edinstvene kode, ki bo poslana na vezan E-mail naslov uporabnika.",
@@ -16,4 +16,9 @@ add_to_slovar({
     PN_text: "Prikaži obvestila v operacijskem sistemu.",
     Download_app: "Prenesite aplikacijo",
     PWA_text: "Prenesi aplikacijo na vašo namizje.",
+
+    Ticket: "Zahtevki",
+    Sending_ticket: "Pošiljanje zahtevka",
+    Partner_does_not_exist: "Partner ne obstaja",
+    User_ticket_limit_reached: "Dosežena je omejitev uporabniških zahtevkov",
 })

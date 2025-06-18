@@ -14,4 +14,9 @@ add_to_slovar({
     PN_text: "Show notifications in the operating system.",
     Download_app: "Download app",
     PWA_text: "Download the app to your desktop.",
+
+    Ticket: "Requests",
+    Sending_ticket: "Sending Requests",
+    Partner_does_not_exist: "Partner does not exist",
+    User_ticket_limit_reached: "User Requests limit reached",
 })

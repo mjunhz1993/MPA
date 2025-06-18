@@ -8,6 +8,7 @@ function get_markers($SQL){
     $titleCol = $_GET['titleCol'] ?? '""';
     $latCol = $_GET['latCol'];
     $lngCol = $_GET['lngCol'];
+    $iconCol = $_GET['iconCol'] ?? '""';
     $colorCol = $_GET['colorCol'] ?? 0;
     $groupCol = $_GET['groupCol'] ?? '""';
     $id = $module.'_id';
@@ -24,7 +25,7 @@ function get_markers($SQL){
     if($filter != ''){ $filter = 'AND '.$filter; }
 
     $A = $SQL->query("
-    SELECT $id, $latCol, $lngCol, $colorCol, $titleCol, $groupCol
+    SELECT $id, $latCol, $lngCol, $iconCol, $colorCol, $titleCol, $groupCol
     FROM $module
     $JOIN
     WHERE 
@@ -38,9 +39,10 @@ function get_markers($SQL){
         array_push($data, [
             'id'=>$B[0],
             'latlng'=>['lat'=>$B[1],'lng'=>$B[2]],
-            'color'=>$B[3],
-            'title'=>$B[4],
-            'group'=>$B[5]
+            'icon'=>$B[3],
+            'color'=>$B[4],
+            'title'=>$B[5],
+            'group'=>$B[6]
         ]);
     }
     return $data;

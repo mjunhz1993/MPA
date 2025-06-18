@@ -27,7 +27,7 @@ $avatar = ($avatar && $avatar != '0') ? preg_replace('/\.(\w+)$/', '_small.$1', 
             <?php endif; ?>
 
             <div class="DropdownMenuContent">
-                <a onclick="loadJS('chat/chat', ()=>chat(()=>chat_navigator()))" data-svg="chat">
+                <a data-svg="chat" onclick="loadJS('chat/chat', ()=>chat(()=>chat_navigator()))">
                     <span data-slovar="Chat"></span>
                 </a>
                 <a data-svg="settings" onclick="loadJS('user/user_config', ()=>openUserConfig())">

@@ -81,6 +81,7 @@ function map_loadMarkers(d, m){
 		titleCol:m.title,
 		latCol:m.lat,
 		lngCol:m.lng,
+		iconCol: m.icon,
 		colorCol:m.color,
 		groupCol:m.group,
 		join:m.join,
@@ -118,7 +119,7 @@ function map_generateLoadedMarker(d, module, marker){
 function map_addMarker(d, m){
 	if (!d.groups) d.groups = {};
 
-	var marker = L.marker(m.latlng);
+	var marker = L.marker(m.latlng, map_markerIcon(m));
 
 	if (m.group) {
 		let groupLayer = map_getOrCreateGroupLayer(d, m.group);
@@ -135,6 +136,20 @@ function map_addMarker(d, m){
 	marker.on('add', () => {
 		$(marker.getElement()).css('filter', `hue-rotate(${m.color}deg)`);
 	});
+}
+
+function map_markerIcon(m){
+	if (m.icon) {
+		return {
+			icon: L.icon({
+				iconUrl: m.icon,
+				iconSize: [25, 41],
+				iconAnchor: [16, 32],
+				popupAnchor: [-2, -25]
+			})
+		};
+	}
+	return {};
 }
 
 function map_findMarker(d, id){
@@ -186,16 +201,6 @@ function map_removeHiddenMarkers(d){
 					groupLayer.removeLayer(m);
 				}
 			});
-
-			/*
-			if (groupLayer.getLayers().length === 0) {
-				if (d.layerControl) {
-					d.layerControl.removeLayer(groupLayer);
-				}
-				d.map.removeLayer(groupLayer);
-				delete d.groups[groupName];
-			}
-			*/
 		}
 	}
 }

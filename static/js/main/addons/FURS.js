@@ -19,7 +19,7 @@ function openCopyFromDURS(el){
     popupBox.css('padding',0);
     popupBox.html(DURS_form_HTML());
     popupBox.find('input[type=text]').keyup(function(e){if(e.keyCode == 13){ DURS_search(popup, el) }});
-    popupBox.find('.buttonBlue').click(function(){ searchFURS(popup, el) });
+    popupBox.find('.buttonBlue').click(function(){ DURS_search(popup, el) });
     popup.fadeIn('fast', function(){ popupBox.find('input[type=text]').focus() });
 }
 
@@ -50,7 +50,8 @@ function DURS_search(popup, el, html = ''){
         DURS:true,
         search:value
     }, function(data){
-        if(data){for(var i=0; i<data.length; i++){ html += DURSToTable(data[i]) }}
+        if(data.error){ createAlertPOPUP(data.error) }
+        else{if(data){for(var i=0; i<data.length; i++){ html += DURSToTable(data[i]) }}}
         table.html(html);
         table.find('.DURSbox').click(function(){ copyFromDURS($(this), el) });
         remove_HTML_loader(popupBox);
