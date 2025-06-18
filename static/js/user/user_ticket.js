@@ -1,6 +1,7 @@
 function showUserConfig_ticket(box){
 	box.html(`
 	<form>
+		<div class="msg"></div>
 		<input type="hidden" name="send_ticket">
 		${createFormField({
 			editable:true,
@@ -26,14 +27,19 @@ function showUserConfig_ticket(box){
 		<button class="button buttonGreen">${slovar('Send')}</button>
 	</form>
 	`);
+	let form = box.find('form');
 
 	loadJS('form/cleditor', function(){ checkForTextAreaInputs(box) });
+	form.find('.buttonGreen').css({
+		position: 'sticky',
+		bottom: 0
+	});
 
-	focusInput(box.find('form'));
+	focusInput(form);
+	createAlert(form.find('.msg'), 'Green', slovar('Ticket_msg'));
 
-	box.find('form').on('submit', function(e){
+	form.on('submit', function(e){
 		e.preventDefault();
-		let form = $(this);
 		form.find('.buttonGreen').hide();
 		$.post('/crm/php/API/ticket', form.serialize(), function(data){
 			data = JSON.parse(data);

@@ -18,6 +18,7 @@ add_to_slovar({
     PWA_text: "Prenesi aplikacijo na vašo namizje.",
 
     Ticket: "Zahtevki",
+    Ticket_msg: "Pošljite svoj zahtevek naši razvojni ekipi pri Oktagon-IT s pomočjo spodnjega obrazca",
     Sending_ticket: "Pošiljanje zahtevka",
     Partner_does_not_exist: "Partner ne obstaja",
     User_ticket_limit_reached: "Dosežena je omejitev uporabniških zahtevkov",

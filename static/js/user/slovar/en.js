@@ -16,6 +16,7 @@ add_to_slovar({
     PWA_text: "Download the app to your desktop.",
 
     Ticket: "Requests",
+    Ticket_msg: "Send your request to our development team at Oktagon-IT using the form below",
     Sending_ticket: "Sending Requests",
     Partner_does_not_exist: "Partner does not exist",
     User_ticket_limit_reached: "User Requests limit reached",
