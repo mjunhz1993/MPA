@@ -65,6 +65,7 @@ function loadLeftNav(callback){
                 !d.active ||
                 (
                     user_id != 1 &&
+                    !d.can_view.includes(user_role_id) &&
                     !d.can_add.includes(user_role_id) &&
                     !d.can_edit.includes(user_role_id) &&
                     !d.can_delete.includes(user_role_id)
