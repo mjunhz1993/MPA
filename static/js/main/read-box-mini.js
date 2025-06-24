@@ -237,6 +237,7 @@ function animation_readBoxMini(el, box){
 }
 
 function readBoxMini_outOfBounds(box){
+	if(!box.hasClass('readBoxMini')){ box = box.closest('.readBoxMini') }
 	var left = box.position().left;
 	if(left < 0){ left = 0 }
 	if(left + box.outerWidth() > $(window).width()){ left = $(window).width() - box.outerWidth() }
