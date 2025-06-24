@@ -1,7 +1,7 @@
 /* required styles */
 .map{
-	height: 70vh;
-	width: 70vw;
+	height: 78vh;
+	width: 85vw;
 }
 @media (max-width: 900px){
 	.map{
