@@ -52,7 +52,8 @@ function getData_readBoxMini_ROW(box, module, id, callback){
 			                	col:col,
 			                	row:row,
 			                	callback:callback
-			                })
+			                });
+			                readBoxMini_outOfBounds(box);
 			            }
 		            })
 		        }
@@ -150,7 +151,7 @@ function getData_readBoxMini_TABLE(box, module, col, row, callback){
 					<div class="horizontalTable" style="max-height:40vh"></div>
 				</div>
 			`);
-			return loadJS('table/table', () => tableLoadColumns(box.find('.tableBox')) );
+			return loadJS('table/table', () => tableLoadColumns(box.find('.tableBox'), () => readBoxMini_outOfBounds(box)) );
 		}
     })
 }
@@ -233,6 +234,16 @@ function animation_readBoxMini(el, box){
 	box.css({'top':top,'left':left});
 	setTimeout(function(){ box.css('transition','') },250);
 	loadJS('API/draggable',function(){ dragable_readBoxMini(box) })
+}
+
+function readBoxMini_outOfBounds(box){
+	var left = box.position().left;
+	if(left < 0){ left = 0 }
+	if(left + box.outerWidth() > $(window).width()){ left = $(window).width() - box.outerWidth() }
+	var top = box.position().top;
+	if(top < 0){ top = 0 }
+	if(top + box.outerHeight() > $(window).height()){ top = $(window).height() - box.outerHeight() }
+	box.css({'left':left,'top':top});
 }
 
 function dragable_readBoxMini(box){
