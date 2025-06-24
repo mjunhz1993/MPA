@@ -131,7 +131,13 @@ function map_addMarker(d, m){
 	marker.on('mouseover', function(){ marker.openPopup() });
 	marker.on('mouseout', function(){ marker.closePopup() });
 	if(typeof d.markerLoad === 'function'){ d.markerLoad(marker) }
-	if(typeof d.markerClick === 'function'){ marker.on('click', function(e){ d.markerClick(marker,e) }) }
+	if(typeof d.markerClick === 'function'){
+		marker.on('click', function(e){
+			map_goThruMarkers(d, function(mar){ mar.setOpacity(1) });
+			marker.setOpacity(0.5);
+			d.markerClick(marker,e);
+		})
+	}
 
 	marker.on('add', () => {
 		$(marker.getElement()).css('filter', `hue-rotate(${m.color}deg)`);
@@ -154,25 +160,12 @@ function map_markerIcon(m){
 
 function map_findMarker(d, id){
 	let found = false;
-	d.markers.eachLayer(function(m){
-		if (m.id == id) {
-			found = true;
-		}
-	});
-	if (found) return true;
 
-	if (d.groups) {
-		for (let group of Object.values(d.groups)) {
-			group.eachLayer(function(m){
-				if (m.id == id) {
-					found = true;
-				}
-			});
-			if (found) return true;
-		}
-	}
+	map_goThruMarkers(d, function(m){
+		if(m.id == id){ found = true }
+	})
 
-	return false;
+	return found;
 }
 
 function map_removeHiddenMarkers(d){
@@ -183,28 +176,24 @@ function map_removeHiddenMarkers(d){
 	var lngMin = sw.lng;
 	var lngMax = ne.lng;
 
-    d.markers.eachLayer(function(m){
+	map_goThruMarkers(d, function(m, g){
 		var lat = m.getLatLng().lat;
 		var lng = m.getLatLng().lng;
 		if(lat < latMin || lat > latMax || lng < lngMin || lng > lngMax){
-			d.markers.removeLayer(m);
+			g.removeLayer(m);
 		}
-	});
+	})
+}
+function map_removeAllMarkers(d){ map_goThruMarkers(d, function(m, g){ g.removeLayer(m) }) }
 
-    if (d.groups) {
-		for (let [groupName, groupLayer] of Object.entries(d.groups)) {
-			// Remove out-of-bounds markers
-			groupLayer.eachLayer(function(m){
-				var lat = m.getLatLng().lat;
-				var lng = m.getLatLng().lng;
-				if(lat < latMin || lat > latMax || lng < lngMin || lng > lngMax){
-					groupLayer.removeLayer(m);
-				}
-			});
+function map_goThruMarkers(d, callback){
+	d.markers.eachLayer(function(m){ callback(m, d.markers) });
+	if (d.groups) {
+		for (let group of Object.values(d.groups)) {
+			group.eachLayer(function(m){ callback(m, group) });
 		}
 	}
 }
-function map_removeAllMarkers(d){ d.markers.clearLayers() }
 
 // GROUPS
 
