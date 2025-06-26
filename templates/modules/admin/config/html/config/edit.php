@@ -142,6 +142,21 @@
 </div></div>
 
 <div class="box col80"><div class="boxInner">
+    <h2 onclick="toggle_configMenu($(this))">Pusher</h2>
+    
+    <div class="toggleConfigMenu">
+    <div class="col col100">
+        <label for="pusherBeamsID">Instance ID</label>
+        <input type="text" name="pusherBeamsID" id="pusherBeamsID" value="<?= $GLOBALS["config"]["pusherBeamsID"] ?? ''; ?>">
+    </div>
+    <div class="col col100">
+        <label for="pusherBeamsKEY">Primary key</label>
+        <input type="text" name="pusherBeamsKEY" id="pusherBeamsKEY" value="<?= $GLOBALS["config"]["pusherBeamsKEY"] ?? ''; ?>">
+    </div>
+    </div>
+</div></div>
+
+<div class="box col80"><div class="boxInner">
     <h2 data-slovar="Company" onclick="toggle_configMenu($(this))"></h2>
 
     <div class="toggleConfigMenu">

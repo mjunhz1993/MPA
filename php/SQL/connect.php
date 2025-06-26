@@ -27,7 +27,7 @@ $SQL = new mysqli(
     $INIconf['SQL']['database'],
     $INIconf['SQL']['port']
 );
-$SQL->set_charset('UTF8');
+$SQL->set_charset('utf8mb4');
 if (mysqli_connect_errno()) {
     printf("Connect failed: %s\n", mysqli_connect_error());
     exit();

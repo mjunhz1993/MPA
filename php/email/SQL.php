@@ -9,7 +9,7 @@ if(!isset($mailSQL)){
         $GLOBALS['MAIL']['DB'],
         $INIconf['SQL']['port']
     );
-    $mailSQL->set_charset('UTF8');
+    $mailSQL->set_charset('utf8mb4');
     if (mysqli_connect_errno()) {
         printf("Connect failed: %s\n", mysqli_connect_error());
         exit();

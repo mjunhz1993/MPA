@@ -3,13 +3,6 @@ function check_pushNotification(){
     return false
 }
 
-function request_pushNotification(d){
-    Notification.requestPermission().then(function(permission) {
-        if(d.onGranted && permission === 'granted'){ return d.onGranted() }
-        if(d.onError){ return d.onError() }
-    })
-}
-
 function create_pushNotification(d){
     var ext = {};
     if(d.body){ ext.body = d.body }
@@ -33,9 +26,7 @@ function init_pushNotification(){
                 body:d.descText,
                 icon:'https://'+window.location.hostname+'/crm/static/img/OKTAGON-IT.jpg',
                 callback:function(){
-                    get_notifications($('#TopNavBell'), function(el, notes){
-                        display_notifications(el, notes)
-                    })
+                    get_notifications($('#TopNavBell'), (el, data)=>popup_notifications(el, data))
                 }
             })
         }

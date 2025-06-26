@@ -36,6 +36,9 @@ function create_config_file($SQL){
     if($_POST['gcID'] != ''){ $t .= '"gcID" => "'. SafeInput($SQL, $_POST['gcID']). '", '; }
     if($_POST['gcAPI'] != ''){ $t .= '"gcAPI" => "'. SafeInput($SQL, $_POST['gcAPI']). '", '; }
 
+    if($_POST['pusherBeamsID'] != ''){ $t .= '"pusherBeamsID" => "'. SafeInput($SQL, $_POST['pusherBeamsID']). '", '; }
+    if($_POST['pusherBeamsKEY'] != ''){ $t .= '"pusherBeamsKEY" => "'. SafeInput($SQL, $_POST['pusherBeamsKEY']). '", '; }
+
     if($_POST['usecaching'] == 'false'){ $_POST['usecaching'] = false; }
     else{ $_POST['usecaching'] = true; }
     $t .= '"usecaching" => "'. $_POST['usecaching']. '", ';

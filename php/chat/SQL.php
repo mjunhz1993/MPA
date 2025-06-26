@@ -13,7 +13,7 @@ if(!isset($chatSQL)){
         $GLOBALS['CHAT']['DB'],
         $INIconf['SQL']['port']
     );
-    $chatSQL->set_charset('UTF8');
+    $chatSQL->set_charset('utf8mb4');
     if(mysqli_connect_errno()){ exit(); }
 }
 ?>
