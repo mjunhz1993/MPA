@@ -180,7 +180,7 @@ function openEmail(box, d = []){loadJS('email/slovar/' + slovar(), function(){
                     var mAtt = data.attachments[i].split(',');
                     html += '<div class="ehAttachment" ';
                     html += 'onclick="loadJS(\'file/file\', function(){';
-                    html += 'clickOnFile(\'mail_rooms/mail_room_' + user_id + '\', \'\', \'' + mAtt[0] + '\', \'' + mAtt[1] + '\'); })">' + mAtt[1];
+                    html += 'clickOnFile(\'mail_rooms/mail_room_' + d.mail_room + '\', \'\', \'' + mAtt[0] + '\', \'' + mAtt[1] + '\'); })">' + mAtt[1];
                     html += ' (' + ((mAtt[2] * 0.001) * 0.001).toFixed(2) + ' Mb)</div>'
                 }
                 html += '</div>';
