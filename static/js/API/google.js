@@ -9,13 +9,13 @@ function GOOGLE_connect(d){loadJS('https://accounts.google.com/gsi/client', func
 })}
 
 function GOOGLE_globals(d){GET_globals({
-  done:function(data){ GOOGLE_initClient(d, data) }
+  done:function(g){ GOOGLE_initClient(d, g) }
 })}
 
-function GOOGLE_initClient(d, data) {
+function GOOGLE_initClient(d, g) {
   GOOGLE_connected();
-  if(valEmpty(data.gcID)){ return createAlertPOPUP(slovar('NO_gcID')) }
-  if(valEmpty(data.gcAPI)){ return createAlertPOPUP(slovar('NO_gcAPI')) }
+  if(valEmpty(g.API.gcID)){ return createAlertPOPUP(slovar('NO_gcID')) }
+  if(valEmpty(g.API.gcAPI)){ return createAlertPOPUP(slovar('NO_gcAPI')) }
   if(valEmpty(d)){ return }
   if(valEmpty(d.scope) && typeof d.done === 'function'){ return d.done() }
 
@@ -24,7 +24,7 @@ function GOOGLE_initClient(d, data) {
 
   gapi.load('client', function(){
     gapi.client.init({
-        apiKey: data.gcAPI,
+        apiKey: g.API.gcAPI,
         discoveryDocs: [d.docs],
     })
     .then(function(){
@@ -40,7 +40,7 @@ function GOOGLE_initClient(d, data) {
   });
 
   googleObj.client = google.accounts.oauth2.initTokenClient({
-    client_id: data.gcID,
+    client_id: g.API.gcID,
     scope: d.scope,
     callback: function (response){
       if (response.error) {

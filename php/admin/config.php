@@ -22,23 +22,6 @@ function create_config_file($SQL){
     $t .= '"max_file_size" => "'. SafeInput($SQL, $_POST['max_file_size']). '", ';
     $t .= '"crm_email" => "'. SafeInput($SQL, $_POST['crm_email']). '", ';
 
-    if($_POST['SENDGRID'] != ''){ $t .= '"SENDGRID" => "'. SafeInput($SQL, $_POST['SENDGRID']). '", '; }
-    if($_POST['twilioID'] != ''){ $t .= '"twilioID" => "'. SafeInput($SQL, $_POST['twilioID']). '", '; }
-    if($_POST['twilioToken'] != ''){ $t .= '"twilioToken" => "'. SafeInput($SQL, $_POST['twilioToken']). '", '; }
-    if($_POST['twilioPhone'] != ''){ $t .= '"twilioPhone" => "'. SafeInput($SQL, $_POST['twilioPhone']). '", '; }
-    if($_POST['jitsipuk'] != ''){ $t .= '"jitsipuk" => "'. SafeInput($SQL, $_POST['jitsipuk']). '", '; }
-    if($_POST['jitsiprk'] != ''){ $t .= '"jitsiprk" => "'. SafeInput($SQL, $_POST['jitsiprk']). '", '; }
-    if($_POST['jitsiid'] != ''){ $t .= '"jitsiid" => "'. SafeInput($SQL, $_POST['jitsiid']). '", '; }
-    if($_POST['stripePK'] != ''){ $t .= '"stripePK" => "'. SafeInput($SQL, $_POST['stripePK']). '", '; }
-    if($_POST['stripeSK'] != ''){ $t .= '"stripeSK" => "'. SafeInput($SQL, $_POST['stripeSK']). '", '; }
-
-    if($_POST['AI'] != ''){ $t .= '"AI" => "'. SafeInput($SQL, $_POST['AI']). '", '; }
-    if($_POST['gcID'] != ''){ $t .= '"gcID" => "'. SafeInput($SQL, $_POST['gcID']). '", '; }
-    if($_POST['gcAPI'] != ''){ $t .= '"gcAPI" => "'. SafeInput($SQL, $_POST['gcAPI']). '", '; }
-
-    if($_POST['pusherBeamsID'] != ''){ $t .= '"pusherBeamsID" => "'. SafeInput($SQL, $_POST['pusherBeamsID']). '", '; }
-    if($_POST['pusherBeamsKEY'] != ''){ $t .= '"pusherBeamsKEY" => "'. SafeInput($SQL, $_POST['pusherBeamsKEY']). '", '; }
-
     if($_POST['usecaching'] == 'false'){ $_POST['usecaching'] = false; }
     else{ $_POST['usecaching'] = true; }
     $t .= '"usecaching" => "'. $_POST['usecaching']. '", ';

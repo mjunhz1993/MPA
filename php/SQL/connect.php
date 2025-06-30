@@ -6,6 +6,7 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/loader.php');
 
 if(empty($_SESSION['token'])){ $_SESSION['token'] = bin2hex(random_bytes(32)); } $token = $_SESSION['token'];
 if(file_exists(loadPHP('user_data/config_file'))){ include(loadPHP('user_data/config_file')); }
+if(file_exists(loadPHP('user_data/api_keys'))){ include(loadPHP('user_data/api_keys')); }
 include(loadPHP('SQL/globals'));
 if(file_exists(loadPHP('user_data/app_version'))){ include(loadPHP('user_data/app_version')); }
 

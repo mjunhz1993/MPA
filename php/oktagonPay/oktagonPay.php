@@ -2,8 +2,8 @@
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 
 function oktagon_pay_key(){
-    if(!isset($GLOBALS['config']['stripeSK'])){ return false; }
-    return $GLOBALS['config']['stripeSK'];
+    if(!isset($GLOBALS['config']['API']['stripeSK'])){ return false; }
+    return $GLOBALS['config']['API']['stripeSK'];
 }
 
 function oktagon_pay_intent($amount, $currency){
@@ -25,5 +25,5 @@ function oktagon_pay_intent($amount, $currency){
 }
 
 if(isset($_GET['oktagon_pay_intent'])){ echo json_encode(oktagon_pay_intent($_POST['amount'], $_POST['currency'])); }
-if(isset($_GET['oktagon_pay_key'])){ echo json_encode($GLOBALS['config']['stripePK']); }
+if(isset($_GET['oktagon_pay_key'])){ echo json_encode($GLOBALS['config']['API']['stripePK']); }
 ?>

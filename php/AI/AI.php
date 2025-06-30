@@ -15,9 +15,9 @@ function loadIn_AI_models($SQL, $WHERE = ''){
 }
 
 function wakeUp_AI(){
-    if(!isset($GLOBALS["config"]['AI'])){ return false; }
+    if(!isset($GLOBALS["config"]['geminiAPI'])){ return false; }
 	$ch = curl_init();
-    $api = $GLOBALS["config"]['AI'];
+    $api = $GLOBALS["config"]['geminiAPI'];
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
     curl_setopt($ch, CURLOPT_URL, "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=".$api);
     curl_setopt($ch, CURLOPT_CUSTOMREQUEST, "POST");

@@ -67,11 +67,28 @@ function delete_API($SQL){
     return true;
 }
 
+
+function save_API_send() {
+    if ($_SESSION['user_id'] != 1) return ['error' => 'Access_denied'];
+
+    $file = $_SERVER['DOCUMENT_ROOT'] . '/crm/php/user_data/api_keys.php';
+
+    if(!is_array($_POST['api_index']) || count($_POST['api_index']) == 0){ return unlink($file); }
+    if (!is_dir($dir = dirname($file))) mkdir($dir);
+
+    $pairs = array_map(fn($k, $v) => "\"$k\" => \"$v\"", $_POST['api_index'], $_POST['api_value']);
+    file_put_contents($file, '<?php $GLOBALS["config"]["API"] = [' . implode(',', $pairs) . ']; ?>');
+
+    return true;
+}
+
 if(isset($_SESSION['user_id'])){
     if(isset($_GET['test_API_table'])){ echo json_encode(test_API_table($SQL, $INIconf['SQL']['database'])); }
     if(isset($_GET['load_API_rows'])){ echo json_encode(load_API_rows($SQL)); }
     if(isset($_GET['add_API'])){ echo json_encode(add_API($SQL)); }
     if(isset($_GET['edit_API'])){ echo json_encode(edit_API($SQL)); }
     if(isset($_GET['delete_API'])){ echo json_encode(delete_API($SQL)); }
+
+    if(isset($_GET['save_API_send'])){ echo json_encode(save_API_send()); }
 }
 ?>

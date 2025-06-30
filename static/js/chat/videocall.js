@@ -1,6 +1,6 @@
 function videocall(room, moderator = true){
     GET_globals({
-        done:function(g){ videocall_config(room, moderator, g.jitsiid) }
+        done:function(g){ videocall_config(room, moderator, g.API.jitsiid) }
     })
 }
 

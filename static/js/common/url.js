@@ -34,8 +34,8 @@ function isValidHttpUrl(string){
 }
 
 function clickTelLink(num){
-    GET_globals({done:function(data){
-        if(valEmpty(data.twilioID) || valEmpty(data.twilioToken) || valEmpty(data.twilioPhone)){ return location.href = 'tel:'+num }
+    GET_globals({done:function(g){
+        if(valEmpty(g.API.twilioID) || valEmpty(g.API.twilioToken) || valEmpty(g.API.twilioPhone)){ return location.href = 'tel:'+num }
         loadJS('SMS/SMS', function(){ write_SMS(num) })
     }})
 }

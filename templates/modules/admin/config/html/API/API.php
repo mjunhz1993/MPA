@@ -13,7 +13,7 @@
     
     <script>
         loadJS('dev/API');
-        $('#configNav a:eq(9)').addClass('act');
+        $('#configNav a:eq(10)').addClass('act');
     </script>
     <?php endif; ?>
     

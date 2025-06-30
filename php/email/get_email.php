@@ -143,7 +143,12 @@ function getpart($mbox,$mid,$p,$partno) {
     // TEXT
     if ($p->type==0 && $data) {
         $charset = $params['charset'];
-        if(strtolower($charset) == 'iso-8859-2'){ $data = iconv('ISO-8859-2', 'UTF-8', $data); }
+
+        if (!empty($charset) && strtolower($charset) !== 'utf-8') {
+            $data = @iconv($charset, 'UTF-8//IGNORE', $data);
+        }
+        // if(strtolower($charset) == 'iso-8859-2'){ $data = iconv('ISO-8859-2', 'UTF-8', $data); }
+        
         if (strtolower($p->subtype) == 'plain'){ $plainmsg .= trim($data) ."\n\n"; }
         else{ $htmlmsg .= $data ."<br><br>"; }
     }

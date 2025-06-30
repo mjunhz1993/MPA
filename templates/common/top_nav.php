@@ -14,7 +14,7 @@ $avatar = ($avatar && $avatar != '0') ? preg_replace('/\.(\w+)$/', '_small.$1', 
         <div class="hideOnMobile" id="TopNavCompanyLogo" style="background-image: url('<?= $companyLogo; ?>');"></div>
     </div>
     <div id="TopNavRight">
-        <?php if(isset($GLOBALS['config']['AI'])): ?>
+        <?php if(isset($GLOBALS['config']['API']['geminiAPI'])): ?>
         <a class="ai_icon" onclick="loadJS('AI/AI-big', ()=>AI_window())" data-tooltip="Oktagon AI"></a>
         <?php endif; ?>
         <div id="TopNavBell" onClick="get_notifications($(this), (el, data)=>popup_notifications(el, data))" data-svg="bell" data-num="10">

@@ -12,7 +12,7 @@ function generate_jwt($SQL){
     }
 
     $header = json_encode([
-        'kid' => $GLOBALS["config"]["jitsipuk"],
+        'kid' => $GLOBALS["config"]["API"]["jitsipuk"],
         'typ' => 'JWT',
         'alg' => 'RS256'
     ]);
@@ -21,7 +21,7 @@ function generate_jwt($SQL){
         "iss" => 'chat',
         "exp" => time() + 7200,
         "nbf" => time() - 10,
-        "sub" => $GLOBALS["config"]["jitsiid"],
+        "sub" => $GLOBALS["config"]["API"]["jitsiid"],
         "context" => [
             "features" => [
                 "livestreaming" => true,
@@ -42,7 +42,7 @@ function generate_jwt($SQL){
         "room" => "*"
     ]);
 
-    $secretFile = $_SERVER['DOCUMENT_ROOT'].'/crm/static/uploads/'.$GLOBALS["config"]["jitsiprk"];
+    $secretFile = $_SERVER['DOCUMENT_ROOT'].'/crm/static/uploads/'.$GLOBALS["config"]["API"]["jitsiprk"];
     $privateKey = file_get_contents($secretFile);
 
     $headerEncoded = base64UrlEncode($header);

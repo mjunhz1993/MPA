@@ -1,10 +1,10 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
-if(isset($GLOBALS["config"]["twilioID"]) && isset($GLOBALS["config"]["twilioToken"]) && isset($GLOBALS["config"]["twilioPhone"])):
+if(isset($GLOBALS["config"]["API"]["twilioID"]) && isset($GLOBALS["config"]["API"]["twilioToken"]) && isset($GLOBALS["config"]["API"]["twilioPhone"])):
 
-$twilioID = $GLOBALS["config"]["twilioID"];
-$twilioToken = $GLOBALS["config"]["twilioToken"];
-$twilioPhone = $GLOBALS["config"]["twilioPhone"];
+$twilioID = $GLOBALS["config"]["API"]["twilioID"];
+$twilioToken = $GLOBALS["config"]["API"]["twilioToken"];
+$twilioPhone = $GLOBALS["config"]["API"]["twilioPhone"];
 
 if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POST['csrf_token']){
     

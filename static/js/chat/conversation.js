@@ -74,7 +74,7 @@ function createConversationHEAD(data, G, moduleData, html = ''){
     box.find('.chatInfoLeft').html(html);
     html = '';
 
-    if(!valEmpty(G.jitsiid) && if_ConversationAdmin(data)){
+    if(!valEmpty(G.API.jitsiid) && if_ConversationAdmin(data)){
         html = '<span onclick="call_conversation($(this))" data-tooltip="'+slovar('Call')+'">'+getSVG('phone')+'</span>'
     }
 
