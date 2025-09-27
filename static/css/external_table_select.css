@@ -1,0 +1,5 @@
+.extTable tbody tr:hover td{
+	cursor: pointer;
+	background-color: var(--blue);
+	color: white;
+}

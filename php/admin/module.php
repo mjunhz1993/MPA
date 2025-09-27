@@ -172,6 +172,8 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
             $addon_type == 'JSCommand' ||
             $addon_type == 'loadJS'
         ){ array_push($addon, $_POST['custom_data_type'], $SQL->real_escape_string($_POST['custom_data'])); }
+
+        if(isset($_POST['addons'])){ $addon = array_merge($addon, $_POST['addons']); }
         
         $addon = implode('|', $addon);
         $tstamp = time();

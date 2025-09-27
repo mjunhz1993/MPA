@@ -52,6 +52,7 @@ function createModuleAddon(module, form){
 	html += '<option value="copy">' + slovar('Copy_button') + '</option>';
 	html += '<option value="copyDifferentModule">' + slovar('Copy_module_button') + '</option>';
 	html += '<option value="FURS">' + slovar('FURS') + '</option>';
+	html += '<option value="external_table_select">external_table_select</option>';
 	html += '</optgroup>';
 	html += '<optgroup label="' + slovar('Parent_input') + '">';
 	html += '<option value="parent_filter">' + slovar('Parent_filter') + '</option>';
@@ -165,6 +166,33 @@ function changeAddonSelect1(module, el){
 	        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
 	        	html += '</div>';
 	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
+	        	box.html(html);
+			}
+		})
+	}
+	else if(el.val() == 'external_table_select'){ // ------------------------- COPY FROM external_table_select
+		GET_column({
+			module:module,
+			showAll:true,
+			done: function(data){
+				html += '<label>input - el</label>';
+		        html += '<select name="addons[]">';
+				var arr = [];
+	        	for(var i=0; i<data.length; i++){
+	        		col = data[i];
+	        		html += '<option value="' + col.column + '">' + slovar(col.name) + '</option>';
+	        	}
+	        	html += '</select>';
+				html += '<label>input - ID</label>';
+				html += '<input type="text" name="addons[]" required>';
+				html += '<label>input - Label</label>';
+				html += '<input type="text" name="addons[]" required>';
+				html += '<label>table - module</label>';
+				html += '<input type="text" name="addons[]" required>';
+				html += '<label>table - columns (item1,item2)</label>';
+				html += '<input type="text" name="addons[]" required>';
+				html += '<label>table - labels (item1,item2)</label>';
+				html += '<input type="text" name="addons[]" required>';
 	        	box.html(html);
 			}
 		})
