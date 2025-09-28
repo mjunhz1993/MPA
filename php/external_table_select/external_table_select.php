@@ -2,16 +2,10 @@
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 
 function search_external_table($SQL){
-
-	$search_escaped = addslashes($_GET['search']);
-	$conditions = array_map(function($col) use ($search_escaped) {
-	    return "$col LIKE '%$search_escaped%'";
-	}, $_GET['columns']);
-
 	$A = $SQL->query("
 		SELECT ".implode(', ', $_GET['columns'])." 
 		FROM {$_GET['module']}
-		WHERE ".implode(" OR ", $conditions)."
+		WHERE ".implode(" OR ", search_external_table_conditions())."
 		".add_external_where()."
 		LIMIT 10
 	");
@@ -23,8 +17,25 @@ function search_external_table($SQL){
     return $data;
 }
 
-function select_external_table_value($SQL){
+function search_external_table_conditions(){
+	$search_escaped = addslashes($_GET['search'] ?? '');
+	$columns = $_GET['search_columns'] ?? $_GET['columns'];
+	$types = $_GET['search_types'] ?? [];
 
+	return array_map(function($col, $type) use ($search_escaped) {
+		switch ($type) {
+			case 'Begins_with':
+				return "$col LIKE '{$search_escaped}%'";
+			case 'Equals':
+				return "$col = '{$search_escaped}'";
+			case 'Contains':
+			default:
+				return "$col LIKE '%{$search_escaped}%'";
+		}
+	}, $columns, $types);
+}
+
+function select_external_table_value($SQL){
 	$A = $SQL->query("
 		SELECT ".implode(', ', $_GET['columns'])." 
 		FROM {$_GET['module']}

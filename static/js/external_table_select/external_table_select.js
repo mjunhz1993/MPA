@@ -63,6 +63,8 @@ function search_external_table(d){
         module:d.table.module,
         columns:d.table.columns,
         where:d.table.where,
+        search_columns:d.table.search_columns,
+        search_types:d.table.search_types,
         search:d.popup.find('input').val()
     }, function(data){
         if(data.error){ return createAlertPOPUP(data.error) }
@@ -91,3 +93,21 @@ function click_external_table_row(el, d){
 
     removePOPUPbox();
 }
+
+/*
+external_table_select({
+    input:{
+        el: $(el),
+        id: str,
+        label: str
+    },
+    table:{
+        module: str,
+        columns: array,
+        labels: array,
+        where: array,
+        search_columns: array,
+        search_types: array
+    }
+})
+*/
