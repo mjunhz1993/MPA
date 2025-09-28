@@ -1,11 +1,12 @@
-function external_table_select(d){
-    loadCSS('external_table_select');
+function externalTableSelector(d){
+    loadCSS('externalTableSelector');
 
     if(valEmpty(d.input.label)){ d.input.label = slovar('Select') }
     if(valEmpty(d.table.labels)){ d.table.labels = d.table.columns }
 
     d.input.el
-    .hide()
+    .addClass('hiddenInput')
+    .on('focus', function(){ popup_external_table(d) })
     .after(`<div class="inputPlaceholder" id="${d.input.id}">${d.input.label}</div>`);
 
     d.input.placeholder = d.input.el.parent().find(`#${d.input.id}`);
@@ -17,8 +18,8 @@ function external_table_select(d){
 }
 
 function external_table_value_exists(d){
-    $.getJSON('/crm/php/external_table_select/external_table_select', {
-        select_external_table_value:true,
+    $.getJSON('/crm/php/form/externalTableSelector', {
+        select_external_table_row:true,
         module:d.table.module,
         columns:d.table.columns,
         where:d.table.where,
@@ -44,7 +45,7 @@ function HTML_popup_external_table(d){
     <form>
         <label>${d.title}</label>
         <input type="text" placeholder="${slovar('Search')}">
-        <div class="horizontalTable">
+        <div class="horizontalTable" style="max-height:60vh;">
             <table class="table extTable">
                 <thead>
                     ${d.table.labels.map(c => `<th class="no-sort">${c}</th>`).join('')}
@@ -58,14 +59,16 @@ function HTML_popup_external_table(d){
 }
 
 function search_external_table(d){
-    $.getJSON('/crm/php/external_table_select/external_table_select', {
+    $.getJSON('/crm/php/form/externalTableSelector', {
         search_external_table:true,
         module:d.table.module,
         columns:d.table.columns,
         where:d.table.where,
         search_columns:d.table.search_columns,
         search_types:d.table.search_types,
-        search:d.popup.find('input').val()
+        search:d.popup.find('input').val(),
+        order:d.table.order,
+        limit:d.table.limit
     }, function(data){
         if(data.error){ return createAlertPOPUP(data.error) }
         return render_external_table_data(d, data)
@@ -95,7 +98,7 @@ function click_external_table_row(el, d){
 }
 
 /*
-external_table_select({
+externalTableSelector({
     input:{
         el: $(el),
         id: str,
@@ -107,7 +110,9 @@ external_table_select({
         labels: array,
         where: array,
         search_columns: array,
-        search_types: array
+        search_types: array,
+        order: str,
+        limit: int
     }
 })
 */
