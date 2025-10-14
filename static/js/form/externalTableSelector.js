@@ -78,7 +78,7 @@ function search_external_table(d){
 function render_external_table_data(d, data){
     d.popup.find('tbody').html(`
         ${data.map(r => `
-            <tr data-id="${r[0][0]}">
+            <tr data-id="${r[0]}">
                 ${r.map(c => `<td>${c}</td>`).join('')}
             </tr>
         `).join('')}
