@@ -4,7 +4,10 @@ function externalTableSelector(d){
     if(valEmpty(d.input.label)){ d.input.label = slovar('Select') }
     if(valEmpty(d.table.labels)){ d.table.labels = d.table.columns }
 
+    d.input.el.closest('.formField').find('.inputPlaceholder').remove();
+
     d.input.el
+    .removeAttr('onfocus')
     .addClass('hiddenInput')
     .on('focus', function(){ popup_external_table(d) })
     .after(`<div class="inputPlaceholder" id="${d.input.id}">${d.input.label}</div>`);
