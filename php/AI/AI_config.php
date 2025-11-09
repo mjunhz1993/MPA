@@ -1,11 +1,6 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 
-$GLOBALS['AI']['talk'] = [
-    "system_instruction" => ["parts" => array()],
-    "contents" => array()
-];
-
 function check_for_AI_table($SQL, $db){
     $A = $SQL->query("SELECT * FROM information_schema.tables WHERE table_schema = '$db' AND table_name = 'ai' LIMIT 1");
     if($A->num_rows == 0){

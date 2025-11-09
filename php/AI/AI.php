@@ -1,6 +1,4 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
-
 $GLOBALS['AI']['talk'] = [
     "system_instruction" => ["parts" => array()],
     "contents" => array()
@@ -69,10 +67,5 @@ function run_AI(){
     generate_talk($_POST['ask']);
 
     return ask_AI();
-}
-
-if(isset($_SESSION['user_id'])){
-    if(isset($_GET['loadIn_AI_models'])){ echo json_encode(loadIn_AI_models($SQL)); }
-	if(isset($_POST['AI'])){ echo (run_AI()); }
 }
 ?>
