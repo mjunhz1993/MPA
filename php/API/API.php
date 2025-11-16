@@ -10,7 +10,7 @@ function SEND(object $obj = null){
 	else if ($obj->sendType == 'POST') {
 		curl_setopt($ch, CURLOPT_URL, $obj->url);
 		curl_setopt($ch, CURLOPT_POST, true);
-		curl_setopt($ch, CURLOPT_POSTFIELDS, http_build_query($obj->data));
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $obj->data);
 	}
 	else if($obj->sendType == 'GET') {
 		$query = http_build_query($obj->data);
@@ -20,6 +20,7 @@ function SEND(object $obj = null){
 	else {
 		curl_setopt($ch, CURLOPT_URL, $obj->url);
 		curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $obj->sendType);
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $obj->data);
 	}
 
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
