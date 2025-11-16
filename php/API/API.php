@@ -41,7 +41,7 @@ function SEND(object $obj = null){
 	curl_close($ch);
 
 	if (is_callable($obj->done)){
-        return ($obj->done)(json_decode($response));
+        return ($obj->done)($response);
     }
 }
 

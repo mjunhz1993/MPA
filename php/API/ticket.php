@@ -18,7 +18,7 @@ function send_ticket($SQL, $INIconf){
 		'data' => $_POST,
 
 		'error' => function($err){ return $err; },
-		'done' => function($data){ return $data; }
+		'done' => function($data){ return json_decode($data); }
 	]);
 }
 

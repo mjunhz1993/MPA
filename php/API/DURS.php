@@ -11,7 +11,7 @@ function DURS($INIconf){
 		'data' => ['s' => $_GET['search']],
 
 		'error' => function($err){ return $err; },
-		'done' => function($data){ return $data; }
+		'done' => function($data){ return json_decode($data); }
 	]);
 }
 
