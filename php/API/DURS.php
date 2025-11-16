@@ -3,16 +3,16 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 include(loadPHP('API/API'));
 
 function DURS($INIconf){
-	$data = SEND((object)[
+	return SEND((object)[
+		'sendType' => 'POST',
 		'event' => 'durs',
 		'username' => $INIconf['API']['username'],
 		'password' => $INIconf['API']['password'],
 		'data' => ['s' => $_GET['search']],
-		'post' => true
-	]);
 
-	if(isset($data['error'])){ return $data['error']; }
-	return $data['data'];
+		'error' => function($err){ return $err; },
+		'done' => function($data){ return $data; }
+	]);
 }
 
 if(isset($_SESSION['user_id'])){

@@ -10,16 +10,16 @@ function send_ticket($SQL, $INIconf){
 	$A = $SQL->query("SELECT user_email FROM user WHERE user_id = {$_SESSION['user_id']} LIMIT 1");
     while ($B = $A->fetch_row()){ $_POST['email'] = $B[0]; }
 
-	$data = SEND((object)[
+	return SEND((object)[
+		'sendType' => 'POST',
 		'event' => 'ticket',
 		'username' => $INIconf['API']['username'],
 		'password' => $INIconf['API']['password'],
 		'data' => $_POST,
-		'post' => true
-	]);
 
-	if(isset($data['error'])){ return $data['error']; }
-	return $data['data'];
+		'error' => function($err){ return $err; },
+		'done' => function($data){ return $data; }
+	]);
 }
 
 if(isset($_SESSION['user_id'])){
