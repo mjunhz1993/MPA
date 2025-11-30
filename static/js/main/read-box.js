@@ -368,7 +368,19 @@ function turnEditInputsToReadInputs(EditBox){
         $(this).replaceWith(`<div class="inputPlaceholder">${html}</div>`);
     });
     // CHECK TEXTAREA INPUTS
-    EditBox.find('textarea').each(function(){ $(this).replaceWith('<div class="readonlyTextarea">'+$(this).val()+'</div>') });
+    EditBox.find('textarea').each(function(){
+        let ta = $(this);
+        ta.wrap('<div class="readonlyTextarea"></div>');
+
+        if(['CODE'].includes(ta.data('list'))){
+            ta.before('<pre><code></code></pre>').parent().find('code').text(ta.val())
+        }
+        else{
+            ta.parent().html(ta.val());
+        }
+
+        ta.remove();
+    });
     // CHECK JOIN_ADD INPUTS
     EditBox.find('.JOIN_ADD_placeholder').each(function(){
         if(valEmpty($(this).prev('input').val())){ return $(this).text(slovar('Is_empty')) }

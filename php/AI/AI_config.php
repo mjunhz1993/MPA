@@ -10,7 +10,8 @@ function check_for_AI_table($SQL, $db){
             id INT(100) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255),
             share TEXT,
-            instructions TEXT
+            instructions TEXT,
+            answer_parse  TEXT
         )
         CHARACTER SET utf8 COLLATE utf8_general_ci;
         ");

@@ -85,6 +85,7 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
         html += label;
         if(data.mandatory){ html += '<span style="color: red;">*</span>'; }
         html += '<textarea name="' + data.column + '" id="' + data.id + '" ';
+        if(data.list){ html += 'data-list="'+data.list+'"' }
         if(data.mandatory){ html += 'required'; }
         html += '>';
         if(data.preselected_option[0] != null){ html += data.preselected_option[0]; }

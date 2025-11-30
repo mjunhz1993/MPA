@@ -77,7 +77,7 @@ function tableAddLoadedRows(module, id, value, c, table){
     if(['PRICE','PERCENT'].includes(type)){ return tableAddLoadedRows_CURRENCY(type, value) }
     if(['DATE','TIME','DATETIME'].includes(type)){ return tableAddLoadedRows_DATE(type, value) }
     if(type == 'FILE'){ return tableAddLoadedRows_FILE(list, value, module, id, th) }
-    if(type == 'TEXTAREA'){ return tableAddLoadedRows_TEXTAREA(value, module, id, th, archive) }
+    if(type == 'TEXTAREA'){ return tableAddLoadedRows_TEXTAREA(value, module, id, th, archive, list) }
     if(type == 'JOIN_ADD'){ return '<td>'+getSVG('link')+value+'</td>' }
 
     return tableAddLoadedRows_DEFAULT(value)
@@ -176,12 +176,15 @@ function tableAddLoadedRows_FILE(list, value, module, id, th, html = ''){
     html += slovar('Show_more') + '</a></td>';
     return html;
 }
-function tableAddLoadedRows_TEXTAREA(value, module, id, th, archive, html = ''){
+function tableAddLoadedRows_TEXTAREA(value, module, id, th, archive, list){
     var col = th.attr('data-column');
-    html += '<td><a class="button buttonBlue buttonShowMore" ';
-    html += 'onclick="loadJS(\'form/cleditor\', function(){ tableClickOnShowMoreButtonTextarea(\'' + module.module + '\', \'' + col + '\', ' + id + ', \'' + archive + '\') })">';
-    html += slovar('Show_more') + '</a></td>';
-    return html;
+    return `
+    <td>
+        <a class="button buttonBlue buttonShowMore"
+        onclick="loadJS('form/cleditor', ()=> tableClickOnShowMoreButtonTextarea('${module.module}', '${col}', '${id}', '${list}', ${archive}))
+        ">${slovar('Show_more')}</a>
+    </td>
+    `
 }
 function tableAddLoadedRows_JOIN_GET(value, id, th, html = ''){
     if(!valEmpty(th.attr('data-preselected_option'))){ return tableAddLoadedRows_DEFAULT(value) }

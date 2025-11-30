@@ -1,5 +1,5 @@
 function AI_window(d = {}){loadJS('AI/slovar/'+slovar(),()=>{loadJS('AI/AI', ()=>{
-	if($('#AI').length == 1){ return }
+	if($('#AI').length == 1){ return console.log('ddd') }
 	$('#Main').append(AI_window_HTML());
 	var box = $('#AI');
 	box.fadeIn('fast', function(){ $(this).find('textarea').focus() });
@@ -28,30 +28,8 @@ function AI_window_HTML(){
 	`
 }
 
-function loadIn_AI_models(){
-	$.getJSON('/crm/php/AI/run', {loadIn_AI_models:true}, function(data){
-		if(data.length == 0){ return add_conversation_bubble(slovar('I_cant_help_you'), 'au') }
-		data.forEach(m => {
-			$('#AI select').append(`
-				<option value="${m.id}">${m.name}</option>
-			`)
-		})
-	})
-}
-
-function select_AI_model(el){
-	input = $('#AI .input');
-	input.hide();
-	$.getJSON('/crm/php/AI/run', {loadIn_AI_models:true, id:el.val()}, function(data){
-		if(!data[0]){ return }
-		input.show();
-		add_AI_instructions(data[0].instructions);
-		$('#AI textarea').focus();
-	})
-}
-
-function add_AI_instructions(t){
-	$('#AI .instruction').text(t.replace("{user_id}", user_id));
+function close_AI_window(){
+	$('#AI').fadeOut('fast', function(){ $(this).remove() })
 }
 
 function add_conversation_bubble(text, type = 'user'){
@@ -70,33 +48,69 @@ function conversation_bubble_HTML(text, type){
 	`
 }
 
+function get_last_conversation_bubble(){
+	return $('#AI .bubble').last()
+}
+
+// --- SELECT AI MODEL
+
+function get_AI_models(callback, id = null){
+	$.getJSON('/crm/php/AI/run', {
+		loadIn_AI_models: true,
+		id: id
+	}, function(models){ console.log(models);
+		if(models.length == 0){ return false }
+		if(id != null){ models = models[0] }
+		return callback(models)
+	})
+}
+
+function loadIn_AI_models(){
+	get_AI_models(function(models){
+		if(models.length == 0){ return add_conversation_bubble(slovar('I_cant_help_you'), 'au') }
+		let selectMenu = $('#AI select');
+		models.forEach(m => {
+			selectMenu.append(`
+				<option value="${m.id}">${m.name}</option>
+			`)
+		})
+		selectMenu.val(selectMenu.find("option:eq(1)").val());
+		return select_AI_model(selectMenu);
+	})
+}
+
+function select_AI_model(el){
+	input = $('#AI .input');
+	input.hide();
+
+	get_AI_models(function(model){
+		input.show();
+		add_AI_instructions(model.instructions);
+		$('#AI textarea').focus();
+	}, el.val())
+}
+
+function add_AI_instructions(instructions, showhtml = 0){
+	let instructionBox = $('#AI .instruction');
+	instructionBox.text(instructions.replace("{user_id}", user_id));
+}
+
+// --- TYPING EVENT
+
 function type_to_AI(el, e){
 	if(e.keyCode == 13 && !e.shiftKey){ return start_AI_question(el) }
 }
 
-function start_AI_question(el){
-	var text = el.val();
-	if(valEmpty(text.replace(/(\r\n|\n|\r)/gm, ""))){ return }
+function show_AI_processing(){
+	let el = $('#AI textarea');
 	el.val('').hide();
-	el.parent().append(HTML_loader())
-	add_conversation_bubble(text);
-
-	if(valEmpty($('#AI select').val())){
-		el.show().focus();
-		return add_conversation_bubble(slovar('Not_allowed_to_answer'), 'ai');
-	}
-
-	ask_AI({
-		instruction: $('#AI .instruction').text(),
-		ask:text,
-		history: grab_history(),
-		answer: function(d){ work_with_answer(el, text, d) }
-	})
+	el.parent().append(HTML_loader('Oktagon AI Processing...'));
 }
 
 function grab_history(h = []){
 	var box = $('#AI .conversation');
 	box.find('.bubble').each(function(){
+		if($(this).hasClass('ignore')){ console.log('ddd'); return; }
 		var type = 'model';
 		if($(this).closest('.bubbleBox').hasClass('user')){ type = 'user' }
 		h.push({role:type, text:$(this).text()});
@@ -104,35 +118,55 @@ function grab_history(h = []){
 	return h;
 }
 
+function start_AI_question(el){
+	var question = el.val();
+	if(valEmpty(question.replace(/(\r\n|\n|\r)/gm, ""))){ return }
+
+	let history = grab_history();
+	add_conversation_bubble(question);
+
+	show_AI_processing();
+
+	if(valEmpty($('#AI select').val())){
+		el.show().focus();
+		return add_conversation_bubble(slovar('Not_allowed_to_answer'), 'ai');
+	}
+
+	let instructionBox = $('#AI .instruction');
+
+	ask_AI({
+		instruction: instructionBox.text(),
+		ask: question,
+		history: history,
+		answer: function(answer){ work_with_answer(el, question, answer) }
+	})
+}
+
 // --- ANSWER
 
-function work_with_answer(el, text, d){
-	object = encodeAnswerWithJSON(d);
-	if(object){ return if_JSON_answer(el, text, object) }
-	d = encodeAnswerWithHTML(d);
-	default_answer(el, d);
-}
-
-function if_JSON_answer(el, text, jsonObject){
-	if(encodeAnswerWithSQLselect(jsonObject)){ return foundSelectStatement(jsonObject.sql, text) }
-	default_answer(el, slovar('I_am_not_allowed_to_do_that'));
-}
-
-function default_answer(el, d){
+function work_with_answer(el, question, answer){
 	el.show().focus();
-	add_conversation_bubble(d, 'ai');
+	add_conversation_bubble(answer, 'ai');
+
+	get_AI_models(function(model){
+
+		let lastBubble = get_last_conversation_bubble();
+		if(model.answer_parse.includes('html')){ console.log('html...'); encodeAnswerWithHTML(lastBubble) }
+		if(model.answer_parse.includes('json')){ console.log('json...'); encodeAnswerWithJSON(lastBubble, question) }
+
+	}, $('#AI select').val())
 }
 
-// SQL SELECT
+// ANSWER - SQL SELECT
 
-function foundSelectStatement(statement, text){
+function foundSelectStatement(box, statement, question){
 	$.post('/crm/php/export/table', {
 		exportTable: true,
 		stringQuery: statement
 	}, function(data){
 		data = JSON.parse(data);
 		if(data.error){ return createAlertPOPUP(data.error) }
-		userFreandlyAnswer(SelectStatementTableToString(data), text);
+		userFreandlyAnswer(box, SelectStatementTableToString(data), question);
 	})
 }
 function SelectStatementTableToString(data) {
@@ -143,23 +177,20 @@ function SelectStatementTableToString(data) {
     };
     return data.map(objectToString).join('\n');
 }
-function userFreandlyAnswer(instruction, text){ console.log(instruction);
-	var currentInstructions = $('#AI .instruction').text();
-	add_AI_instructions(`
-		- if user asks this question: "${text}"
-		- this is the data for the answer: "${instruction}"
-		- make the answer read freandly with HTML tags
-	`);
+function userFreandlyAnswer(box, instruction, question){ console.log(instruction);
+	box.closest('.bubbleBox').hide();
+	show_AI_processing();
 	ask_AI({
-		instruction: $('#AI .instruction').text(),
-		ask:text,
-		answer: function(d){
-			work_with_answer($('#AI textarea'), text, d);
-			add_AI_instructions(currentInstructions);
+		instruction:
+		`
+			- if user asks this question: "${question}"
+			- this is the data for the answer: "${instruction}"
+			- make the answer with HTML and STYLE tags
+		`,
+		ask:question,
+		answer: function(answer){
+			work_with_answer($('#AI textarea'), question, answer);
+			get_last_conversation_bubble().addClass('ignore');
 		}
 	})
-}
-
-function close_AI_window(){
-	$('#AI').fadeOut('fast', function(){ $(this).remove() })
 }

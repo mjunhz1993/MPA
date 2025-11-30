@@ -12,13 +12,31 @@ function InitializationOfTextAreaInputs(box, lang, callback){
     var styleTags =  ['p', 'h1', 'h2', 'h3'];
     box.find('textarea').each(function(){
     	var ta = $(this);
-    	var toolbar = selectTextAreaToolBar(ta);
+
+    	if(['CODE'].includes(ta.data('list'))){ return makeTextAreaCodeEditor(ta) }
+
         ta.summernote({
-        	lang:lang, minHeight:200, maxHeight:500, toolbar:toolbar, styleTags:styleTags, codeviewIframeFilter:true,
+        	lang:lang, minHeight:200, maxHeight:500, toolbar:selectTextAreaToolBar(ta), styleTags:styleTags, codeviewIframeFilter:true,
         	callbacks:{ onChangeCodeview:function(a){ ta.val(a) }}
     	});
     });
     if(typeof callback === 'function'){ callback() }
+}
+
+function makeTextAreaCodeEditor(ta){
+	ta
+	.wrap('<div class="openCodeEditor"></div>')
+	.before('<pre><code></code></pre>')
+	.hide()
+	.parent().click(function(){
+		loadJS('form/codeEditor', function(){
+			openCodeEditor({
+				type:'php',
+				box: ta.parent()
+			})
+		})
+	});
+	ta.parent().find('code').text(ta.val());
 }
 
 function selectTextAreaToolBar(ta){
@@ -44,7 +62,7 @@ function selectTextAreaToolBar(ta){
     ]
 }
 
-function tableClickOnShowMoreButtonTextarea(module, col, id, boxYear = ''){
+function tableClickOnShowMoreButtonTextarea(module, col, id, list, boxYear = ''){
     var popup = createPOPUPbox();
     var popupBox = popup.find('.popupBox');
     GET_row({
@@ -52,9 +70,20 @@ function tableClickOnShowMoreButtonTextarea(module, col, id, boxYear = ''){
         id:id,
         archive:boxYear,
         done: function(data){
-        	var html = '<div class="readonlyTextarea">'+data[col]+'</div>';
-        	html += '<hr><button class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Close') + '</button>';
-	        popupBox.html(html);
+        	if(['CODE'].includes(list)){
+        		popupBox.html(`
+	        	<div class="readonlyTextarea"><pre><code></code></pre></div>
+	    		<hr>
+	    		<button class="button buttonGrey" onclick="removePOPUPbox()">${slovar('Close')}</button>
+		        `).find('code').text(data[col]);
+        	}
+        	else{
+		        popupBox.html(`
+	        	<div class="readonlyTextarea">${data[col]}</div>
+	    		<hr>
+	    		<button class="button buttonGrey" onclick="removePOPUPbox()">${slovar('Close')}</button>
+		        `);
+	        }
 	        popup.fadeIn('fast');
         }
     })

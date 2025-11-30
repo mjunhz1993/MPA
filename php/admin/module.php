@@ -492,6 +492,7 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         }
         
         if($custom == 1){
+            array_push($SET, "name = '".$_POST['name']."'");
             array_push($SET, "editable = '". $editable. "'");
             array_push($SET, "active = '". $active. "'");
             array_push($SET, "special = '". $special. "'");

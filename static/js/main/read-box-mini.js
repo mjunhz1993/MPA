@@ -128,7 +128,9 @@ function insertRow_readBoxMini(box, col, row, html = ''){
     }
     if(['TEXTAREA','FILE'].includes(col.type)){
     	html += '<a class="link" onclick="';
-    	html += 'clickRow_readBoxMini(\''+col.type+'\',$(this),\''+col.module+'\',\''+col.column+'\',\''+row[col.module+'_id']+'\')';
+    	html += `
+    		clickRow_readBoxMini('${col.type}',$(this),'${col.module}','${col.column}','${row[col.module+'_id']}','${col.list}')
+    	`;
     	html += '">'+slovar('Show_more')+'</a>';
     	return html
     }
@@ -163,9 +165,9 @@ function getData_readBoxMini_CUSTOM(box, module, callback){
 }
 
 function moveToCorner_readBoxMini(el){ el.closest('.readBoxMini').animate({left:0,top:0}) }
-function clickRow_readBoxMini(type, el, module, col, id){
+function clickRow_readBoxMini(type, el, module, col, id, list){
 	moveToCorner_readBoxMini(el);
-	if(type == 'TEXTAREA'){ return loadJS('form/cleditor', function(){ tableClickOnShowMoreButtonTextarea(module, col, id) }) }
+	if(type == 'TEXTAREA'){ return loadJS('form/cleditor', function(){ tableClickOnShowMoreButtonTextarea(module, col, id, list) }) }
 	if(type == 'FILE'){ return tableClickOnShowMoreButtonFile(el, module, col, id) }
 }
 function clickJOIN_ADD_readBoxMini(el, module, id){

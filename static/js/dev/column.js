@@ -37,6 +37,7 @@ function displayColumns(data, rows = ''){
     for(var r = 0; r < data.length; r++){
         var col = data[r];
         rows += '<tr data-column="' + col.column + '" ';
+        rows += 'data-name="'+col.name+'"';
         rows += 'data-type="' + col.type + '" ';
         rows += 'data-custom="' + col.custom + '" ';
         rows += 'data-special="' + col.special + '" ';
@@ -335,6 +336,9 @@ function configEditColumn(column){
     var list = column.data('list');
     var editable = column.data('editable');
     var active = column.data('active');
+
+    html += '<label>'+slovar('Name')+'</label>'
+    html += '<input type="text" name="name" value="'+column.data('name')+'">';
 
     html += '<div class="col col50"><input type="checkbox" name="active" id="active">';
     html += '<label for="active" class="chekboxLabel">Vidno v tabeli</label></div>';
