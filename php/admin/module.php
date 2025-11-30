@@ -388,6 +388,7 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
             $CREATE = "ALTER TABLE $module ADD COLUMN $column_id DATETIME";
         }
         else if($type == 'TEXTAREA'){
+            $list = $_POST['list'];
             $CREATE = "ALTER TABLE $module ADD COLUMN $column_id BLOB";
         }
         else if($type == 'CHECKBOX'){

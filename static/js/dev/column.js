@@ -139,6 +139,13 @@ function changeColumnType(){
         html += '<label for="add_list">Možne izbire</label><br>';
         html += '<b class="button button100 buttonGreen" onclick="addSelectOptions($(this))">Dodaj več opcij</b>';
     }
+    else if(type == 'TEXTAREA'){
+        html += '<label for="list">Dodatki</label>';
+        html += '<select name="list" id="list">';
+        html += '<option value="">Brez dodatka</option>';
+        html += '<option value="CODE">CODE EDITOR</option>';
+        html += '</select>';
+    }
     else if(type == 'FILE'){
         html += '<label for="file_op1">Tip datotek</label>';
         html += '<select name="file_op1" id="file_op1" required>';
