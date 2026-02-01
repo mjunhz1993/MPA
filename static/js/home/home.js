@@ -79,7 +79,7 @@ function homepage_getConversation(dashboard, box = $('#lastconversation')){
 			limit:1,
 			done:function(con){
 				loadJS('home/widgets',()=>loadWidgets(dashboard));
-				if(con.error){ return createAlert(box, 'Red', con.error) }
+				if(con.error){ return createAlert(box, 'Red', slovar(con.error)) }
 				if(con.length == 0){
 					return box.append(`
 					<button class="buttonSquare button100 buttonGreen"
