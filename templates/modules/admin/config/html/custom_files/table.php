@@ -4,13 +4,16 @@
 		<tr>
 			<td><button class="button buttonGreen" onclick="openCreateCustomFile()" data-slovar="Add_new"></button></td>
 			<td>
-				<select id="FileTableExtFilter" class="tableTopSelect">
+				<select id="FileTableExtFilter" class="tableTopSelect" onchange="getCustomFiles($('#FileTable'))">
 					<option value="">All File Types</option>
 					<option value="php">PHP</option>
 					<option value="js">Javascript</option>
 					<option value="css">CSS</option>
 					<option value="sql">SQL</option>
 				</select>
+				<select id="FileTableGroupFilter" class="tableTopSelect" onchange="getCustomFiles($('#FileTable'))"></select>
+			</td>
+			<td>
 				<input type="text" id="FileTableProjectFilter" placeholder="Search by name">
 				<input type="text" id="FileContentProjectFilter" placeholder="Search by content">
 			</td>
@@ -31,13 +34,6 @@
 					<th data-slovar="Project"></th>
 					<th>Last update</th>
 					<th data-slovar="Tools"></th>
-				</tr>
-				<tr>
-					<td colspan="2"></td>
-					<td>
-						<select id="selectProjectName" onchange="filterProjectName($(this))"></select>
-					</td>
-					<td colspan="2"></td>
 				</tr>
 			</thead>
 			<tbody></tbody>

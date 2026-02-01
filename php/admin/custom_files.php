@@ -9,6 +9,9 @@ function get_custom_files($SQL){
     if(isset($_POST['ProjectFilter']) && $_POST['ProjectFilter'] != ''){
         $WHERE[] = "name LIKE '%".$_POST['ProjectFilter']."%'";
     }
+    if(isset($_POST['GroupFilter']) && $_POST['GroupFilter'] != ''){
+        $WHERE[] = "project = '".$_POST['GroupFilter']."'";
+    }
     if(isset($_POST['ContentFilter']) && $_POST['ContentFilter'] != ''){
         $arr = searchFilesForPhrase($SQL, $_POST['ContentFilter']);
         if(count($arr)){

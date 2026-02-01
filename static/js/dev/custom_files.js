@@ -5,13 +5,15 @@ function getCustomFiles(table, callback){
 	if($('#FileTableProjectFilter').length == 1){ ProjectFilter = $('#FileTableProjectFilter').val() }
 	if($('#FileContentProjectFilter').length == 1){ ContentFilter = $('#FileContentProjectFilter').val() }
 	
-	let selectProjectName = $('#selectProjectName');
-	selectProjectName.html(`<option value="">${slovar('Select')}</option>`);
+	let FileTableGroupFilter = $('#FileTableGroupFilter');
+	let testProjectGroups = FileTableGroupFilter.find('option').length == 0 ? true : false;
+	if(testProjectGroups){ FileTableGroupFilter.html(`<option value="">${slovar('Select')}</option>`) }
 
 	loadCustomFiles({
 		ext:ProjectExt,
 		filter:ProjectFilter,
 		content:ContentFilter,
+		group: FileTableGroupFilter.val(),
 		done:function(data){
 			var nextProject = '';
 			var html = '';
@@ -21,7 +23,7 @@ function getCustomFiles(table, callback){
 				if(nextProject != d.project){
 					nextProject = d.project;
 					html += '<tr><td colspan="4"></td></tr>';
-					selectProjectName.append(`<option>${nextProject}</option>`)
+					if(testProjectGroups){ FileTableGroupFilter.append(`<option>${nextProject}</option>`) }
 				}
 				var ext = d.path.split('.').pop();
 				d.path = '/crm/'+d.path.split('/crm/')[1];
@@ -56,6 +58,7 @@ function loadCustomFiles(d){
 	$.post('/crm/php/admin/custom_files.php?get_custom_files=1', {
 		ProjectExt: d.ext,
 		ProjectFilter: d.filter,
+		GroupFilter: d.group,
 		ContentFilter: d.content
 	}, function(data){ d.done(JSON.parse(data)) })
 }
@@ -227,18 +230,6 @@ function getFileName(url){
 	}
 }
 
-function filterProjectName(el){
-	let tr = el.closest('table').find('tbody tr');
-	if(valEmpty(el.val())){ return tr.show() }
-	tr.each(function(){
-		if($(this).find(colChild('td',3)).text() == el.val()){ return $(this).show() }
-		$(this).hide()
-	})
-}
-
-if($('#FileTableExtFilter').length == 1){
-	$('#FileTableExtFilter').change(function(){ getCustomFiles($('#FileTable')) });
-}
 if($('#FileTableProjectFilter').length == 1){
 	$('#FileTableProjectFilter, #FileContentProjectFilter').keyup(function(e){if(e.which == '13'){ getCustomFiles($('#FileTable')) }});
 }
