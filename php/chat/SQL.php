@@ -3,7 +3,7 @@ $GLOBALS['CHAT']['DB'] = $INIconf['SQL']['database'].'_chat_rooms';
 if(!isset($chatSQL)){
     $A = $SQL->query("CREATE DATABASE IF NOT EXISTS ".$GLOBALS['CHAT']['DB']." CHARACTER SET utf8 COLLATE utf8_general_ci");
     if($SQL->error){
-        echo json_encode(['error' => 'DB_not_found']);
+        echo json_encode(['error' => 'Access_denied']);
         exit();
     }
     $chatSQL = new mysqli(

@@ -7,7 +7,7 @@ function getCustomFiles(table, callback){
 	
 	let FileTableGroupFilter = $('#FileTableGroupFilter');
 	let testProjectGroups = FileTableGroupFilter.find('option').length == 0 ? true : false;
-	if(testProjectGroups){ FileTableGroupFilter.html(`<option value="">${slovar('Select')}</option>`) }
+	if(testProjectGroups){ FileTableGroupFilter.html(`<option value="">All Projects</option>`) }
 
 	loadCustomFiles({
 		ext:ProjectExt,
