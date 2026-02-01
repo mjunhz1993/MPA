@@ -343,7 +343,9 @@ function changeAddonSelect1(module, el){
 		html += '<option value="READ">' + slovar('View') + '</option>';
 		html += '</select>';
 		html += '<label>' + slovar('File') + '</label>';
-		html += '<input type="text" name="custom_data" required>';
+		html += '<input type="text" name="custom_data[]" required>';
+		html += '<label>' + slovar('Function') + '</label>';
+		html += '<input type="text" name="custom_data[]" required>';
 		box.html(html);
 	}
 	else if(el.val() == 'JSCommand'){

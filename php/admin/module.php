@@ -171,7 +171,10 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         if(
             $addon_type == 'JSCommand' ||
             $addon_type == 'loadJS'
-        ){ array_push($addon, $_POST['custom_data_type'], $SQL->real_escape_string($_POST['custom_data'])); }
+        ){ 
+            if(is_array($_POST['custom_data'])){ $_POST['custom_data'] = implode('|', $_POST['custom_data']); }
+            array_push($addon, $_POST['custom_data_type'], $SQL->real_escape_string($_POST['custom_data']));
+        }
 
         if(isset($_POST['addons'])){ $addon = array_merge($addon, $_POST['addons']); }
         
