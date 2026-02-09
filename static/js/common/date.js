@@ -60,7 +60,10 @@ function stringToDate(str, timeZone = 'local'){
         : new Date(Date.UTC(yyyy, mm - 1, dd, hh, ii, ss));
 }
 
-function isDate(v){ return !isNaN(Date.parse(v)) }
+function isDate(v) {
+  const d = new Date(v);
+  return !isNaN(d.getTime()) && v.includes('-');
+}
 function displayLocalDate(v){ return getDate(defaultDateFormat+' '+defaultTimeFormat, stringToDate(v, 'UTC')) }
 function UTCtoInput(v){ return getDate('Y-m-d H:i:s', stringToDate(v, 'UTC')) }
 function inputToUTC(v){ return getDate('Y-m-d H:i:s', stringToDate(v), 'UTC') }

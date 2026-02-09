@@ -20,8 +20,12 @@ function add_clearChildEventToParent(box, addon){
     if(['SELECT', 'JOIN_ADD'].includes(type)){el.find('.inputPlaceholder').mouseup(function(){ return clearChildInput(box, addon[2]) })}
 }
 
-function clearChildInput(box, allEl){el = allEl.split(',');  for(var j=0; j<el.length; j += 2){
-    var thisInput = box.find('[name="' + el[j] + '"]');
-    thisInput.val('');
-    focusOutJOIN_ADDInput(thisInput);
-}}
+function clearChildInput(box, allEl){
+    el = allEl.split(',');  
+    for(var j=0; j<el.length; j += 2){
+        var thisInput = box.find('[name="' + el[j] + '"]');
+        thisInput.val('');
+        box.find('.JOIN_ADD_placeholder').text(slovar('Search'));
+        // focusOutJOIN_ADDInput(thisInput);
+    }
+}
