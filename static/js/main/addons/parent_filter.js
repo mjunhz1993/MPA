@@ -25,7 +25,7 @@ function clearChildInput(box, allEl){
     for(var j=0; j<el.length; j += 2){
         var thisInput = box.find('[name="' + el[j] + '"]');
         thisInput.val('');
-        box.find('.JOIN_ADD_placeholder').text(slovar('Search'));
+        thisInput.parent().find('.JOIN_ADD_placeholder').text(slovar('Search'));
         // focusOutJOIN_ADDInput(thisInput);
     }
 }
