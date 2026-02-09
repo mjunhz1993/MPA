@@ -72,12 +72,7 @@ function HTML_exportTableRows(item, html = '') {
     const values = Object.values(item);
     values.forEach((value) => {
         if (typeof value === 'string' && isDate(value)){ value = displayLocalDate(value) }
-
-        const safe = value
-		.replace(/<[^>]*>/g, '')   // remove html tags
-		.replace(/"/g, '&quot;');  // escape quotes
-
-		html += `<td title="${safe}">${value}</td>`;
+		html += `<td>${value}</td>`;
     });
     return '<tr class="newRow">' + html + '</tr>';
 }
