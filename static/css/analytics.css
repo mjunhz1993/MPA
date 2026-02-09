@@ -56,6 +56,10 @@
 }
 
 .analcontent{ overflow:auto; }
+.analcontent .table{ table-layout: fixed; }
+.analcontent .table thead th{
+	resize: horizontal;
+}
 
 .analbox th.act{ position: relative; }
 .analbox th.act:after{
