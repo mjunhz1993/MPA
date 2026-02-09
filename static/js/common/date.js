@@ -60,9 +60,9 @@ function stringToDate(str, timeZone = 'local'){
         : new Date(Date.UTC(yyyy, mm - 1, dd, hh, ii, ss));
 }
 
-function isDate(v) {
-  const d = new Date(v);
-  return !isNaN(d.getTime()) && v.includes('-');
+function isDate(v){
+    const mysqlDatetimeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+    return typeof v === 'string' && mysqlDatetimeRegex.test(v);
 }
 function displayLocalDate(v){ return getDate(defaultDateFormat+' '+defaultTimeFormat, stringToDate(v, 'UTC')) }
 function UTCtoInput(v){ return getDate('Y-m-d H:i:s', stringToDate(v, 'UTC')) }
