@@ -71,7 +71,7 @@ function HTML_exportTableTopRow(item, html = ''){
 function HTML_exportTableRows(item, html = '') {
     const values = Object.values(item);
     values.forEach((value) => {
-        if (typeof value === 'string' && isDate(value)){ value = displayLocalDate(value) }
+        if(isDate(value)){ value = displayLocalDate(value) }
 		html += `<td>${value}</td>`;
     });
     return '<tr class="newRow">' + html + '</tr>';
