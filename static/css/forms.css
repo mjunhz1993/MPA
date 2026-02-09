@@ -70,9 +70,14 @@ fieldset legend.closed:after{transform: rotate(45deg);}
 }
 #readOnlyBox .readOnlyFormBox{
     flex-basis: 350px;
-    max-width: 80%;
 }
-@media (max-width: 800px){#readOnlyBox .readOnlyFormBox{max-width: 100%;}}
+#readOnlyBox .readOnlyFormBox.col100{
+    min-width: 100%;
+    max-width: 100%;
+}
+@media (max-width: 800px){
+    #readOnlyBox .readOnlyFormBox{max-width: 100%;}
+}
 #readOnlyBox h2{
     background: var(--light-blue);
     color: white !important;
