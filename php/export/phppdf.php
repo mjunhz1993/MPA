@@ -23,7 +23,7 @@ function phppdf_newpage($phppdf){ $phppdf->AddPage(); }
 
 function phppdf_save($phppdf, $filename){
     $path = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'];
-    $phppdf->Output($path . $filename, 'F');
+    $phppdf->Output($path.$filename.'.pdf', 'F');
 }
 
 function phppdf_show($phppdf){ $phppdf->Output(); }
