@@ -1,5 +1,4 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 require $GLOBALS['MAP']['HOME'].'vendor/autoload.php';
 
 function phppdf(){
