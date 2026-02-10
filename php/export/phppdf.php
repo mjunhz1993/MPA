@@ -19,6 +19,8 @@ function phppdf_header($phppdf, $html){ $phppdf->SetHTMLHeader($html); }
 function phppdf_footer($phppdf, $html){ $phppdf->SetHTMLFooter($html); }
 function phppdf_body($phppdf, $html){ $phppdf->WriteHTML($html); }
 
+function phppdf_newpage($phppdf){ $phppdf->AddPage(); }
+
 function phppdf_save($phppdf, $filename){
     $path = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'];
     $phppdf->Output($path . $filename, 'F');
