@@ -7,7 +7,7 @@ function phppdf($d = []){
         'margin_right'  => $d->margin_right ?? 0,
         'margin_top'    => $d->margin_top ?? 20,
         'margin_bottom' => $d->margin_bottom ?? 20,
-        $d->extra ?? ''
+        'autoPageBreak' => true,
     ]);
 
     $phppdf->margin_header = 0;
