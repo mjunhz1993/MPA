@@ -1,12 +1,12 @@
 <?php
 require $GLOBALS['MAP']['HOME'].'vendor/autoload.php';
 
-function phppdf(d){
+function phppdf($d = []){
     $phppdf = new \Mpdf\Mpdf([
-        'margin_left'   => d.margin_left ?? 0,
-        'margin_right'  => d.margin_right ?? 0,
-        'margin_top'    => d.margin_top ?? 20,
-        'margin_bottom' => d.margin_bottom ?? 20,
+        'margin_left'   => $d->margin_left ?? 0,
+        'margin_right'  => $d->margin_right ?? 0,
+        'margin_top'    => $d->margin_top ?? 20,
+        'margin_bottom' => $d->margin_bottom ?? 20,
     ]);
 
     $phppdf->margin_header = 0;
