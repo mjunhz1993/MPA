@@ -149,8 +149,8 @@ function add_custom_forwardFile(d, html = ''){
     html += '<input type="hidden" name="forwardFile[]" value="' + d.file + '">';
     html += '<input type="hidden" name="forwardFileName[]" value="' + d.fileName + '">';
     html += '<div class="file"><div class="img"></div>' + d.fileName + ' (' + d.file + ')</div>';
-    
-    form.find('.forwardFileArea').prepend(html);
+
+    d.form.find('.forwardFileArea').prepend(html);
 }
 
 function change_sender(form, user_id){
