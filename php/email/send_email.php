@@ -163,7 +163,9 @@ function runPHPMailer($SQL, $smtp, $mailData, $addAttachment = array(), $addAtta
         if(is_array($addAttachment)){for($i=0; $i<count($addAttachment); $i++){ $mail->addAttachment($addAttachment[$i], $addAttachmentName[$i]); }}
         for($i=0; $i<count($mailData->forwardFile); $i++){
             $docPath = $smtp->path;
-            if(isset($_POST['custom_file_path'])){ $docPath = $_SERVER['DOCUMENT_ROOT'].$_POST['custom_file_path']; }
+            if(isset($_POST['custom_file_path'])){
+                $docPath = $_SERVER['DOCUMENT_ROOT'].'/crm/static/uploads/'.$_POST['custom_file_path'].'/';
+            }
             $mail->addAttachment($docPath.$mailData->forwardFile[$i], $mailData->forwardFileName[$i]);
         }
 
