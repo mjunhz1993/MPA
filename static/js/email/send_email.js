@@ -135,17 +135,21 @@ function add_emailBodyContent(form, content){
     if(typeof(content) == 'string'){ return textarea.summernote('pasteHTML', content) }
 }
 
-function add_custom_forwardFile(form, path, file, fileName, html = ''){
-    if(!form.find('.forwardFileArea').hasClass('fileArea')){
-        form.find('.forwardFileArea').addClass('fileArea');
+function add_custom_forwardFile(d, html = ''){
+    if(!d.form.find('.forwardFileArea').hasClass('fileArea')){
+        d.form.find('.forwardFileArea').addClass('fileArea');
     }
-    if(form.find('[name=custom_file_path]').length == 0){
-        form.find('.fileFormField').hide();
-        html += '<input type="hidden" name="custom_file_path" value="' + path + '">';
+    if(d.form.find('[name=custom_file_path]').length == 0){
+        d.form.find('.fileFormField').hide();
+        html += '<input type="hidden" name="custom_file_path" value="' + d.dir + '">';
     }
-    html += '<input type="hidden" name="forwardFile[]" value="' + file + '">';
-    html += '<input type="hidden" name="forwardFileName[]" value="' + fileName + '">';
-    html += '<div class="file"><div class="img"></div>' + fileName + ' (' + file + ')</div>';
+
+    d.fileName = d.fileName ?? d.file;
+
+    html += '<input type="hidden" name="forwardFile[]" value="' + d.file + '">';
+    html += '<input type="hidden" name="forwardFileName[]" value="' + d.fileName + '">';
+    html += '<div class="file"><div class="img"></div>' + d.fileName + ' (' + d.file + ')</div>';
+    
     form.find('.forwardFileArea').prepend(html);
 }
 

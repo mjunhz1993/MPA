@@ -204,7 +204,9 @@ function saveSendEmailToSQL($mailSQL, $user_id, $smtp, $mailData, $addAttachment
     }
     if(isset($mailData->forwardFile)){
         $docPath = $smtp->path;
-        if(isset($_POST['custom_file_path'])){ $docPath = $_SERVER['DOCUMENT_ROOT'].$_POST['custom_file_path']; }
+        if(isset($_POST['custom_file_path'])){ 
+            $docPath = $_SERVER['DOCUMENT_ROOT'].'/crm/static/uploads/'.$_POST['custom_file_path'].'/';
+        }
         for($i=0; $i<count($mailData->forwardFile); $i++){
             $fileinfo = pathinfo($mailData->forwardFile[$i]);
             $newFileName = $uid.'_'.$time.'.'.$fileinfo['extension'];
