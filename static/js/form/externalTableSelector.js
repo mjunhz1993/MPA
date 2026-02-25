@@ -37,7 +37,7 @@ function popup_external_table(d){
     d.popup = createPOPUPbox();
 
     d.popup.find('.popupBox').html(HTML_popup_external_table(d));
-    remove_nonSearchable_external_column(d);
+    debug_searchable_external_column(d);
 
     d.popup.fadeIn('fast', function(){ $(this).find('input').first().focus() });
 
@@ -57,7 +57,7 @@ function HTML_popup_external_table(d){
                         ${d.table.labels.map(c => `<th class="no-sort">${c}</th>`).join('')}
                     </tr>
                     <tr>
-                        ${d.table.columns.map(c => `
+                        ${d.table.columns.map((c, i) => `
                             <th class="no-sort">
                                 <input type="text" data-col="${c}" placeholder="${slovar('Search')}">
                             </th>
@@ -72,32 +72,54 @@ function HTML_popup_external_table(d){
     `
 }
 
-function remove_nonSearchable_external_column(d){
+function debug_searchable_external_column(d){
     if(d.table.search_columns === undefined){ return }
+
+    let i = 0;
     d.popup.find('input').each(function(){
-        if(d.table.search_columns.includes($(this).data('col'))){ return }
-        $(this).remove();
+        if(!d.table.search_columns.includes($(this).data('col'))){ return $(this).remove() }
+
+        type = d.table.search_types[i] ?? 'Contains';
+        
+        if(type == 'Toggle'){
+            $(this)
+            .wrap('<div class="toggleBox"></div>')
+            .after('<a onclick="toggleExtTableColumn($(this))">%A%</a>')
+            type = 'Contains';
+        }
+
+        $(this).attr('data-type', type);
+        i++;
     })
+}
+
+function toggleExtTableColumn(el) {
+    let input = el.parent().find('input');
+    let type = input.data('type') === 'Contains' ? 'Begins_with' : 'Contains';
+    input.data('type', type).focus();
+    el.text(type === 'Begins_with' ? 'A%' : '%A%');
 }
 
 function search_external_table(d){
 
+    let thisSearchType = [];
     let thisSearchVal = [];
     d.popup.find('input').each(function(){
+        thisSearchType.push($(this).data('type') ?? 'Contains');
         thisSearchVal.push($(this).val());
     });
 
     $.getJSON('/crm/php/form/externalTableSelector', {
-        search_external_table:true,
-        module:d.table.module,
-        columns:d.table.columns,
-        where:d.table.where,
-        search_columns:d.table.search_columns,
-        search_types:d.table.search_types,
-        search_values:thisSearchVal,
-        order:d.table.order,
-        limit:d.table.limit
-    }, function(data){ console.log(data);
+        search_external_table: true,
+        module: d.table.module,
+        columns: d.table.columns,
+        where: d.table.where,
+        search_columns: d.table.search_columns,
+        search_types: thisSearchType,
+        search_values: thisSearchVal,
+        order: d.table.order,
+        limit: d.table.limit
+    }, function(data){
         if(data.error){ return createAlertPOPUP(data.error) }
         return render_external_table_data(d, data)
     })

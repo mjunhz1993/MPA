@@ -3,3 +3,17 @@
 	background-color: var(--blue);
 	color: white;
 }
+.extTable .toggleBox{
+	position: relative;
+}
+.extTable .toggleBox a{
+	transition: 0.2s;
+    position: absolute;
+    right: 3px;
+    top: 26%;
+    border-radius: 12px;
+    padding: 3px 5px;
+}
+.extTable .toggleBox a:hover{
+	background-color: gainsboro;
+}
