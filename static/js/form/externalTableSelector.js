@@ -49,7 +49,7 @@ function popup_external_table(d){
 function HTML_popup_external_table(d){
     return `
     <form>
-        <label>${d.title}</label>
+        <h2 style="padding-bottom:9px">${d.title}</h2>
         <div class="horizontalTable" style="max-height:60vh;">
             <table class="table extTable">
                 <thead>
