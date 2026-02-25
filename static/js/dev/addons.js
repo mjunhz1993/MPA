@@ -343,10 +343,21 @@ function changeAddonSelect1(module, el){
 		html += '<option value="READ">' + slovar('View') + '</option>';
 		html += '</select>';
 		html += '<label>' + slovar('File') + '</label>';
-		html += '<input type="text" name="custom_data[]" required>';
-		html += '<label>' + slovar('Function') + '</label>';
+		html += '<select name="custom_data[]" id="thisjsfile" required></select>';
+		html += '<label>' + slovar('Function') + '(rowData, box)</label>';
 		html += '<input type="text" name="custom_data[]" required>';
 		box.html(html);
+
+		loadJS('dev/custom_files', function(){
+			loadCustomFiles({
+				ext:'js',
+				done:function(files){
+					files.forEach(file => {
+						box.find('#thisjsfile').append(`<option>${file.name}</option>`)
+					});
+				}
+			})
+		})
 	}
 	else if(el.val() == 'JSCommand'){
 		html += '<label>' + slovar('Type') + '</label>';

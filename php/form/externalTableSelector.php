@@ -5,12 +5,16 @@ function search_external_table($SQL){
 	$order = $_GET['order'] ?? $_GET['columns'][0].' DESC';
 	$limit = $_GET['limit'] ?? 10;
 
+	$WHERE = search_external_table_conditions();
+	$prefix_where = add_external_where();
+	if($prefix_where != ''){ $WHERE[] = $prefix_where; }
+	$WHERE = implode(' AND ', $WHERE);
+	if($WHERE != ''){ $WHERE = 'WHERE '. $WHERE; }
+
 	$A = $SQL->query("
 		SELECT ".implode(', ', $_GET['columns'])." 
 		FROM {$_GET['module']}
-		WHERE 
-			".implode(" OR ", search_external_table_conditions())."
-			".add_external_where()."
+		$WHERE
 		ORDER BY $order
 		LIMIT $limit
 	");
@@ -23,12 +27,16 @@ function search_external_table($SQL){
 }
 
 function select_external_table_row($SQL){
+	$WHERE[] = "{$_GET['columns'][0]} = {$_GET['value']} ";
+	$prefix_where = add_external_where();
+	if($prefix_where != ''){ $WHERE[] = $prefix_where; }
+	$WHERE = implode(' AND ', $WHERE);
+	if($WHERE != ''){ $WHERE = 'WHERE '. $WHERE; }
+
 	$A = $SQL->query("
 		SELECT ".implode(', ', $_GET['columns'])." 
 		FROM {$_GET['module']}
-		WHERE 
-			{$_GET['columns'][0]} = {$_GET['value']} 
-			".add_external_where()."
+		$WHERE
 		LIMIT 1
 	");
 
@@ -38,26 +46,51 @@ function select_external_table_row($SQL){
 }
 
 function search_external_table_conditions(){
-	$search_escaped = addslashes($_GET['search'] ?? '');
-	$columns = $_GET['search_columns'] ?? $_GET['columns'];
-	$types = $_GET['search_types'] ?? [];
 
-	return array_map(function($col, $type) use ($search_escaped) {
-		switch ($type) {
-			case 'Begins_with':
-				return "$col LIKE '{$search_escaped}%'";
-			case 'Equals':
-				return "$col = '{$search_escaped}'";
-			case 'Contains':
-			default:
-				return "$col LIKE '%{$search_escaped}%'";
-		}
-	}, $columns, $types);
+    $search_values = $_GET['search_values'] ?? [];
+    $columns = $_GET['search_columns'] ?? ($_GET['columns'] ?? []);
+    $types = $_GET['search_types'] ?? [];
+
+    // Normalize to arrays
+    $search_values = is_array($search_values) ? $search_values : [$search_values];
+    $columns = is_array($columns) ? $columns : [$columns];
+    $types = is_array($types) ? $types : [$types];
+
+    $conditions = [];
+
+    foreach ($columns as $i => $col) {
+
+        $value = $search_values[$i] ?? '';
+        $type  = $types[$i] ?? 'Contains';
+
+        if ($value === '' || $value === null) {
+            continue;
+        }
+
+        $value = addslashes($value);
+
+        switch ($type) {
+            case 'Begins_with':
+                $conditions[] = "$col LIKE '{$value}%'";
+                break;
+
+            case 'Equals':
+                $conditions[] = "$col = '{$value}'";
+                break;
+
+            case 'Contains':
+            default:
+                $conditions[] = "$col LIKE '%{$value}%'";
+                break;
+        }
+    }
+
+    return $conditions;
 }
 
 function add_external_where(){
 	if(!isset($_GET['where'])){ return ''; }
-	return "AND (".implode(' AND ', $_GET['where']).")";
+	return "(".implode(' AND ', $_GET['where']).")";
 }
 
 if(isset($_SESSION['user_id'])){

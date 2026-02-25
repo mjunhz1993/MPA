@@ -87,10 +87,11 @@ function add_recipient(el, mail = '', type = ''){
     el.find('tr').last().find('select').val(type);
     el.find('tr').last().find('div').show();
 }
-function add_secretRecipient(el, mail, html = ''){
-    html += '<input type="hidden" name="addAddress[]" value="'+mail+'">';
-    html += '<input type="hidden" name="addAddressType[]" value="BCC">';
-    el.after(html);
+function add_secretRecipient(el, mail){
+    el.after(`
+        <input type="hidden" name="addAddress[]" value="${mail}">
+        <input type="hidden" name="addAddressType[]" value="BCC">
+    `);
 }
 function remove_recipient(el){el.closest('tr').remove()}
 

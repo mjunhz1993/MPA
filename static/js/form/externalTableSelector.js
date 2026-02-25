@@ -43,15 +43,23 @@ function popup_external_table(d){
     search_external_table(d);
 }
 
-function HTML_popup_external_table(d){
+function HTML_popup_external_table(d){ console.log(d);
     return `
     <form>
         <label>${d.title}</label>
-        <input type="text" placeholder="${slovar('Search')}">
         <div class="horizontalTable" style="max-height:60vh;">
             <table class="table extTable">
                 <thead>
-                    ${d.table.labels.map(c => `<th class="no-sort">${c}</th>`).join('')}
+                    <tr>
+                        ${d.table.labels.map(c => `<th class="no-sort">${c}</th>`).join('')}
+                    </tr>
+                    <tr>
+                        ${d.table.columns.map(c => `
+                            <th class="no-sort">
+                                <input type="text" data-col="${c}" placeholder="${slovar('Search')}">
+                            </th>
+                        `).join('')}
+                    </tr>
                 </thead>
                 <tbody></tbody>
             </table>
@@ -62,6 +70,14 @@ function HTML_popup_external_table(d){
 }
 
 function search_external_table(d){
+
+    let thisSearchVal = [];
+    d.popup.find('input').each(function(){
+        thisSearchVal.push($(this).val());
+    });
+
+    console.log(thisSearchVal);
+
     $.getJSON('/crm/php/form/externalTableSelector', {
         search_external_table:true,
         module:d.table.module,
@@ -69,10 +85,10 @@ function search_external_table(d){
         where:d.table.where,
         search_columns:d.table.search_columns,
         search_types:d.table.search_types,
-        search:d.popup.find('input').val(),
+        search_values:thisSearchVal,
         order:d.table.order,
         limit:d.table.limit
-    }, function(data){
+    }, function(data){ console.log(data);
         if(data.error){ return createAlertPOPUP(data.error) }
         return render_external_table_data(d, data)
     })
@@ -98,6 +114,19 @@ function click_external_table_row(el, d){
     d.input.placeholder.text(label);
 
     removePOPUPbox();
+    test_external_table_focusOut(d);
+}
+
+// EXTRA
+
+function test_external_table_focusOut(d){
+    // ADDON_copyDifferentModule
+    if (
+        !valEmpty(d.input.el.data('childinput')) &&
+        d.input.el.closest('.formField').data('type') == 'JOIN_ADD'
+    ){
+        focusOutJOIN_ADDInput(d.input.el);
+    }
 }
 
 /*
