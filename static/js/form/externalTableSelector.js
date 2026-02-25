@@ -35,7 +35,10 @@ function external_table_value_exists(d){
 
 function popup_external_table(d){
     d.popup = createPOPUPbox();
+
     d.popup.find('.popupBox').html(HTML_popup_external_table(d));
+    remove_nonSearchable_external_column(d);
+
     d.popup.fadeIn('fast', function(){ $(this).find('input').first().focus() });
 
     d.popup.find('form').on('submit', function(e){ e.preventDefault() })
@@ -43,7 +46,7 @@ function popup_external_table(d){
     search_external_table(d);
 }
 
-function HTML_popup_external_table(d){ console.log(d);
+function HTML_popup_external_table(d){
     return `
     <form>
         <label>${d.title}</label>
@@ -69,14 +72,20 @@ function HTML_popup_external_table(d){ console.log(d);
     `
 }
 
+function remove_nonSearchable_external_column(d){
+    if(d.table.search_columns === undefined){ return }
+    d.popup.find('input').each(function(){
+        if(d.table.search_columns.includes($(this).data('col'))){ return }
+        $(this).remove();
+    })
+}
+
 function search_external_table(d){
 
     let thisSearchVal = [];
     d.popup.find('input').each(function(){
         thisSearchVal.push($(this).val());
     });
-
-    console.log(thisSearchVal);
 
     $.getJSON('/crm/php/form/externalTableSelector', {
         search_external_table:true,
