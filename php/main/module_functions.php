@@ -381,7 +381,9 @@ function getLeftJoins($type, $SQL, $module, $SELECT, $JOIN_COLUMN = array(), $JO
                 $A = $SQL->query("SELECT column_id, can_view FROM module_columns 
                 WHERE module='$join_module' AND type = 'VARCHAR' AND list = 'PRIMARY' AND mandatory = 1 ORDER BY order_num");
                 while ($B = $A->fetch_row()){
-                    if($type == 'TABLE'){ array_push($JOINED_COLUMNS, $join_module_label.'.'.$B[0]); }
+                    if($type == 'TABLE'){ 
+                        array_push($JOINED_COLUMNS, "IFNULL(".$join_module_label.'.'.$B[0].",'')");
+                    }
                     else if($type == 'ROW'){
                         array_push($SELECT, $join_module_label.'.'.$B[0]);
                         array_push($role_column_view_access, $B[1]);

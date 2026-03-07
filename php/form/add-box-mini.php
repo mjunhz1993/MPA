@@ -11,9 +11,6 @@ function addBoxMini_joinData($SQL){
 }
 
 function addBoxMini_saveData($SQL, $d){
-    // Delete existing child records
-    $SQL->query("DELETE FROM $d->module WHERE $d->p_field = " . (int)$d->p_value);
-
     // Detect item groups by POST key pattern: table_fieldname[]
     $prefix = $d->module . '_';
     $fields = [];
@@ -24,6 +21,11 @@ function addBoxMini_saveData($SQL, $d){
             $fields[str_replace($prefix, '', $key)] = $values;
         }
     }
+
+    if(count($fields) == 0) return;
+
+    // Delete existing child records
+    $SQL->query("DELETE FROM $d->module WHERE $d->p_field = " . (int)$d->p_value);
 
     // Number of items (based on first field count)
     $count = count(reset($fields));
