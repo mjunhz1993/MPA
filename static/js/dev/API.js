@@ -232,10 +232,16 @@ function HTML_API_send_row(i,v){
 				<input type="text" value="${v ?? ''}" name="api_value[]" required>
 			</td>
 			<td>
-				<a class="linksvg" onclick="$(this).closest('tr').remove()">${getSVG('delete')}</a>
+				<a class="linksvg" onclick="delete_api_row($(this))">${getSVG('delete')}</a>
 			</td>
 		</tr>
 	`);
+}
+
+function delete_api_row(el){
+	POPUPconfirm('Delete row ?', 'This will remove your row !', function(){
+		el.closest('tr').remove();
+	})
 }
 
 function HTML_API_send_help(){
@@ -247,10 +253,9 @@ function HTML_API_send_help(){
 			<b>SENDGRID E-mail marketing</b>
 			<p onclick="HTML_API_send_row('sendgridID')">sendgridID = ID</p>
 			<hr>
-			<b>twilio - SMS</b>
-			<p onclick="HTML_API_send_row('twilioID')">twilioID = twilio SID</p>
-			<p onclick="HTML_API_send_row('twilioToken')">twilioToken = twilio Token</p>
-			<p onclick="HTML_API_send_row('twilioPhone')">twilioPhone = twilio Phone number</p>
+			<b>textbee - SMS</b>
+			<p onclick="HTML_API_send_row('textbeePhone')">textbeePhone = Your phone textbee ID</p>
+			<p onclick="HTML_API_send_row('textbeeAPI')">textbeeAPI = textbee API key</p>
 			<hr>
 			<b>JITSI - Video Call</b>
 			<p onclick="HTML_API_send_row('jitsipuk')">jitsipuk = JITSI Public key</p>

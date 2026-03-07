@@ -1,7 +1,7 @@
-function write_SMS(to, html = ''){loadJS('SMS/slovar/'+slovar(), function(){
+function write_SMS(to){loadJS('SMS/slovar/'+slovar(), function(){
 	var popup = createPOPUPbox();
 	var popupBox = popup.find('.popupBox');
-	html += '<form><h2>' + slovar('Send_SMS') + '</h2><div></div>';
+	html = '<form><h2>' + slovar('Send_SMS') + '</h2><div></div>';
 	html += createFormField({
 		editable:true,
 		name:'Phone_number',
@@ -28,8 +28,8 @@ function write_SMS(to, html = ''){loadJS('SMS/slovar/'+slovar(), function(){
 		form.hide().parent().append(HTML_loader());
 		e.preventDefault();
 		send_SMS({
-			to:form.find('[name=to]').val(),
-			text:form.find('[name=text]').val(),
+			phones: form.find('[name=to]').val(),
+			message: form.find('[name=text]').val(),
 			done:function(){ removePOPUPbox() },
 			error:function(err){
 				remove_HTML_loader(form.parent());
@@ -43,14 +43,12 @@ function write_SMS(to, html = ''){loadJS('SMS/slovar/'+slovar(), function(){
 })}
 
 function send_SMS(d){
-	if($('[name=csrf_token]').length == 0){ return }
-	$.post('/crm/php/SMS/SMS.php?send_SMS=1', {
-		csrf_token:$('[name=csrf_token]').val(),
-		to:d.to,
-		text:d.text
+	$.post('/crm/php/SMS/run', {
+		phones:d.phones,
+		message:d.message
 	}, function(data){
 		data = JSON.parse(data);
-		if(d.error && data.RestException){ return d.error(data.RestException.Message) }
+		if(d.error && data.error){ return d.error(data.error) }
 		if(d.done){ return d.done() }
 	})
 }

@@ -1,33 +1,52 @@
 <?php
-include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
-if(isset($GLOBALS["config"]["API"]["twilioID"]) && isset($GLOBALS["config"]["API"]["twilioToken"]) && isset($GLOBALS["config"]["API"]["twilioPhone"])):
+if(isset($GLOBALS["config"]["API"]["textbeePhone"]) && isset($GLOBALS["config"]["API"]["textbeeAPI"])):
 
-$twilioID = $GLOBALS["config"]["API"]["twilioID"];
-$twilioToken = $GLOBALS["config"]["API"]["twilioToken"];
-$twilioPhone = $GLOBALS["config"]["API"]["twilioPhone"];
+function SMS($obj)
+{
+    $device_id = $GLOBALS["config"]["API"]["textbeePhone"];
+    $api_key   = $GLOBALS["config"]["API"]["textbeeAPI"];
+    $url = "https://api.textbee.dev/api/v1/gateway/devices/".$device_id."/send-sms";
 
-if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POST['csrf_token']){
-    
-    if(isset($_GET['send_SMS'])){
-        $url = "https://api.twilio.com/2010-04-01/Accounts/$twilioID/Messages";
-        $data = array (
-            'From' => $twilioPhone,
-            'To' => SafeInput($SQL, $_POST['to']),
-            'Body' => SafeInput($SQL, $_POST['text']),
-        );
-        $post = http_build_query($data);
-        $x = curl_init($url);
-        curl_setopt($x, CURLOPT_POST, true);
-        curl_setopt($x, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($x, CURLOPT_SSL_VERIFYPEER, false);
-        curl_setopt($x, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-        curl_setopt($x, CURLOPT_USERPWD, "$twilioID:$twilioToken");
-        curl_setopt($x, CURLOPT_POSTFIELDS, $post);
-        $y = curl_exec($x);
-        curl_close($x);
-        echo json_encode(simplexml_load_string($y));
+    if(empty($obj->message) || empty($obj->phones)) return ['error' => 'No API key or Phone ID'];
+
+    $phones = is_array($obj->phones) ? $obj->phones : [$obj->phones];
+
+    $message = trim($obj->message);
+    $message = mb_substr($message, 0, 1000);
+
+    $data = [
+        "recipients" => $phones,
+        "message" => $message
+    ];
+
+    $headers = [
+        "x-api-key: ".$api_key,
+        "Content-Type: application/json"
+    ];
+
+    $ch = curl_init($url);
+
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch, CURLOPT_POST, true);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+
+    $response = curl_exec($ch);
+
+    if ($response === false) {
+        $error = curl_error($ch);
+        curl_close($ch);
+        return ["error" => $error];
     }
 
+    $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+    curl_close($ch);
+
+    return [
+        "success" => ($httpCode >= 200 && $httpCode < 300),
+        "http_code" => $httpCode,
+        "response" => $response
+    ];
 }
 
 endif;

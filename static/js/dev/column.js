@@ -192,7 +192,7 @@ function changeColumnType(){
     }
     else if(type == 'BUTTON'){
         html += '<label for="list1">URL do JS datoteke</label>';
-        html += '<input type="text" name="list[]" id="list1" required>';
+        html += '<select name="list[]" id="list1" required></select>';
         html += '<label for="list2">Ime JS funkcije</label>';
         html += '<input type="text" name="list[]" id="list2" required>';
         html += '<label for="list3">Naslov tipke</label>';
@@ -200,6 +200,20 @@ function changeColumnType(){
     }
 
     box.html(html);
+
+    if(type == 'BUTTON'){
+        loadJS('dev/custom_files', function(){
+            loadCustomFiles({
+                ext:'js',
+                done:function(files){
+                    files.forEach(file => {
+                        $('#list1').append(`<option>${file.name}</option>`)
+                    });
+                }
+            })
+        })
+    }
+    
 }
 
 function changeColumnTypeExtra(el){
