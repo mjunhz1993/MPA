@@ -1,8 +1,17 @@
 <div class="box col80" id="modul_table">
-    <div class="boxInner">
-        <button class="button buttonGreen" onclick="openAddModule()" data-slovar="Add_new"></button>
-        <button class="button buttonGrey" onclick="openImportModule()" data-slovar="Import"></button>
-    </div>
+    <table class="tableTop">
+        <tr>
+            <td>
+                <button class="button buttonGreen" onclick="openAddModule()" data-slovar="Add_new"></button>
+                <button class="button buttonGrey" onclick="openImportModule()" data-slovar="Import"></button>
+            </td>
+            <td>
+                <select class="tableTopSelect" id="filter_groups" onchange="filter_groups($(this))">
+                    <option value="">Show all</option>
+                </select>
+            </td>
+        </tr>
+    </table>
     <div class="horizontalTable">
         <table class="table">
             <thead>

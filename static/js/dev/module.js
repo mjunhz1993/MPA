@@ -1,3 +1,25 @@
+function move_groups_to_filter(){
+    let groups = [];
+    $('#modul_table .table tbody tr').each(function(){
+        let v = $(this).data('category');
+        if(!groups.includes(v) && v != ''){
+            groups.push(v)
+        }
+    })
+
+    console.log(groups);
+
+    groups.forEach(g=>{
+        $('#filter_groups').append(`<option value="${g}">${g}</option>`)
+    })
+}
+$(document).ready(function(){ move_groups_to_filter() })
+function filter_groups(el){
+    if(valEmpty(el.val())){ return $('#modul_table .table tbody tr').show() }
+    $('#modul_table .table tbody tr').hide();
+    $(`#modul_table .table tbody tr[data-category="${el.val()}"]`).show();
+}
+
 // ADD MODULE
 function openAddModule(){
     getModuleCategories();
