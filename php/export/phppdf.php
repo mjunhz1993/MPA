@@ -15,27 +15,37 @@ function phppdf($d = []){
     return $phppdf;
 }
 
-function phppdf_sign($phppdf, $d = []){
+function phppdf_import($phppdf, $d = []){
     $existingPdf = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'].$d->pdf.'.pdf';
-    $signature   = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'].$d->signature;
-    $thisPage = $d->page ?? 0;
+    $thisPage = $d->signature->page ?? 0;
 
     $totalPages = $phppdf->setSourceFile($existingPdf);
 
-    for ($i = 1; $i <= $totalPages; $i++) {
+    for($i = 1; $i <= $totalPages; $i++){
         phppdf_newpage($phppdf);
         $phppdf->useTemplate($phppdf->importPage($i));
 
-        if ($i == $thisPage) {
-            $phppdf->Image(
-                $signature, 
-                $d->x ?? 0, 
-                $d->y ?? 0, 
-                $d->w ?? 0, 
-                $d->h ?? 0
-            );
+        if($i == $thisPage){
+            phppdf_image($phppdf, (object)[
+                'src' => $d->signature->src,
+                'x' => $d->signature->x ?? 0,
+                'y' => $d->signature->y ?? 0,
+                'w' => $d->signature->w ?? 0,
+                'h' => $d->signature->h ?? 0
+            ]);
         }
     }
+}
+
+function phppdf_image($phppdf, $d = []){
+    $img   = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'].$d->src;
+    $phppdf->Image(
+        $img, 
+        $d->x ?? 0, 
+        $d->y ?? 0, 
+        $d->w ?? 0, 
+        $d->h ?? 0
+    );
 }
 
 function phppdf_header($phppdf, $html){ $phppdf->SetHTMLHeader($html); }
