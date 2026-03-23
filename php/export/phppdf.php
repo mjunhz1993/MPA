@@ -27,7 +27,7 @@ function phppdf_import($phppdf, $d = []){
 
         if($i == $thisPage){
             phppdf_image($phppdf, (object)[
-                'src' => $d->signature['src'],
+                'src' => $d->signature['src'] ?? '',
                 'x' => $d->signature['x'] ?? 0,
                 'y' => $d->signature['y'] ?? 0,
                 'w' => $d->signature['w'] ?? 0,
