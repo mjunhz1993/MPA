@@ -17,7 +17,7 @@ function phppdf($d = []){
 
 function phppdf_import($phppdf, $d = []){
     $existingPdf = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'].$d->pdf.'.pdf';
-    $thisPage = $d->signature->page ?? 0;
+    $thisPage = $d->signature['page'] ?? 0;
 
     $totalPages = $phppdf->setSourceFile($existingPdf);
 
@@ -27,11 +27,11 @@ function phppdf_import($phppdf, $d = []){
 
         if($i == $thisPage){
             phppdf_image($phppdf, (object)[
-                'src' => $d->signature->src,
-                'x' => $d->signature->x ?? 0,
-                'y' => $d->signature->y ?? 0,
-                'w' => $d->signature->w ?? 0,
-                'h' => $d->signature->h ?? 0
+                'src' => $d->signature['src'],
+                'x' => $d->signature['x'] ?? 0,
+                'y' => $d->signature['y'] ?? 0,
+                'w' => $d->signature['w'] ?? 0,
+                'h' => $d->signature['h'] ?? 0
             ]);
         }
     }
