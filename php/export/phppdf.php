@@ -20,19 +20,19 @@ function phppdf_sign($phppdf, $d = []){
     $signature   = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'].$d->signature;
     $thisPage = $d->page ?? 0;
 
-    $phppdf->SetDocTemplate($existingPdf, true);
-    $totalPages = $phppdf->SetDocTemplate($existingPdf, true);
+    $totalPages = $phppdf->setSourceFile($existingPdf);
 
     for ($i = 1; $i <= $totalPages; $i++) {
         phppdf_newpage($phppdf);
+        $phppdf->useTemplate($phppdf->importPage($i));
 
         if ($i == $thisPage) {
             $phppdf->Image(
                 $signature, 
-                $d->position[0] ?? 0, 
-                $d->position[1] ?? 0, 
-                $d->position[2] ?? 0, 
-                $d->position[3] ?? 0
+                $d->x ?? 0, 
+                $d->y ?? 0, 
+                $d->w ?? 0, 
+                $d->h ?? 0
             );
         }
     }
