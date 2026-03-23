@@ -145,18 +145,29 @@ function click_external_table_row(el, d){
     d.input.placeholder.text(label);
 
     removePOPUPbox();
-    test_external_table_focusOut(d);
+    test_external_table_addons(d);
 }
 
 // EXTRA
 
-function test_external_table_focusOut(d){
+function test_external_table_addons(d){
     // ADDON_copyDifferentModule
     if (
         !valEmpty(d.input.el.data('childinput')) &&
         d.input.el.closest('.formField').data('type') == 'JOIN_ADD'
     ){
         focusOutJOIN_ADDInput(d.input.el);
+    }
+    // ADDON_parent_filter
+    if (
+        !valEmpty(d.input.el.data('parentfilter')) &&
+        d.input.el.closest('.formField').data('type') == 'JOIN_ADD'
+    ){
+        console.log('ddd');
+        clearChildInput(
+            d.input.el.closest('form'),
+            d.input.el.data('childfilter')
+        );
     }
 }
 

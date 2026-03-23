@@ -14,6 +14,12 @@ function ADDON_parent_filter(module, box, type, addon, i){
 
 function add_clearChildEventToParent(box, addon){
     var input = box.find('[name="' + addon[1] + '"]');
+
+    input.attr({
+        'data-parentfilter': true,
+        'data-childfilter': addon[2]
+    });
+
     var el = input.closest('.formField');
     var type = el.attr('data-type');
     if(['VARCHAR','INT'].includes(type)){input.change(function(){ return clearChildInput(box, addon[2]) })}

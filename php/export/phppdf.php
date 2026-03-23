@@ -15,6 +15,29 @@ function phppdf($d = []){
     return $phppdf;
 }
 
+function phppdf_sign($phppdf, $d = []){
+    $existingPdf = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'].$d->pdf.'.pdf';
+    $signature   = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'].$d->signature;
+    $thisPage = $d->page ?? 0;
+
+    $phppdf->SetDocTemplate($existingPdf, true);
+    $totalPages = $phppdf->SetDocTemplate($existingPdf, true);
+
+    for ($i = 1; $i <= $totalPages; $i++) {
+        phppdf_newpage($phppdf);
+
+        if ($i == $thisPage) {
+            $phppdf->Image(
+                $signature, 
+                $d->position[0] ?? 0, 
+                $d->position[1] ?? 0, 
+                $d->position[2] ?? 0, 
+                $d->position[3] ?? 0
+            );
+        }
+    }
+}
+
 function phppdf_header($phppdf, $html){ $phppdf->SetHTMLHeader($html); }
 function phppdf_footer($phppdf, $html){ $phppdf->SetHTMLFooter($html); }
 function phppdf_body($phppdf, $html){ $phppdf->WriteHTML($html); }
