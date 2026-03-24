@@ -6,6 +6,7 @@ function signature(d = []){
 	.attr('id', 'signature')
 	.find('.popupBox').html(signature_HTML(d));
 
+	d.box.find('.buttonBlack').click(function(){ signature_reset(d) })
 	d.box.find('.buttonBlue').click(function(){ doneSignature(d) })
 
 	d.box.fadeIn('fast', function(){ signature_activate(d) })
@@ -17,6 +18,7 @@ function signature_HTML(d){
 			${d.title ? `<h2>${d.title}</h2>` : ''}
 			<canvas id="signatureCanvas"></canvas>
 		</div>
+		<button class="button buttonBlack">${slovar('Reset')}</button>
 		<div class="bottom">
 			<button class="button buttonBlue">${slovar('Save_changes')}</button>
 			<button class="button buttonGrey" onclick="removePOPUPbox()">${slovar('Cancel')}</button>
@@ -33,6 +35,11 @@ function signature_activate(d){
 			penSize: 2
 		});
 	});
+}
+
+function signature_reset(d){
+	d.box.find('canvas').replaceWith('<canvas id="signatureCanvas"></canvas>');
+	signature_activate(d);
 }
 
 // SAVE
