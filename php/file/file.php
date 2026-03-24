@@ -1,4 +1,6 @@
 <?php
+include(loadPHP('file/common'));
+
 function get_ModuleFileColumns($SQL, $module){
     $A = $SQL->query("SELECT column_id FROM module_columns WHERE module = '$module' AND type = 'FILE'");
     if($A->num_rows == 0){ return false; }
@@ -33,19 +35,6 @@ function get_RowFiles($SQL, $module, $col = array(), $id, $archive = false){
         $i++;
     }
     return $data;
-}
-
-function createFileUploadDIR($path = ''){
-    if(!file_exists($_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads')){ mkdir($_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads'); }
-    if(!file_exists($_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads/'.$path)){ mkdir($_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads/'.$path); }
-}
-
-function deleteFileUploadDIR($path){
-    if($path != ''){
-        $dir = $_SERVER['DOCUMENT_ROOT']. '/crm/static/uploads/'.$path.'/';
-        array_map('unlink', glob("$dir*"));
-        rmdir($dir);
-    }
 }
 
 function checkFile($SQL, $files){

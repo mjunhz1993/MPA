@@ -1,0 +1,8 @@
+#signature #signatureCanvas{
+	border: 1px solid;
+}
+
+#signature .bottom{
+	display: flex;
+	gap: 10px;
+}

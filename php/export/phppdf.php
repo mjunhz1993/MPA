@@ -30,8 +30,8 @@ function phppdf_import($phppdf, $d = []){
                 'src' => $d->signature['src'] ?? '',
                 'x' => $d->signature['x'] ?? 0,
                 'y' => $d->signature['y'] ?? 0,
-                'w' => $d->signature['w'] ?? 0,
-                'h' => $d->signature['h'] ?? 0
+                'w' => $d->signature['w'] ?? px_to_mm(300),
+                'h' => $d->signature['h'] ?? px_to_mm(150)
             ]);
         }
     }
@@ -53,6 +53,8 @@ function phppdf_footer($phppdf, $html){ $phppdf->SetHTMLFooter($html); }
 function phppdf_body($phppdf, $html){ $phppdf->WriteHTML($html); }
 
 function phppdf_newpage($phppdf){ $phppdf->AddPage(); }
+
+function px_to_mm($px, $dpi = 96){ return $px * (25.4 / $dpi); }
 
 function phppdf_save($phppdf, $filename){
     $path = $_SERVER['DOCUMENT_ROOT'].$GLOBALS['MAP']['UPLOADS'];
