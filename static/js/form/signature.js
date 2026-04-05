@@ -27,7 +27,7 @@ function signature_HTML(d){
 }
 
 function signature_activate(d){
-	loadJS('export/signature', function(){
+	loadJS('API/Sketchpad', function(){
 		var sketchpad = new Sketchpad({
 			element: '#signatureCanvas',
 			width: 300,
