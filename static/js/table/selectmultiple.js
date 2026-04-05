@@ -7,7 +7,6 @@ function openSelectMultiple(el){
 	html += '<div class="DropdownMenuContent">';
 	html += '<p>' + slovar('Export') + '</p>';
 	html += '<a onClick="table2csv()">' + getSVG('download') + ' <span>' + slovar('CSV') + '</span></a>';
-	html += '<a onClick="table2pdf()">' + getSVG('download') + ' <span>' + slovar('PDF') + '</span></a>';
 	// html += '<a onClick="table2campaign()">' + getSVG('download') + ' <span>' + slovar('Campaign') + '</span></a>';
 	html += '<hr>';
 	html += '<a onClick="deleteSelectMultiple($(\'#selectmultipleBox\'))">' + getSVG('delete') + ' <span>' + slovar('Delete') + '</span></a>';
@@ -68,27 +67,6 @@ function table2csv(){
 			$('tr.ignoreRowSelectMultiple').removeClass('ignoreRowSelectMultiple');
 		});
 		hideDropdownMenu();
-	})
-}
-
-function table2pdf(){
-	if(!selectMultipleNotEmpty()){ return }
-	loadJS('export/js2pdf', function(){
-		var box = $('#main_table');
-		open_Html2pdf({
-			title:box.attr('data-module'),
-			open:function(){
-				var paper = create_PdfPaper();
-				add_ContentToPdfPaper(box.find('.table'));
-				paper.find('.selectmultiple[type=checkbox]:not(:checked)').closest('tr').remove();
-				paper.find('.ignoreRow, tr td:first-child, tr th:first-child, .button, svg').remove();
-				setTimeout(function(){
-					var t = paper.find('.table');
-					var rowLimit = 100;
-					add_PdfSize(px2pt(t.outerWidth()), px2pt(t.outerHeight()), slovar('Fit_content'));
-				}, 100)
-			}
-		})
 	})
 }
 
