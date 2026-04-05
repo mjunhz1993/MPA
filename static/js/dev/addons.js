@@ -45,32 +45,36 @@ function displayModuleAddons(module, form, callback){
 }
 
 function createModuleAddon(module, form){
-	var html = '';
-	html += '<select name="addon_type" required>';
-	html += '<option value="">' + slovar('Select_addon') + '</option>';
-	html += '<optgroup label="' + slovar('Copy') + '">'
-	html += '<option value="copy">' + slovar('Copy_button') + '</option>';
-	html += '<option value="copyDifferentModule">' + slovar('Copy_module_button') + '</option>';
-	html += '<option value="FURS">' + slovar('FURS') + '</option>';
-	html += '<option value="external_table_select">external_table_select</option>';
-	html += '</optgroup>';
-	html += '<optgroup label="' + slovar('Parent_input') + '">';
-	html += '<option value="parent_filter">' + slovar('Parent_filter') + '</option>';
-	html += '<option value="parent_copy">' + slovar('Parent_copy') + '</option>';
-	html += '</optgroup>';
-	html += '<optgroup label="' + slovar('Other') + '">';
-	html += '<option value="hide_inputs">' + slovar('Hide_inputs') + '</option>';
-	html += '<option value="checkbox_group">' + slovar('Checkbox_group') + ' (CHECKBOX)</option>';
-	html += '<option value="varchar_multiselect">' + slovar('Varchar_multiselect') + '</option>';
-	html += '<option value="select_to_progress">' + slovar('Select_to_progress') + '</option>';
-	html += '<option value="loadJS">' + slovar('loadJS') + '</option>';
-	html += '<option value="JSCommand">' + slovar('JavaScript_Command') + '</option>';
-	html += '</optgroup>';
-	html += '</select>';
-	html += '<div></div>';
-	html += '<hr><button class="button buttonGreen">' + slovar('Save_changes') + '</button>';
-    html += '<span class="button buttonGrey">' + slovar('Cancel') + '</span>';
-	form.html(html);
+	form.html(`
+	<select name="addon_type" required>
+		<option value="">${slovar('Select_addon')}</option>
+		<optgroup label="${slovar('Copy')}">
+			<option value="copy">${slovar('Copy_button')}</option>
+			<option value="copyDifferentModule">${slovar('Copy_module_button')}</option>
+			<option value="FURS">${slovar('FURS')}</option>
+			<option value="external_table_select">external_table_select</option>
+		</optgroup>
+		<optgroup label="${slovar('Parent_input')}">
+			<option value="parent_filter">${slovar('Parent_filter')}</option>
+			<option value="parent_copy">${slovar('Parent_copy')}</option>
+		</optgroup>
+		<optgroup label="VARCHAR">
+			<option value="varchar_multiselect">VARCHAR to JOIN_ADD (MULTISELECT)</option>
+			<option value="varchar_to_select">VARCHAR to SELECT-MENU</option>
+		</optgroup>
+		<optgroup label="${slovar('Other')}">
+			<option value="hide_inputs">${slovar('Hide_inputs')}</option>
+			<option value="checkbox_group">${slovar('Checkbox_group')} (CHECKBOX)</option>
+			<option value="select_to_progress">${slovar('Select_to_progress')}</option>
+			<option value="loadJS">${slovar('loadJS')}</option>
+		</optgroup>
+	</select>
+	<div></div>
+	<hr>
+	<button class="button buttonGreen">${slovar('Save_changes')}</button>
+    <span class="button buttonGrey">${slovar('Cancel')}</span>
+	`);
+
 	form.find('select').change(function(){ changeAddonSelect1(module, $(this)); });
 	form.find('.buttonGrey').click(function(){ displayModuleAddons(module, form); });
 }
@@ -85,7 +89,7 @@ function changeAddonSelect1(module, el){
 			showAll:true,
 			done: function(data){
 				html += '<label>' + slovar('Button_position') + '</label>';
-		        html += '<select name="button_position">';
+		        html += '<select name="headers[]">';
 				var arr = [];
 	        	for(var i=0; i<data.length; i++){
 	        		var col = data[i];
@@ -95,7 +99,7 @@ function changeAddonSelect1(module, el){
 	        	}
 				html += '</select>';
 				html += '<label>' + slovar('Button_label') + '</label>';
-				html += '<input type="text" name="button_label" required>';
+				html += '<input type="text" name="headers[]" required>';
 				html += '<label>' + slovar('Copy_from_to') + '</label>';
 				html += '<div style="display:flex;">';
 				html += '<select name="from[]">';
@@ -119,10 +123,10 @@ function changeAddonSelect1(module, el){
 	}
 	else if(el.val() == 'copyDifferentModule'){ // ------------------------- COPY FROM DIFFERENT MODULE
 		html += '<label>' + slovar('Module') + '</label>';
-		html += '<select name="from_module" onchange="getColumnsForCopy(\'' + module + '\', $(this))" required>';
+		html += '<select name="headers[]" onchange="getColumnsForCopy(\'' + module + '\', $(this))" required>';
 		html += '<option value=""></option>';
 		$('#modul_table tbody tr').each(function(){
-			if($(this).attr('data-url') == '' || $(this).attr('data-url') == null){
+			if(valEmpty($(this).attr('data-url')) && !valEmpty($(this).attr('data-module'))){
 				html += '<option value="' + $(this).attr('data-module') + '">' + slovar($(this).attr('data-name')) + '</option>';
 			}
 		});
@@ -135,7 +139,7 @@ function changeAddonSelect1(module, el){
 			showAll:true,
 			done: function(data){
 				html += '<label>' + slovar('Button_position') + '</label>';
-		        html += '<select name="button_position">';
+		        html += '<select name="headers[]">';
 				var arr = [];
 	        	for(var i=0; i<data.length; i++){
 	        		var col = data[i];
@@ -145,7 +149,7 @@ function changeAddonSelect1(module, el){
 	        	}
 	        	html += '</select>';
 				html += '<label>' + slovar('Button_label') + '</label>';
-				html += '<input type="text" name="button_label" required>';
+				html += '<input type="text" name="headers[]" required>';
 				html += '<label>' + slovar('Copy_from_to') + '</label>';
 				html += '<div style="display:flex;">';
 				html += '<select name="from[]">';
@@ -203,7 +207,7 @@ function changeAddonSelect1(module, el){
 			showAll:true,
 			done: function(data){
 				html += '<label>' + slovar('Select_parent_input') + '</label>';
-		        html += '<select name="button_label">';
+		        html += '<select name="headers[]">';
 	        	for(var i=0; i<data.length; i++){
 	        		var col = data[i];
 	        		if(!['VARCHAR','INT','SELECT','JOIN_ADD'].includes(col.type)){ continue }
@@ -233,7 +237,7 @@ function changeAddonSelect1(module, el){
 			showAll:true,
 			done: function(data){
 				html += '<label>' + slovar('Select_parent_input') + '</label>';
-		        html += '<select name="button_label" onchange="getParentCopyColumns(\'' + module + '\', $(this))"><option data-list="" value=""></option>';
+		        html += '<select name="headers[]" onchange="getParentCopyColumns(\'' + module + '\', $(this))"><option data-list="" value=""></option>';
 	        	for(var i=0; i<data.length; i++){
 	        		var col = data[i];
 	        		if(col.type != 'JOIN_ADD'){ continue }
@@ -244,16 +248,67 @@ function changeAddonSelect1(module, el){
 			}
 		})
 	}
+	else if(el.val() == 'varchar_multiselect'){ // ------------------------- MULTISELECT
+		GET_column({
+			module:module,
+			showAll:true,
+			done: function(data1){
+	        	var opt = '';
+	        	GET_module({
+	        		each: function(col){
+	        			if(!['',null].includes(col.url)){ return }
+			        	opt += '<option value="' + col.module + '">' + slovar(col.name) + '</option>';
+	        		},
+	        		done: function(data2){
+	        			html += '<label>' + slovar('Select_input') + '</label>';
+						html += '<select name="addons[]">';
+						data1.forEach(col => {
+							if(col.type == 'VARCHAR' && col.list == ''){
+				        		html += '<option value="' + col.column + '">' + slovar(col.name) + '</option>';
+				        	}
+						})
+			        	html += '</select>';
+			        	html += '<label>' + slovar('Select_module') + '</label>';
+						html += '<select name="addons[]">' + opt + '</select>';
+				        box.html(html);
+	        		}
+	        	})
+			}
+		})
+	}
+	else if(el.val() == 'varchar_to_select'){ // ------------------------- VARCHAR TO SELECT
+		GET_column({
+			module:module,
+			showAll:true,
+			done: function(data){
+				html += '<label>' + slovar('Button_label') + '</label>';
+				html += '<select type="text" name="headers[]">';
+				data.forEach(col => {
+					if(col.type == 'VARCHAR'){
+		        		html += '<option value="' + col.column + '">' + slovar(col.name) + '</option>';
+		        	}
+				})
+				html += '</select>';
+				html += '<label>SELECT-MENU</label>';
+				html += '<div style="display:flex;">';
+				html += '<input type="text" name="thisvalue[]">';
+	        	html += '<span style="align-self:center;" onclick="removeParentDiv($(this))">' + getSVG('x') + '</span>';
+	        	html += '</div>';
+	        	html += '<span class="button buttonBlue" onclick="copyBeforeDiv($(this))">' + getSVG('plus_circle') + '</span>';
+		        box.html(html);
+			}
+		})
+	}
 	else if(el.val() == 'hide_inputs'){ // ------------------------- HIDE INPUTS
 		GET_column({
 			module:module,
 			showAll:true,
 			done: function(data){
 				html += '<label>' + slovar('Button_label') + '</label>';
-				html += '<input type="text" name="button_label">';
+				html += '<input type="text" name="headers[]">';
 				html += '<label>' + slovar('Select_inputs_to_hide') + '</label>';
 				html += '<div style="display:flex;">';
-				html += '<select name="from[]">';
+				html += '<select name="thisvalue[]">';
 	        	for(var i=0; i<data.length; i++){
 	        		var col = data[i];
 	        		html += '<option value="' + col.column + '">' + slovar(col.name) + '</option>';
@@ -272,10 +327,10 @@ function changeAddonSelect1(module, el){
 			showAll:true,
 			done: function(data){
 				html += '<label>' + slovar('Max_checkbox_active') + '</label>';
-		        html += '<input type="number" name="button_label" value="1" min="1" required>';
+		        html += '<input type="number" name="headers[]" value="1" min="1" required>';
 				html += '<label>' + slovar('Select_checkbox') + '</label>';
 				html += '<div style="display:flex;">';
-				html += '<select name="from[]">';
+				html += '<select name="thisvalue[]">';
 	        	for(var i=0; i<data.length; i++){
 	        		var col = data[i];
 	        		if(col.type != 'CHECKBOX'){ continue }
@@ -289,42 +344,13 @@ function changeAddonSelect1(module, el){
 			}
 		})
 	}
-	else if(el.val() == 'varchar_multiselect'){ // ------------------------- MULTISELECT
-		GET_column({
-			module:module,
-			showAll:true,
-			done: function(data1){
-	        	var opt = '';
-	        	GET_module({
-	        		each: function(col){
-	        			if(!['',null].includes(col.url)){ return }
-			        	opt += '<option value="' + col.module + '">' + slovar(col.name) + '</option>';
-	        		},
-	        		done: function(data2){
-	        			html += '<label>' + slovar('Select_input') + '</label>';
-						html += '<select name="from_module">';
-			        	for(var i=0; i<data1.length; i++){
-			        		var col = data1[i];
-			        		if(col.type == 'VARCHAR' && col.list == ''){
-				        		html += '<option value="' + col.column + '">' + slovar(col.name) + '</option>';
-				        	}
-			        	}
-			        	html += '</select>';
-			        	html += '<label>' + slovar('Select_module') + '</label>';
-						html += '<select name="button_position">' + opt + '</select>';
-				        box.html(html);
-	        		}
-	        	})
-			}
-		})
-	}
 	else if(el.val() == 'select_to_progress'){
 		GET_column({
 			module:module,
 			showAll:true,
 			done: function(data){
 				html += '<label>' + slovar('Select_input') + '</label>';
-				html += '<select name="from_module">';
+				html += '<select name="addons[]">';
 	        	for(var i=0; i<data.length; i++){
 	        		var col = data[i];
 	        		if(col.type != 'SELECT'){ continue }
@@ -337,15 +363,15 @@ function changeAddonSelect1(module, el){
 	}
 	else if(el.val() == 'loadJS'){
 		html += '<label>' + slovar('Type') + '</label>';
-		html += '<select name="custom_data_type" required>';
+		html += '<select name="addons[]" required>';
 		html += '<option value="ADD">' + slovar('Add_new') + '</option>';
 		html += '<option value="EDIT">' + slovar('Edit_row') + '</option>';
 		html += '<option value="READ">' + slovar('View') + '</option>';
 		html += '</select>';
 		html += '<label>' + slovar('File') + '</label>';
-		html += '<select name="custom_data[]" id="thisjsfile" required></select>';
+		html += '<select name="addons[]" id="thisjsfile" required></select>';
 		html += '<label>' + slovar('Function') + '(rowData, box)</label>';
-		html += '<input type="text" name="custom_data[]" required>';
+		html += '<input type="text" name="addons[]" required>';
 		box.html(html);
 
 		loadJS('dev/custom_files', function(){
@@ -357,28 +383,6 @@ function changeAddonSelect1(module, el){
 					});
 				}
 			})
-		})
-	}
-	else if(el.val() == 'JSCommand'){
-		html += '<label>' + slovar('Type') + '</label>';
-		html += '<select name="custom_data_type" required>';
-		html += '<option value="ADD">' + slovar('Add_new') + '</option>';
-		html += '<option value="EDIT">' + slovar('Edit_row') + '</option>';
-		html += '<option value="READ">' + slovar('View') + '</option>';
-		html += '</select>';
-		html += '<label>' + slovar('Custom_command') + '</label><br>';
-		html += '<div class="openCodeEditor">';
-		html += '<pre><code></code></pre>';
-		html += '<textarea name="custom_data" style="display:none" required></textarea>';
-		html += '</div><div>';
-		box.html(html);
-		box.find('.openCodeEditor').click(function(){
-			loadJS('form/codeEditor', function(el){
-				openCodeEditor({
-					box: el,
-					type: 'js'
-				})
-			}, $(this))
 		})
 	}
 	else{ box.empty() }
@@ -399,7 +403,7 @@ function getColumnsForCopy(module, el){
 					done: function(to){
 						var html = '<div class="getcolumnsforcopy">';
 				        html += '<label>' + slovar('Button_position') + '</label>';
-				        html += '<select name="button_position">';
+				        html += '<select name="headers[]">';
 						var arr = [];
 			        	for(var i=0; i<to.length; i++){
 			        		var col = to[i];
@@ -409,7 +413,7 @@ function getColumnsForCopy(module, el){
 			        	}
 						html += '</select>';
 						html += '<label>' + slovar('Button_label') + '</label>';
-						html += '<input type="text" name="button_label" required>';
+						html += '<input type="text" name="headers[]" required>';
 						html += '<label>' + slovar('Copy_from_to') + '</label>';
 				        html += '<div style="display:flex;">';
 						html += '<select name="from[]">';

@@ -123,34 +123,11 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         $addon_type = $_POST['addon_type'];
         $addon = array($addon_type);
 
+        if(isset($_POST['headers'])){ $addon = array_merge($addon, $_POST['headers']); }
+
         if(
-            $addon_type == 'copyDifferentModule' ||
-            $addon_type == 'quick_add_after' ||
-            $addon_type == 'varchar_multiselect' ||
-            $addon_type == 'select_to_progress'
-        ){ array_push($addon, $_POST['from_module']); }
-        if(
-            $addon_type == 'copy' ||
-            $addon_type == 'copyDifferentModule' ||
-            $addon_type == 'FURS' ||
-            $addon_type == 'varchar_multiselect'
-        ){ array_push($addon, $_POST['button_position']); }
-        if(
-            $addon_type == 'copy' ||
-            $addon_type == 'copyDifferentModule' ||
-            $addon_type == 'FURS' ||
-            $addon_type == 'hide_inputs' ||
-            $addon_type == 'parent_filter' ||
-            $addon_type == 'parent_copy' ||
-            $addon_type == 'checkbox_group'
-        ){ array_push($addon, $_POST['button_label']); }
-        if(
-            $addon_type == 'copy' ||
-            $addon_type == 'copyDifferentModule' ||
-            $addon_type == 'FURS' ||
-            $addon_type == 'parent_filter' ||
-            $addon_type == 'quick_add_after' ||
-            $addon_type == 'parent_copy'
+            isset($_POST['from']) && is_array($_POST['from']) &&
+            isset($_POST['to']) && is_array($_POST['to'])
         ){
             $arr = array();
             for($i=0; $i<count($_POST['from']); $i++){
@@ -158,22 +135,13 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
             }
             array_push($addon, implode(',', $arr));
         }
-        if(
-            $addon_type == 'hide_inputs' ||
-            $addon_type == 'checkbox_group'
-        ){
+
+        if(isset($_POST['thisvalue']) && is_array($_POST['thisvalue'])){
             $arr = array();
-            for($i=0; $i<count($_POST['from']); $i++){
-                array_push($arr, $_POST['from'][$i]);
+            for($i=0; $i<count($_POST['thisvalue']); $i++){
+                array_push($arr, $_POST['thisvalue'][$i]);
             }
             array_push($addon, implode(',', $arr));
-        }
-        if(
-            $addon_type == 'JSCommand' ||
-            $addon_type == 'loadJS'
-        ){ 
-            if(is_array($_POST['custom_data'])){ $_POST['custom_data'] = implode('|', $_POST['custom_data']); }
-            array_push($addon, $_POST['custom_data_type'], $SQL->real_escape_string($_POST['custom_data']));
         }
 
         if(isset($_POST['addons'])){ $addon = array_merge($addon, $_POST['addons']); }

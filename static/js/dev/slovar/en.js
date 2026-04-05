@@ -52,7 +52,6 @@ add_to_slovar({
     Other: "Other",
     Hide_inputs: "Hide inputs",
     Checkbox_group: "Create a checkbox group",
-    Varchar_multiselect: "Turn text input into MultiSelect input",
     Select_to_progress: "Select menu to progress bar",
     JavaScript_Command: "JavaScript Command",
 

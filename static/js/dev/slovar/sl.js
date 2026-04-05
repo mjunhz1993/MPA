@@ -55,7 +55,6 @@ add_to_slovar({
     Other: "Drugo",
     Hide_inputs: "Skrij polja",
     Checkbox_group: "Ustvarite skupino potrditvenih polj",
-    Varchar_multiselect: "Pretvorite polje za vnos besedila v vnos z več izbire",
     Select_to_progress: "Izbirni menu v vrstico napredka",
     JavaScript_Command: "JavaScript ukaz",
 

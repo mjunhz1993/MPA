@@ -97,8 +97,9 @@ function debugEmailData($SQL,$imap,$mail) {
 
     // BODY
     $s = imap_fetchstructure($imap->conn,$mail->msgno);
-    if (!$s->parts)  // simple
+    if (empty($s->parts) || !is_array($s->parts)) {  // simple
         getpart($imap->conn,$mail->msgno,$s,0);  // pass 0 as part-number
+    }
     else {  // multipart: cycle through each part
         foreach ($s->parts as $partno0=>$p)
             getpart($imap->conn,$mail->msgno,$p,$partno0+1);
