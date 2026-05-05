@@ -142,23 +142,17 @@ function insertIntoFileModule($SQL, $path, $thisFile){
 }
 
 function checkIfSmallImageNeeded($SQL, $path, $thisFile){
-    $A = $SQL->query("SELECT list FROM module_columns WHERE column_id = '".$thisFile['column']."' LIMIT 1");
+    $A = $SQL->query("SELECT list FROM module_columns WHERE column_id = '{$thisFile['column']}' LIMIT 1");
     while ($B = $A->fetch_row()){ $list = explode(',', $B[0]); }
     if($list[0] == 'IMG' && $list[1] == '1'){
-        return uploadImage($path.$thisFile['NewName'], $path.$thisFile['id'].'_'.$thisFile['column'].'_'.$thisFile['time'].'_small.'.$thisFile['extension'], 100);
+        include(loadPHP('file/resize/resize'));
+        return resizeImage(
+            $path.$thisFile['NewName'],
+            $path.$thisFile['id'].'_'.$thisFile['column'].'_'.$thisFile['time'].'_small.'.$thisFile['extension'],
+            100
+        );
     }
     return true;
-}
-
-function uploadImage($img, $saveLocation, $scale = 1900){
-    $im = new Imagick($img);
-    if($im->getImageWidth() > $scale){
-        $im->scaleImage($scale, 0);
-        $im->setImageFilename($saveLocation);
-        $im->writeImage();
-        return true;
-    }
-    return copy($img, $saveLocation);
 }
 
 function updateModuleFileColumnSQLdata($SQL, $module, $column, $id, $thisFile){

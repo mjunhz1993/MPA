@@ -5,6 +5,8 @@ include(loadPHP('file/file'));
 include(loadPHP('notifications/notifications'));
 
 function save_clipboard_file($user_id, $path){
+    include(loadPHP('file/resize/resize'));
+
     $value = $_FILES['clipboard'];
     if($value['tmp_name'] == ''){ return ['error' => 'no_tmp_name']; }
     $oldName = $value['name'];
@@ -14,7 +16,13 @@ function save_clipboard_file($user_id, $path){
     $fileinfo = pathinfo($oldName);
     $newName = 'clipboard_'. $user_id. '.'. $fileinfo['extension'];
     if($size >= intval($GLOBALS["config"]["max_file_size"])){ return ['error' => 'file_size_to_big']; }
-    if(uploadImage($tmp_name, $path.$newName)){ return ['name' => $oldName]; }
+
+    if(resizeImage(
+        $tmp_name,
+        $path.$newName
+    ))
+    { return ['name' => $oldName]; }
+    
     return ['error' => 'upload_error'];
 }
 

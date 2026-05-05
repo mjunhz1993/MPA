@@ -41,10 +41,12 @@ function create_config_file($SQL){
                     if($_POST['company_logo_hidden'] != ''){ remove_company_logo($path, $_POST['company_logo_hidden']); }
                     // ADD LOGO
                     move_uploaded_file($value['tmp_name'][$i], $path. $newName);
-                    $im = new Imagick($path. $newName);
-                    $im->scaleImage(100, 0);
-                    $im->setImageFilename($path. $newNameSmall);
-                    $im->writeImage();
+                    include(loadPHP('file/resize/resize'));
+                    resizeImage(
+                        $path.$newName,
+                        $path.$newNameSmall,
+                        100
+                    );
                     $t .= '"company_logo" => "'. $newName. '", ';
                 }
 
