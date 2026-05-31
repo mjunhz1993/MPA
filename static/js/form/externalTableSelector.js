@@ -42,7 +42,22 @@ function popup_external_table(d){
     d.popup.fadeIn('fast', function(){ $(this).find('input').first().focus() });
 
     d.popup.find('form').on('submit', function(e){ e.preventDefault() })
-    d.popup.find('input').on('keyup', function(e){if(e.keyCode == 13){ search_external_table(d) }})
+
+    let ET_timer;
+    d.popup.find('input').on('keyup', function(e){
+        if(e.keyCode == 13){
+            clearTimeout(ET_timer);
+            search_external_table(d);
+            return;
+        }
+
+        clearTimeout(ET_timer);
+
+        ET_timer = setTimeout(function() { console.log('ddd');
+            search_external_table(d);
+        }, 800);
+    })
+
     search_external_table(d);
 }
 
