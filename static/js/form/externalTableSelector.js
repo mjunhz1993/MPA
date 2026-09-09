@@ -53,7 +53,7 @@ function popup_external_table(d){
 
         clearTimeout(ET_timer);
 
-        ET_timer = setTimeout(function() { console.log('ddd');
+        ET_timer = setTimeout(function() {
             search_external_table(d);
         }, 800);
     })

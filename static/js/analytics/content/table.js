@@ -19,7 +19,7 @@ function debug_ANAL_table(content, extra){
 		<div class="top">
 			<div>
 				${slovar('Showing')}
-				<input class="limit" type="number" min="1" max="100" value="100">
+				<input class="limit" type="number" min="1" max="300" value="300">
 				${slovar('Entries')}
 			</div>
 		</div>
@@ -54,7 +54,7 @@ function add_events_to_table(content) {
 	thisBox.find('.limit').on('keyup', function(e){
 		if(e.keyCode === 13){
 			if($(this).val() <= 0){ $(this).val(1) }
-			if($(this).val() >= 100){ $(this).val(100) }
+			if($(this).val() >= 300){ $(this).val(300) }
 			remove_rows_table_analytic(content);
 		}
 	});
