@@ -56,8 +56,14 @@ function checkIfMainTable(box, tableBox, moduleData, html = ''){
     html += getSVG('move')+' </span>'+slovar('Reset_column_size')+'</span></a>';
     
     if(user_id == 1){
-        html += '<a onclick="loadJS(\'table/archive\', function(){open_archiveMaker()})">';
-        html += slovar('Archive_data')+'<sup>admin</sup></a>';
+        html += `
+        <a onclick="loadJS('import/csv2module', function(){ csv2module({module:'${moduleData.module}'}) })">
+            ${slovar('Import_csv')}<sup>admin</sup>
+        </a>
+        <a onclick="loadJS('table/archive', function(){open_archiveMaker()})">
+            ${slovar('Archive_data')}<sup>admin</sup>
+        </a>
+        `;
     }
     options_button.html(html);
     if(!valEmpty(moduleData.archive) && box.find('.archiveSelect').length == 0){loadJS('table/archive', function(){ getArchiveYears(box) })}
