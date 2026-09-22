@@ -45,6 +45,7 @@
                 <div>calendar</div>
                 <div>pipeline</div>
                 <div>analytic</div>
+                <div>noMultipleDelete</div>
             </div>
 
             <br>

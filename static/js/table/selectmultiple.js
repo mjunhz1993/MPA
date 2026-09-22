@@ -1,24 +1,45 @@
 function openSelectMultiple(el){
+
 	if(![undefined,''].includes(el.closest('#main_table').find('.archiveSelect').val())){ return false }
 	var table = el.closest('table');
-	var html = '';
-	html += '<div id="selectmultipleBox"><div style="display:flex;">';
-	html += '<button class="buttonSquare button100 buttonBlue" onclick="showDropdownMenu($(this), true)">' + slovar('Tools');
-	html += '<div class="DropdownMenuContent">';
-	html += '<p>' + slovar('Export') + '</p>';
-	html += '<a onClick="table2csv()">' + getSVG('download') + ' <span>' + slovar('CSV') + '</span></a>';
-	// html += '<a onClick="table2campaign()">' + getSVG('download') + ' <span>' + slovar('Campaign') + '</span></a>';
-	html += '<hr>';
-	html += '<a onClick="deleteSelectMultiple($(\'#selectmultipleBox\'))">' + getSVG('delete') + ' <span>' + slovar('Delete') + '</span></a>';
-	html += '</div>';
-	html += '</button>';
-	html += '<button class="buttonSquare button100 buttonGrey buttonCancelSelectMultiple" onclick="cancelSelectMultiple($(this))">' + slovar('Cancel') + '</button>';
-	html += '</div><hr>';
-	html += '<input type="checkbox" id="selectmultipleall" onchange="selectMultipleAll($(this))">';
-	html += '<label class="label100" for="selectmultipleall">' + slovar('Select_all') + '</label>';
-	html += '</div>';
+
 	el.hide();
-	el.after(html);
+	el.after(`
+		<div id="selectmultipleBox">
+			<div style="display:flex;">
+				<button class="buttonSquare button100 buttonBlue" onclick="showDropdownMenu($(this), true)">
+					${slovar('Tools')}
+					<div class="DropdownMenuContent">
+						<p>${slovar('Export')}</p>
+						<a onClick="table2csv()">
+							${getSVG('download')}
+							<span>${slovar('CSV')}</span>
+						</a>
+						<hr>
+						<a id="deleteMultipleButton" onClick="deleteSelectMultiple($('#selectmultipleBox'))">${getSVG('delete')}
+							<span>${slovar('Delete')}</span>
+						</a>
+					</div>
+				</button>
+				<button class="buttonSquare button100 buttonGrey buttonCancelSelectMultiple" onclick="cancelSelectMultiple($(this))">
+					${slovar('Cancel')}
+				</button>
+			</div>
+			<hr>
+			<input type="checkbox" id="selectmultipleall" onchange="selectMultipleAll($(this))">
+			<label class="label100" for="selectmultipleall">
+				${slovar('Select_all')}
+			</label>
+		</div>
+	`);
+
+	GET_module({
+		module: $('#main_table').data('module'),
+		done: function(m){
+			if(m.accessories.includes('noMultipleDelete')){ $('#deleteMultipleButton').remove() }
+		}
+	});
+
 	tableResetFixedWidthColumns(table);
 	resetDropdownMenuConfig();
 	turnTableToMultiSelect(table);
