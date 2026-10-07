@@ -1,4 +1,4 @@
-.extTable tbody tr:hover td{
+.extTable tbody tr.selectable:hover td{
 	cursor: pointer;
 	background-color: var(--blue);
 	color: white;

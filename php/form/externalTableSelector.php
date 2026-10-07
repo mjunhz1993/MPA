@@ -4,6 +4,7 @@ include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 function search_external_table($SQL){
 	$order = $_GET['order'] ?? $_GET['columns'][0].' DESC';
 	$limit = $_GET['limit'] ?? 10;
+	$offset = $_GET['offset'] ?? 0;
 
 	$WHERE = search_external_table_conditions();
 	$prefix_where = add_external_where();
@@ -17,6 +18,7 @@ function search_external_table($SQL){
 		$WHERE
 		ORDER BY $order
 		LIMIT $limit
+		OFFSET $offset
 	");
 
 	if(!$A){ return ['error' => $SQL->error]; }
