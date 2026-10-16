@@ -263,7 +263,7 @@ function HTML_API_send_help(){
 			<p onclick="HTML_API_send_row('jitsiid')">jitsiid = JITSI app ID</p>
 			<hr>
 			<b>STRIPE Pay</b>
-			<p onclick="HTML_API_send_row('stripePK')">stripePK = STRIPE Publish key</p>
+			<p onclick="HTML_API_send_row('stripePK')">stripePK = STRIPE Public key</p>
 			<p onclick="HTML_API_send_row('stripeSK')">stripeSK = STRIPE Secret key</p>
 			<hr>
 			<b>Google</b>
@@ -274,6 +274,9 @@ function HTML_API_send_help(){
 			<b>Pusher</b>
 			<p onclick="HTML_API_send_row('pusherBeamsID')">pusherBeamsID = Instance ID</p>
 			<p onclick="HTML_API_send_row('pusherBeamsKEY')">pusherBeamsKEY = Primary key</p>
+			<hr>
+			<b>Ably</b>
+			<p onclick="HTML_API_send_row('ablyKEY')">ablyKEY = Ably Public key</p>
 		</div>
 		<button class="button buttonGrey" onclick="removePOPUPbox()">${slovar('Close')}</button>
 	`);
