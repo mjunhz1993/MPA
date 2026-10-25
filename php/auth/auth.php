@@ -4,27 +4,80 @@ include(loadPHP('auth/slovar'));
 include(loadPHP('auth/two_factor_auth'));
 include(loadPHP('auth/passkey'));
 
-function connect_to_user_table($SQL, $username, $blocked){
-    return $SQL->query("SELECT user_id, user_username, user_email, user_password_hash, user_role_id, user_avatar, user_language, user_color, 
-    role_name, role_event_view_access, role_module_filter_access
-    FROM user LEFT JOIN role ON user_role_id = role_id
-    WHERE user_username = '$username' AND user_active = 1 AND blocked < $blocked LIMIT 1");
+function connect_to_user_table($SQL, $username, $blocked = null){
+    if ($blocked === null) {
+        $blocked = time();
+    }
+
+    $statement = "SELECT user_id, user_username, user_email, user_password_hash, user_role_id, user_avatar, user_language, user_color,
+                  role_name, role_event_view_access, role_module_filter_access
+                  FROM user
+                  LEFT JOIN role ON user_role_id = role_id
+                  WHERE user_username = ?
+                  AND user_active = 1
+                  AND blocked < ?
+                  LIMIT 1";
+
+    return sql_select($SQL, $statement, [$username, $blocked]);
 }
 
-function incorrect_password($SQL, $username, $blocked){
-    $U = $SQL->query("UPDATE user SET blocked=blocked+1 WHERE user_username='$username' LIMIT 1");
-    $T = $SQL->query("SELECT * FROM user WHERE user_username='$username' AND blocked >= 3 LIMIT 1");
-    if($T->num_rows == 1){ $U = $SQL->query("UPDATE user SET blocked = $blocked + 300 WHERE user_username='$username' LIMIT 1"); }
+
+function incorrect_password($SQL, $username, $blocked) {
+    // Increment failed login attempts
+    $U = sql_update(
+        $SQL,
+        "UPDATE user SET blocked = blocked + 1 WHERE user_username = ? LIMIT 1",
+        [$username]
+    );
+
+    // Check whether the user has reached the blocking threshold
+    $T = sql_select(
+        $SQL,
+        "SELECT blocked FROM user WHERE user_username = ? AND blocked >= 3 LIMIT 1",
+        [$username]
+    );
+
+    // If the user has reached the threshold, extend the block
+    if (is_array($T)) {
+        return $T;
+    }
+
+    if ($T->num_rows === 1) {
+        $U = sql_update(
+            $SQL,
+            "UPDATE user SET blocked = ? + 300 WHERE user_username = ? LIMIT 1",
+            [(int)$blocked, $username]
+        );
+
+        if (is_array($U)) {
+            return $U;
+        }
+    }
+
+    if (is_array($U)) {
+        return $U;
+    }
+
     return ['error' => slovarLocal('wrong_credentials')];
 }
 
-function save_user_data_to_session($SQL, $username, $B){
-    $T = $SQL->query("UPDATE user SET blocked=0 WHERE user_username='$username' LIMIT 1");
-    if(!$T){ return false; }
+function save_user_data_to_session($SQL, $username, $B) {
+    // Reset failed login attempts
+    $T = sql_update(
+        $SQL,
+        "UPDATE user SET blocked = 0 WHERE user_username = ? LIMIT 1",
+        [$username]
+    );
+
+    // Handle SQL errors
+    if (is_array($T)) {
+        return false;
+    }
+
+    // Save user data to session
     $_SESSION['user_id'] = $B[0];
     $_SESSION['user_username'] = $B[1];
     $_SESSION['user_email'] = $B[2];
-    $_SESSION['user_password_hash'] = $B[3];
     $_SESSION['user_role_id'] = $B[4];
     $_SESSION['user_avatar'] = $B[5];
     $_SESSION['user_language'] = $B[6];
@@ -32,14 +85,17 @@ function save_user_data_to_session($SQL, $username, $B){
     $_SESSION['role_name'] = $B[8];
     $_SESSION['role_event_view_access'] = $B[9];
     $_SESSION['role_module_filter_access'] = $B[10];
-    setcookie('login_username',$username,(time()+86400),'/');
+
+    // Remember username for 24 hours
+    setcookie('login_username', $username, time() + 86400, '/');
+
     return true;
 }
 
 function login_user($SQL, $tstamp){
     $username = SafeInput($SQL, $_POST['username']);
     $blocked = time();
-    $A = connect_to_user_table($SQL, $username, $blocked);
+    $A = connect_to_user_table($SQL, $username);
     if($A->num_rows == 0){ return ['error' => slovarLocal('unknown_username')]; }
 
     while($B = $A->fetch_row()){
@@ -63,7 +119,7 @@ function login_user($SQL, $tstamp){
 function change_to_user($SQL){
     if($_SESSION['user_id'] != 1 && !isset($_SESSION['allow_change_user'])){ return ['error' => 'Access_denied']; }
     $username = SafeInput($SQL, $_POST['username']);
-    $A = connect_to_user_table($SQL, $username, time());
+    $A = connect_to_user_table($SQL, $username);
     while($B = $A->fetch_row()){
         if(!save_user_data_to_session($SQL, $username, $B)){ return ['error' => 'Login_error']; }
         $_SESSION['allow_change_user'] = true;

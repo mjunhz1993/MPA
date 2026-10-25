@@ -24,9 +24,18 @@ function send_login_rand_email($SQL){
     if(!isset($_SESSION['unknown_client'])){ return false; }
     $username = SafeInput($SQL, $_SESSION['user_username']);
 
-    $A = $SQL->query("SELECT user_email FROM user WHERE user_username = '$username' LIMIT 1");
-    if($A->num_rows == 0){ return false; }
-    while($B = $A->fetch_row()){ $addAddress = $B[0]; }
+    $A = sql_select(
+        $SQL,
+        "SELECT user_email FROM user WHERE user_username = ? LIMIT 1",
+        [$username]
+    );
+
+    if (is_array($A) || $A->num_rows === 0) {
+        return false;
+    }
+
+    $B = $A->fetch_row();
+    $addAddress = $B[0];
 
 	$user_id = $GLOBALS["config"]["crm_email"];
     $smtp = connect_to_smtp($SQL, $user_id);

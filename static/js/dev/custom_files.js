@@ -138,8 +138,8 @@ function toggleAddTamplate(){
 		else if(ext == 'api'){
 			data += "<?php\n";
 			data += "include(loadPHP('file/path'));\n\n";
-			data += "function API_run($SQL){ return "+name+"(); }\n\n";
-			data += "function "+name+"(){\n\n}\n";
+			data += "function API_run($SQL){ return "+name+"($SQL); }\n\n";
+			data += "function "+name+"($SQL){\n\n}\n";
 			data += "?>";
 		}
 	}

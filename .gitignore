@@ -9,6 +9,7 @@ venv/
 /static/uploads/**
 /php/downloads/**
 /php/user_data/**
+/public/**
 /vendor/
 /build/
 
