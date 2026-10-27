@@ -1,4 +1,3 @@
-
 <?php
 include($_SERVER['DOCUMENT_ROOT'] . '/crm/php/SQL/SQL.php');
 
