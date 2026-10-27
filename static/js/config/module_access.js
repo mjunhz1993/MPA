@@ -89,14 +89,17 @@ function openEditAccess(el, type){
             }
             
             if(type == 'MODULE'){
-                form.append('<h2>' + slovar('Extra') + '</h2><button class="button buttonBlue" data-button="full">' + slovar('Set_columns') + '</button>');
+                popup.find('#popupBox')
+                .append('<h2>' + slovar('Extra') + '</h2><button class="button buttonBlue" data-button="full">' + slovar('Set_columns') + '</button>');
             }
             
             checkAccessFields(el, form, type);
             popup.find('#popupBox').append('<hr><button class="button buttonBlue">' + slovar('Save_changes') + '</button>');
             popup.find('#popupBox').append('<span class="button buttonGrey" onclick="removePOPUPbox()">' + slovar('Cancel') + '</span>');
             
-            popup.find('.buttonBlue').click(function(){ submitEditAccess(form, popup, type, $(this).attr('data-button')) })
+            popup.find('.buttonBlue').click(function(){
+                submitEditAccess(form, popup, type, $(this).attr('data-button'))
+            });
             
             popup.fadeIn('fast');
         }
@@ -131,13 +134,17 @@ function submitEditAccess(form, popup, type, button = ''){
     if(button == 'full'){ extra = '&set_columns=1' }
     form.unbind().on('submit', function(e){
         e.preventDefault();
-        $.post('/crm/php/admin/access.php?edit_access=1' + extra, form.serialize(), function(data){
-            data = JSON.parse(data);
-            if(data.error){ return createAlert(form, 'Red', data.error) }
-            if(type == 'MODULE'){ loadModulesAccess() }
-            else if(type == 'COLUMN'){ openColumns($('#column_table').attr('data-module'), $('#column_table').attr('data-name')) }
-            removePOPUPbox()
-        })
+        $.post(
+            '/crm/php/admin/access.php?edit_access=1' + extra, 
+            form.serialize(), 
+            function(data){ console.log(data);
+                data = JSON.parse(data);
+                if(data.error){ return createAlert(form, 'Red', data.error) }
+                if(type == 'MODULE'){ loadModulesAccess() }
+                else if(type == 'COLUMN'){ openColumns($('#column_table').attr('data-module'), $('#column_table').attr('data-name')) }
+                removePOPUPbox()
+            }
+        )
         
     });
     form.submit();

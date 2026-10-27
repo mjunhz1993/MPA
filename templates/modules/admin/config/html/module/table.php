@@ -4,6 +4,7 @@
             <td>
                 <button class="button buttonGreen" onclick="openAddModule()" data-slovar="Add_new"></button>
                 <button class="button buttonGrey" onclick="openImportModule()" data-slovar="Import"></button>
+                <button class="button buttonBlue" onclick="loadJS('shop/shop', ()=>shop())" data-slovar="Shop"></button>
             </td>
             <td>
                 <select class="tableTopSelect" id="filter_groups" onchange="filter_groups($(this))">
