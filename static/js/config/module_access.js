@@ -137,7 +137,7 @@ function submitEditAccess(form, popup, type, button = ''){
         $.post(
             '/crm/php/admin/access.php?edit_access=1' + extra, 
             form.serialize(), 
-            function(data){ console.log(data);
+            function(data){
                 data = JSON.parse(data);
                 if(data.error){ return createAlert(form, 'Red', data.error) }
                 if(type == 'MODULE'){ loadModulesAccess() }

@@ -566,15 +566,21 @@ $A = $SQL->query("
     WHERE table_schema = '".$INIconf['SQL']['database']."' AND table_name = 'module_automations' LIMIT 1
 ");
 if($A->num_rows == 0){
-    $A = $SQL->query("CREATE TABLE module_automations
+    $A = $SQL->query("
+    CREATE TABLE module_automations
     (
         order_num INT(20) DEFAULT 0,
-        module VARCHAR(100), INDEX(module),
-        FOREIGN KEY (module) REFERENCES module(module) ON DELETE CASCADE,
+        module VARCHAR(100),
         auto_command TEXT,
-        action VARCHAR(100)
+        action VARCHAR(100),
+
+        INDEX (module),
+        UNIQUE KEY unique_module_command_action (module, auto_command(255), action),
+
+        FOREIGN KEY (module) REFERENCES module(module) ON DELETE CASCADE
     )
-    CHARACTER SET utf8 COLLATE utf8_general_ci");
+    CHARACTER SET utf8 COLLATE utf8_general_ci;
+    ");
     if(!$A){ echo $SQL->error.'<br>'; }
     else{ echo "<p style='color: green;'>tabela <b>module_automations</b> je uspešno naložena</p><br>"; }
 }

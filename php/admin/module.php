@@ -96,8 +96,8 @@ if(isset($_SESSION['user_id']) && isset($_POST['csrf_token']) && $token == $_POS
         $data = array();
         $module = $_POST['module'];
         
-        $A = $SQL->query("SELECT * FROM $module LIMIT 1");
-        if($A->num_rows == 1){ $data['error'] = 'Modul ima že vnesene vrstice'; }
+        $A = $SQL->query("SELECT 1 FROM $module LIMIT 1");
+        if($A && $A->num_rows == 1){ $data['error'] = 'Modul ima že vnesene vrstice'; }
 
         if(!isset($data['error'])){
             $url = '';

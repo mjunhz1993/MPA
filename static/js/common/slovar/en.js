@@ -116,6 +116,7 @@ var trans = {
     Filter_table: "Filter table",
     Get_filter: "Get filter",
     Is_empty: "Is empty",
+    Look_at_list: "Look at List",
 
     // FILE
     Wrong_file_type: "Wrong file type",

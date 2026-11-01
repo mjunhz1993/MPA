@@ -136,6 +136,7 @@ var trans = {
     Filter_table: "Filtriraj tabelo",
     Get_filter: "Pridobite filter",
     Is_empty: "Je prazno",
+    Look_at_list: "Poglej seznam",
 
     // FILE
     Wrong_file_type: "Napačna vrsta datoteke",

@@ -1,0 +1,21 @@
+#list .rowBox{
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+	gap: 10px;
+	padding: 10px 0;
+	background-color: gainsboro;
+}
+
+#list .rowBox .row{
+	cursor: pointer;
+	transition: 0.2s;
+	border: 1px solid;
+	padding: 5px 10px;
+	background-color: white;
+}
+
+#list .rowBox .row.active{
+	background-color: var(--blue);
+	color: white;
+}

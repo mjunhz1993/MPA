@@ -29,7 +29,7 @@
             <?php
             $st = 0;
             $A = $SQL->query("SELECT module, custom, active, icon, name, category, archive, accessories, url 
-            FROM module ORDER BY order_num");
+            FROM module ORDER BY active DESC, order_num");
             while ($B = $A->fetch_assoc()): $st++;
             ?>
                 <tr 
@@ -50,7 +50,10 @@
                         <label for="moduleAct<?= $st; ?>" class="chekboxLabel" data-slovar="Active"></label>
                     </td>
                     <td class="no-drag Micon" data-svg="<?= $B['icon']; ?>"></td>
-                    <td class="no-drag" data-slovar="<?= $B['name']; ?>"></td>
+                    <td class="no-drag">
+                        <p data-slovar="<?= $B['name']; ?>"></p>
+                        <b><?= $B['module']; ?></b>
+                    </td>
                     <td class="no-drag" data-slovar="<?= $B['category']; ?>"></td>
                     <td class="no-drag">
                         <div class="linksvg more" data-svg="settings" onClick="showDropdownMenu($(this))">

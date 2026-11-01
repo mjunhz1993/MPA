@@ -62,11 +62,19 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
             html += 'onfocusout="loadJS(\'form/countries\', function(el){ testPhoneNumber(el) }, $(this))" ';
         }
         else if(data.list == 'URL'){ html += 'onfocusout="testHttpStart($(this))" ' }
+
+        let listSplit = data.list.split('|');
+
+        if(listSplit[0] == 'LIST'){ 
+            html += `class="listInput" onfocus="loadJS('form/list', (el)=>list_show(el, '${listSplit[1]}'), $(this))" ` 
+        }
+
         html += 'maxlength="' + data.length + '"';
         if(data.preselected_option[0] != null){ html += 'value="' + data.preselected_option[0] + '" ' }
         if(data.mandatory){ html += 'required' }
         html += '>';
         if(data.list == 'PHONE'){ html += '</div>' }
+
         return html
     }
 

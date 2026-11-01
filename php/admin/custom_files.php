@@ -31,6 +31,8 @@ function get_custom_files($SQL){
     while ($row = $result->fetch_assoc()) {
         $data[] = [
             'name' => $row['name'],
+            'fileName' => pathinfo($row['path'], PATHINFO_FILENAME),
+            'extension' => pathinfo($row['path'], PATHINFO_EXTENSION),
             'path' => $_SERVER['DOCUMENT_ROOT'].$row['path'],
             'project' => $row['project'],
             'tstamp' => date('Y-m-d H:i:s', $row['tstamp'])

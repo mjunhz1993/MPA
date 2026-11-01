@@ -55,18 +55,12 @@ include($_SERVER['DOCUMENT_ROOT'].'/crm/php/SQL/check_user.php');
         PWA = event;
     });
 
-    var APP_VERSION = "<?= $GLOBALS['APP_VERSION']; ?>";
-    var defaultDateFormat = 'Y-m-d';
-    if('<?= $GLOBALS["config"]["defaultDateFormat"]; ?>' != ''){ defaultDateFormat = '<?= $GLOBALS["config"]["defaultDateFormat"]; ?>'; }
-    var defaultTimeFormat = 'H:i:s';
-    if('<?= $GLOBALS["config"]["defaultTimeFormat"]; ?>' != ''){ defaultTimeFormat = '<?= $GLOBALS["config"]["defaultTimeFormat"]; ?>'; }
-    var defaultCurrency = 'EUR';
-    if('<?= $GLOBALS["config"]["currency"]; ?>' != ''){ defaultCurrency = '<?= $GLOBALS["config"]["currency"]; ?>'; }
-    var usecaching = false;
-    if('<?= $GLOBALS["config"]["usecaching"]; ?>' != ''){ usecaching = true; }
-    var defaultPhoneZipCode = '|-129px';
-    if('<?= $GLOBALS["config"]["phonezipcode"]; ?>' != ''){ defaultPhoneZipCode = '<?= $GLOBALS["config"]["phonezipcode"]; ?>'; }
-    defaultPhoneZipCode = defaultPhoneZipCode.split('|');
+    var APP_VERSION = <?= json_encode($GLOBALS['APP_VERSION']); ?>;
+    var defaultDateFormat = <?= json_encode($GLOBALS['config']['defaultDateFormat'] ?: 'Y-m-d'); ?>;
+    var defaultTimeFormat = <?= json_encode($GLOBALS['config']['defaultTimeFormat'] ?: 'H:i:s'); ?>;
+    var defaultCurrency = <?= json_encode($GLOBALS['config']['currency'] ?: 'EUR'); ?>;
+    var usecaching = <?= !empty($GLOBALS['config']['usecaching']) ? 'true' : 'false'; ?>;
+    var defaultPhoneZipCode = (<?= json_encode($GLOBALS['config']['phonezipcode'] ?: '|-129px'); ?>).split('|');
 </script>
 
 <?php if(isset($_SESSION['user_id'])): ?>

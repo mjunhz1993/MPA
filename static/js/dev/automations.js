@@ -109,7 +109,7 @@ function createModuleAutomation(eventType, module, form, order_num = false){
 		ext:'php',
 		done:function(files){
 			files.forEach(file => {
-				form.find('[name=file]').append(`<option>${file.name}</option>`)
+				form.find('[name=file]').append(`<option value="${file.fileName}">${file.name}</option>`)
 			});
 		}
 	});
