@@ -13,7 +13,7 @@ function InitializationOfTextAreaInputs(box, lang, callback){
     box.find('textarea').each(function(){
     	var ta = $(this);
 
-    	if(['CODE'].includes(ta.data('list'))){ return makeTextAreaCodeEditor(ta) }
+    	if(testTextAreaType(ta)){ return }
 
         ta.summernote({
         	lang:lang, minHeight:200, maxHeight:500, toolbar:selectTextAreaToolBar(ta), styleTags:styleTags, codeviewIframeFilter:true,
@@ -23,7 +23,22 @@ function InitializationOfTextAreaInputs(box, lang, callback){
     if(typeof callback === 'function'){ callback() }
 }
 
-function makeTextAreaCodeEditor(ta){
+function testTextAreaType(ta) {
+    let list = ta.data('list');
+    let type = 'php';
+
+    if (list === 'CODE' || list.startsWith('CODE|')) {
+        if (list.includes('|')) {
+            type = list.split('|')[1];
+        }
+
+        return makeTextAreaCodeEditor(ta, type);
+    }
+
+    return false;
+}
+
+function makeTextAreaCodeEditor(ta, type){
 	ta
 	.wrap('<div class="openCodeEditor"></div>')
 	.before('<pre><code></code></pre>')
@@ -31,12 +46,13 @@ function makeTextAreaCodeEditor(ta){
 	.parent().click(function(){
 		loadJS('form/codeEditor', function(){
 			openCodeEditor({
-				type:'php',
+				type: type,
 				box: ta.parent()
 			})
 		})
 	});
 	ta.parent().find('code').text(ta.val());
+	return true;
 }
 
 function selectTextAreaToolBar(ta){

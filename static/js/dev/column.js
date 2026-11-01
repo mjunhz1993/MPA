@@ -142,8 +142,11 @@ function changeColumnType(){
     else if(type == 'TEXTAREA'){
         html += '<label for="list">Dodatki</label>';
         html += '<select name="list" id="list">';
-        html += '<option value="">Brez dodatka</option>';
-        html += '<option value="CODE">CODE EDITOR</option>';
+        html += '<option value="">RICH TEXT EDITOR</option>';
+        html += '<option value="CODE|php">PHP EDITOR</option>';
+        html += '<option value="CODE|css">CSS EDITOR</option>';
+        html += '<option value="CODE|js">JS EDITOR</option>';
+        html += '<option value="CODE|sql">SQL EDITOR</option>';
         html += '</select>';
     }
     else if(type == 'FILE'){
