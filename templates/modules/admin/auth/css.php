@@ -105,6 +105,7 @@
     display: inline-block;
     height: 379px;
     width: 443px;
+    max-width: 90vw;
     background-size: contain;
     background-position: center;
     background-repeat: no-repeat;

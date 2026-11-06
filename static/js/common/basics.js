@@ -1,5 +1,5 @@
 function getMainBoxFreeHaight(){ return $(window).height() - $('#Main').height() - $('#TopNav').height() }
-function smallDevice(){ return $(window).width() <= 800 }
+function smallDevice(){ return window.matchMedia('(max-width: 767px)').matches }
 function valEmpty(v){ return ['',null,undefined].includes(v) }
 function colChild(v,i){ return `${v}:nth-child(${i})` }
 function randNumber(){ return Math.floor(Math.random() * 1000) }
