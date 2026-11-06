@@ -35,6 +35,11 @@
                         </div>
                     </div>
                 </div>
+
+                <?php if(isset($_COOKIE['ANDROID_URL']) || isset($_GET['ANDROID_URL'])): ?>
+                <script>setCookie('ANDROID_URL', true, 300);</script>
+                <div class="android-back" onclick="go_back()" data-svg="x"></div>
+                <?php endif; ?>
             </td>
         </tr>
     </table>

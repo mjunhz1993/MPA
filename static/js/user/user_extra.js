@@ -27,12 +27,15 @@ function active_pushNotification(el){
 }
 
 function PWA_button(){
-	PWA.prompt();
-	PWA.userChoice.then((choiceResult) => {
-		if(choiceResult.outcome === 'accepted'){ }
-		else{ createAlertPOPUP(slovar('Access_denied')) }
-		PWA = null;
-	});
+	$.post('/crm/php/API/android', {
+		get_android_app: true
+	}, function(data){
+		data = JSON.parse(data);
+		if(data.error){ return createAlertPOPUP(data.error) }
+		POPUPconfirm(slovar('Unknown_file_title'), slovar('Unknown_file_desc'), function(){
+			window.location.href = data.url
+		})
+	})
 }
 
 function request_pushNotification(d){

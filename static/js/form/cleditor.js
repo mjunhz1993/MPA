@@ -24,7 +24,7 @@ function InitializationOfTextAreaInputs(box, lang, callback){
 }
 
 function testTextAreaType(ta) {
-    let list = ta.data('list');
+    let list = ta.data('list') || '';
     let type = 'php';
 
     if (list === 'CODE' || list.startsWith('CODE|')) {

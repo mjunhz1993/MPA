@@ -12,6 +12,11 @@ $(document).ready(function(){
     });
 });
 
+function go_back(){
+    deleteCookie('ANDROID_URL');
+    window.location.replace("https://app.oktagon-it.si/crm/php/downloads/android?DELETE_URL=1");
+}
+
 function TestLogin(box){
     var form = box.find('form');
 

@@ -15,7 +15,7 @@ add_to_slovar({
     Request_permission: "Zahtevaj dovoljenje",
     PN_text: "Prikaži obvestila v operacijskem sistemu.",
     Download_app: "Prenesite aplikacijo",
-    PWA_text: "Prenesi aplikacijo na vašo namizje.",
+    PWA_text: "Prenesi/Posodobi aplikacijo na vašem Andorid telefonu.",
 
     Ticket: "Zahtevki",
     Ticket_msg: "Pošljite svoj zahtevek naši razvojni ekipi pri Oktagon-IT s pomočjo spodnjega obrazca",

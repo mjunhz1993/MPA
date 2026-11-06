@@ -121,7 +121,7 @@ function API($SQL){
     API_parsePostData();
 
     if(!API_event($header['event'])){ return API_err('Event does not exist'); }
-    if(!API_function_exists()){ return API_err("No $AcceptType run function"); }
+    if(!API_function_exists()){ return API_err("No API_run_{$AcceptType} run function"); }
 
     return API_init($SQL);
 }

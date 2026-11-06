@@ -119,6 +119,7 @@ function changeColumnType(){
         html += '<option value="PHONE">Vnos telefonske številke</option>';
         html += '<option value="EMAIL">Vnos E-mail naslova</option>';
         html += '<option value="COLOR">Izbira barve</option>';
+        html += '<option value="LIST">Lista vrstic</option>';
         html += '</select>';
     }
     else if(type == 'INT'){

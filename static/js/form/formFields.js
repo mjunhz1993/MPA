@@ -65,7 +65,8 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
 
         let listSplit = data.list.split('|');
 
-        if(listSplit[0] == 'LIST'){ 
+        if(listSplit[0] == 'LIST'){
+            if(valEmpty(listSplit[1])){ listSplit[1] = data.module }
             html += `class="listInput" onfocus="loadJS('form/list', (el)=>list_show(el, '${listSplit[1]}'), $(this))" ` 
         }
 

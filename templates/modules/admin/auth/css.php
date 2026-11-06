@@ -46,6 +46,7 @@
    
     
 .loginTable .loginTdRight{
+    position: relative;
     padding: 10px 0px;
     text-align: center;
     background-color: white;
@@ -124,5 +125,15 @@
 @media (max-width: 1199px){
     .loginTdLeft{display: none;}
     .loginlogo{height: 230px;}
+}
+
+.android-back{
+    position: absolute;
+    top: 10px;
+    left: 10px;
+}
+.android-back svg{
+    width: 30px;
+    height: 30px;
 }
 </style>

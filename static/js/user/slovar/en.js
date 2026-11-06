@@ -13,7 +13,7 @@ add_to_slovar({
     Request_permission: "Request Permission",
     PN_text: "Show notifications in the operating system.",
     Download_app: "Download app",
-    PWA_text: "Download the app to your desktop.",
+    PWA_text: "Download/Update the app to your Android Phone.",
 
     Ticket: "Requests",
     Ticket_msg: "Send your request to our development team at Oktagon-IT using the form below",
