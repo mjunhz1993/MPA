@@ -104,6 +104,12 @@ function tableAddLoadedRows_VARCHAR(list, value, th, id, module, archive, html =
         html += `<a class="link" onclick="clickTelLink('${value}')">${value}</a>`;
     } else if (list === 'EMAIL') {
         html += `<a class="link" onclick="clickMailToLink('${value}')">${value}</a>`;
+    } else if (list.includes('LIST|')) {
+        html += `
+        <a class="button buttonBlue buttonShowMore"
+            onclick="loadJS('form/list', ()=>list_readOnly('${list.split('|')[1]}', '${value}'))
+        ">${slovar('Show_more')}</a>
+        `
     } else if (list.includes('MULTISELECT')) {
         const listModule = list.split('|')[1];
         value.split('|').forEach(val => {

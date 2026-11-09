@@ -21,6 +21,11 @@ function list_show(el, module, d = []){
 	})
 
 	d.popup.find('.buttonBlue').click(function(){ list_save(d) })
+	if (d.input.prop('disabled')){
+		d.popup
+		.data('disabled', true)
+		.find('.buttonBlue').remove()
+	}
 
 	GET_module({
 		module:module,
@@ -47,6 +52,8 @@ function list_get_rows(d){
 		done:function(rows){
 			d.box.empty();
       		rows.forEach(r=>{ d.box.append(list_row_HTML(d, r)) })
+
+      		if(d.popup.data('disabled') == true){ return }
       		d.box.find('.row').click(function(){ list_toggle_row(d, $(this)) })
 		}
 	});
@@ -72,9 +79,31 @@ function list_toggle_row(d, el) {
 }
 
 function list_save(d){
-	d.input.val(d.popup.data('value'))
-
+	d.input.val(d.popup.data('value'));
+	list_refreshAllFormData(d.input.parent());
 	removePOPUPbox();
+}
+
+function list_refreshAllFormData(form){
+	form.find('.listInput').each(function(){
+		let placeholder = $(this).closest('.formField').find('.inputPlaceholder');
+		if($(this).val() != ''){
+			placeholder.text(`${slovar('Accepted')} - ${$(this).val().split(',').length}`)
+		} else {
+			placeholder.text(slovar('Select'));
+		}
+	})
+}
+
+function list_readOnly(module, v){
+	$('body').append(`
+	<div id="listreadonly" class="formField">
+		<input class="listInput" value="${v}" disabled>
+	</div>
+	`);
+	let tempBox = $('#listreadonly');
+	list_show(tempBox.find('input'), module);
+	tempBox.remove();
 }
 
 // HTML

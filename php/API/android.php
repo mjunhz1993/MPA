@@ -4,25 +4,6 @@ include(loadPHP('API/API'));
 
 
 function get_android_app($INIconf) {
-
-    // Build the base URL
-    $protocol = (
-        !empty($_SERVER['HTTPS']) &&
-        $_SERVER['HTTPS'] !== 'off'
-    ) ? 'https' : 'http';
-
-    $host = $_SERVER['HTTP_HOST'] ?? '';
-
-    if ($host === '') {
-        return ['error' => ['Invalid host', '']];
-    }
-
-    // Prepare ticket data without modifying the original POST array
-    $data = $_POST;
-    $data['url'] = $protocol . '://' . $host . '/';
-    $data['email'] = $user['user_email'];
-
-    // Send the ticket
     return SEND((object) [
         'sendType' => 'POST',
         'event'    => 'android',

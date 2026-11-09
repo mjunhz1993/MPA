@@ -43,18 +43,25 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
     if(data.type == 'VARCHAR'){
         html += label;
         if(data.mandatory){ html += '<span style="color: red;">*</span>' }
+
         if(data.list == 'PHONE'){
             html += '<div class="inputWithFlags">';
             html += '<div class="flag" data-phone="'+defaultPhoneZipCode[0]+'" style="background-position-y:'+defaultPhoneZipCode[1]+'" ';
             html += 'data-tooltip="' + slovar('Select') + '" ';
             html += 'onclick="loadJS(\'form/countries\',function(el){get_countries(el,\'PHONE\')},$(this))"></div>';
         }
-        else if(data.list == 'COLOR'){ html += '<div id="CP'+data.order_num+'" class="colorpicker"></div>' }
+        else if(data.list == 'COLOR'){ 
+            html += '<div id="CP'+data.order_num+'" class="colorpicker"></div>'
+        }
+
         html += '<input type="';
+
         if(data.list == 'URL'){ html += 'url' }
         else if(data.list == 'EMAIL'){ html += 'email' }
         else{ html += 'text' }
+
         html += '" name="' + data.column + '" id="' + data.id + '" data-list="' + data.list + '" ';
+
         if(data.list == 'PHONE'){
             html += 'placeholder="' + defaultPhoneZipCode[0] + '"';
             html += 'onfocus="loadJS(\'form/countries\', function(el){ addPhoneZipCode(el) }, $(this))" ';
@@ -67,14 +74,21 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
 
         if(listSplit[0] == 'LIST'){
             if(valEmpty(listSplit[1])){ listSplit[1] = data.module }
-            html += `class="listInput" onfocus="loadJS('form/list', (el)=>list_show(el, '${listSplit[1]}'), $(this))" ` 
+            html += `class="hiddenInput listInput" onfocus="loadJS('form/list', (el)=>list_show(el, '${listSplit[1]}'), $(this))" ` 
         }
 
         html += 'maxlength="' + data.length + '"';
         if(data.preselected_option[0] != null){ html += 'value="' + data.preselected_option[0] + '" ' }
         if(data.mandatory){ html += 'required' }
         html += '>';
+
         if(data.list == 'PHONE'){ html += '</div>' }
+
+        if(listSplit[0] == 'LIST'){
+            html += `<div class="inputPlaceholder" onclick="loadJS('form/list', (el)=>list_show(el, '${listSplit[1]}'), $(this))">
+            ${slovar('Select')}
+            </div>`
+        }
 
         return html
     }

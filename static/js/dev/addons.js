@@ -379,7 +379,7 @@ function changeAddonSelect1(module, el){
 				ext:'js',
 				done:function(files){
 					files.forEach(file => {
-						box.find('#thisjsfile').append(`<option>${file.name}</option>`)
+						box.find('#thisjsfile').append(`<option value="${file.fileName}">${file.name}</option>`)
 					});
 				}
 			})
