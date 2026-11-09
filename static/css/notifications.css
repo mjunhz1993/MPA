@@ -10,10 +10,10 @@
     border-bottom: 1px solid grey;
 }
 #DropdownMenu .seenNotificationTitle{
-    background-color: #f0f0f0;
+    background-color: grey;
+    color: white;
     text-align: center;
-    padding: 5px 0;
-    border-bottom: 1px solid;
+    padding: 10px 0;
 }
 #DropdownMenu .notificationBox[data-type=BLUE]{ border-left: 5px solid var(--blue); }
 #DropdownMenu .notificationBox[data-type=RED]{ border-left: 5px solid red; }

@@ -47,6 +47,6 @@ function updateOldNotification($SQL, $d){
 
 function removeOldNotifications($SQL){
     $t = date('Y-m-d H:i:s', strtotime('-1 week'));
-    $SQL->query("DELETE FROM notifications WHERE notifications_time < '$t'");
+    return sql_delete($SQL, "DELETE FROM notifications WHERE notifications_time < ?", [$t]);
 }
 ?>
