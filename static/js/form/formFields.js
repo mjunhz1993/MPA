@@ -70,7 +70,7 @@ function createFormFieldInput(data, formType = 'ADD', html = ''){
         }
         else if(data.list == 'URL'){ html += 'onfocusout="testHttpStart($(this))" ' }
 
-        let listSplit = data.list.split('|');
+        let listSplit = (data.list || '').split('|');
 
         if(listSplit[0] == 'LIST'){
             if(valEmpty(listSplit[1])){ listSplit[1] = data.module }
