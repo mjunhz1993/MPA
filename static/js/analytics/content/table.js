@@ -13,6 +13,7 @@ function debug_ANAL_table(content, extra){
 		if(!extra.includes('sort')){ $(this).addClass('no-sort') }
 		$(this).data('col', $(this).text()).addClass('asc');
 		$(this).text($(this).text().replaceAll('_',' '));
+		$(this).addClass(makeClassName($(this).text()));
 	});
 
 	if(extra.includes('limit')){content.prepend(`
@@ -121,4 +122,15 @@ function append_new_rows(thisBox, data){
 	thisBox.find('.tempTable tr').not('.headRow')
 	.appendTo(thisBox.find('table').first());
 	thisBox.find('.tempTable').remove();
+}
+
+function makeClassName(str) {
+    return String(str)
+        .toLowerCase()
+        .trim()
+        .normalize("NFD")
+        .replace(/[\u0300-\u036f]/g, '') // Remove accents
+        .replace(/[^a-z0-9_-]+/g, '-')   // Replace invalid characters
+        .replace(/^-+|-+$/g, '')         // Remove leading/trailing hyphens
+        .replace(/-+/g, '-');            // Remove duplicate hyphens
 }
