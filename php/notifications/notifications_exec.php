@@ -1,39 +1,51 @@
 <?php
 include($_SERVER['DOCUMENT_ROOT']. '/crm/php/SQL/SQL.php');
 
-function get_notifications_COUNT($SQL){
-	$A = $SQL->query("
-		SELECT COUNT(*) FROM notifications 
-		WHERE notifications_user = '{$_SESSION['user_id']}' AND notifications_type != 'READ'
-	");
-	if($A->num_rows == 0){ return array('0'); }
-	while ($B = $A->fetch_row()){ return array($B[0]); }
+function get_notifications_COUNT(mysqli $SQL): array {
+    $A = sql_select($SQL, "
+	SELECT COUNT(*) AS total
+	FROM notifications
+	WHERE 
+		notifications_user = ? AND 
+		notifications_type != 'READ'
+	", [(int)$_SESSION['user_id']]);
+
+    if(is_array($A) || !$A){ return ['0']; }
+
+    $B = $A->fetch_assoc();
+    return [$B['total'] ?? '0'];
 }
 
 function get_notifications($SQL){
 	$WHERE = ["notifications_user = {$_SESSION['user_id']}"];
+
 	if(isset($_GET['type']) && $_GET['time']){
 		$WHERE[] = "notifications_type ='". SafeInput($SQL, $_GET['type']). "' ";
 		$WHERE[] = "notifications_time = '". $time = SafeInput($SQL, $_GET['time']). "'";
 	}
+
 	$WHERE = implode(' AND ', $WHERE);
 	$LIMIT = SafeInput($SQL, $_GET['num'] ?? 1);
 
 	$data = [];
 	$A = $SQL->query("
-	SELECT 
+	SELECT
+		user_username AS `from`,
 		notifications_title AS subject,
 		notifications_desc AS description,
 		notifications_time AS time,
 		notifications_type AS type,
 		notifications_list AS buttons
-	FROM notifications 
+	FROM notifications
+	LEFT JOIN user ON user_id = notifications_from
 	WHERE $WHERE 
 	ORDER BY (notifications_type = 'READ') ASC, notifications_time DESC 
 	LIMIT $LIMIT
 	");
+
 	while ($B = $A->fetch_assoc()){
 		$data[] = [
+			'from' => $B['from'] ?? 'system',
 			'subject' => $B['subject'],
 			'desc' => $B['description'],
 			'descText' => trim(preg_replace('/\s+/', ' ', preg_replace('/<[^>]+>/', ' ', $B['description']))),

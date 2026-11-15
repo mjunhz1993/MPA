@@ -60,6 +60,24 @@ function stringToDate(str, timeZone = 'local'){
         : new Date(Date.UTC(yyyy, mm - 1, dd, hh, ii, ss));
 }
 
+function check_if_today(dateString) {
+    const [datePart, timePart] = dateString.split(' ');
+
+    const [day, month, year] = datePart.split('.').map(Number);
+
+    const today = new Date();
+
+    if (
+        day === today.getDate() &&
+        month === today.getMonth() + 1 &&
+        year === today.getFullYear()
+    ) {
+        return slovar('Today') + ' ' + timePart;
+    }
+
+    return dateString;
+}
+
 function isDate(v){
     const mysqlDatetimeRegex = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
     return typeof v === 'string' && mysqlDatetimeRegex.test(v);

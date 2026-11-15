@@ -35,7 +35,7 @@ function display_notifications(data){
 	return (data.length ? data.map(get_HTML_notifications).join('') : `<p class="noNotifications">${slovar('Is_empty')}</p>`)
 }
 
-function get_HTML_notifications(note){
+function get_HTML_notifications(note){ console.log(note);
     let desc = note.descText;
     if (desc.length > 100) {
         desc = desc.substring(0, 100) + '... <b onclick="showMore_notifications($(this))">' + slovar('Show_more') + '</b>';
@@ -43,8 +43,16 @@ function get_HTML_notifications(note){
     return `
     <div class="notificationBox" data-type="${note.type}" data-time="${note.time}">
         <div class="nTop">
-			<h2 class="nTitle">${slovar(note.subject)}</h2>
-			<span class="nTime">${getSVG('clock')} ${displayLocalDate(note.time)}</span>
+    		<div class="nTopLeft">
+    			<div class="nAvatar">${note.from[0]}</div>
+    			<div>
+    				<b>${note.from}</b>
+					<h2 class="nTitle">${slovar(note.subject)}</h2>
+    			</div>
+    		</div>
+    		<div>
+    			<span class="nTime">${getSVG('clock')} ${check_if_today(displayLocalDate(note.time))}</span>
+    		</div>
         </div>
         <div class="nDesc">${desc}</div>
         <div class="nButtons">${get_notifications_buttons(note.buttons)}</div>

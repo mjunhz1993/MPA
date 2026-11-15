@@ -518,8 +518,10 @@ $A = $SQL->query("
 if($A->num_rows == 0){
     $A = $SQL->query("CREATE TABLE notifications
     (
-        notifications_user INT(100) UNSIGNED, INDEX(notifications_user), 
+        notifications_user INT(100) UNSIGNED, INDEX(notifications_user),
         FOREIGN KEY (notifications_user) REFERENCES user(user_id) ON DELETE CASCADE,
+        notifications_from INT(100) UNSIGNED, INDEX(notifications_from),
+        FOREIGN KEY (notifications_from) REFERENCES user(user_id) ON DELETE CASCADE,
         notifications_title VARCHAR(100),
         notifications_desc TEXT,
         notifications_time DATETIME,

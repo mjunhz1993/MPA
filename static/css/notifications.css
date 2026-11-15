@@ -27,6 +27,27 @@
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+    gap: 10px;
+}
+.notificationBox .nTop .nTopLeft{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+.notificationBox .nTop .nAvatar{
+    font-size: 30px;
+    text-transform: uppercase;
+    text-align: center;
+    background-color: #DBECFF;
+    color: var(--blue);
+    border-radius: 50%;
+    width: 41px;
+    min-width: 41px;
+    height: 41px;
+}
+.notificationBox[data-type=READ] .nTop .nAvatar{
+    background-color: gainsboro;
+    color: grey;
 }
 .notificationBox .nTitle{
     font-size: 15px !important;
@@ -34,6 +55,7 @@
     padding: 0 !important;
     color: var(--light-blue) !important;
 }
+.notificationBox[data-type=READ] .nTitle{ color: grey !important; }
 .notificationBox .nTime{
     display: flex;
     align-items: center;

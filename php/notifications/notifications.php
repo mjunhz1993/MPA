@@ -7,6 +7,7 @@ function sendNotification($SQL, $d){
 
     $myID = $_SESSION['user_id'] ?? 0;
     if(!property_exists($d, 'to')){ $d->to = $myID; }
+    if(!property_exists($d, 'from')){ $d->from = NULL; }
     if(!property_exists($d, 'nType')){ $d->nType = 'BLUE'; }
     if(!property_exists($d, 'desc')){ $d->desc = $d->subject; }
     if(!property_exists($d, 'group')){ $d->group = 'user'; }
@@ -39,14 +40,16 @@ function insertNotification($SQL, $d){
     return sql_insert($SQL, "
         INSERT INTO notifications (
             notifications_user,
+            notifications_from,
             notifications_title,
             notifications_desc,
             notifications_time,
             notifications_type,
             notifications_list
-        ) VALUES (?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?)
     ", [
         $d->to,
+        $d->from,
         $d->subject,
         $d->desc,
         $d->time,
@@ -61,11 +64,13 @@ function checkOldNotification($SQL, $d){
         FROM notifications
         WHERE
             notifications_user = ? AND
+            notifications_from = ? AND
             notifications_type = ? AND
             notifications_list = ?
         LIMIT 1
     ", [
         $d->to,
+        $d->from,
         $d->nType,
         $d->buttons
     ]);
@@ -81,6 +86,7 @@ function updateOldNotification($SQL, $d){
             notifications_time = ?
         WHERE 
             notifications_user = ? AND
+            notifications_from = ? AND
             notifications_type = ? AND
             notifications_list = ?
         LIMIT 1
@@ -89,6 +95,7 @@ function updateOldNotification($SQL, $d){
         $d->desc,
         $d->time,
         $d->to,
+        $d->from,
         $d->nType,
         $d->buttons
     ]);
