@@ -337,7 +337,11 @@ function clickCustomButton(url, module, id, el, callback){GET_module({
 })}
 
 function focusInput(form){
-    const input = $(form.find('input:visible').filter((_, el) => !el.value)[0]);
+    // ALL INPUTS
+    // const input = $(form.find('input:visible').filter((_, el) => !el.value)[0]);
+    // ONLY REQUIRED INPUTS
+    const input = form.find('input:visible[required]').filter((_, el) => !el.value);
+
     const formField = input.closest('.formField');
     if(!formField.length){ return }
     $([document.documentElement, document.body]).animate({ scrollTop: formField.offset().top - 300 }, 100);

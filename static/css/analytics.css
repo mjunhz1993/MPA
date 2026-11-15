@@ -29,16 +29,20 @@
 	text-align: center;
 }
 
+#anal_box fieldset{
+	padding: 2px;
+}
+
 #anal_box .col{
 	resize: horizontal;
 	overflow: hidden;
 	min-width: 20%;
-	max-width: 98%;
+	max-width: 100%;
 }
 
 .analbox{
 	background-color: white;
-	margin: 5px;
+	margin: 5px 0;
 	border: 1px solid gainsboro;
 }
 .analbox .top{
@@ -47,6 +51,10 @@
 	align-items: center;
 	padding: 5px;
 	border-bottom: 1px solid grey;
+}
+.analbox .top h2{
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .analbox .top .settings{

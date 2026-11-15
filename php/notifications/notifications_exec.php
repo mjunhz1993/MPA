@@ -46,17 +46,22 @@ function get_notifications($SQL){
 }
 
 function tag_as_read_notification($SQL){
-	$time = SafeInput($SQL, $_GET['time']);
-	$A = $SQL->query("
-		UPDATE notifications
-		SET notifications_type = 'READ'
-		WHERE notifications_user = {$_SESSION['user_id']} AND
-		notifications_time = '$time' AND
-		notifications_type != 'READ'
-		LIMIT 1
-	");
-	if(!$A){ return ['error'=>$SQL->error]; }
-	return true;
+    $A = sql_update($SQL, "
+        UPDATE notifications
+        SET notifications_type = 'READ'
+        WHERE 
+            notifications_user = ? AND
+            notifications_time = ? AND
+            notifications_type != 'READ'
+        LIMIT 1
+    ", [
+        $_SESSION['user_id'],
+        $_GET['time']
+    ]);
+
+    if(is_array($A)){ return $A; }
+
+    return true;
 }
 
 function delete_notification($SQL){
